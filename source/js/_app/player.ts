@@ -1,4 +1,6 @@
 import { CONFIG } from './globals/globalVars'
+// nyx-player exports this CSS entry without a TypeScript declaration.
+// @ts-expect-error side-effect-only CSS import
 import 'nyx-player/style'
 
 export const initAudioPlayer = async function () {

@@ -1,4 +1,6 @@
 import { HanaImgViewer } from 'hana-img-viewer'
+import 'hana-img-viewer/style.css'
+import './imageviewer.css'
 import { createApp } from 'vue';
 
 export const postImageViewer = (p: string) => {
@@ -9,7 +11,7 @@ export const postImageViewer = (p: string) => {
     const wrapper = document.createElement('div');
     img.replaceWith(wrapper);
 
-    const app = createApp(HanaImgViewer, { src: imgSrc, maskOpacity: 0.8 });
+    const app = createApp(HanaImgViewer, { src: imgSrc, alt: img.alt });
     app.mount(wrapper);
   });
 };

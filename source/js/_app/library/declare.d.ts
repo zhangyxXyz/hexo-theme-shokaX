@@ -1,3 +1,5 @@
+declare module '*.css'
+
 type vendorUrl = {
   url: string
   local: boolean

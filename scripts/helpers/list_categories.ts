@@ -12,7 +12,7 @@ const prepareQuery = (categories, parent) => {
   return categories.find(query).sort('name', 1).filter(cat => cat.length)
 }
 
-hexo.extend.helper.register('_list_categories', function (depth = 0) {
+hexo.extend.helper.register('_list_categories', function (this: any, depth = 0) {
   const categories = this.site.categories
 
   if (!categories || !categories.length) return ''
@@ -58,7 +58,7 @@ hexo.extend.helper.register('_list_categories', function (depth = 0) {
   return hierarchicalList(0)
 })
 
-hexo.extend.helper.register('_category_prev', function (name) {
+hexo.extend.helper.register('_category_prev', function (this: any, name) {
   const categories = this.site.categories
   if (!categories || !categories.length) return ''
 
@@ -75,7 +75,7 @@ hexo.extend.helper.register('_category_prev', function (name) {
   return result
 })
 
-hexo.extend.helper.register('_category_posts', function (page) {
+hexo.extend.helper.register('_category_posts', function (this: any, page) {
   // let hexo = this
   const categories = this.site.categories
   if (!categories || !categories.length || !page.categories || !page.categories.length) return ''

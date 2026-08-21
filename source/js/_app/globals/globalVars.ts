@@ -2,7 +2,7 @@ export const CONFIG = shokax_CONFIG
 export const statics = CONFIG.statics.indexOf('//') > 0 ? CONFIG.statics : CONFIG.root
 export const scrollAction: { x: number, y: number } = { x: 0, y: 0 }
 export let diffY = 0
-export let originTitle: string, titleTime: NodeJS.Timeout
+export let originTitle: string, titleTime: ReturnType<typeof setTimeout>
 export const BODY = document.getElementsByTagName('body')[0]
 export const HTML = document.documentElement
 export const Container = document.getElementById('container')
@@ -47,7 +47,7 @@ export function setDiffY (value:number):void {
   diffY = value
 }
 
-export function setTitleTime (value:NodeJS.Timeout):void {
+export function setTitleTime (value:ReturnType<typeof setTimeout>):void {
   titleTime = value
 }
 

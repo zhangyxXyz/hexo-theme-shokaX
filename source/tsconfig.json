@@ -6,7 +6,9 @@
     "esModuleInterop": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": false,
+    "tsBuildInfoFile": "../node_modules/.cache/shokax-source.tsbuildinfo"
   },
   "include": [
     "./**/*.ts"

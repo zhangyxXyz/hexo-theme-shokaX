@@ -40,7 +40,7 @@ const randomBG = function (count = 1, image_server:string = null, image_list:str
   return image_list[Math.floor(Math.random() * image_list.length)]
 }
 
-hexo.extend.helper.register('shokax_inject', function (point) {
+hexo.extend.helper.register('shokax_inject', function (this: any, point) {
   return hexo.theme.config.injects[point]
     .map((item) => this.partial(item.layout, item.locals, item.options))
     .join('')
@@ -77,7 +77,7 @@ hexo.extend.helper.register('_image_url', function (img, path = '') {
   }
 })
 
-hexo.extend.helper.register('_cover', function (item, num?) {
+hexo.extend.helper.register('_cover', function (this: any, item, num?) {
   const { image_server, image_list } = hexo.theme.config
 
   if (item.cover) {
@@ -89,7 +89,7 @@ hexo.extend.helper.register('_cover', function (item, num?) {
   }
 })
 
-hexo.extend.helper.register('_cover_index', function (item) {
+hexo.extend.helper.register('_cover_index', function (this: any, item) {
   const { index_images, image_list, image_server } = hexo.theme.config
 
   if (item.cover) {
@@ -115,7 +115,7 @@ hexo.extend.helper.register('_permapath', function (str) {
   return url
 })
 
-hexo.extend.helper.register('canonical', function () {
+hexo.extend.helper.register('canonical', function (this: any) {
   return `<link rel="canonical" href="${this._permapath(this.url)}">`
 })
 
@@ -123,7 +123,7 @@ hexo.extend.helper.register('canonical', function () {
  * Get page path given a certain language tag
  */
 // 注册hexo主题的国际化路径帮助方法
-hexo.extend.helper.register('i18n_path', function (language) {
+hexo.extend.helper.register('i18n_path', function (this: any, language) {
   // 获取当前页面的path和lang
   const { path, lang } = this.page
   // 如果path以lang开头，则截取掉lang部分，作为基础路径
