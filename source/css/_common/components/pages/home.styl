@@ -262,9 +262,20 @@ $item {
 
     &:hover {
       box-shadow: 0 0 2rem var(--box-bg-shadow);
-
+      .cover {
+        filter: brightness(.3);
+      }
       .cover img {
-        transform: scale(1.05) rotate(1deg);
+        transform: scale(1.25) rotate(2deg);
+      }
+      .info {
+        width: 75%;
+        +mobile() {
+          width: 100%;
+        }
+      }
+      .info h3 {
+        color: var(--color-blue);
       }
     }
   }
@@ -275,6 +286,7 @@ $item {
     clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
     border-radius: .625rem 0 0 .625rem;
     overflow: hidden;
+    transition: filter .3s ease-in-out;
 
     +mobile() {
       width: 100%;
@@ -297,6 +309,7 @@ $item {
     width: 50%;
     padding: 1rem 1.5rem 3rem 0;
     perspective: 62.5rem;
+    transition: width .3s ease-in-out;
 
     +mobile() {
       width: 100%;
@@ -322,6 +335,7 @@ $item {
       white-space: nowrap;
       margin: .625rem 0;
       color: var(--primary-color);
+      transition: color .3s ease-in-out;
     }
 
     .excerpt {
@@ -384,7 +398,7 @@ $item {
 
     &:hover {
       .cover img {
-        transform: scale(1.05) rotate(-1deg);
+        transform: scale(1.25) rotate(-2deg);
       }
     }
   }

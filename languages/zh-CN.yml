@@ -1,5 +1,30 @@
 ---
 name: 简体中文
+code_block:
+  wrap: "切换自动换行"
+  copy: "复制代码"
+  copied: "已复制"
+  copy_failed: "复制失败"
+  fullscreen: "全屏查看"
+  exit_fullscreen: "退出全屏"
+  expand: "展开代码"
+  collapse: "收起代码"
+
+image_viewer:
+  zoom_in: "放大"
+  zoom_out: "缩小"
+  one_to_one: "原始尺寸"
+  reset: "复位"
+  rotate_left: "向左旋转"
+  rotate_right: "向右旋转"
+  previous: "上一张"
+  next: "下一张"
+  close: "关闭预览"
+  thumbnails: "文章图片列表"
+  image: "图片"
+  thumbnail: "第 {index} 张：{title}"
+  counter: "{index} / {total}"
+
 favicon:
   show: （●´3｀●）やれやれだぜ
   hide: (´Д｀)大変だ！
@@ -43,6 +68,11 @@ index:
   recent_comments: 最新评论
 
 post:
+  changelogs_summary: "点击查看更新记录"
+  changelogs_title: "更新记录"
+  reprint: "『转载』"
+  hitokoto_loading: ":D 一言 - 链接记忆, 走过时光, 正在获取中..."
+  hitokoto_default: "人，这辈子，不就是笑笑别人，和被别人笑笑嘛。"
   posted: 发表于
   edited: 更新于
   created: 创建时间
@@ -64,6 +94,10 @@ post:
     nocopy: "<span class=\"red\">本页内容禁止转载！</span>"
 
 footer:
+  visitor: "访客"
+  peoples: "人次"
+  visitor_preview: "本地预览不请求访客统计"
+  uptime: "站点已运行 {days} 天 {hours} 小时 {minutes} 分 {seconds} 秒"
   powered: "基于 %s"
   total_views: 总访问量
   total_visitors: 总访客量
@@ -140,7 +174,7 @@ symbols_count_time:
   view: 次
 
 tips:
-  copyright: "复制成功，转载请遵守 %s 协议。"
+  copyright: "复制成功，转载请附上原文链接，遵守 %s 协议。"
   nocopy: "复制失败，本页内容禁止转载！"
 
 quiz:
@@ -150,6 +184,12 @@ quiz:
   essay: 问答题
   gap_fill: 填空题
   mistake: 错题备注
+
+tagcloud:
+  view: "标签云视图"
+  flat: "2D · 平面"
+  sphere: "3D · 球面"
+  empty: "暂无标签。"
 
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">文章时效性提示</span><br>这是一篇发布于 {{publish}} 天前，最后一次更新在 {{updated}} 天前的文章，部分信息可能已经发生改变，请注意甄别。</p></div>"

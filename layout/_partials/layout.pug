@@ -25,25 +25,28 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
         block head
         title
             block title
-                != `${alternate?alternate + " = ":""}${title}${subtitle?" = "+subtitle:""}`
+                = `${alternate ? alternate + ' = ' : ''}${title}${(theme.title || {}).show_subtitle !== false && subtitle ? ' = ' + subtitle : ''}`
     body(itemscope itemtype="http://schema.org/WebPage")
         != partial('_partials/loading.pug', {}, {cache: true})
         div(id="pagefind_mount")
         div(id="container")
             header(id="header" itemscope itemtype="http://schema.org/WPHeader")
                 div(class="inner")
-                    div(id="brand")
-                        div(class="pjax")
-                            block header
-                                a(href=config.root class="logo" rel="start")
-                                    if alternate
-                                        p(class="artboard")
-                                            != alternate
-                                    h1(itemprop="name headline" class="title")
-                                        != title
-                                if subtitle
-                                    p(class="meta" itemprop="description")
-                                        != `= ${subtitle} =`
+                    div(class="brand-clip")
+                        div(id="brand")
+                            div(class="pjax")
+                                block header
+                                    a(href=config.root class="logo" rel="start")
+                                        if alternate
+                                            p(class="artboard")
+                                                != alternate
+                                        h1(itemprop="name headline" class="title")
+                                            != title
+                                    - var homeSubtitle = theme.homeConfig.subtitle || {}
+                                    - var quoteOptions = theme.hitokoto || {}
+                                    if homeSubtitle.enable !== false && (subtitle || quoteOptions.home)
+                                        p(class="meta home-subtitle" itemprop="description" data-quote data-hitokoto=String(quoteOptions.home === true) data-typewriter=String(quoteOptions.typewriter === true) data-fallback=subtitle)
+                                            = subtitle
 
                     != partial('_partials/header.pug', {}, {cache: true})
                 div(id="imgs" class="pjax")
@@ -95,8 +98,11 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
 
         - var ccIcon = '<i class="ic i-creative-commons"></i>'
         - var ccText = theme.creative_commons.license.toUpperCase()
+        - const imageViewerLabels = { zoomIn: __('image_viewer.zoom_in'), zoomOut: __('image_viewer.zoom_out'), oneToOne: __('image_viewer.one_to_one'), reset: __('image_viewer.reset'), rotateLeft: __('image_viewer.rotate_left'), rotateRight: __('image_viewer.rotate_right'), previous: __('image_viewer.previous'), next: __('image_viewer.next'), close: __('image_viewer.close'), thumbnails: __('image_viewer.thumbnails'), image: __('image_viewer.image'), thumbnail: __('image_viewer.thumbnail'), counter: __('image_viewer.counter') }
         script(data-config type="text/javascript").
             var LOCAL = {
+                imageViewer: !{JSON.stringify(imageViewerLabels).replace(/</g, '\\u003c')},
+                codeBlock: !{JSON.stringify({wrap: __('code_block.wrap'), copy: __('code_block.copy'), copied: __('code_block.copied'), copyFailed: __('code_block.copy_failed'), fullscreen: __('code_block.fullscreen'), exitFullscreen: __('code_block.exit_fullscreen'), expand: __('code_block.expand'), collapse: __('code_block.collapse')}).replace(/</g, '\\u003c')},
                 ispost: !{is_post()},
                 path: `#{_permapath(page.path)}`,
                 favicon: {
@@ -108,8 +114,7 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
                     empty: "!{__('search.empty')}",
                     stats: "!{__('search.stats')}"
                 },
-                nocopy: "!{!!page.nocopy}",
-                copyright: `!{page.copyright !== false ? (page.nocopy === true ? __("tips.nocopy") : __("tips.copyright", ccIcon + ccText)) : undefined}`,
+                copyright: !{JSON.stringify(page.nocopy === true ? __('tips.nocopy') : (page.copyright !== false ? __('tips.copyright', ccIcon + ccText) : '')).replace(/</g, '\\u003c')},
                 copy_tex: #{!!page.math},
                 katex: #{!!page.math},
                 mermaid: #{!!page.mermaid},
@@ -133,6 +138,5 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
 
         != _js('siteInit.js')
 
+        != partial('_partials/third-party/festival.pug')
         != shokax_inject('bodyEnd')
-
-

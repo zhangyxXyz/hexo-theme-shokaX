@@ -3,7 +3,7 @@ import {siteRefresh} from './refresh'
 import {cloudflareInit} from '../components/cloudflare'
 import {BODY, CONFIG, setSiteSearch, siteSearch} from '../globals/globalVars'
 import {autoDarkmode, themeColorListener} from '../globals/themeColor'
-import {resizeHandle, scrollHandle, visibilityListener} from '../globals/handles'
+import {resizeHandle, scrollHandle, syncViewportState, visibilityListener} from '../globals/handles'
 import {pagePosition} from '../globals/tools'
 import {initVue} from '../library/vue'
 import {createChild} from '../library/proto'
@@ -63,6 +63,9 @@ const siteInit = async () => {
   window.addEventListener('resize', resizeHandle, {
     passive: true
   })
+
+  window.addEventListener('pageshow', syncViewportState)
+  window.addEventListener('popstate', syncViewportState)
 
   window.addEventListener('visibilitychange', () => {
     pagePosition()

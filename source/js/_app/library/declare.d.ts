@@ -31,7 +31,25 @@ declare interface EventTarget {
 
 type walineMeta = 'nick'|'mail'|'link'
 
+type ImageViewerLocale = {
+  zoomIn: string;
+  zoomOut: string;
+  oneToOne: string;
+  reset: string;
+  rotateLeft: string;
+  rotateRight: string;
+  previous: string;
+  next: string;
+  close: string;
+  thumbnails: string;
+  image: string;
+  thumbnail: string;
+  counter: string;
+}
+
 declare const LOCAL: {
+  codeBlock: Record<'wrap' | 'copy' | 'copied' | 'copyFailed' | 'fullscreen' | 'exitFullscreen' | 'expand' | 'collapse', string>;
+  imageViewer: ImageViewerLocale;
   ispost: boolean;
   path: string;
   ignores: Array<(uri:string)=>boolean>;

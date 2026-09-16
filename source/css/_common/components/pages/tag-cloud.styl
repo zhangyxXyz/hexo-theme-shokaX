@@ -1,12 +1,153 @@
-.tag.cloud {
-  text-align: center;
+.tag-cloud-widget {
+  margin: 2rem 0;
+  [hidden] { display: none !important; }
 
-  a {
-    display: inline-block;
-    margin: .625rem;
-
-    &:hover {
-      color: var(--primary-color) !important;
+  .tag-cloud-controls {
+    display: flex;
+    width: fit-content;
+    gap: .1rem;
+    padding: .15rem;
+    margin: 0 0 .75rem auto;
+    border: 0;
+    border-radius: .6rem;
+    background: var(--grey-3);
+    button {
+      display: grid;
+      place-items: center;
+      width: 2rem;
+      height: 1.65rem;
+      padding: .25rem .4rem;
+      border: 0;
+      border-radius: .45rem;
+      background: transparent;
+      color: var(--grey-6);
+      font: inherit;
+      cursor: pointer;
+      transition: color .2s, background .2s, box-shadow .2s;
+      &:hover { color: var(--primary-color); }
+      svg {
+        width: 1rem;
+        height: 1rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      &[aria-pressed="true"] {
+        background: var(--grey-1);
+        box-shadow: 0 1px 4px var(--box-bg-shadow);
+        color: var(--primary-color);
+      }
     }
+  }
+
+  .tag.cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem .5rem;
+    text-align: center;
+    a.tag-cloud-link {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .2em;
+      margin: 0;
+      padding: .45em .7em;
+      border: 1px solid var(--color-pink-a3);
+      border-radius: .8rem;
+      background: var(--grey-2);
+      box-shadow: 0 3px 10px var(--box-bg-shadow);
+      font-size: var(--tag-size);
+      color: var(--color-purple);
+      color: unquote('color-mix(in srgb, var(--tag-start), var(--tag-end) var(--tag-weight))');
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      transition: background .2s, box-shadow .2s, color .2s, transform .25s;
+      .tag-cloud-label {
+        display: inline-flex;
+        align-items: baseline;
+        gap: .2em;
+        max-width: 100%;
+      }
+      sup {
+        position: static;
+        align-self: flex-start;
+        font-size: .65em;
+        line-height: 1.6;
+        opacity: .8;
+      }
+      &:hover, &:focus-visible {
+        color: var(--primary-color);
+        background: var(--grey-1);
+        box-shadow: 0 5px 16px var(--box-bg-shadow);
+      }
+    }
+  }
+  &:not([data-mode="3d"]) .tag.cloud a.tag-cloud-link {
+    &:hover, &:focus-visible {
+      transform: scale(1.25);
+      position: relative;
+      z-index: 1;
+    }
+  }
+  button:focus-visible, a:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 4px;
+  }
+  &[data-mode="3d"] .tag.cloud {
+    user-select: none;
+    -webkit-user-select: none;
+    display: block;
+    position: relative;
+    height: clamp(320px, 60vw, 500px);
+    overflow: hidden;
+    border-radius: 1rem;
+    background: radial-gradient(circle, var(--color-pink-light-a3), transparent 65%);
+    a.tag-cloud-link {
+      -webkit-user-drag: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      max-width: 60%;
+      padding: .25em .45em;
+      border-color: transparent;
+      border-radius: .5rem;
+      background: transparent;
+      box-shadow: none;
+      font-weight: 500;
+      transition: color .2s, text-shadow .25s;
+      will-change: transform;
+      // Keep the anchor hit area still while its decorative contents animate.
+      .tag-cloud-label {
+        pointer-events: none;
+        transition: transform .25s;
+      }
+      .tag-cloud-label * { pointer-events: none; }
+      &:hover, &:focus-visible {
+        background: transparent;
+        box-shadow: none;
+        .tag-cloud-label { transform: translateY(-3px) scale(1.2); }
+        text-shadow: 0 3px 14px var(--color-pink-a3);
+        z-index: 1000 !important;
+        opacity: 1 !important;
+      }
+      &:focus-visible { z-index: 1000 !important; opacity: 1 !important; }
+    }
+  }
+  @media (max-width: 767px) {
+    &[data-mode="3d"] .tag.cloud a.tag-cloud-link {
+      font-size: calc(var(--tag-size) * .8);
+      padding: .3em .45em;
+      border-radius: .55rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tag.cloud a.tag-cloud-link, .tag.cloud .tag-cloud-label { transition: none; }
+  }
+  &[data-morphing] .tag.cloud a.tag-cloud-link {
+    transition: none;
   }
 }

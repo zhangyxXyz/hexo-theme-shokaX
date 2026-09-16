@@ -1,0 +1,38 @@
+.festival-decoration {
+  --festival-leaf: #548777;
+  --festival-moon: #efd9a0;
+  .festival-art { position: fixed; top: 1rem; right: 0; width: 240px; z-index: 10; opacity: .94; }
+  .festival-daily { width: 210px; opacity: .65; }
+  .festival-art svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .festival-bamboo { color: var(--festival-leaf); }
+  .festival-moon { fill: var(--festival-moon); filter: drop-shadow(0 0 9px #efd9a02b); }
+  .festival-seal { fill: #b8584e; }
+  .festival-pendant { transform-origin: 150px 95px; animation: festival-pendant 6s ease-in-out infinite; }
+  .festival-depth { filter: drop-shadow(2px 5px 5px #173a342e); }
+  .festival-bamboo-sway { transform-origin: 240px 22px; animation: festival-bamboo-sway 9s ease-in-out infinite; }
+  .festival-leaf { transform-box: fill-box; transform-origin: right center; animation: festival-leaf-flutter 5s ease-in-out infinite; animation-delay: var(--leaf-delay); }
+  .festival-tassel { transform-origin: 148px 202px; animation: festival-pendant 4s ease-in-out infinite reverse; }
+}
+html[data-theme='dark'] .festival-decoration {
+  --festival-leaf: #87aa9a;
+  --festival-moon: #d9c18c;
+  .festival-art { opacity: .88; }
+  .festival-daily { opacity: .58; }
+}
+@keyframes festival-pendant {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes festival-bamboo-sway {
+  0%, 100% { transform: rotate(-1.4deg); }
+  50% { transform: rotate(1.4deg); }
+}
+@keyframes festival-leaf-flutter {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .festival-decoration {
+    .festival-pendant, .festival-bamboo-sway, .festival-leaf, .festival-tassel { animation: none; }
+  }
+}

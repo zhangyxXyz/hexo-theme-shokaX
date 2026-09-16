@@ -1,5 +1,30 @@
 ---
 name: 日本語
+code_block:
+  wrap: "折り返しを切り替え"
+  copy: "コードをコピー"
+  copied: "コピーしました"
+  copy_failed: "コピーに失敗しました"
+  fullscreen: "全画面表示"
+  exit_fullscreen: "全画面を終了"
+  expand: "コードを展開"
+  collapse: "コードを折りたたむ"
+
+image_viewer:
+  zoom_in: "拡大"
+  zoom_out: "縮小"
+  one_to_one: "元のサイズ"
+  reset: "リセット"
+  rotate_left: "左に回転"
+  rotate_right: "右に回転"
+  previous: "前の画像"
+  next: "次の画像"
+  close: "プレビューを閉じる"
+  thumbnails: "記事の画像一覧"
+  image: "画像"
+  thumbnail: "画像 {index}：{title}"
+  counter: "{index} / {total}"
+
 favicon:
   show: （●´3｀●）やれやれだぜ
   hide: (´Д｀)大変だ！
@@ -43,6 +68,11 @@ index:
   recent_comments: 最近のコメント
 
 post:
+  changelogs_summary: "更新履歴を表示"
+  changelogs_title: "更新履歴"
+  reprint: "転載"
+  hitokoto_loading: "一言を読み込み中…"
+  hitokoto_default: "人生とは、誰かと笑い、自分のことも笑うこと。"
   posted: 投稿日
   edited: 編集日
   created: 作成日
@@ -64,6 +94,10 @@ post:
     nocopy: "<span class=\"red\">再印刷は禁止されています。</span>"
 
 footer:
+  visitor: "訪問者"
+  peoples: "回"
+  visitor_preview: "ローカルプレビューでは訪問者数を取得しません"
+  uptime: "稼働時間 {days} 日 {hours} 時間 {minutes} 分 {seconds} 秒"
   powered: "Powered by %s"
   total_views: 閲覧合計数
   total_visitors: 合計閲覧者数
@@ -140,7 +174,7 @@ symbols_count_time:
   view: 回
 
 tips:
-  copyright: "コピーは成功しました。 <br> 再印刷については、 ％s 契約に従ってください。"
+  copyright: "コピーしました。転載時は元の記事へのリンクを記載し、%s ライセンスに従ってください。"
   nocopy: "コピーに失敗しました。 <br> 再印刷は禁止されています。"
 
 quiz:
@@ -150,6 +184,12 @@ quiz:
   essay: 問答
   gap_fill: 空欄
   mistake: 間違った答え
+
+tagcloud:
+  view: "タグクラウド表示"
+  flat: "2D · 平面"
+  sphere: "3D · 球面"
+  empty: "タグはまだありません。"
 
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">記事の適時性の警告</span><br> {{publish}} 日前に公開され、 {{updated}} 日前に最終更新された記事です。 一部情報が変更されている可能性がありますので、ご了承ください。</p></div>"

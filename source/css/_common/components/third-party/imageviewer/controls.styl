@@ -1,0 +1,128 @@
+.shokax-post-viewer {
+  .viewer-toolbar {
+    position: fixed;
+    top: 1rem;
+    right: 4.25rem;
+    z-index: 4;
+
+    > ul {
+      display: inline-flex;
+      gap: .125rem;
+      padding: .25rem;
+      margin: 0;
+      border: .0625rem solid var(--grey-3);
+      border-radius: .75rem;
+      background: var(--grey-1-a7);
+      box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .12);
+      backdrop-filter: blur(16px);
+
+      > li {
+        --viewer-control-bg: transparent;
+        float: none;
+        width: 2.25rem;
+        height: 2.25rem;
+        margin: 0;
+        border-radius: .5rem;
+        background: transparent;
+      }
+    }
+  }
+
+  .viewer-toolbar > ul > li,
+  .viewer-navigation > div,
+  .viewer-button {
+    display: grid;
+    place-items: center;
+    color: var(--text-color);
+    transition: color .18s ease, background-color .18s ease;
+
+    &::before {
+      display: none;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+    }
+
+    &:focus {
+      color: var(--text-color);
+      background: var(--viewer-control-bg, var(--grey-1-a7));
+      box-shadow: none;
+      outline: none;
+    }
+
+    &:hover {
+      color: white;
+      background: var(--primary-color);
+    }
+
+    &:focus-visible {
+      outline: .125rem solid var(--primary-color);
+      outline-offset: -.125rem;
+      box-shadow: none;
+    }
+
+    &[aria-disabled='true'] {
+      opacity: .3;
+      cursor: default;
+      pointer-events: auto;
+      color: var(--text-color);
+      background: var(--viewer-control-bg, var(--grey-1-a7));
+    }
+  }
+
+  .viewer-navigation {
+    z-index: 3;
+    pointer-events: none;
+
+    > div {
+      pointer-events: auto;
+      background: var(--grey-1-a7);
+      border: .0625rem solid var(--grey-3);
+      backdrop-filter: blur(12px);
+    }
+  }
+
+  .viewer-button {
+    top: 1rem;
+    right: 1rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: .75rem;
+    border: .0625rem solid var(--grey-3);
+    background: var(--grey-1-a7);
+    backdrop-filter: blur(16px);
+    z-index: 4;
+  }
+
+  +mobile-small() {
+    .viewer-toolbar {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin: .5rem auto;
+
+      > ul > li {
+        width: 2.75rem;
+        height: 2.75rem;
+      }
+    }
+
+    .viewer-button {
+      top: unquote('max(.625rem, env(safe-area-inset-top))');
+      right: unquote('max(.625rem, env(safe-area-inset-right))');
+    }
+
+    .viewer-navigation > div {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { cardActive } from '../page/common'
-import { resizeHandle } from '../globals/handles'
+import { resizeHandle, syncViewportState } from '../globals/handles'
 import {
   CONFIG,
   setLocalHash, setLocalUrl, setOriginTitle,
@@ -8,8 +8,15 @@ import { positionInit } from '../globals/tools'
 import { menuActive, sideBarTab, sidebarTOC } from '../components/sidebar'
 import { Loader, isOutime } from '../globals/thirdparty'
 import { tabFormat } from '../page/tab'
+import { refreshHitokoto } from '../components/hitokoto'
+import { refreshTocCurve } from '../components/toc-curve'
+import { refreshFooter } from '../components/footer'
+import { refreshFestival } from '../components/festival'
+import { refreshTagCloud } from '../components/tagcloud'
 
 export const siteRefresh = async (reload) => {
+  // Update restored viewport state before any asynchronous page setup.
+  syncViewportState()
   if (__shokax_antiFakeWebsite__) {
     if (window.location.origin !== CONFIG.hostname && window.location.origin !== "http://localhost:4000") {
       window.location.href = CONFIG.hostname
@@ -19,7 +26,11 @@ export const siteRefresh = async (reload) => {
   }
 
   setLocalHash(0)
+  refreshFooter()
+  refreshFestival()
+  refreshTagCloud()
   setLocalUrl(window.location.href)
+  void refreshHitokoto()
 
   await import('katex/dist/contrib/copy-tex.mjs')
 
@@ -44,11 +55,13 @@ export const siteRefresh = async (reload) => {
   setOriginTitle(document.title)
 
   resizeHandle()
+  syncViewportState()
 
   menuActive()
 
   sideBarTab()
   sidebarTOC()
+  refreshTocCurve()
 
   const pagePost = await import('../page/post')
   await pagePost.postBeauty()
@@ -105,6 +118,7 @@ export const siteRefresh = async (reload) => {
 
   setTimeout(() => {
     positionInit()
+    syncViewportState()
   }, 500)
 
   cardActive()

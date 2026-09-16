@@ -1,6 +1,11 @@
 mixin PMRender(item, full)
     - full ||= false
     div(class="meta")
+        if item.reprintlink && !item.encrypt
+            span(class="item post-reprint" title=__('post.reprint'))
+                span(class="icon")
+                    i(class="ic i-link-alt")
+                span= __('post.reprint')
         - var create_title = __('post.created') + __('symbol.colon') + full_date(item.date)
         span(class="item" title=create_title)
             span(class="icon")

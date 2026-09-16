@@ -29,6 +29,8 @@ block header
             != _url(page.link, postText + postTitleIcon, {class: 'link external', itemprop: 'url'})
         else
             != page.title
+    if (theme.hitokoto || {}).post
+        p(class="post-hitokoto" data-quote data-hitokoto="true" data-typewriter=String(theme.hitokoto.typewriter === true) data-fallback=__('post.hitokoto_default'))= __('post.hitokoto_loading')
     +PMRender(page, true)
 
 block content

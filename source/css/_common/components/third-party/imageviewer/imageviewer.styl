@@ -1,0 +1,52 @@
+// Viewer.js supplies base CSS; theme appearance and transitions live here.
+@import 'controls';
+@import 'thumbnails';
+@import 'transition';
+
+.md img.shokax-image-viewer {
+  cursor: zoom-in;
+}
+
+.shokax-post-viewer {
+  --viewer-duration: 360ms;
+  --viewer-easing: cubic-bezier(.22, .68, 0, 1);
+
+  &.viewer-backdrop {
+    background: rgba(16, 18, 24, .92);
+  }
+
+  .viewer-footer {
+    padding: 0 0 unquote('max(12px, env(safe-area-inset-bottom))');
+    z-index: 3;
+  }
+
+  .viewer-title {
+    color: #e3e5ec;
+    font-size: .75rem;
+    margin: .5rem 5%;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+
+  .shokax-viewer-counter {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 3;
+    color: #e3e5ec;
+    font-size: .8125rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .1em;
+  }
+
+  +mobile-small() {
+    .shokax-viewer-counter {
+      top: unquote('max(1.5rem, env(safe-area-inset-top))');
+      left: 1rem;
+    }
+
+    .viewer-title {
+      margin: .5rem auto;
+    }
+  }
+}

@@ -133,7 +133,7 @@ export const sidebarTOC = () => {
       parent = <Element> parent.parentNode
     }
     // Scrolling to center active TOC element if TOC content is taller than viewport.
-    if (getComputedStyle(sideBar).display !== 'none' && tocElement.classList.contains('active')) {
+    if (getComputedStyle(sideBar).display !== 'none' && tocElement.classList.contains('active') && !tocElement.classList.contains('toc-curve')) {
       pageScroll((tocElement as HTMLElement), target.offsetTop - ((tocElement as HTMLElement).offsetHeight / 4))
     }
   }

@@ -47,7 +47,9 @@ export const scrollHandle = () => {
   // 获取窗口高度
   const winHeight = window.innerHeight
   // 获取文档高度
-  const docHeight = (document.querySelector('main > .inner') as HTMLElement).offsetHeight
+  const content = document.querySelector<HTMLElement>('main > .inner')
+  if (!content || !backToTop) return
+  const docHeight = content.offsetHeight
   // 计算可见内容高度
   const contentVisibilityHeight = docHeight > winHeight ? docHeight - winHeight : document.body.scrollHeight - winHeight
   // 判断页面是否滚动超过 headerHightInner
@@ -68,6 +70,7 @@ export const scrollHandle = () => {
   toolBtn.classList.toggle('affix', startScroll)
   // 控制侧边栏的显示隐藏，当滚动高度大于 headerHight 且窗口宽度大于 991px 时显示
   siteBrand.classList.toggle('affix', startScroll)
+  siteBrand.classList.toggle('outside-header', siteHeader.getBoundingClientRect().bottom <= 0)
   sideBar.classList.toggle('affix', window.scrollY > headerHight && document.body.offsetWidth >= 991)
   // 初始化滚动时导航栏的显示方向
   if (typeof scrollAction.y === 'undefined') {
@@ -94,6 +97,24 @@ export const scrollHandle = () => {
   if (document.getElementById('sidebar').classList.contains('affix') || document.getElementById('sidebar').classList.contains('on')) {
     setWidth(document.querySelector('.percent'), scrollPercent)
   }
+}
+
+let viewportFrame = 0
+
+// History restoration may change scrollY without firing a new scroll event.
+export const syncViewportState = () => {
+  cancelAnimationFrame(viewportFrame)
+  const update = () => {
+    resizeHandle()
+    scrollAction.y = window.scrollY
+    siteNav.classList.remove('up', 'down')
+    scrollHandle()
+  }
+  update()
+  viewportFrame = requestAnimationFrame(() => {
+    update()
+    viewportFrame = requestAnimationFrame(() => { viewportFrame = 0; update() })
+  })
 }
 
 // 可见度监听(离开页面和返回时更改document的title)

@@ -1,0 +1,77 @@
+.post-changelogs .historytimeline {
+  color: var(--text-color);
+
+  .item {
+    position: relative;
+    padding: 1.1rem 0 1.1rem 1.86rem;
+    margin: 0;
+    overflow-wrap: anywhere;
+    line-height: 1.8;
+
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      box-sizing: content-box;
+      top: 1.65rem;
+      left: 0;
+      width: .6rem;
+      height: .6rem;
+      border: .15rem solid var(--primary-color);
+      border-radius: 50%;
+      background: var(--grey-1);
+      transition: border-color .2s ease;
+    }
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 1.65rem;
+      bottom: -1.65rem;
+      left: .35rem;
+      border-left: .2rem solid var(--color-red-a3);
+    }
+
+    &:hover {
+      color: var(--color-blue);
+    }
+
+    &:hover::before {
+      border-color: var(--color-blue);
+    }
+  }
+
+  .item.header {
+    font-size: 1.15em;
+
+    &::after {
+      border-left-style: dashed;
+    }
+  }
+
+  .item.section::before {
+    width: .4rem;
+    height: .4rem;
+    margin-left: .1rem;
+  }
+
+  .item.normal {
+    padding: .325rem 0 .325rem 3.55rem;
+
+    &::before {
+      top: 1rem;
+      width: .2rem;
+      height: .2rem;
+      margin-left: .2rem;
+      background: var(--primary-color);
+    }
+
+    &::after {
+      top: 1rem;
+    }
+
+    &:hover::before {
+      background: var(--color-blue);
+    }
+  }
+}

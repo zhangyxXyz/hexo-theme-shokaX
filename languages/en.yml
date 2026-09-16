@@ -1,5 +1,30 @@
 name: English
 
+code_block:
+  wrap: "Toggle line wrapping"
+  copy: "Copy code"
+  copied: "Copied"
+  copy_failed: "Copy failed"
+  fullscreen: "Full screen"
+  exit_fullscreen: "Exit full screen"
+  expand: "Expand code"
+  collapse: "Collapse code"
+
+image_viewer:
+  zoom_in: "Zoom in"
+  zoom_out: "Zoom out"
+  one_to_one: "Original size"
+  reset: "Reset"
+  rotate_left: "Rotate left"
+  rotate_right: "Rotate right"
+  previous: "Previous image"
+  next: "Next image"
+  close: "Close preview"
+  thumbnails: "Article images"
+  image: "Image"
+  thumbnail: "Image {index}: {title}"
+  counter: "{index} / {total}"
+
 favicon:
   show: (●´3｀●) Here we go again.
   hide: (´Д｀) It's a disaster!
@@ -43,6 +68,11 @@ index:
   recent_comments: Recent Comments
 
 post:
+  changelogs_summary: "View update history"
+  changelogs_title: "Update history"
+  reprint: "Repost"
+  hitokoto_loading: "Loading a quote…"
+  hitokoto_default: "Life is about laughing with others and at ourselves."
   posted: Posted on
   edited: Edited on
   created: Created
@@ -64,6 +94,10 @@ post:
     nocopy: "<span class=\"red\">This page is prohibited reprint.</span>"
 
 footer:
+  visitor: "Visitors"
+  peoples: "visits"
+  visitor_preview: "Visitor statistics are disabled in local previews"
+  uptime: "Online for {days} days {hours} hours {minutes} minutes {seconds} seconds"
   powered: "Powered by %s"
   total_views: Total Views
   total_visitors: Total Visitors
@@ -140,7 +174,7 @@ symbols_count_time:
   view: times
 
 tips:
-  copyright: "Copied to clipboard successfully! <br> All articles in this blog are licensed under %s."
+  copyright: "Copied successfully. Please link to the original article and follow the %s license when reposting."
   nocopy: "Copied to clipboard failed! This page is prohibited reprint."
 
 quiz:
@@ -150,6 +184,12 @@ quiz:
   essay: Questions
   gap_fill: Gap Filling
   mistake: Wrong Answer
+
+tagcloud:
+  view: "Tag cloud view"
+  flat: "2D · List"
+  sphere: "3D · Sphere"
+  empty: "No tags yet."
 
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>"

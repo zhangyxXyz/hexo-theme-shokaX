@@ -1,7 +1,14 @@
+#waves {
+  // Overlap the content edge to avoid fractional-pixel seams at browser zoom levels.
+  margin-bottom: -1px;
+  line-height: 0;
+}
+
 .waves {
+  display: block;
   width: 100%;
   height: 15vh;
-  margin-bottom: -.6875rem;
+  margin-bottom: 0;
   min-height: 3.125rem;
   max-height: 9.375rem;
   position:relative;

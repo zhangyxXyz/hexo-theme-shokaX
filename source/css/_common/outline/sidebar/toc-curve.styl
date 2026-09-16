@@ -1,0 +1,99 @@
+.contents.toc-curve {
+  --toc-accent: var(--primary-color);
+
+  ol {
+    padding: 0;
+    list-style: none;
+  }
+
+  > .toc {
+    position: relative;
+    margin: 0;
+  }
+
+  .toc-child {
+    display: block;
+    padding-left: 1rem;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .active > .toc-child {
+    height: auto;
+  }
+
+  .toc-item {
+    overflow: visible;
+    white-space: normal;
+    font-size: .9375rem;
+  }
+
+  .toc-number {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .toc-link {
+    display: block;
+    position: relative;
+    padding: .5rem .25rem .5rem 1.5rem;
+    color: var(--grey-6);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    transition: color .18s ease;
+
+    &:hover {
+      color: var(--text-color);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--toc-accent);
+      outline-offset: -2px;
+      border-radius: .25rem;
+    }
+  }
+
+  .active > .toc-link,
+  .current > .toc-link {
+    color: var(--grey-6);
+    font-weight: normal;
+  }
+
+  .toc-link[data-toc-visible='true'],
+  .toc-link[data-toc-visible='true']:hover {
+    color: var(--toc-accent);
+    font-weight: 600;
+  }
+
+  .toc-curve-rail {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    fill: none;
+    stroke: var(--grey-4);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+
+    .toc-curve-progress {
+      stroke: var(--toc-accent);
+    }
+
+    circle {
+      fill: var(--toc-accent);
+      stroke: none;
+      transition: cx .18s ease, cy .18s ease;
+    }
+
+    .toc-curve-window {
+      transition: y .18s ease, height .18s ease;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contents.toc-curve .toc-curve-rail {
+    circle, .toc-curve-window {
+      transition: none;
+    }
+  }
+}

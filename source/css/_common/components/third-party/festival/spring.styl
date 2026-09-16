@@ -1,0 +1,47 @@
+// Spring Festival: lanterns adapted from the site's legacy Shoka theme.
+.festival-decoration {
+  pointer-events: none;
+  user-select: none;
+  .festival-blossom { position: fixed; top: 0; right: 0; z-index: 10; width: 350px; height: 231px; animation: festival-fade 3s linear; }
+  .deng-box, .deng-box1 { position: fixed; z-index: 11; }
+  .deng-box { top: -40px; right: -20px; }
+  .deng-box1 { top: -30px; right: 10px; }
+  .deng {
+    position: relative;
+    width: 120px;
+    height: 90px;
+    margin: 50px;
+    background: rgba(216, 0, 15, .8);
+    border-radius: 50%;
+    transform-origin: 50% -100px;
+    animation: festival-swing 3s infinite ease-in-out;
+    box-shadow: -5px 5px 50px 4px #fa6c00;
+    &::before, &::after {
+      position: absolute; left: 29px; height: 12px; width: 60px;
+      content: ''; display: block; border: 1px solid #dc8f03;
+      background: linear-gradient(to right, #dc8f03, #ffa500, #dc8f03, #ffa500, #dc8f03);
+    }
+    &::before { top: -7px; border-radius: 5px 5px 0 0; }
+    &::after { bottom: -7px; border-radius: 0 0 5px 5px; }
+  }
+  .deng-box1 .deng { animation-duration: 5s; box-shadow: -5px 5px 30px 4px #fc903d; }
+  .deng-a { width: 100px; height: 90px; margin: 12px 8px 8px 10px; border-radius: 50%; border: 2px solid #dc8f03; background: rgba(216, 0, 15, .1); }
+  .deng-b { width: 45px; height: 90px; margin: -4px 8px 8px 26px; border-radius: 50%; border: 2px solid #dc8f03; background: rgba(216, 0, 15, .1); }
+  .xian { position: absolute; top: -20px; left: 60px; width: 2px; height: 20px; background: #dc8f03; }
+  .shui-a { position: relative; width: 5px; height: 20px; margin: -5px 0 0 59px; animation: festival-swing 4s infinite ease-in-out; transform-origin: 50% -45px; background: #ffa500; border-radius: 0 0 5px 5px; }
+  .shui-b { position: absolute; top: 14px; left: -2px; width: 10px; height: 10px; background: #dc8f03; border-radius: 50%; }
+  .shui-c { position: absolute; top: 18px; left: -2px; width: 10px; height: 35px; background: #ffa500; border-radius: 0 0 0 5px; }
+  .deng-t { font-size: 3.2rem; color: #dc8f03; font-weight: bold; line-height: 85px; text-align: center; }
+}
+
+@keyframes festival-swing {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+}
+@keyframes festival-fade {
+  from { opacity: .1; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .festival-decoration .deng, .festival-decoration .shui-a, .festival-decoration .festival-blossom { animation: none; }
+}

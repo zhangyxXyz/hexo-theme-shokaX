@@ -3,12 +3,13 @@ import { clipBoard, showtip } from '../globals/tools'
 import { CONFIG, BODY } from '../globals/globalVars'
 import { pageScroll, transition } from '../library/anime'
 import { getDisplay, setDisplay, wrapObject } from '../library/proto'
-import { initializeCodeBlock } from 'shokax-uikit/components/codeblock/init'
+import { refreshCodeBlocks } from '../components/codeblock'
 
 export const postBeauty = async () => {
-  if (!document.querySelector('.md')) { return }
-
   postImageViewer('.post.block');
+  refreshCodeBlocks()
+
+  if (!document.querySelector('.md')) { return }
 
   (document.querySelector('.post.block') as HTMLTextAreaElement).oncopy = (event) => {
     showtip(LOCAL.copyright)
@@ -247,5 +248,4 @@ export const postBeauty = async () => {
     })
   }
 
-  initializeCodeBlock('.shiki')
 }

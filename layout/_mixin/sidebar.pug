@@ -1,4 +1,5 @@
 mixin sidebarRender(display_toc)
+    - const tocStyle = page.toc_style ?? theme.sidebar.toc_style ?? 'default'
     - var related = _category_posts(page)
     if page && page.prev
         -   var prevlink = page?.prev_link
@@ -16,7 +17,7 @@ mixin sidebarRender(display_toc)
     div(class="inner")
         div(class="panels")
             div(class="inner")
-                div(class="contents panel pjax" data-title=__('sidebar.toc'))
+                div(class="contents panel pjax" class=tocStyle === 'curve' ? 'toc-curve' : '' data-title=__('sidebar.toc'))
                     if display_toc
                         != toc(page.content)
 

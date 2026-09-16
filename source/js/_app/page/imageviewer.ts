@@ -1,17 +1,64 @@
-import { HanaImgViewer } from 'hana-img-viewer'
-import 'hana-img-viewer/style.css'
-import './imageviewer.css'
-import { createApp } from 'vue';
+import Viewer from 'viewerjs'
+import 'viewerjs/dist/viewer.css'
+import { ImageViewerGallery } from '../components/imageviewer'
+
+let viewer: Viewer | undefined
+let article: HTMLElement | undefined
+let gallery: ImageViewerGallery | undefined
+
+const preventImageLinkNavigation = (event: MouseEvent) => {
+  const image = event.target
+  if (image instanceof HTMLImageElement && image.classList.contains('shokax-image-viewer') && image.closest('a')) {
+    event.preventDefault()
+  }
+}
 
 export const postImageViewer = (p: string) => {
-  document.querySelectorAll(`${p} .md img:not(.emoji):not(.vemoji)`).forEach((element) => {
-    const img = element as HTMLImageElement;
-    const imgSrc = img.src
+  gallery?.destroy()
+  gallery = undefined
+  viewer?.destroy()
+  article?.removeEventListener('click', preventImageLinkNavigation, true)
+  viewer = undefined
+  article = document.querySelector<HTMLElement>(`${p} .md`) || undefined
+  if (!article) return
 
-    const wrapper = document.createElement('div');
-    img.replaceWith(wrapper);
+  article.querySelectorAll<HTMLImageElement>('img:not(.emoji):not(.vemoji)').forEach((img) => {
+    const parentLink = img.closest('a')
+    if (!parentLink || parentLink.href === img.src) img.classList.add('shokax-image-viewer')
+  })
 
-    const app = createApp(HanaImgViewer, { src: imgSrc, alt: img.alt });
-    app.mount(wrapper);
-  });
-};
+  article.addEventListener('click', preventImageLinkNavigation, true)
+  const images = Array.from(article.querySelectorAll<HTMLImageElement>('img.shokax-image-viewer'))
+  viewer = new Viewer(article, {
+    className: 'shokax-post-viewer',
+    ready: () => {
+      gallery = new ImageViewerGallery(document.querySelector('.shokax-post-viewer'), images, viewer, LOCAL.imageViewer)
+    },
+    filter: (image) => image.classList.contains('shokax-image-viewer'),
+    url: (image) => image.currentSrc || image.src,
+    navbar: false,
+    navigation: true,
+    // Viewer.js 1.14.0 preloads images[-1] at non-looping gallery boundaries.
+    preload: false,
+    slideOnTouch: true,
+    zoomOnTouch: true,
+    toolbar: {
+      zoomIn: true,
+      zoomOut: true,
+      oneToOne: true,
+      reset: true,
+      rotateLeft: true,
+      rotateRight: true
+    },
+    // Delegate slide transitions while keeping native zoom, rotation and touch handling.
+    transition: { view: false, hide: false },
+    view: (event) => {
+      gallery?.view(event.detail.image, event.detail.index)
+    },
+    viewed: (event) => {
+      gallery?.viewed(event.detail.image, event.detail.index)
+    },
+    hide: () => gallery?.reset(),
+    loop: false
+  })
+}

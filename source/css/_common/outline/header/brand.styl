@@ -1,4 +1,14 @@
+// Clip only the fixed title, never the fixed navigation/tool controls.
+// The browser applies this during history scroll restoration, before JS runs.
+.brand-clip {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0);
+  pointer-events: none;
+}
+
 #brand {
+  pointer-events: auto;
   position: fixed;
   padding: 3rem 5rem 0;
   text-align: center;
@@ -8,6 +18,11 @@
 
   &.affix {
     z-index: $zindex-0;
+  }
+
+  &.outside-header {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   &, .pjax {
@@ -38,12 +53,49 @@
 
   .meta {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     font-size: $font-size-subtitle;
     margin: 0;
 
     .item+.item {
       margin-left: .625rem;
     }
+  }
+
+  .post-hitokoto {
+    font-size: .925em;
+    line-height: 1.6;
+    margin: .5rem 0;
+    max-width: 50rem;
+    overflow-wrap: anywhere;
+  }
+
+  .home-subtitle, .post-hitokoto {
+    display: block;
+    min-height: 1.6em;
+    max-width: 50rem;
+    overflow-wrap: anywhere;
+  }
+
+  .quote-accessible {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .quote-typing::after {
+    content: '|';
+    margin-left: .12em;
+    animation: quote-cursor 1s step-end infinite;
+  }
+
+  .post-reprint {
+    color: #9cd0ed;
   }
 
   +tablet() {
@@ -74,4 +126,12 @@
       font-size: $font-size-title;
     }
   }
+}
+
+@keyframes quote-cursor {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #brand .quote-typing::after { display: none; }
 }

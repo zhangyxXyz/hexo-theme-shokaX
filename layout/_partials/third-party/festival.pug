@@ -1,0 +1,24 @@
+- const festival = theme.festival || {}
+- const festivalTable = theme.festival_table || {items: {}}
+- const spring = festivalTable.items.spring || {}
+if festival.enable
+    .festival-decoration(aria-hidden="true" data-festival=JSON.stringify({...festival, table: festivalTable}) data-mobile=String(!!festival.mobile))
+        div(data-festival-scene="spring" hidden)
+            if spring.blossom
+                img.festival-blossom(data-src=url_for(spring.blossom) alt="" width="350" height="231" decoding="async")
+            each word, index in [spring.word2, spring.word1]
+                div(class=index === 0 ? 'deng-box' : 'deng-box1')
+                    .deng
+                        .xian
+                        .deng-a
+                            .deng-b
+                                .deng-t= word || ''
+                        .shui-a
+                            .shui-c
+                            .shui-b
+        .festival-art.festival-daily(data-festival-scene="daily" hidden)
+            include festival/daily.pug
+        .festival-art.festival-dragon(data-festival-scene="dragon_boat" hidden)
+            include festival/dragon-boat.pug
+        .festival-art.festival-autumn(data-festival-scene="mid_autumn" hidden)
+            include festival/mid-autumn.pug

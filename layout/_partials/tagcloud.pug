@@ -1,0 +1,32 @@
+- const cloudOptions = theme.tagcloud || {}
+- const cloudMode = cloudOptions.mode === '3d' ? '3d' : '2d'
+- const cloudTags = site.tags.sort('name', 1).toArray().filter(tag => tag.length > 0)
+- const cloudLimit = Number(cloudOptions.amount)
+- const visibleTags = cloudLimit > 0 ? cloudTags.slice(0, Math.floor(cloudLimit)) : cloudTags
+- const cloudSizes = [...new Set(visibleTags.map(tag => tag.length))].sort((a, b) => a - b)
+- const cloudMin = Number(cloudOptions.min) || 16
+- const cloudMax = Math.max(cloudMin, Number(cloudOptions.max) || 22)
+.tag-cloud-widget(data-default-mode=cloudMode)
+    if visibleTags.length
+        if cloudOptions.switchable !== false
+            .tag-cloud-controls(role="group" aria-label=__('tagcloud.view') hidden)
+                button(type="button" data-cloud-mode="2d" aria-pressed="true" aria-label=__('tagcloud.flat') title=__('tagcloud.flat'))
+                    svg(viewBox="0 0 24 24" aria-hidden="true")
+                        rect(x="3" y="4" width="7" height="6" rx="1.5")
+                        rect(x="14" y="4" width="7" height="6" rx="1.5")
+                        rect(x="3" y="14" width="7" height="6" rx="1.5")
+                        rect(x="14" y="14" width="7" height="6" rx="1.5")
+                button(type="button" data-cloud-mode="3d" aria-pressed="false" aria-label=__('tagcloud.sphere') title=__('tagcloud.sphere'))
+                    svg(viewBox="0 0 24 24" aria-hidden="true")
+                        circle(cx="12" cy="12" r="9")
+                        ellipse(cx="12" cy="12" rx="4" ry="9")
+                        path(d="M3 12h18M5 6.5c4 2 10 2 14 0M5 17.5c4-2 10-2 14 0")
+        .tag.cloud(data-cloud-stage style=`--tag-start: ${cloudOptions.start || 'var(--color-pink)'}; --tag-end: ${cloudOptions.end || 'var(--color-purple)'}`)
+            each tag in visibleTags
+                - const weight = cloudSizes.length > 1 ? cloudSizes.indexOf(tag.length) / (cloudSizes.length - 1) : 0
+                a.tag-cloud-link(href=url_for(tag.path) style=`--tag-size: ${cloudMin + (cloudMax - cloudMin) * weight}px; --tag-weight: ${Math.round(weight * 100)}%`)
+                    span.tag-cloud-label
+                        span= tag.name
+                        sup(aria-label=__('counter.index.post', tag.length))= tag.length
+    else
+        p= __('tagcloud.empty')

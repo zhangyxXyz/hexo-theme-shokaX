@@ -1,0 +1,13 @@
+- const changelogs = Array.isArray(post.changelogs) ? post.changelogs.filter(entry => entry && typeof entry === 'object') : []
+if changelogs.length
+    details(class="primary post-changelogs")
+        summary
+            b= __('post.changelogs_summary')
+        div(class="historytimeline")
+            p(class="item header")= __('post.changelogs_title')
+            each changelog in changelogs.slice().reverse()
+                if changelog.summary
+                    p(class="item section")= changelog.summary
+                if Array.isArray(changelog.list)
+                    each entry in changelog.list
+                        p(class="item normal")= entry

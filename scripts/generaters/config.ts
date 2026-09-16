@@ -13,6 +13,8 @@ hexo.extend.filter.register('before_generate', async () => {
   }
 
   const data = hexo.locals.get('data')
+  const festivalDefaults = yaml.load(await fs.readFile(path.join(__dirname, '../../_festivals.yml'), 'utf-8'))
+  ;(hexo.theme.config as any).festival_table = deepMerge(festivalDefaults, data.festivals || {})
 
   if (data.languages) {
     // @ts-ignore

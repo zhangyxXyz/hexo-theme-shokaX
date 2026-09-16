@@ -1,0 +1,16 @@
+@import 'spring';
+@import 'artwork';
+
+.festival-decoration {
+  pointer-events: none;
+  user-select: none;
+  [hidden] { display: none !important; }
+}
+@media (max-width: 991px) {
+  .festival-decoration:not([data-mobile='true']) { display: none; }
+  .festival-decoration[data-mobile='true'] .festival-art { width: 130px; top: 3.25rem; }
+  .festival-decoration[data-mobile='true'] [data-festival-scene='spring'] {
+    position: fixed; right: 0; top: 3.25rem; width: 350px; height: 231px;
+    transform: scale(.5); transform-origin: top right; z-index: 10;
+  }
+}

@@ -49,8 +49,7 @@ block content
                     != __('menu.home')
                 small
                 != _p('counter.tag_cloud', site.tags.length)
-            div(class="tag cloud")
-                != tagcloud({min_font: theme.tagcloud.min,max_font: theme.tagcloud.max,amount: theme.tagcloud.amount,color: true,start_color: theme.tagcloud.start,end_color: theme.tagcloud.end})
+            include _partials/tagcloud.pug
     else
         div(class="page wrap")
             != partial('_partials/post/post.pug', {post: page})

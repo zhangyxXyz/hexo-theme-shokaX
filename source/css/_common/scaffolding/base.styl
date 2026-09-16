@@ -1,6 +1,14 @@
+:root {
+  --selection-bg: unquote('color-mix(in srgb, var(--color-orange) 25%, transparent)');
+}
+
+html[data-theme='dark'] {
+  --selection-bg: unquote('color-mix(in srgb, var(--color-orange) 30%, transparent)');
+}
+
 ::selection {
-  background: var(--color-orange);
-  color: var(--grey-2);
+  background: var(--selection-bg);
+  color: currentColor;
 }
 
 *, *:before, *:after {

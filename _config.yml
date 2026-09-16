@@ -1,5 +1,9 @@
 alternate: testName # 站点大标题
 
+# Browser tab title only; does not hide the subtitle in the page header.
+title:
+  show_subtitle: true
+
 statics: "/" # 静态文件根目录
 assets: "assets"
 css: "css"
@@ -25,7 +29,14 @@ experiments:
   copyrightLength: 50 # 自定义复制时显示copyright的长度
   antiFakeWebsite: true # 防止恶意网站伪装
 
+hitokoto:
+  home: false # Random quote in the home subtitle.
+  post: false # Random quote beneath article titles.
+  typewriter: false # Shared typing effect, respecting reduced motion.
+
 homeConfig:
+  subtitle:
+    enable: true
   gradient: false # 使用CSS渐变作为文章封面
   # fixedCover 性能比默认的更好，且开启时将启用LCP优化和预加载
   fixedCover: "" # 主页面cover(为空则使用bing随机图片)
@@ -252,6 +263,8 @@ social:
   #douban: https://www.douban.com/people/yourname/ || douban
 
 sidebar:
+  toc_style: default # default | curve (expanded outline with a curved progress rail)
+  # Override per article with front-matter: toc_style: default | curve
   # Sidebar Position.
   position: left
   # position: right
@@ -267,6 +280,10 @@ widgets:
 footer:
   # Specify the date when the site was set up. If not defined, current year will be used.
   since: 2022
+  create_time: '' # ISO 8601 timestamp with timezone for site uptime.
+  visitor: false # Busuanzi site visitors; disabled on local previews.
+  moe_icp: ''
+  moe_icp_link: ''
   icon:
     name: sakura rotate
     # Change the color of icon, using Hex Code.
@@ -281,6 +298,13 @@ footer:
     icpnumber: "xxx" # ICP备案号
     beian: "xxx" # 网安备案号
     recordcode: "xxx" # 网安备案链接中的recordcode参数
+
+festival:
+  enable: false
+  theme: auto # auto | daily | spring | dragon_boat | mid_autumn | none
+  mobile: false
+  # Dates, windows and artwork: _festivals.yml.
+  # Site overrides: source/_data/festivals.yml.
 
 post:
   count: true
@@ -300,6 +324,8 @@ reward:
 
 # TagCloud settings for tags page.
 tagcloud:
+  mode: 2d # Initial view: 2d | 3d. Without JavaScript, always shows 2D links.
+  switchable: true # false locks the configured view.
   # All values below are same as default, change them by yourself.
   min: 16 # Minimun font size in px
   max: 22 # Maxium font size in px

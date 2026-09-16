@@ -8,7 +8,7 @@ export const showtip = (msg: string): void | never => {
     return
   }
 
-  const tipbox = createChild(BODY, 'div', {
+  const tipbox = createChild(document.querySelector<HTMLDialogElement>('dialog[open]') || BODY, 'div', {
     innerHTML: msg,
     className: 'tip'
   })
@@ -16,7 +16,7 @@ export const showtip = (msg: string): void | never => {
   setTimeout(() => {
     tipbox.classList.add('hide')
     setTimeout(() => {
-      BODY.removeChild(tipbox)
+      tipbox.remove()
     }, 300)
   }, 3000)
 }
