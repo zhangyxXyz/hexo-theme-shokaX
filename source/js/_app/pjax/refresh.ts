@@ -10,6 +10,7 @@ import { Loader, isOutime } from '../globals/thirdparty'
 import { tabFormat } from '../page/tab'
 import { refreshHitokoto } from '../components/hitokoto'
 import { refreshTocCurve } from '../components/toc-curve'
+import { refreshTocTooltip } from '../components/toc-tooltip'
 import { refreshFooter } from '../components/footer'
 import { refreshFestival } from '../components/festival'
 import { refreshTagCloud } from '../components/tagcloud'
@@ -62,6 +63,7 @@ export const siteRefresh = async (reload) => {
   sideBarTab()
   sidebarTOC()
   refreshTocCurve()
+  refreshTocTooltip()
 
   const pagePost = await import('../page/post')
   await pagePost.postBeauty()

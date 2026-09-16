@@ -21,6 +21,13 @@
     display: none;
   }
 
+  .toc-link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .active>.toc-child {
     display: block;
   }
@@ -47,3 +54,19 @@
 }
 
 @import 'toc-curve';
+
+.toc-title-tooltip {
+  position: fixed;
+  z-index: 1100;
+  width: max-content;
+  max-width: unquote('min(24rem, calc(100vw - 24px))');
+  padding: .6rem .85rem;
+  border: 1px solid var(--grey-3);
+  border-radius: .65rem;
+  background: var(--grey-1);
+  color: var(--text-color);
+  box-shadow: 0 .3rem 1.2rem var(--box-bg-shadow);
+  font-size: .875rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
