@@ -225,6 +225,16 @@ waline:
 
 summary:
   enable: false
+  home:
+    mode: switch # switch | original | ai; no AI summary always falls back to original.
+    default: original # original | ai | provider-id/model-id | model name; missing target falls back to first AI, then original.
+  providers: [] # [{id, apiUrl, apiKey, models: [model-name, ...]}]; all requests share concurrency.
+  models: [] # Legacy single-provider configuration; ignored when providers is non-empty.
+  defaultModel: # Default model ID; falls back to the first successful configured model.
+  include: [] # Post paths; empty means all eligible published posts.
+  timeout: 60000
+  maxInputChars: 16000
+  sessionHeader: # Optional gateway routing session header.
   introduce: "" # AI自我介绍
   model:
   apiKey:

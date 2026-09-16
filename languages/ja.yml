@@ -212,5 +212,20 @@ tagcloud:
   sphere: "3D · 球面"
   empty: "タグはまだありません。"
 
+ai_summary:
+  choose_model: "要約モデルを選択"
+  original: "原文"
+  by_model: "%s による要約"
+  hint: "AI 生成 · 参考情報"
+  label: "AI 要約"
+  about: "AI について"
+  notice: "AI が生成した要約には誤りや省略が含まれる場合があります。原文をご確認ください。モデル名は生成時の応答モデル、または要求モデルを示します。"
+  unknown_model: "モデル未記録"
+
+encrypt:
+  abstract: "この記事は暗号化されています。続きを読むにはパスワードが必要です。"
+  message: "この記事は非公開です。パスワードを入力してご覧ください。"
+  wrong_pass_message: "復号できませんでした。パスワードを確認して、もう一度お試しください。"
+
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">記事の適時性の警告</span><br> {{publish}} 日前に公開され、 {{updated}} 日前に最終更新された記事です。 一部情報が変更されている可能性がありますので、ご了承ください。</p></div>"

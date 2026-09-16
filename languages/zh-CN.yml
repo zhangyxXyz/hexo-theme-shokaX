@@ -212,5 +212,20 @@ tagcloud:
   sphere: "3D · 球面"
   empty: "暂无标签。"
 
+ai_summary:
+  choose_model: "选择摘要模型"
+  original: "原文"
+  by_model: "由 %s 模型总结"
+  hint: "AI 生成 · 仅供参考"
+  label: "AI 摘要"
+  about: "关于 AI"
+  notice: "摘要由 AI 生成，可能存在遗漏或错误，请以原文为准。模型标识记录生成时接口返回的模型，未返回时使用请求模型。"
+  unknown_model: "模型未记录"
+
+encrypt:
+  abstract: "这是一篇加密文章，需要密码才能继续阅读。"
+  message: "当前文章暂不对外可见，请输入密码后查看！"
+  wrong_pass_message: "无法解密文章，请检查密码后重试。"
+
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">文章时效性提示</span><br>这是一篇发布于 {{publish}} 天前，最后一次更新在 {{updated}} 天前的文章，部分信息可能已经发生改变，请注意甄别。</p></div>"

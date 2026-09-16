@@ -14,6 +14,7 @@ import { refreshTocTooltip } from '../components/toc-tooltip'
 import { refreshFooter } from '../components/footer'
 import { refreshFestival } from '../components/festival'
 import { refreshTagCloud } from '../components/tagcloud'
+import { refreshSummarySwitch } from '../components/summary-switch'
 
 export const siteRefresh = async (reload) => {
   // Update restored viewport state before any asynchronous page setup.
@@ -30,6 +31,7 @@ export const siteRefresh = async (reload) => {
   refreshFooter()
   refreshFestival()
   refreshTagCloud()
+  refreshSummarySwitch()
   setLocalUrl(window.location.href)
   void refreshHitokoto()
 
