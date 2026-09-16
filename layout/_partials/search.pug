@@ -1,0 +1,40 @@
+dialog#site-search(aria-labelledby="site-search-title" data-results=__('pagefind_search.results') data-loading=__('pagefind_search.loading') data-error=__('pagefind_search.error') data-previous=__('pagefind_search.previous') data-next=__('pagefind_search.next'))
+    .search-shell
+        header.search-intro
+            span.search-eyebrow= __('pagefind_search.label')
+            h2#site-search-title= __('pagefind_search.title')
+            p= __('pagefind_search.subtitle')
+        .search-workspace
+            #pagefind
+                form.pagefind-ui__form(role="search" aria-label=__('pagefind_search.label'))
+                    i.ic.i-search.search-input-icon(aria-hidden="true")
+                    input.pagefind-ui__search-input(type="search" placeholder=__('search.placeholder') aria-label=__('search.placeholder') autocomplete="off")
+                    button.pagefind-ui__search-clear(type="button" hidden)= __('pagefind_search.clear')
+                .pagefind-ui__drawer
+                    p.pagefind-ui__message(role="status" aria-live="polite")
+                    .search-result-list
+                    nav.search-pagination(aria-label=__('pagefind_search.pagination'))
+            button.search-dismiss(type="button" aria-label=__('pagefind_search.close'))
+                kbd ESC
+                span(aria-hidden="true") ×
+            .search-welcome
+                span.search-welcome-badge= __('pagefind_search.welcome')
+                - var searchTopics = site.tags.toArray().filter(tag => tag.length > 0).sort((a, b) => b.length - a.length || a.name.localeCompare(b.name)).slice(0, 12)
+                if searchTopics.length
+                    .search-discover
+                        .search-constellation(aria-hidden="true")
+                            span ✦
+                            i.ic.i-compass.search-compass
+                            span ✧
+                        p.search-discover-title= __('pagefind_search.discover')
+                        .search-topics
+                            each tag, index in searchTopics
+                                button.search-topic(type="button" data-search-topic=tag.name hidden=index >= 6)
+                                    span(aria-hidden="true") #
+                                    = tag.name
+                .search-tips
+                    each icon, index in ['i-search', 'i-tags', 'i-clock']
+                        .search-tip
+                            i(class='ic ' + icon aria-hidden="true")
+                            h3= __('pagefind_search.tip' + index)
+                            p= __('pagefind_search.detail' + index)

@@ -125,6 +125,27 @@ state:
   tags: 标签
   categories: 分类
 
+pagefind_search:
+  discover: "从这些主题开始探索"
+  results: "{time} ms 内找到 {count} 条结果"
+  loading: "正在搜索…"
+  previous: "上一页"
+  next: "下一页"
+  clear: "清除"
+  pagination: "搜索结果分页"
+  label: "站内检索"
+  title: "循着字句，邂逅星光"
+  subtitle: "搜索文章标题与正文，直达命中的章节"
+  close: "关闭搜索"
+  welcome: "开始一次轻盈的站内探索"
+  tip0: "输入关键词"
+  detail0: "可同时输入多个词语缩小范围"
+  tip1: "发现内容"
+  detail1: "在摘要中查看高亮的关键词"
+  tip2: "快速直达"
+  detail2: "点击文章或章节标题继续阅读"
+  error: "搜索暂时无法加载，请稍后重新打开。"
+
 search:
   placeholder: 文章搜索
   empty: "关于 「 ${query} 」，什么也没搜到"

@@ -125,6 +125,27 @@ state:
   tags: tags
   categories: categories
 
+pagefind_search:
+  discover: "Explore a topic"
+  results: "Found {count} results in {time} ms"
+  loading: "Searching…"
+  previous: "Previous page"
+  next: "Next page"
+  clear: "Clear"
+  pagination: "Search result pages"
+  label: "SITE SEARCH"
+  title: "Find your next read"
+  subtitle: "Search titles and text, jump to matching sections"
+  close: "Close search"
+  welcome: "Start exploring"
+  tip0: "Enter keywords"
+  detail0: "Use multiple words to narrow your search"
+  tip1: "Discover content"
+  detail1: "See matching words highlighted in context"
+  tip2: "Jump straight in"
+  detail2: "Open an article or a matching section"
+  error: "Search could not load. Please reopen it to retry."
+
 search:
   placeholder: Search for Posts
   empty: "We didn't find any results for the search: ${query}"

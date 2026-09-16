@@ -46,13 +46,22 @@ const siteInit = async () => {
         })
       }, {once: true, capture: true})
   } else if (__shokax_pagefind_search__){
-    const { initializePagefindSearch } = await import('shokax-uikit/components/pagefind/init')
+    const { initializePagefindSearch } = await import('../page/pagefind')
     initializePagefindSearch('li.item.search')
   }
 
   if (__shokax_fireworks__) {
     import('mouse-firework').then((firework) => {
+      const existingCanvases = new Set(document.querySelectorAll('body > canvas'))
       firework.default(CONFIG.fireworks)
+      const canvas = Array.from(document.querySelectorAll<HTMLCanvasElement>('body > canvas'))
+        .find(item => !existingCanvases.has(item))
+      if (canvas) {
+        canvas.dataset.siteFireworks = ''
+        canvas.setAttribute('aria-hidden', 'true')
+        // A modal dialog is in the top layer, above every body z-index.
+        document.querySelector('#site-search[open]')?.append(canvas)
+      }
     })
   }
 
