@@ -35,7 +35,7 @@ export function refreshCodeBlocks() {
     if (!code) return
     const text = code.textContent || ''
     const language = Array.from(code.classList).find(name => name.startsWith('language-'))?.slice(9) || 'text'
-    const names: Record<string, string> = { js: 'JavaScript', ts: 'TypeScript', html: 'HTML', css: 'CSS', json: 'JSON', yaml: 'YAML', bash: 'Bash', cpp: 'C++', md: 'Markdown' }
+    const names: Record<string, string> = { js: 'JavaScript', ts: 'TypeScript', html: 'HTML', css: 'CSS', json: 'JSON', yaml: 'YAML', yml: 'YAML', bash: 'Bash', cpp: 'C++', md: 'Markdown' }
     const wrapper = document.createElement('section')
     wrapper.className = 'shokax-code'
     const header = document.createElement('div')

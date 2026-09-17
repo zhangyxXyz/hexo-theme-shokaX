@@ -28,6 +28,7 @@ $font-family-posts        = get_font_family('posts'), $font-family-base if get_f
 
 $font-family-monospace    = consolas, Menlo, $font-family-chinese;
 $font-family-monospace    = get_font_family('codes'), consolas, Menlo, $font-family-chinese if get_font_family('codes');
+$font-family-monospace    = get_font_family('codes'), consolas, Menlo, get_font_family('chinese'), $font-family-chinese if get_font_family('codes') && get_font_family('chinese');
 
 $iconfont = hexo-config('iconfont');
 

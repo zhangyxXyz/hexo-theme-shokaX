@@ -28,11 +28,11 @@
     min-width: 0;
     padding: .7rem 1rem;
     text-align: left;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: $font-family-base;
     font-size: .8125rem;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 1.4;
-    color: var(--code-muted);
+    color: var(--grey-4);
   }
   .code-dots { flex: 0 0 auto; width: .7rem; height: .7rem; border-radius: 50%; background: #fc625d; box-shadow: 1.2rem 0 #fdbc40, 2.4rem 0 #35cd4b; margin-right: 2.4rem; }
   .code-actions { display: flex; align-items: center; padding: .125rem .5rem .125rem .375rem; }
@@ -50,7 +50,7 @@
   svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .code-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   pre.shiki { margin: 0; padding: 1rem; border: 0; border-radius: 0; overflow: auto; font-size: .9rem; line-height: 1.6; tab-size: 2; white-space: pre; }
-  pre.shiki { background-color: var(--code-bg) !important; }
+  pre.shiki { background-color: var(--code-bg) !important; font-family: $font-family-monospace; }
   pre.shiki code { padding: 0; background: transparent; color: inherit; font: inherit; white-space: inherit; counter-reset: code-line; display: block; width: max-content; min-width: 100%; }
   .line { display: inline-block; min-width: 100%; transition: background-color .15s ease; }
   .line:not(.diff):not(.highlighted):hover { background-color: var(--code-line-hover-bg); }

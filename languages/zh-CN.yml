@@ -71,6 +71,8 @@ post:
   changelogs_summary: "点击查看更新记录"
   changelogs_title: "更新记录"
   reprint: "『转载』"
+  encrypted: "『加密』"
+  relock: "清除本文解锁记忆并重新加密"
   hitokoto_loading: ":D 一言 - 链接记忆, 走过时光, 正在获取中..."
   hitokoto_default: "人，这辈子，不就是笑笑别人，和被别人笑笑嘛。"
   posted: 发表于
@@ -211,6 +213,13 @@ tagcloud:
   flat: "2D · 平面"
   sphere: "3D · 球面"
   empty: "暂无标签。"
+
+changelog:
+  title: "更新记录"
+  close: "关闭更新记录"
+  count: "%s 次更新"
+  latest: "最近更新 %s"
+  newest: "最新"
 
 article_info:
   duration_join: "零"

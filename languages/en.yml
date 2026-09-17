@@ -71,6 +71,8 @@ post:
   changelogs_summary: "View update history"
   changelogs_title: "Update history"
   reprint: "Repost"
+  encrypted: "Encrypted"
+  relock: "Forget this article's saved key and lock again"
   hitokoto_loading: "Loading a quote…"
   hitokoto_default: "Life is about laughing with others and at ourselves."
   posted: Posted on
@@ -211,6 +213,13 @@ tagcloud:
   flat: "2D · List"
   sphere: "3D · Sphere"
   empty: "No tags yet."
+
+changelog:
+  title: "Update history"
+  close: "Close update history"
+  count: "%s updates"
+  latest: "Last updated %s"
+  newest: "Latest"
 
 article_info:
   duration_join: ""

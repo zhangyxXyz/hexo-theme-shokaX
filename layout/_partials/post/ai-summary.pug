@@ -1,0 +1,45 @@
+if !post.encrypt && !post.password && theme.summary.enable && page.layout === 'post' && get_summary(page)
+    - var summaryVersions = summary_card(page) || [{text: get_summary(page), model: page.summaryModel}]
+    section.ai-summary(aria-label=__('ai_summary.label') data-summary-pending=(summaryVersions.length > 1 ? 'true' : undefined) style=(summaryVersions.length > 1 ? 'visibility:hidden' : undefined))
+        div.ai-summary-header
+            span.ai-summary-label
+                span.ai-summary-star(aria-hidden="true") ✦
+                = ' ' + __('ai_summary.label')
+            span.ai-summary-orbit(aria-hidden="true")
+        each version, index in summaryVersions
+            p.ai-summary-content(data-summary-version=String(index) hidden=(index !== 0))= version.text
+        div.ai-summary-footer
+            span.ai-summary-hint= __('ai_summary.hint')
+            span.ai-summary-model
+                i.ic(class=summary_model_icon(page.summaryModel) aria-hidden="true")
+                if summaryVersions.length > 1
+                    select(data-summary-select aria-label=__('ai_summary.choose_model'))
+                        each version, index in summaryVersions
+                            option(value=String(index) data-preference=version.id data-icon=summary_model_icon(version.model) data-tooltip=__('ai_summary.by_model', version.model || __('ai_summary.unknown_model')))= summary_model_label(version.model, page.lang || config.language, summaryVersions) || __('ai_summary.unknown_model')
+                else
+                    span(title=page.summaryModel)= summary_model_label(page.summaryModel, page.lang || config.language) || __('ai_summary.unknown_model')
+        if summaryVersions.length > 1
+            noscript
+                style.
+                    .ai-summary[data-summary-pending] { visibility: visible !important; }
+            script.
+                (function () {
+                  var card = document.currentScript.closest('.ai-summary');
+                  if (!card) return;
+                  try {
+                    var saved = localStorage.getItem('shokax.summary.article-model.v1');
+                    var select = card.querySelector('[data-summary-select]');
+                    var option = Array.from(select.options).find(function (item) { return item.dataset.preference === saved; });
+                    if (option) {
+                      select.value = option.value;
+                      card.querySelectorAll('[data-summary-version]').forEach(function (panel) { panel.hidden = panel.dataset.summaryVersion !== option.value; });
+                      var icon = card.querySelector('.ai-summary-model .ic');
+                      if (icon && option.dataset.icon) icon.className = 'ic ' + option.dataset.icon;
+                    }
+                  } catch (_) {
+                    // Storage unavailable: retain the server-selected default.
+                  } finally {
+                    card.style.removeProperty('visibility');
+                    card.removeAttribute('data-summary-pending');
+                  }
+                })();

@@ -21,7 +21,7 @@
   }
   .article-info-source { background: var(--info-blue-bg); }
   .article-info-age { background: var(--info-amber-bg); }
-  .article-info-age:not([hidden]) + .article-info-source { border-top: 1px solid var(--info-border); }
+  .article-info-source + .article-info-age:not([hidden]) { border-top: 1px solid var(--info-border); }
   .article-info-icon { flex: 0 0 1rem; text-align: center; color: var(--info-blue); }
   .article-info-age .article-info-icon { color: var(--info-amber); }
   .article-info-detail { flex: 1; min-width: 0; }

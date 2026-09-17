@@ -97,7 +97,12 @@ export const sideBarTab = () => {
   }
 }
 
+let disposeTOC: (() => void) | undefined
 export const sidebarTOC = () => {
+  disposeTOC?.()
+  const events = new AbortController()
+  let sectionObserver: IntersectionObserver | undefined
+  disposeTOC = () => { events.abort(); sectionObserver?.disconnect() }
   const activateNavByIndex = (index:number): void => {
     const target = navItems[index]
 
@@ -166,11 +171,11 @@ export const sidebarTOC = () => {
     }
 
     // TOC item animation navigate.
-    link.addEventListener('click', anchorScroll)
+    link.addEventListener('click', anchorScroll, { signal: events.signal })
     alink && alink.addEventListener('click', (event) => {
       anchorScroll(<MouseEvent>event)
       clipBoard(CONFIG.hostname + '/' + LOCAL.path + (event.currentTarget as HTMLElement).getAttribute('href'))
-    })
+    }, { signal: events.signal })
     return (anchor as HTMLElement)
   })
 
@@ -204,6 +209,7 @@ export const sidebarTOC = () => {
       rootMargin: '0px 0px -100% 0px', threshold: 0
     })
 
+    sectionObserver = observer
     sections.forEach((element) => {
       element && observer.observe(element)
     })

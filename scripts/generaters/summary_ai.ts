@@ -151,14 +151,14 @@ class SummaryDatabase {
 const pageSummaries = new Map<string, SummaryVersion[]>()
 
 hexo.extend.helper.register('summary_card', function (post) {
-  if (!hexo.theme.config.summary.enable || post.password || post.ai_summary === false) return null
+  if (!hexo.theme.config.summary.enable || post.encrypt || post.password || post.ai_summary === false) return null
   const entries = pageSummaries.get(post.path)
   return entries?.length ? entries.map(entry => ({ id: entry.id, text: entry.summary, model: entry.model || entry.requestedModel || '' })) : null
 })
 
 hexo.extend.filter.register('template_locals', function (locals) {
   const page = locals.page
-  if (page && hexo.theme.config.summary.enable && !page.password && page.ai_summary !== false) {
+  if (page && hexo.theme.config.summary.enable && !page.encrypt && !page.password && page.ai_summary !== false) {
     const summary = pageSummaries.get(page.path)?.[0]
     if (summary) {
       page.summary = summary.summary
@@ -212,7 +212,7 @@ hexo.extend.filter.register('before_generate', async function () {
     const path = post.path;
     const published = post.published;
 
-    if (content && path && published && !post.password && post.ai_summary !== false) {
+    if (content && path && published && !post.encrypt && !post.password && post.ai_summary !== false) {
       const versions = await Promise.all(models.map(model => concurrencyLimit(async () => {
         try {
           const summary = await db.getPostSummary(path, content, model)

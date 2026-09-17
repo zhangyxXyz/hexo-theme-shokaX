@@ -178,7 +178,7 @@ export function initializePagefindSearch(selector: string) {
   })
   clear.addEventListener('click', () => { input.value = ''; search(); input.focus() })
   dialog.querySelector('form').addEventListener('submit', event => { event.preventDefault(); search() })
-  dialog.querySelector('.search-dismiss').addEventListener('click', () => dialog.close())
+  dialog.querySelectorAll('.search-dismiss').forEach(button => button.addEventListener('click', () => dialog.close()))
   dialog.addEventListener('keydown', event => {
     if (event.key === 'Escape' && !event.isComposing) {
       event.preventDefault()

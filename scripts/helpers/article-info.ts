@@ -10,6 +10,11 @@ hexo.extend.helper.register('article_info', function (this: localsPlus, post) {
   const trackAge = enabled && Number.isFinite(updated) && Number.isFinite(published)
   const age = trackAge ? Math.max(0, Math.floor((Date.now() - updated) / 86400000)) : 0
   const outdated = trackAge && Date.now() - updated > days * 86400000
+  const changelogs = Array.isArray(post.changelogs) ? post.changelogs.filter(entry => entry && typeof entry === 'object' && !Array.isArray(entry) && (entry.summary || (Array.isArray(entry.list) && entry.list.length))).slice().reverse().map(entry => {
+    const summary = String(entry.summary || '')
+    const match = summary.match(/^(\d{4}[-/]\d{1,2}[-/]\d{1,2})(?:\s+|$)(.*)$/)
+    return { date: match?.[1] || '', title: match ? match[2] : summary, list: Array.isArray(entry.list) ? entry.list : [] }
+  }) : []
   const raw = typeof post.reprintlink === 'string' ? post.reprintlink.trim() : ''
   const [name, target] = raw.split('||').map(value => value.trim())
   let url = ''
@@ -19,6 +24,7 @@ hexo.extend.helper.register('article_info', function (this: localsPlus, post) {
   } catch { /* A plain source name is valid; it simply has no traceable URL. */ }
   return {
     source: name || url,
+    changelogs,
     url,
     published,
     updated,
@@ -26,6 +32,6 @@ hexo.extend.helper.register('article_info', function (this: localsPlus, post) {
     age,
     trackAge,
     outdated,
-    visible: !!(name || url || outdated)
+    visible: !!(name || url || outdated || changelogs.length)
   }
 })

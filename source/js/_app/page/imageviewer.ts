@@ -34,6 +34,11 @@ export const postImageViewer = (p: string) => {
     ready: () => {
       gallery = new ImageViewerGallery(document.querySelector('.shokax-post-viewer'), images, viewer, LOCAL.imageViewer)
     },
+    show: () => {
+      // Viewer.js sets index before show, but emits view only after the opening
+      // transition. Sync while the container is still hidden, including reopen.
+      gallery?.updateNavigation((viewer as Viewer & { index: number }).index)
+    },
     filter: (image) => image.classList.contains('shokax-image-viewer'),
     url: (image) => image.currentSrc || image.src,
     navbar: false,

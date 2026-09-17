@@ -5,7 +5,11 @@ import { pageScroll, transition } from '../library/anime'
 import { getDisplay, setDisplay, wrapObject } from '../library/proto'
 import { refreshCodeBlocks } from '../components/codeblock'
 
+const enhanced = new WeakSet<Element>()
+let codeObserver: IntersectionObserver | undefined
+
 export const postBeauty = async () => {
+  codeObserver?.disconnect()
   postImageViewer('.post.block');
   refreshCodeBlocks()
 
@@ -36,6 +40,7 @@ export const postBeauty = async () => {
   })
 
   document.querySelectorAll<HTMLElement>('.md table').forEach((element) => {
+    if (element.parentElement?.matches('.table-container, .code-container')) return
     wrapObject(element, {
       className: 'table-container'
     })
@@ -46,6 +51,8 @@ export const postBeauty = async () => {
   })
 
   document.querySelectorAll<HTMLElement>('figure.highlight').forEach((element) => {
+    if (enhanced.has(element)) return
+    enhanced.add(element)
     const code_container = element.querySelector('.code-container') as HTMLElement
     const caption = element.querySelector('figcaption')
 
@@ -150,6 +157,8 @@ export const postBeauty = async () => {
   })
 
   document.querySelectorAll('.reward button').forEach((element) => {
+    if (enhanced.has(element)) return
+    enhanced.add(element)
     element.addEventListener('click', (event) => {
       event.preventDefault()
       const qr = document.getElementById('qr')
@@ -166,6 +175,8 @@ export const postBeauty = async () => {
   // quiz
   if (__shokax_quiz__) {
     document.querySelectorAll('.quiz > ul.options li').forEach((element) => {
+      if (enhanced.has(element)) return
+      enhanced.add(element)
       element.addEventListener('click', () => {
         if (element.classList.contains('correct')) {
           element.classList.toggle('right');
@@ -177,6 +188,8 @@ export const postBeauty = async () => {
     })
 
     document.querySelectorAll('.quiz > p').forEach((element) => {
+      if (enhanced.has(element)) return
+      enhanced.add(element)
       element.addEventListener('click', () => {
         (element.parentNode as HTMLElement).classList.toggle('show')
       })
@@ -230,6 +243,7 @@ export const postBeauty = async () => {
     angleDown.forEach(i => {
       io.observe(i)
     })
+    codeObserver = io
   }
 
 }

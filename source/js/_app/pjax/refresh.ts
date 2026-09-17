@@ -8,6 +8,7 @@ import { positionInit } from '../globals/tools'
 import { menuActive, sideBarTab, sidebarTOC } from '../components/sidebar'
 import { Loader } from '../globals/thirdparty'
 import { refreshArticleInfo } from '../components/article-info'
+import { refreshChangelog } from '../components/changelog'
 import { tabFormat } from '../page/tab'
 import { refreshHitokoto } from '../components/hitokoto'
 import { refreshTocCurve } from '../components/toc-curve'
@@ -16,6 +17,29 @@ import { refreshFooter } from '../components/footer'
 import { refreshFestival } from '../components/festival'
 import { refreshTagCloud } from '../components/tagcloud'
 import { refreshSummarySwitch } from '../components/summary-switch'
+import { postBeauty } from '../page/post'
+import { refreshArticleRelock } from '../components/article-relock'
+
+// The encrypted body (including its private cards) can arrive after page setup,
+// either through password entry or the encryption plugin's saved-key flow.
+window.addEventListener('hexo-blog-decrypt', () => {
+  refreshArticleRelock()
+  void postBeauty()
+  if (__shokax_tabs__) tabFormat()
+  const toc = document.querySelector<HTMLTemplateElement>('template[data-private-toc]')
+  const panel = document.querySelector('.contents.panel')
+  if (toc && panel) {
+    panel.replaceChildren(toc.content.cloneNode(true))
+    toc.remove()
+    sideBarTab()
+    sidebarTOC()
+    refreshTocCurve()
+    refreshTocTooltip()
+  }
+  refreshSummarySwitch()
+  refreshArticleInfo()
+  refreshChangelog()
+})
 
 export const siteRefresh = async (reload) => {
   // Update restored viewport state before any asynchronous page setup.
@@ -34,7 +58,9 @@ export const siteRefresh = async (reload) => {
   refreshTagCloud()
   refreshSummarySwitch()
   refreshArticleInfo()
+  refreshChangelog()
   setLocalUrl(window.location.href)
+  refreshArticleRelock()
   void refreshHitokoto()
 
   await import('katex/dist/contrib/copy-tex.mjs')
@@ -69,8 +95,7 @@ export const siteRefresh = async (reload) => {
   refreshTocCurve()
   refreshTocTooltip()
 
-  const pagePost = await import('../page/post')
-  await pagePost.postBeauty()
+  await postBeauty()
 
   const cpel = document.getElementById('copyright')
   if (cpel) {

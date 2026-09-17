@@ -1,6 +1,17 @@
 - var info = article_info(post)
-if info.source || info.trackAge
+if !post.encrypt && !post.password && (info.source || info.trackAge || info.changelogs.length)
     aside.article-info(aria-label=__('article_info.label') hidden=!info.visible data-article-info data-source=(info.source ? 'true' : 'false') data-updated=(info.trackAge ? info.updated : undefined) data-published=info.published data-days=info.days data-duration-year=__('article_info.year') data-duration-month=__('article_info.month') data-duration-day=__('article_info.day') data-duration-join=__('article_info.duration_join'))
+        if info.source
+            div.article-info-source
+                span.article-info-icon(aria-hidden="true")
+                    i.ic.i-info-circle
+                p.article-info-copy
+                    = __('article_info.source')
+                    if info.url
+                        a.article-info-link(href=info.url target="_blank" rel="noopener noreferrer")= info.source
+                    else
+                        span.article-info-name= info.source
+                        span.article-info-untraced= __('article_info.untraced')
         if info.trackAge
             div.article-info-age(data-article-age hidden=!info.outdated)
                 span.article-info-icon(aria-hidden="true")
@@ -13,14 +24,5 @@ if info.source || info.trackAge
                         = __('article_info.updated_before')
                         time.article-info-duration(data-article-elapsed datetime=new Date(info.updated).toISOString() title=date(info.updated, 'YYYY-MM-DD'))= __('article_info.age', info.age)
                         = __('article_info.notice')
-        if info.source
-            div.article-info-source
-                span.article-info-icon(aria-hidden="true")
-                    i.ic.i-info-circle
-                p.article-info-copy
-                    = __('article_info.source')
-                    if info.url
-                        a.article-info-link(href=info.url target="_blank" rel="noopener noreferrer")= info.source
-                    else
-                        span.article-info-name= info.source
-                        span.article-info-untraced= __('article_info.untraced')
+        if info.changelogs.length
+            != partial('_partials/post/historytimeline.pug', {changelogs: info.changelogs})

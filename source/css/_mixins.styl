@@ -1,5 +1,16 @@
 $mobile-wdith = unquote(hexo-config('experiments.mobileWidth'))
 
+keycap() {
+  background-color: var(--grey-1);
+  background-image: linear-gradient(var(--grey-2), var(--grey-0), var(--grey-2));
+  border: .0625rem solid var(--grey-4);
+  border-radius: .2rem;
+  box-shadow: .1rem .1rem .2rem var(--grey-9-a1);
+  font-family: inherit;
+  padding: .1rem .3rem;
+  white-space: nowrap;
+}
+
 the-transition(duration = .2s, function = ease-in-out, delay = 0s, property = all) {
   transition:property duration function delay;
 }

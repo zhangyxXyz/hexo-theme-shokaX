@@ -9,14 +9,15 @@ dialog#site-search(aria-labelledby="site-search-title" data-results=__('pagefind
                 form.pagefind-ui__form(role="search" aria-label=__('pagefind_search.label'))
                     i.ic.i-search.search-input-icon(aria-hidden="true")
                     input.pagefind-ui__search-input(type="search" placeholder=__('search.placeholder') aria-label=__('search.placeholder') autocomplete="off")
-                    button.pagefind-ui__search-clear(type="button" hidden)= __('pagefind_search.clear')
+                    .search-actions
+                        button.pagefind-ui__search-clear(type="button" hidden)= __('pagefind_search.clear')
+                        button.search-dismiss.search-escape(type="button" aria-label=__('pagefind_search.close')) ESC
                 .pagefind-ui__drawer
                     p.pagefind-ui__message(role="status" aria-live="polite")
                     .search-result-list
                     nav.search-pagination(aria-label=__('pagefind_search.pagination'))
-            button.search-dismiss(type="button" aria-label=__('pagefind_search.close'))
-                kbd ESC
-                span(aria-hidden="true") ×
+            button.search-dismiss.search-close(type="button" aria-label=__('pagefind_search.close'))
+                i.ic.i-times(aria-hidden="true")
             .search-welcome
                 span.search-welcome-badge= __('pagefind_search.welcome')
                 - var searchTopics = site.tags.toArray().filter(tag => tag.length > 0).sort((a, b) => b.length - a.length || a.name.localeCompare(b.name)).slice(0, 12)

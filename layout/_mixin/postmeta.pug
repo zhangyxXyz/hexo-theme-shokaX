@@ -1,6 +1,11 @@
 mixin PMRender(item, full)
     - full ||= false
     div(class="meta")
+        if item.encrypt
+            span(class="item post-encrypted" title=__('post.encrypted') data-post-relock=(full ? '' : undefined) data-relock-label=(full ? __('post.relock') : undefined))
+                span(class="icon")
+                    i(class="ic i-compress")
+                span(style="color:var(--primary-color)")= __('post.encrypted')
         if item.reprintlink && !item.encrypt
             span(class="item post-reprint" title=__('post.reprint'))
                 span(class="icon")

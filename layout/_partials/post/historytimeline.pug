@@ -1,13 +1,25 @@
-- const changelogs = Array.isArray(post.changelogs) ? post.changelogs.filter(entry => entry && typeof entry === 'object') : []
-if changelogs.length
-    details(class="primary post-changelogs")
-        summary
-            b= __('post.changelogs_summary')
-        div(class="historytimeline")
-            p(class="item header")= __('post.changelogs_title')
-            each changelog in changelogs.slice().reverse()
-                if changelog.summary
-                    p(class="item section")= changelog.summary
-                if Array.isArray(changelog.list)
-                    each entry in changelog.list
-                        p(class="item normal")= entry
+details.post-changelogs(data-changelog data-side=(theme.sidebar.position === 'right' ? 'left' : 'right') data-title=__('changelog.title') data-close=__('changelog.close') data-count=__('changelog.count', changelogs.length))
+    summary.changelog-trigger(aria-haspopup="dialog" aria-expanded="false")
+        i.ic.i-clock.changelog-trigger-icon(aria-hidden="true")
+        span.changelog-trigger-label= __('changelog.title')
+        span.changelog-count= __('changelog.count', changelogs.length)
+        if changelogs[0].date
+            span.changelog-latest= __('changelog.latest', changelogs[0].date)
+        i.ic.i-angle-right.changelog-trigger-arrow(aria-hidden="true")
+    div.changelog-content
+        ol.changelog-timeline
+            each changelog, index in changelogs
+                li.changelog-entry
+                    span.changelog-node(aria-hidden="true")
+                    article.changelog-card
+                        div.changelog-card-meta
+                            if changelog.date
+                                span.changelog-date= changelog.date
+                            if index === 0
+                                span.changelog-new= __('changelog.newest')
+                        if changelog.title
+                            h3= changelog.title
+                        if changelog.list.length
+                            div.changelog-items
+                                each entry in changelog.list
+                                    p= entry

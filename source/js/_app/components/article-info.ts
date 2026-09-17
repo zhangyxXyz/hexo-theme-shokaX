@@ -5,7 +5,7 @@ export const refreshArticleInfo = () => {
     const interval = Date.now() - updated
     const outdated = card.dataset.updated !== undefined && Number.isFinite(updated)
       && interval > Number(card.dataset.days) * 86400000
-    card.hidden = card.dataset.source !== 'true' && !outdated
+    card.hidden = card.dataset.source !== 'true' && !outdated && !card.querySelector('[data-changelog]')
     card.querySelectorAll<HTMLElement>('[data-article-age]').forEach(row => { row.hidden = !outdated })
     const elapsed = card.querySelector<HTMLElement>('[data-article-elapsed]')
     const duration = (timestamp: number) => {
