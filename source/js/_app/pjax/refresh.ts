@@ -6,7 +6,8 @@ import {
 } from '../globals/globalVars'
 import { positionInit } from '../globals/tools'
 import { menuActive, sideBarTab, sidebarTOC } from '../components/sidebar'
-import { Loader, isOutime } from '../globals/thirdparty'
+import { Loader } from '../globals/thirdparty'
+import { refreshArticleInfo } from '../components/article-info'
 import { tabFormat } from '../page/tab'
 import { refreshHitokoto } from '../components/hitokoto'
 import { refreshTocCurve } from '../components/toc-curve'
@@ -32,6 +33,7 @@ export const siteRefresh = async (reload) => {
   refreshFestival()
   refreshTagCloud()
   refreshSummarySwitch()
+  refreshArticleInfo()
   setLocalUrl(window.location.href)
   void refreshHitokoto()
 
@@ -127,7 +129,4 @@ export const siteRefresh = async (reload) => {
 
   cardActive()
 
-  if (__shokax_outime__ && LOCAL.ispost) {
-    isOutime()
-  }
 }

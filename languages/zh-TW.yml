@@ -212,6 +212,20 @@ tagcloud:
   sphere: "3D · 球面"
   empty: "暫無標籤。"
 
+article_info:
+  duration_join: "零"
+  label: "文章來源與時效"
+  source: "🚀 本文轉載自："
+  untraced: "『原文出處暫無處追尋』"
+  age: "%s 天"
+  old: "時效性提示"
+  published_before: "本文發佈於 "
+  updated_before: "前 · 最後更新於 "
+  notice: "前，部分內容可能已過時，請注意甄別。"
+  year: "年"
+  month: "個月"
+  day: "天"
+
 ai_summary:
   choose_model: "選擇摘要模型"
   original: "原文"

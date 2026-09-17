@@ -212,6 +212,20 @@ tagcloud:
   sphere: "3D · Sphere"
   empty: "No tags yet."
 
+article_info:
+  duration_join: ""
+  label: "Article source and freshness"
+  source: "Reprinted from: "
+  untraced: " (Original source unavailable)"
+  age: "%s days"
+  old: "Timeliness notice"
+  published_before: "Published "
+  updated_before: " ago · Updated "
+  notice: " ago. Content may be outdated."
+  year: " years "
+  month: " months "
+  day: " days"
+
 ai_summary:
   choose_model: "Choose summary model"
   original: "Original"

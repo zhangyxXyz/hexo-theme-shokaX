@@ -59,6 +59,7 @@ article(itemscope itemtype="http://schema.org/Article" class="post block" data-p
                         })();
 
 
+        != partial('_partials/post/article-info.pug', {post: post})
         != partial('_partials/post/historytimeline.pug', {post: post})
         != post.content
         if post.tags && post.tags.length

@@ -1,0 +1,48 @@
+.md .article-info {
+  --info-border: rgba(86, 134, 156, .16);
+  --info-blue: #3987a7;
+  --info-blue-bg: rgba(95, 170, 206, .065);
+  --info-amber: #9d8126;
+  --info-amber-bg: rgba(220, 186, 69, .075);
+  margin: 1.25rem 0 2rem;
+  border: 1px solid var(--info-border);
+  border-radius: .9rem;
+  overflow: hidden;
+  color: var(--grey-7);
+  font-size: .9rem;
+  line-height: 1.8;
+  &[hidden], [hidden] { display: none !important; }
+  .article-info-source, .article-info-age {
+    display: flex;
+    align-items: baseline;
+    gap: .8rem;
+    padding: .95rem 1.2rem;
+    min-width: 0;
+  }
+  .article-info-source { background: var(--info-blue-bg); }
+  .article-info-age { background: var(--info-amber-bg); }
+  .article-info-age:not([hidden]) + .article-info-source { border-top: 1px solid var(--info-border); }
+  .article-info-icon { flex: 0 0 1rem; text-align: center; color: var(--info-blue); }
+  .article-info-age .article-info-icon { color: var(--info-amber); }
+  .article-info-detail { flex: 1; min-width: 0; }
+  .article-info-label { display: inline-block; margin-bottom: .25rem; color: var(--info-amber); font-size: .8rem; font-weight: 600; }
+  .article-info-copy { margin: 0; line-height: inherit; overflow-wrap: anywhere; }
+  .article-info-duration { color: var(--primary-color); margin: 0 .15rem; }
+  .article-info-link, .article-info-untraced { color: var(--info-blue); }
+  .article-info-link { border-bottom: 1px solid transparent; &:hover { border-color: currentColor; } }
+  .article-info-link:focus-visible { outline: 2px solid var(--info-blue); outline-offset: 3px; border-radius: .15rem; }
+  .article-info-untraced { margin-inline-start: .4rem; }
+  @media (max-width: 567px) {
+    font-size: .85rem;
+    .article-info-source, .article-info-age { padding: .85rem .9rem; gap: .6rem; }
+  }
+}
+.md .ai-summary:has(+ .article-info:not([hidden])) { margin-bottom: .85rem; }
+.md .ai-summary + .article-info { margin-top: 0; }
+html[data-theme='dark'] .md .article-info {
+  --info-border: rgba(135, 187, 209, .15);
+  --info-blue: #92c9df;
+  --info-blue-bg: rgba(95, 170, 206, .07);
+  --info-amber: #d6bd6e;
+  --info-amber-bg: rgba(220, 186, 69, .06);
+}

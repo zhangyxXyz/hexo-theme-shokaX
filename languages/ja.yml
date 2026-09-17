@@ -212,6 +212,20 @@ tagcloud:
   sphere: "3D · 球面"
   empty: "タグはまだありません。"
 
+article_info:
+  duration_join: ""
+  label: "記事の出典と更新情報"
+  source: "転載元："
+  untraced: "（元の出典は不明です）"
+  age: "%s 日"
+  old: "更新時期について"
+  published_before: "公開から "
+  updated_before: " · 最終更新から "
+  notice: "が経過。内容が古くなっている可能性があります。"
+  year: "年"
+  month: "か月"
+  day: "日"
+
 ai_summary:
   choose_model: "要約モデルを選択"
   original: "原文"

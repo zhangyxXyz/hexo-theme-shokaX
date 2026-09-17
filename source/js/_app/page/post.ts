@@ -1,6 +1,6 @@
 import { postImageViewer } from './imageviewer'
 import { clipBoard, showtip } from '../globals/tools'
-import { CONFIG, BODY } from '../globals/globalVars'
+import { BODY } from '../globals/globalVars'
 import { pageScroll, transition } from '../library/anime'
 import { getDisplay, setDisplay, wrapObject } from '../library/proto'
 import { refreshCodeBlocks } from '../components/codeblock'
@@ -18,23 +18,7 @@ export const postBeauty = async () => {
       event.preventDefault()
       return
     }
-
-    const copyright = document.getElementById('copyright')
-    if (window.getSelection().toString().length > CONFIG.experiments.copyrightLength && copyright) {
-      event.preventDefault()
-      const author = '# ' + (copyright.querySelector('.author') as HTMLElement).innerText
-      const link = '# ' + (copyright.querySelector('.link') as HTMLElement).innerText
-      const license = '# ' + (copyright.querySelector('.license') as HTMLElement).innerText
-      const htmlData = author + '<br>' + link + '<br>' + license + '<br><br>' + window.getSelection().toString().replace(/\r\n/g, '<br>')
-
-      const textData = author + '\n' + link + '\n' + license + '\n\n' + window.getSelection().toString().replace(/\r\n/g, '\n')
-      if (event.clipboardData) {
-        event.clipboardData.setData('text/html', htmlData)
-        event.clipboardData.setData('text/plain', textData)
-      } else {
-        throw new Error('Clipboard API not supported')
-      }
-    }
+    // Leave the browser's selected text/HTML intact; the toast is sufficient.
   }
 
   document.querySelectorAll('li ruby').forEach((element) => {
