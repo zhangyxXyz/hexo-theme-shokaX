@@ -23,7 +23,7 @@ hexo.extend.filter.register('after_post_render', (data) => {
     view_dir: hexo.theme_dir + 'layout/', layout: false,
     __: theme.i18n.__(languages), _p: theme.i18n._p(languages)
   }
-  const extras = ['ai-summary', 'article-info', 'encrypted-toc'].map(name =>
+  const extras = ['article-info', 'ai-summary', 'encrypted-toc'].map(name =>
     theme.getView(`_partials/post/${name}.pug`).renderSync(locals)
   ).join('')
   data.content = extras + data.content
