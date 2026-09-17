@@ -16,7 +16,17 @@ import { initAudioPlayer } from '../player'
 
 export default async function domInit () {
   document.querySelectorAll('.overview .menu > .item').forEach((el) => {
-    siteNav.querySelector('.menu').appendChild(el.cloneNode(true))
+    const entry = el.cloneNode(true) as HTMLElement
+    // The top navigation keeps its existing links; disclosure buttons belong to the sidebar.
+    entry.querySelectorAll<HTMLButtonElement>('.sidebar-menu-toggle').forEach(button => {
+      if (button.classList.contains('sidebar-menu-chevron')) { button.remove(); return }
+      const link = document.createElement('a')
+      link.href = '#'
+      link.onclick = () => false
+      link.replaceChildren(...button.childNodes)
+      button.replaceWith(link)
+    })
+    siteNav.querySelector('.menu').appendChild(entry)
   })
 
   loadCat.addEventListener('click', Loader.vanish)

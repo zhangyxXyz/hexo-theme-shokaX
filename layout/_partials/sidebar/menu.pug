@@ -8,10 +8,11 @@ mixin item(name, path, parent, sublist)
     if parent
         li(class="item dropdown")
             if itemURL === '/'
-                a(href="#" onclick="return false;")
+                button.sidebar-menu-toggle(type="button" aria-expanded="false")
                     != menuIcon + menuText
             else
                 != _url(itemURL, menuIcon + menuText, {rel: 'section'})
+                button.sidebar-menu-toggle.sidebar-menu-chevron(type="button" aria-expanded="false" aria-label=menuText)
             ul(class="submenu")
                 each subvalue, subname in sublist
                     - var path = subvalue.split('||')

@@ -21,6 +21,7 @@ import { postBeauty } from '../page/post'
 import { refreshArticleRelock } from '../components/article-relock'
 import { refreshStatistics } from '../components/statistics'
 import { refreshTooltips } from '../components/tooltip'
+import { refreshSidebarMenu } from '../components/sidebar-menu'
 
 // The encrypted body (including its private cards) can arrive after page setup,
 // either through password entry or the encryption plugin's saved-key flow.
@@ -93,6 +94,7 @@ export const siteRefresh = async (reload) => {
   syncViewportState()
 
   menuActive()
+  refreshSidebarMenu()
 
   sideBarTab()
   sidebarTOC()
