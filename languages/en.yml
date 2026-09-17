@@ -236,6 +236,10 @@ article_info:
   day: " days"
 
 ai_summary:
+  original_excerpt: "Original excerpt"
+  original_hint: "Original excerpt. Click to switch to an AI summary."
+  ai_switch_hint: "Summarized by %s, for reference only. Click to switch models or view the original excerpt."
+  ai_models_hint: "Summarized by %s, for reference only. Click to switch models."
   choose_model: "Choose summary model"
   original: "Original"
   by_model: "Summarized by %s"
@@ -252,3 +256,25 @@ encrypt:
 
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>"
+statistics:
+  south_sea: "South China Sea Islands"
+  count: "Post count"
+  date: "Date"
+  tag_axis: "Tags"
+  average: "Average"
+  provinces: "Provinces"
+  countries: "Countries"
+  loading: "Loading…"
+  failed: "Statistics are currently unavailable."
+  expired: "Baidu Analytics authorization has expired. Renew the access token."
+  empty: "No data available."
+  retry: "Retry"
+  visits: "Page views"
+  calendar: "Visits over the past year"
+  map: "Visitor regions"
+  trends: "Monthly visits"
+  sources: "Traffic sources"
+  posts: "Posts by month"
+  tags: "Popular tags"
+  categories: "Post categories"
+  source: "Traffic data from Baidu Analytics; post statistics from this site."

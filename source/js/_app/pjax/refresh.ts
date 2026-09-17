@@ -19,6 +19,8 @@ import { refreshTagCloud } from '../components/tagcloud'
 import { refreshSummarySwitch } from '../components/summary-switch'
 import { postBeauty } from '../page/post'
 import { refreshArticleRelock } from '../components/article-relock'
+import { refreshStatistics } from '../components/statistics'
+import { refreshTooltips } from '../components/tooltip'
 
 // The encrypted body (including its private cards) can arrive after page setup,
 // either through password entry or the encryption plugin's saved-key flow.
@@ -39,6 +41,7 @@ window.addEventListener('hexo-blog-decrypt', () => {
   refreshSummarySwitch()
   refreshArticleInfo()
   refreshChangelog()
+  refreshTooltips()
 })
 
 export const siteRefresh = async (reload) => {
@@ -56,6 +59,7 @@ export const siteRefresh = async (reload) => {
   refreshFooter()
   refreshFestival()
   refreshTagCloud()
+  refreshStatistics()
   refreshSummarySwitch()
   refreshArticleInfo()
   refreshChangelog()
@@ -153,5 +157,6 @@ export const siteRefresh = async (reload) => {
   }, 500)
 
   cardActive()
+  refreshTooltips()
 
 }

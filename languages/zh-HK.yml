@@ -236,6 +236,10 @@ article_info:
   day: "天"
 
 ai_summary:
+  original_excerpt: "原文摘要"
+  original_hint: "原文摘要，點擊可切換 AI 摘要。"
+  ai_switch_hint: "由 %s 總結，僅供參考，點擊可切換模型或原文摘要。"
+  ai_models_hint: "由 %s 總結，僅供參考，點擊可切換模型。"
   choose_model: "選擇摘要模型"
   original: "原文"
   by_model: "由 %s 模型總結"
@@ -252,3 +256,25 @@ encrypt:
 
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">文章時效性提示</span><br>這是一篇發佈於 {{publish}} 天前，最後一次更新在 {{updated}} 天前的文章，部分信息可能已經發生改變，請注意甄別。</p></div>"
+statistics:
+  south_sea: "南海諸島"
+  count: "文章篇數"
+  date: "日期"
+  tag_axis: "標籤"
+  average: "平均值"
+  provinces: "按省查看"
+  countries: "按國家查看"
+  loading: "正在載入…"
+  failed: "統計資料暫時無法載入。"
+  expired: "百度統計授權已過期，需更新存取權杖。"
+  empty: "暫無統計資料。"
+  retry: "重試"
+  visits: "瀏覽量"
+  calendar: "近一年訪問日曆"
+  map: "訪問地區"
+  trends: "每月訪問趨勢"
+  sources: "訪問來源"
+  posts: "文章發布統計"
+  tags: "熱門標籤"
+  categories: "文章分類"
+  source: "訪問資料來自百度統計；文章統計來自本站。"

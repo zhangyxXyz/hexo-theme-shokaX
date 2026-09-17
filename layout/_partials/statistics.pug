@@ -1,0 +1,7 @@
+- const statsData = statistics_data(site, page)
+- const statsLabels = Object.fromEntries(['loading', 'failed', 'expired', 'empty', 'retry', 'visits', 'calendar', 'map', 'trends', 'sources', 'posts', 'tags', 'categories', 'source', 'count', 'date', 'tag_axis', 'average', 'provinces', 'countries', 'south_sea'].map(key => [key, __('statistics.' + key)]))
+- const settings = theme.statistics || {}
+- const baidu = settings.baidu || {}
+- const assets = settings.assets || {}
+- const maps = assets.maps || {}
+div(data-statistics-config=JSON.stringify({ baidu: { api: baidu.api, site_id: baidu.site_id, start_date: baidu.start_date, timeout: baidu.timeout }, assets: { echarts: assets.echarts, maps: { china: maps.china, world: maps.world } }, data: statsData, labels: statsLabels }) hidden)

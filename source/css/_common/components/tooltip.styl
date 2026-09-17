@@ -1,0 +1,41 @@
+:root
+  --tooltip-bg rgba(241, 248, 252, .86)
+  --tooltip-text #46586a
+  --tooltip-border rgba(163, 188, 206, .55)
+  --tooltip-shadow rgba(35, 62, 83, .14)
+
+[data-theme="dark"]
+  --tooltip-bg rgba(32, 46, 60, .86)
+  --tooltip-text #dce5ee
+  --tooltip-border rgba(125, 156, 181, .45)
+  --tooltip-shadow rgba(0, 0, 0, .28)
+
+.theme-tooltip, .toc-title-tooltip
+  position fixed
+  z-index 1200
+  width max-content
+  box-sizing border-box
+  max-width unquote('min(36rem, calc(100vw - 24px))')
+  padding 6px 10px
+  border 1px solid var(--tooltip-border)
+  border-radius 8px
+  background var(--tooltip-bg)
+  backdrop-filter blur(12px) saturate(125%)
+  -webkit-backdrop-filter blur(12px) saturate(125%)
+  color var(--tooltip-text)
+  box-shadow 0 4px 14px var(--tooltip-shadow)
+  font-size 12px
+  font-weight normal
+  line-height 1.45
+  overflow-wrap anywhere
+
+  +tablet-mobile()
+    max-width unquote('min(28rem, calc(100vw - 24px))')
+
+  +mobile()
+    max-width unquote('min(20rem, calc(100vw - 24px))')
+
+.theme-tooltip
+  pointer-events none
+  &[hidden]
+    display none

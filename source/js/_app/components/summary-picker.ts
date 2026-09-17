@@ -36,14 +36,19 @@ export function refreshSummaryPickers() {
       if (modelIcon) trigger.append(modelIcon)
       trigger.append(label)
     }
-    else trigger.append(currentIcon)
-    trigger.append(arrow)
+    else trigger.append(currentIcon, label)
+    if (!compact) trigger.append(arrow)
     const sync = () => {
       const option = select.selectedOptions[0]
       label.textContent = option?.text || ''
       trigger.title = option?.dataset.tooltip || option?.text || ''
       currentIcon.className = 'ic ' + (option?.dataset.icon || 'i-align-left')
-      if (compact) trigger.setAttribute('aria-label', trigger.title)
+      if (compact) {
+        label.textContent = select.value === 'original' ? select.dataset.actionOriginal : select.dataset.actionAi
+        currentIcon.className = 'ic ' + select.dataset.genericIcon
+        currentIcon.textContent = ''
+        trigger.setAttribute('aria-label', label.textContent || '')
+      }
     }
     sync()
     select.addEventListener('change', sync)
