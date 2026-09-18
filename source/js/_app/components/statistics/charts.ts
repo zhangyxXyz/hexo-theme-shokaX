@@ -1,6 +1,7 @@
 import { loadCharts } from './assets'
 import { chartOptions } from './options'
 import { createLegend } from './legend'
+import { calendarDetails } from './calendar'
 import type { Panel } from './panel'
 import type { ChartKey, Point, RegisterChart, Settings } from './types'
 
@@ -13,6 +14,13 @@ export async function mountDataChart(key: ChartKey, panel: Panel, getData: () =>
     const echarts = await loadCharts(config.assets?.echarts)
     if (signal.aborted) return
     panel.ready()
+    if (key === 'calendar') {
+      const scroll = document.createElement('div')
+      scroll.className = 'statistics-calendar-scroll'
+      panel.body.before(scroll)
+      scroll.append(panel.body)
+      panel.element.append(calendarDetails(data, config.labels))
+    }
     const chart = echarts.init(panel.body)
     const legend = key === 'sources' || key === 'categories' ? createLegend(panel, [...data].sort((a, b) => b.value - a.value), chart) : undefined
     const render = () => {

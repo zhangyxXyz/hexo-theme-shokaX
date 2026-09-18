@@ -3,9 +3,10 @@ import { dateKey, calendarRange } from './dates'
 import { mapAspects, mapLines } from './assets'
 import { chartPalette } from './palette'
 import { tooltipContent } from './tooltip-content'
+import { calendarColors, normalizeDay } from './calendar'
 
 export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root: HTMLElement, body: HTMLElement, echarts: any, mapMode = 'china') {
-  const { today, yearAgo } = calendarRange()
+  const { today, calendarStart } = calendarRange()
   const styles = getComputedStyle(root)
   const dark = document.documentElement.getAttribute('data-theme') === 'dark'
   const palette = chartPalette(dark)
@@ -25,21 +26,26 @@ export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root:
   }
   if (key === 'map') {
     const aspect = mapAspects.get(mapMode) || 1
-    const layout = { map: `statistics-${mapMode}`, layoutCenter: ['50%', '50%'], layoutSize: (aspect >= 1 ? body.clientWidth : body.clientWidth / aspect) * .94, roam: false }
-    option.visualMap = { show: data.length > 0, seriesIndex: 0, min: 0, max: Math.max(1, ...data.map(item => item.value)), left: 0, bottom: 0, itemWidth: 10, itemHeight: 90, textStyle: { color }, calculable: true, inRange: { color: ['#92d0f9', '#49b1f5'] } }
+    const desktop = body.clientWidth > 600
+    const reserve = desktop ? Math.min(240, body.clientWidth * .3) : 0
+    const available = body.clientWidth - reserve
+    const layout = { map: `statistics-${mapMode}`, layoutCenter: [available / 2, '50%'], layoutSize: (aspect >= 1 ? available : available / aspect) * .94, roam: false }
+    option.visualMap = { show: false, seriesIndex: 0, min: 0, max: Math.max(1, ...data.map(item => item.value)), inRange: { color: ['#92d0f9', '#49b1f5'] } }
     option.geo = { ...layout, show: false }
-    option.series = [{ ...layout, type: 'map', name: labels.visits, showLegendSymbol: false,
+    option.series = [{ ...layout, roam: true, scaleLimit: { min: 1, max: 5 }, type: 'map', name: labels.visits, showLegendSymbol: false,
       itemStyle: { areaColor: mapFill, borderColor: mapBorder, borderWidth: .75 },
       emphasis: { label: { show: true, color: mapLabel, fontWeight: 'normal', textBorderColor: dark ? '#234057' : '#f7fcff', textBorderWidth: 1.5 }, itemStyle: { areaColor: mapHover, borderColor: dark ? '#a2d1eb' : '#639dbf', borderWidth: 1 } },
       tooltip: { ...option.tooltip }, data,
     }]
     if (mapLines.get(mapMode)?.length) option.series.push({ type: 'lines', coordinateSystem: 'geo', polyline: true, silent: true, lineStyle: { color: dark ? '#a2bfd0' : '#839eaf', width: 1.25, opacity: 1 }, data: mapLines.get(mapMode)!.map(coords => ({ coords })) })
   } else if (key === 'calendar') {
-    const dated = data.map(item => [item.name.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3').replace(/\//g, '-'), item.value])
+    const dated = data.map(item => [normalizeDay(item.name).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3'), item.value])
     const format = (date: Date) => dateKey(date).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
-    option.calendar = { top: 20, left: 45, right: 15, cellSize: ['auto', 18], range: [format(yearAgo), format(today)], yearLabel: { show: false }, dayLabel: { color }, monthLabel: { color }, itemStyle: { color: palette.calendar[0], borderColor: palette.surface, borderWidth: 2 } }
-    option.visualMap = { min: 0, max: Math.max(1, ...data.map(item => item.value)), orient: 'horizontal', bottom: 0, left: 'center', textStyle: { color }, inRange: { color: palette.calendar } }
+    const cell = (body.clientWidth - 32) / 54
+    option.calendar = { top: 30, left: 26, right: 6, cellSize: ['auto', cell], range: [format(calendarStart), format(today)], splitLine: { show: false }, yearLabel: { show: false }, dayLabel: { color, firstDay: 0, nameMap: labels.weekdays.split(',') }, monthLabel: { color, nameMap: labels.months.split(','), fontSize: 11 }, itemStyle: { color: dark ? '#39434e' : '#f2f3f5', borderColor: 'transparent', borderWidth: 0 } }
+    option.visualMap = { type: 'piecewise', show: false, pieces: [{ value: 0, color: calendarColors[0] }, ...calendarColors.slice(1).map((shade, index) => ({ gt: index === 0 ? 0 : (index + 1) * 20 - 1, ...(index < 8 ? { lte: (index + 2) * 20 - 1 } : {}), color: shade }))] }
     option.series = [{ type: 'heatmap', coordinateSystem: 'calendar', data: dated }]
+    option.series[0].itemStyle = { borderColor: dark ? '#22272e' : '#fff', borderWidth: Math.max(2, cell * .2) }
   } else if (key === 'sources' || key === 'categories') {
     const narrow = body.clientWidth < 520
     option.legend = { show: false }

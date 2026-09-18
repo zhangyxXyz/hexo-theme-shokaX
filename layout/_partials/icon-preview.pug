@@ -1,0 +1,23 @@
+- const icons = icon_preview_data()
+- const labels = Object.assign({ search: 'Search icons', class: 'Copy class', html: 'Copy HTML', code: 'Copy code', copied: 'Copied', failed: 'Copy failed', empty: 'No matching icons' }, page.icon_preview || {})
+.icon-preview(data-copied=labels.copied data-failed=labels.failed)
+  .icon-preview-toolbar
+    i.ic.i-search.icon-preview-search-icon(aria-hidden="true")
+    input(type="search" placeholder=labels.search aria-label=labels.search autocomplete="off")
+    button.icon-preview-clear(type="button" aria-label=__('pagefind_search.clear') title=__('pagefind_search.clear') hidden)
+      i.ic.i-times(aria-hidden="true")
+  p.icon-preview-status(role="status" aria-live="polite")= icons.length + ' / ' + icons.length
+  .icon-preview-grid
+    each icon in icons
+      .icon-preview-card(data-name=icon.name data-code=icon.code)
+        button.icon-preview-glyph(type="button" data-copy="html" aria-label=labels.html + ' ' + icon.name title=labels.html)
+          if icon.svg
+            != icon.svg
+          else
+            i(class='ic ' + icon.name aria-hidden="true")
+        button.icon-preview-name(type="button" data-copy="class" aria-label=labels.class + ' ' + icon.name title=labels.class)
+          span= icon.name
+        button.icon-preview-code(type="button" data-copy="code" aria-label=labels.code + ' ' + icon.code title=labels.code)
+          span= '\\' + icon.code
+        span.icon-preview-feedback(role="status" aria-live="polite")
+  p.icon-preview-empty(hidden)= labels.empty

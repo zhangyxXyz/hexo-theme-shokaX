@@ -28,6 +28,11 @@ export function mapInteractions(chart: any, panel: Panel, labels: Labels, mode: 
   }
   hit.onmouseenter = hit.onfocus = () => highlight(true)
   hit.onmousemove = showTooltip
+  hit.addEventListener('wheel', event => {
+    event.preventDefault()
+    const bounds = panel.body.getBoundingClientRect()
+    chart.dispatchAction({ type: 'geoRoam', seriesIndex: 0, zoom: event.deltaY < 0 ? 1.15 : 1 / 1.15, originX: event.clientX - bounds.left, originY: event.clientY - bounds.top })
+  }, { passive: false, signal })
   hit.onmouseleave = hit.onblur = () => highlight(pinned)
   hit.onclick = () => {
     pinned = !pinned

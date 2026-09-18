@@ -20,6 +20,7 @@ import { refreshSummarySwitch } from '../components/summary-switch'
 import { postBeauty } from '../page/post'
 import { refreshArticleRelock } from '../components/article-relock'
 import { refreshStatistics } from '../components/statistics'
+import { refreshIconPreview } from '../components/icon-preview'
 import { refreshTooltips } from '../components/tooltip'
 import { refreshSidebarMenu } from '../components/sidebar-menu'
 
@@ -61,6 +62,7 @@ export const siteRefresh = async (reload) => {
   refreshFestival()
   refreshTagCloud()
   refreshStatistics()
+  refreshIconPreview()
   refreshSummarySwitch()
   refreshArticleInfo()
   refreshChangelog()

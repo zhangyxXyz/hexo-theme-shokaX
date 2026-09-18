@@ -1,0 +1,151 @@
+.icon-preview
+  [hidden]
+    display none !important
+  .icon-preview-toolbar
+    position relative
+    .icon-preview-search-icon
+      position absolute
+      top 50%
+      transform translateY(-50%)
+      left 1rem
+      color var(--primary-color)
+      font-size 1.1rem
+      pointer-events none
+    input
+      box-sizing border-box
+      width 100%
+      height 2.75rem
+      padding 0 3rem 0 2.75rem
+      border 1px solid var(--grey-3)
+      border-radius .75rem
+      color var(--text-color)
+      background var(--grey-1-a7)
+      font inherit
+      font-size 1rem
+      min-width 0
+      &::-webkit-search-cancel-button
+        display none
+      &:focus
+        outline 1px solid var(--primary-color)
+        outline-offset 1px
+    .icon-preview-clear
+      position absolute
+      right .5rem
+      top .375rem
+      display grid
+      place-items center
+      width 2rem
+      height 2rem
+      padding 0
+      border 0
+      border-radius .5rem
+      background transparent
+      color var(--grey-6)
+      font-size 1rem
+      cursor pointer
+      transition background .2s, color .2s
+      &:hover
+        color var(--primary-color)
+        background var(--color-pink-a1)
+  p.icon-preview-status
+    margin .75rem 0 1rem
+    padding 0 .15rem
+    line-height 1.5
+    color var(--grey-6)
+    font-size .8rem
+    overflow-wrap anywhere
+  .icon-preview-grid
+    display grid
+    grid-template-columns repeat(auto-fill, minmax(156px, 1fr))
+    gap .85rem
+  .icon-preview-card
+    position relative
+    display flex
+    flex-direction column
+    align-items stretch
+    justify-content center
+    gap .25rem
+    padding .7rem .5rem .6rem
+    border 1px solid var(--grey-3)
+    border-radius .8rem
+    background var(--grey-1)
+    color var(--grey-7)
+    font inherit
+    transition background .2s, border-color .2s
+    &:hover, &:focus-within
+      border-color var(--color-red-a3)
+    button
+      display block
+      width 100%
+      margin 0
+      padding .3rem .2rem
+      border 0
+      border-radius .4rem
+      color var(--grey-7)
+      background transparent
+      font inherit
+      line-height 1.5
+      cursor pointer
+      &:hover, &.is-copied
+        color var(--primary-color)
+        background var(--color-red-a1)
+      &:focus-visible
+        outline 2px solid var(--primary-color)
+        outline-offset -2px
+    .icon-preview-glyph
+      padding .75rem 0
+      svg
+        display block
+        width 2rem
+        height 3rem
+        margin 0 auto
+    .icon-preview-name
+      display flex
+      align-items center
+      justify-content center
+      min-height 2.25rem
+      font-family ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace
+      font-size .78rem
+      font-weight 500
+      line-height 1.45
+      overflow-wrap anywhere
+    .icon-preview-code
+      color var(--grey-6)
+      font-size .72rem
+      font-family ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace
+      font-variant-numeric tabular-nums
+      line-height 1.5
+    .ic
+      color var(--primary-color)
+      font-size 2rem
+      line-height 1.5
+      margin 0
+    span
+      font-family inherit
+      font-size inherit
+      font-weight inherit
+      overflow-wrap anywhere
+    .icon-preview-feedback
+      position absolute
+      bottom calc(100% + .35rem)
+      left 50%
+      transform translateX(-50%)
+      z-index 2
+      padding .3rem .6rem
+      border-radius .45rem
+      background var(--tooltip-bg)
+      color var(--tooltip-text)
+      border 1px solid var(--tooltip-border)
+      box-shadow 0 3px 12px var(--box-bg-shadow)
+      font-size .7rem
+      width max-content
+      max-width 200px
+      pointer-events none
+      opacity 0
+      transition opacity .15s
+    &.has-feedback .icon-preview-feedback
+      opacity 1
+  @media (max-width: 480px)
+    .icon-preview-grid
+      grid-template-columns repeat(2, minmax(0, 1fr))
+      gap .6rem

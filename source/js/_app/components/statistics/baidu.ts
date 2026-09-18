@@ -3,7 +3,7 @@ import { calendarRange, dateKey } from './dates'
 
 // The endpoint and site identity belong to the site configuration, never this module.
 export function createBaiduSource(settings: BaiduSettings = {}, lifecycle: AbortSignal) {
-  const { today, yearAgo } = calendarRange()
+  const { today, yearAgo, calendarStart } = calendarRange()
   const start = settings.start_date || dateKey(yearAgo)
   async function request(method: string, startDate: string, gran?: string, cancellation?: AbortSignal): Promise<Point[]> {
     if (!settings.api || !settings.site_id) throw new Error('unconfigured')
@@ -28,7 +28,7 @@ export function createBaiduSource(settings: BaiduSettings = {}, lifecycle: Abort
     }
   }
   return {
-    calendar: () => request('overview/getTimeTrendRpt', dateKey(yearAgo)),
+    calendar: () => request('overview/getTimeTrendRpt', dateKey(calendarStart)),
     trends: () => request('trend/time/a', start, 'month'),
     sources: () => request('source/all/a', start),
     regions: (mode: MapMode, cancellation?: AbortSignal) => request(mode === 'world' ? 'visit/world/a' : 'visit/district/a', start, undefined, cancellation),

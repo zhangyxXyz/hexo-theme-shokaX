@@ -1,6 +1,7 @@
 - const statsData = statistics_data(site, page)
-- const statsLabels = Object.fromEntries(['loading', 'failed', 'expired', 'empty', 'retry', 'visits', 'calendar', 'map', 'trends', 'sources', 'posts', 'tags', 'categories', 'source', 'count', 'date', 'tag_axis', 'average', 'provinces', 'countries', 'south_sea'].map(key => [key, __('statistics.' + key)]))
+- const statsLabels = Object.fromEntries(['loading', 'failed', 'expired', 'empty', 'retry', 'visits', 'calendar', 'map', 'trends', 'sources', 'posts', 'tags', 'categories', 'source', 'count', 'date', 'tag_axis', 'average', 'provinces', 'countries', 'south_sea', 'high', 'low', 'ranking', 'data_source', 'baidu', 'year_visits', 'month_visits', 'week_visits', 'weekdays', 'months'].map(key => [key, __('statistics.' + key)]))
 - const settings = theme.statistics || {}
+- for (const key of ['map_zoom', 'zoom_in', 'zoom_out', 'zoom_reset']) statsLabels[key] = __('statistics.' + key)
 - const baidu = settings.baidu || {}
 - const assets = settings.assets || {}
 - const maps = assets.maps || {}

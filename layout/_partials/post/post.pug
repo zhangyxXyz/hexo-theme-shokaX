@@ -15,6 +15,8 @@ article(itemscope itemtype="http://schema.org/Article" class="post block" data-p
         != partial('_partials/post/article-info.pug', {post: post})
         != partial('_partials/post/ai-summary.pug', {post: post})
         != post.content
+        if post.type === 'icon-preview'
+            include ../icon-preview.pug
         if post.tags && post.tags.length
             div(class="tags")
                 each tag in post.tags.toArray()
