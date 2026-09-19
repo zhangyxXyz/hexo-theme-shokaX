@@ -334,6 +334,9 @@ statistics:
   categories: "記事カテゴリ"
   source: "アクセスデータは Baidu Analytics、記事統計は当サイトより。"
 comment_friend: "お友達"
+comment_private:
+  label: "非公開"
+  hint: "双方のアカウントと管理者のみ閲覧できます"
 comment_panel:
   title: "コメント"
   close: "コメントを閉じる"

@@ -334,6 +334,9 @@ statistics:
   categories: "文章分類"
   source: "訪問資料來自百度統計；文章統計來自本站。"
 comment_friend: "小夥伴"
+comment_private:
+  label: "私密"
+  hint: "僅雙方帳戶及管理員可見"
 comment_panel:
   title: "評論"
   close: "關閉評論"

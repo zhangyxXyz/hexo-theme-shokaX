@@ -334,6 +334,9 @@ statistics:
   categories: "文章分类统计图"
   source: "访问数据来自百度统计；文章统计来自本站。"
 comment_friend: "小伙伴"
+comment_private:
+  label: "私密"
+  hint: "仅双方账户及管理员可见"
 comment_panel:
   title: "评论"
   close: "关闭评论"

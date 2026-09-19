@@ -9,8 +9,9 @@ export function adaptWalineTime(source: string, days: number): string {
   const matches = [...source.matchAll(/a<8\?`\$\{a\} \$\{n\.days\}`:([\w$]+)\(r\)/g)]
   const cutoff = matches[0]?.[0]
   const absolute = matches[0]?.[1]
-  const sameDay = 'if(a===0){let e=i%(24*3600*1e3)'
-  if (matches.length !== 1 || source.split(sameDay).length !== 2) {
+  const sameDays = [...source.matchAll(/if\(a===0\)\{let e=i%(?:\(24\*3600\*1e3\)|864e5)/g)]
+  const sameDay = sameDays[0]?.[0]
+  if (matches.length !== 1 || sameDays.length !== 1) {
     throw new Error('Waline time adapter expects @waline/client 3.15.2; review it before upgrading the client.')
   }
   return source
@@ -18,7 +19,7 @@ export function adaptWalineTime(source: string, days: number): string {
     .replace(sameDay, `${days === 0 ? `return ${absolute}(r);` : ''}${sameDay}`)
 }
 
-export function walineTimePlugin(value: unknown): Plugin {
+export function walineTimePlugin(value: unknown, forkSource?: string): Plugin {
   const days = value ?? 60
   if (typeof days !== 'number' || !Number.isSafeInteger(days) || days < 0) {
     throw new Error('waline.relativeTimeDays must be a non-negative integer')
@@ -28,7 +29,7 @@ export function walineTimePlugin(value: unknown): Plugin {
     setup(build) {
       let applied = false
       build.onLoad({ filter: /[\\/]@waline[\\/]client[\\/]dist[\\/](?:waline|slim)\.js$/ }, async ({ path }) => {
-        const contents = adaptWalinePreview(adaptWalineTime(await fs.readFile(path, 'utf8'), days))
+        const contents = adaptWalinePreview(adaptWalineTime(forkSource ?? await fs.readFile(path, 'utf8'), days))
         applied = true
         return { contents, loader: 'js' }
       })

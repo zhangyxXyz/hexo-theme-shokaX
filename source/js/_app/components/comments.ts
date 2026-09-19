@@ -3,6 +3,7 @@ import { formatCommentRegion } from './comment-region'
 import { syncFriendBadges } from './comment-friend'
 import { createCommentMarkdown } from './comment-markdown'
 import { createCommentMedia } from './comment-media'
+import { observeCommentDecorations } from './comment-observer'
 import { init } from '@waline/client'
 import { pageviewCount } from '@waline/client/pageview'
 // @ts-ignore
@@ -12,12 +13,26 @@ await import('@waline/client/style')
 await import('@waline/client/meta')
 
 let instance: ReturnType<typeof init> | undefined
-let previewObserver: MutationObserver | undefined
+let previewObserver: ReturnType<typeof observeCommentDecorations> | undefined
 let markdown: ReturnType<typeof createCommentMarkdown> | undefined
 let media: ReturnType<typeof createCommentMedia> | undefined
 
 // Enhance the native toggle; Waline still owns preview rendering and state.
 const syncCommentDecorations = (container: HTMLElement) => {
+  const privateLabel = container.dataset.privateLabel || 'Private'
+  container.querySelectorAll<HTMLElement>('.wl-head > .wl-badge').forEach(badge => {
+    if (badge.textContent?.trim() === privateLabel) {
+      if (!badge.classList.contains('shokax-private-badge')) badge.classList.add('shokax-private-badge')
+      if (badge.title !== (container.dataset.privateHint || '')) badge.title = container.dataset.privateHint || ''
+    }
+  })
+  container.querySelectorAll<HTMLElement>('.wl-private-reply').forEach(toggle => {
+    if (toggle.dataset.label !== privateLabel) toggle.dataset.label = privateLabel
+    if (toggle.title !== (container.dataset.privateHint || '')) toggle.title = container.dataset.privateHint || ''
+    const input = toggle.querySelector('input')
+    if (input?.getAttribute('role') !== 'switch') input?.setAttribute('role', 'switch')
+    if (input?.getAttribute('aria-label') !== privateLabel) input?.setAttribute('aria-label', privateLabel)
+  })
   markdown?.sync()
   media?.sync()
   syncFriendBadges(container, CONFIG.waline.friendUrls || [], container.dataset.friendLabel || '')
@@ -61,11 +76,16 @@ export const walineComment = function () {
   container.classList.toggle('waline-readonly', CONFIG.waline.readOnly)
   markdown = createCommentMarkdown(container)
   media = createCommentMedia(container)
+  const locale = {
+    privateReply: container.dataset.privateLabel,
+    privateReplyHint: container.dataset.privateHint,
+    ...CONFIG.waline.locale
+  }
   instance = init({
     el: '#comments',
     serverURL: CONFIG.waline.serverURL,
     lang: CONFIG.waline.lang,
-    locale: CONFIG.waline.locale,
+    locale,
     emoji: CONFIG.waline.emoji,
     meta: CONFIG.waline.meta,
     requiredMeta: CONFIG.waline.requiredMeta,
@@ -81,8 +101,7 @@ export const walineComment = function () {
     dark: 'html[data-theme="dark"]'
   })
   syncCommentDecorations(container)
-  previewObserver = new MutationObserver(() => syncCommentDecorations(container))
-  previewObserver.observe(container, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'title', 'data-value', 'href', 'src', 'srcset'] })
+  previewObserver = observeCommentDecorations(container, () => syncCommentDecorations(container))
 }
 
 export const walinePageview = function () {

@@ -375,10 +375,11 @@
       background: var(--color-red-a1)
 
   .wl-action.shokax-preview-switch
+    box-sizing: border-box !important
     position: relative
     gap: .5rem
     width: auto
-    height: 2.25rem
+    height: 1.875rem
     padding: 0 .65rem
     border: 1px solid var(--grey-3)
     border-radius: 999px
@@ -423,13 +424,88 @@
     font-size: .875rem
     transition: color .2s ease, background .2s ease, border-color .2s ease
 
-    &.primary:not(:disabled)
-      background: transparent
-      color: var(--primary-color)
+  .wl-footer .wl-btn
+    box-sizing: border-box !important
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    height: 1.875rem
+    min-height: 1.875rem
+    padding: 0 .8rem
+    line-height: 1
+    font-size: .8125rem
+    border-radius: 999px
 
-      &:hover
+  .wl-private-reply
+    box-sizing: border-box !important
+    display: inline-flex
+    align-self: flex-start
+    align-items: center
+    gap: .5rem
+    height: 1.875rem
+    margin: .65rem 1rem 0
+    padding: 0 .65rem
+    border: 1px solid var(--grey-3)
+    border-radius: 999px
+    background: var(--grey-2)
+    font-size: 0
+    cursor: pointer
+
+    &::before
+      content: attr(data-label)
+      font-size: .8125rem
+
+    input
+      appearance: none
+      position: relative
+      width: 1.75rem
+      height: 1rem
+      margin: 0
+      border: 0
+      border-radius: 999px
+      background: var(--grey-4)
+      cursor: inherit
+
+      &::before
+        content: ''
+        position: absolute
+        inset: .125rem auto auto .125rem
+        width: .75rem
+        height: .75rem
+        border-radius: 50%
+        background: var(--grey-0)
+        transition: transform .18s ease
+
+      &:checked
         background: var(--primary-color)
-        color: var(--grey-0)
+
+        &::before
+          transform: translateX(.75rem)
+
+    &:has(input:checked)
+      color: var(--primary-color)
+      background: var(--color-red-a1)
+
+    &:has(input:disabled)
+      cursor: default
+
+  .wl-head .wl-badge.shokax-private-badge
+    gap: .3rem
+    color: var(--color-blue)
+    background: var(--color-blue-a1)
+    border-color: var(--color-blue-a3)
+
+    &::before
+      content: '\1F512'
+      font-size: .65rem
+
+  .wl-btn.primary:not(:disabled)
+    background: transparent
+    color: var(--primary-color)
+
+    &:hover
+      background: var(--primary-color)
+      color: var(--grey-0)
 
   button:focus-visible, a:focus-visible, .wl-input:focus-visible
     outline: 2px solid var(--primary-color)
@@ -718,7 +794,7 @@
     margin-inline-end: 1rem
 
   // Use Waline's verified administrator marker, never infer roles from nicknames.
-  .wl-card-item:has(> .wl-user .administrator-icon) > .wl-card > .wl-head > .wl-badge
+  .wl-card-item:has(> .wl-user .administrator-icon) > .wl-card > .wl-head > .wl-badge:not(.shokax-private-badge)
     color: var(--primary-color)
     background: linear-gradient(120deg, var(--color-red-a3), var(--color-pink-a3))
     border-color: var(--color-red-a3)

@@ -16,9 +16,10 @@ const dateLabel = date => `${date.getFullYear()}-${String(date.getMonth() + 1).p
 
 for (const [entry, name, next, isString, absolute] of [
   ['waline', 'De', 'Oe', 'Ce', 'Ee'],
-  ['slim', 'Ke', 'qe', '$', 'Ge']
+  ['slim', 'Ke', 'qe', '$', 'Ge'],
+  ['fork', 'kt', 'At', 'wt', 'Ot']
 ]) {
-const bundle = await fs.readFile(new URL(`../node_modules/@waline/client/dist/${entry}.js`, import.meta.url), 'utf8')
+const bundle = await fs.readFile(new URL(entry === 'fork' ? '../vendor/waline-fork/waline.js' : `../node_modules/@waline/client/dist/${entry}.js`, import.meta.url), 'utf8')
 for (const threshold of [0, 8, 30, 60, 365]) {
   const patched = adaptWalineTime(bundle, threshold)
   const body = patched.slice(patched.indexOf(`${name}=(e,t,n)=>`), patched.indexOf(`,${next}=`, patched.indexOf(`${name}=(e,t,n)=>`)))

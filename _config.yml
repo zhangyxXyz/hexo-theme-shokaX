@@ -199,6 +199,7 @@ twikoo:
 
 # https://waline.js.org/
 waline:
+  client: official # official | seiun (private replies require the matching fork server)
   relativeTimeDays: 60 # 0: absolute dates; otherwise relative time below this many days.
   layout: bottom # slide | bottom; page/post front matter: comment_layout.
   friendBadge:

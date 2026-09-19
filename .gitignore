@@ -15,6 +15,7 @@ test.html
 /docs/.vuepress/dist/
 /docs/.vuepress/.temp
 *.js
+!/vendor/waline-fork/waline.js
 !/source/js/extra/busuanzi.pure.min.js
 !*.test.js
 test.ts

@@ -25,6 +25,6 @@ mixin CommentRender()
         - for (var mode of ['light', 'dark']) { for (var key of ['text', 'background', 'border']) { var color = (friendColors[mode] || {})[key]; if (typeof color === 'string' && /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(color)) friendStyle['--friend-' + mode + '-' + key] = color; } }
         - var commentLayout = theme.waline.enable && (page.comment_layout ?? theme.waline.layout ?? 'bottom') === 'slide' ? 'slide' : 'bottom'
         section.comment-shell(data-comment-layout=commentLayout data-side=(theme.sidebar.position === 'left' ? 'left' : 'right') data-title=__('comment_panel.title') data-close=__('comment_panel.close') data-missing=__('comment_panel.missing') hidden=commentLayout === 'slide')
-            div(class="wrap" id="comments" style=friendStyle data-region-template=__('comment_region') data-friend-label=__('comment_friend'))
+            div(class="wrap" id="comments" style=friendStyle data-region-template=__('comment_region') data-friend-label=__('comment_friend') data-private-label=__('comment_private.label') data-private-hint=__('comment_private.hint'))
 
 

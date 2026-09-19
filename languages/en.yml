@@ -334,6 +334,9 @@ statistics:
   categories: "Post categories"
   source: "Traffic data from Baidu Analytics; post statistics from this site."
 comment_friend: "Friend"
+comment_private:
+  label: "Private"
+  hint: "Visible only to both accounts and administrators"
 comment_panel:
   title: "Comments"
   close: "Close comments"
