@@ -1,8 +1,11 @@
-import type { Point } from './types'
+import type { Labels, Point } from './types'
 import type { Panel } from './panel'
+import { scrollArrows } from './scroll-arrows'
 
 // Native touch scrolling plus mouse dragging; buttons retain keyboard and click filtering.
-export function createLegend(panel: Panel, data: Point[], chart: any) {
+export function createLegend(panel: Panel, data: Point[], chart: any, labels: Labels, signal: AbortSignal) {
+  const frame = document.createElement('div')
+  frame.className = 'statistics-legend-frame'
   const legend = document.createElement('div')
   legend.className = 'statistics-legend'
   const selected: Record<string, boolean> = {}
@@ -46,9 +49,13 @@ export function createLegend(panel: Panel, data: Point[], chart: any) {
     legend.append(button)
     return swatch
   })
-  panel.element.append(legend)
+  frame.append(legend)
+  panel.element.append(frame)
+  const update = scrollArrows(frame, legend, legend, labels, signal)
+  signal.addEventListener('abort', stop, { once: true })
   return (option: any) => {
     option.legend = { show: false, selected }
     buttons.forEach((swatch, index) => { swatch.style.backgroundColor = option.color[index % option.color.length] })
+    update()
   }
 }

@@ -3,6 +3,7 @@ import { chartOptions } from './options'
 import { mapInteractions } from './map-interactions'
 import { createMapRanking } from './map-ranking'
 import { createMapScale } from './map-scale'
+import { mapDrawer } from './map-drawer'
 import type { BaiduSource } from './baidu'
 import type { Panel } from './panel'
 import type { MapMode, Point, RegisterChart, Settings } from './types'
@@ -50,11 +51,23 @@ export async function mountMap(panel: Panel, source: BaiduSource, config: Settin
     const aside = document.createElement('div')
     aside.className = 'statistics-map-aside'
     layout.append(aside)
+    mapDrawer(layout, aside, config.labels, signal)
+    const rankingTitle = document.createElement('div')
+    rankingTitle.className = 'statistics-map-ranking-title'
+    rankingTitle.hidden = true
+    aside.append(rankingTitle)
+    const summary = document.createElement('p')
+    summary.className = 'statistics-map-summary'
+    summary.hidden = true
+    const detail = document.createElement('div')
+    detail.className = 'statistics-map-detail'
+    detail.append(summary)
+    panel.header.append(detail)
     const zoomControls = document.createElement('div')
     zoomControls.className = 'statistics-map-zoom'
     zoomControls.setAttribute('role', 'group')
     zoomControls.setAttribute('aria-label', config.labels.map_zoom)
-    aside.append(zoomControls, ranking.element)
+    aside.append(ranking.element)
     const zoomButtons = ['zoom_in', 'zoom_out', 'zoom_reset'].map((key, index) => {
       const button = document.createElement('button')
       button.type = 'button'
@@ -133,7 +146,10 @@ export async function mountMap(panel: Panel, source: BaiduSource, config: Settin
       controls.append(button)
       return button
     })
-    layout.before(controls)
+    const toolbar = document.createElement('div')
+    toolbar.className = 'statistics-map-toolbar'
+    toolbar.append(controls, zoomControls)
+    panel.header.append(toolbar)
     async function update(value: MapMode = requestedMode) {
       requestedMode = value
       const current = ++sequence
@@ -142,6 +158,7 @@ export async function mountMap(panel: Panel, source: BaiduSource, config: Settin
       const request = cancellation = new AbortController()
       const done = previousFinish = panel.begin()
       ranking.update([], true)
+      summary.hidden = rankingTitle.hidden = true
       try {
         await loadMap(config.assets?.maps?.[value], echarts, value)
         if (signal.aborted || current !== sequence) return
@@ -163,6 +180,22 @@ export async function mountMap(panel: Panel, source: BaiduSource, config: Settin
         const aliases: Record<string, string> = mode === 'world'
           ? Object.fromEntries(echarts.getMap('statistics-world').geoJson.features.flatMap((feature: any) => [feature.properties.name_en, feature.properties.name_alias].filter(Boolean).map(name => [name, feature.properties.name]))) : {}
         data = result.map(item => ({ ...item, name: aliases[item.name] || item.name }))
+        const recorded = data.filter(item => Number.isFinite(item.value) && item.value >= 0)
+        const regions = new Set(echarts.getMap(`statistics-${mode}`).geoJson.features.map((feature: any) => feature.properties.name))
+        const values: Record<string, string> = {
+          total: recorded.reduce((total, item) => total + item.value, 0).toLocaleString(),
+          regions: new Set(recorded.filter(item => regions.has(item.name)).map(item => item.name)).size.toLocaleString(),
+        }
+        summary.replaceChildren()
+        for (const part of config.labels[`map_summary_${mode}`].split(/(\{total\}|\{regions\})/)) {
+          const value = values[part.slice(1, -1)]
+          const segment = document.createElement(value === undefined ? 'span' : 'strong')
+          segment.textContent = value === undefined ? part : value
+          summary.append(segment)
+        }
+        summary.hidden = recorded.length === 0
+        rankingTitle.textContent = config.labels.ranking_top.replace('{count}', String(Math.min(10, recorded.length)))
+        rankingTitle.hidden = recorded.length === 0
         ranking.update(data)
         scale.update(data)
         render()

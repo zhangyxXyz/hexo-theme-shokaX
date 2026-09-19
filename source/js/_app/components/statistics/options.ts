@@ -1,8 +1,9 @@
 import type { ChartKey, Labels, Point } from './types'
 import { dateKey, calendarRange } from './dates'
 import { mapAspects, mapLines } from './assets'
-import { chartPalette } from './palette'
+import { chartPalette, statisticsColors } from './palette'
 import { tooltipContent } from './tooltip-content'
+import { chartTooltip } from './tooltip'
 import { calendarColors, normalizeDay } from './calendar'
 
 export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root: HTMLElement, body: HTMLElement, echarts: any, mapMode = 'china') {
@@ -10,19 +11,20 @@ export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root:
   const styles = getComputedStyle(root)
   const dark = document.documentElement.getAttribute('data-theme') === 'dark'
   const palette = chartPalette(dark)
+  const pink = statisticsColors(root)
   const color = palette.text
   const axisColor = palette.axis
   const borderColor = palette.border
   const mapFill = styles.getPropertyValue('--statistics-map-fill').trim() || (dark ? '#435767' : '#e8eff3')
   const mapBorder = styles.getPropertyValue('--statistics-map-border').trim() || (dark ? '#819baa' : '#a7b8c2')
-  const mapHover = styles.getPropertyValue('--statistics-map-hover').trim() || (dark ? 'rgba(98,168,209,.72)' : 'rgba(126,189,224,.72)')
+  const mapHover = styles.getPropertyValue('--statistics-map-hover').trim() || (dark ? 'rgba(244,174,148,.4)' : 'rgba(236,140,105,.3)')
   const mapLabel = styles.getPropertyValue('--statistics-map-label').trim() || (dark ? '#f3fbff' : '#23465e')
   const gradient = new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: palette.barTop }, { offset: 1, color: palette.barBottom }])
   const option: any = {
     animationDuration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450,
     color: palette.series,
     textStyle: { color, fontFamily: styles.fontFamily },
-    tooltip: { trigger: 'item', renderMode: 'html', formatter: (items: any) => tooltipContent(key, items, labels), extraCssText: 'backdrop-filter:blur(12px) saturate(125%);-webkit-backdrop-filter:blur(12px) saturate(125%);border-radius:8px;line-height:1.45;max-width:calc(100vw - 24px);overflow-wrap:anywhere;box-sizing:border-box;', confine: true, backgroundColor: styles.getPropertyValue('--tooltip-bg').trim() || palette.surface, borderColor: styles.getPropertyValue('--tooltip-border').trim() || borderColor, borderWidth: 1, borderRadius: 8, padding: [6, 10], shadowBlur: 14, shadowOffsetY: 4, shadowColor: dark ? 'rgba(0,0,0,.28)' : 'rgba(35,62,83,.14)', textStyle: { color: styles.getPropertyValue('--tooltip-text').trim() || color, fontSize: 12 }, axisPointer: { lineStyle: { color: palette.axis, type: 'dashed' }, shadowStyle: { color: dark ? 'rgba(150,190,220,.10)' : 'rgba(80,130,170,.08)' } } },
+    tooltip: { ...chartTooltip(root), trigger: 'item', formatter: (items: any) => tooltipContent(key, items, labels) },
   }
   if (key === 'map') {
     const aspect = mapAspects.get(mapMode) || 1
@@ -30,11 +32,11 @@ export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root:
     const reserve = desktop ? Math.min(240, body.clientWidth * .3) : 0
     const available = body.clientWidth - reserve
     const layout = { map: `statistics-${mapMode}`, layoutCenter: [available / 2, '50%'], layoutSize: (aspect >= 1 ? available : available / aspect) * .94, roam: false }
-    option.visualMap = { show: false, seriesIndex: 0, min: 0, max: Math.max(1, ...data.map(item => item.value)), inRange: { color: ['#92d0f9', '#49b1f5'] } }
+    option.visualMap = { show: false, seriesIndex: 0, min: 0, max: Math.max(1, ...data.map(item => item.value)), inRange: { color: statisticsColors(root).scale } }
     option.geo = { ...layout, show: false }
     option.series = [{ ...layout, roam: true, scaleLimit: { min: 1, max: 5 }, type: 'map', name: labels.visits, showLegendSymbol: false,
       itemStyle: { areaColor: mapFill, borderColor: mapBorder, borderWidth: .75 },
-      emphasis: { label: { show: true, color: mapLabel, fontWeight: 'normal', textBorderColor: dark ? '#234057' : '#f7fcff', textBorderWidth: 1.5 }, itemStyle: { areaColor: mapHover, borderColor: dark ? '#a2d1eb' : '#639dbf', borderWidth: 1 } },
+      emphasis: { label: { show: true, color: mapLabel, fontWeight: 'normal', textBorderColor: dark ? '#234057' : '#f7fcff', textBorderWidth: 1.5 }, itemStyle: { areaColor: mapHover, borderColor: dark ? '#e7ad91' : '#c98b70', borderWidth: 1 } },
       tooltip: { ...option.tooltip }, data,
     }]
     if (mapLines.get(mapMode)?.length) option.series.push({ type: 'lines', coordinateSystem: 'geo', polyline: true, silent: true, lineStyle: { color: dark ? '#a2bfd0' : '#839eaf', width: 1.25, opacity: 1 }, data: mapLines.get(mapMode)!.map(coords => ({ coords })) })
@@ -42,10 +44,19 @@ export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root:
     const dated = data.map(item => [normalizeDay(item.name).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3'), item.value])
     const format = (date: Date) => dateKey(date).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
     const cell = (body.clientWidth - 32) / 54
-    option.calendar = { top: 30, left: 26, right: 6, cellSize: ['auto', cell], range: [format(calendarStart), format(today)], splitLine: { show: false }, yearLabel: { show: false }, dayLabel: { color, firstDay: 0, nameMap: labels.weekdays.split(',') }, monthLabel: { color, nameMap: labels.months.split(','), fontSize: 11 }, itemStyle: { color: dark ? '#39434e' : '#f2f3f5', borderColor: 'transparent', borderWidth: 0 } }
+    const compact = root.clientWidth <= 600
+    option.calendar = { top: compact ? 26 : 30, left: 26, right: 6, cellSize: ['auto', cell], range: [format(calendarStart), format(today)], splitLine: { show: false }, yearLabel: { show: false }, dayLabel: { color, firstDay: 0, nameMap: labels.weekdays.split(','), fontSize: compact ? 10 : 12 }, monthLabel: { color, nameMap: labels.months.split(','), fontSize: compact ? 10 : 11 }, itemStyle: { color: dark ? '#39434e' : '#f2f3f5', borderColor: 'transparent', borderWidth: 0 } }
     option.visualMap = { type: 'piecewise', show: false, pieces: [{ value: 0, color: calendarColors[0] }, ...calendarColors.slice(1).map((shade, index) => ({ gt: index === 0 ? 0 : (index + 1) * 20 - 1, ...(index < 8 ? { lte: (index + 2) * 20 - 1 } : {}), color: shade }))] }
     option.series = [{ type: 'heatmap', coordinateSystem: 'calendar', data: dated }]
     option.series[0].itemStyle = { borderColor: dark ? '#22272e' : '#fff', borderWidth: Math.max(2, cell * .2) }
+  } else if (key === 'clock') {
+    option.polar = { center: ['50%', '50%'], radius: '72%' }
+    option.angleAxis = { type: 'category', data: data.map(item => item.name), startAngle: 90, clockwise: true,
+      axisTick: { show: false }, axisLabel: { color, fontSize: 10, interval: 2 },
+      axisLine: { lineStyle: { color: palette.grid } }, splitLine: { show: true, lineStyle: { color: palette.grid } } }
+    option.radiusAxis = { type: 'value', minInterval: 1, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { show: false }, splitLine: { lineStyle: { color: palette.grid, type: 'dashed' } } }
+    option.series = [{ type: 'bar', coordinateSystem: 'polar', name: labels.count, data,
+      barWidth: '65%', itemStyle: { color: pink.scale[2], opacity: .85 }, emphasis: { itemStyle: { color: mapHover, opacity: 1 } } }]
   } else if (key === 'sources' || key === 'categories') {
     const narrow = body.clientWidth < 520
     option.legend = { show: false }
@@ -58,7 +69,7 @@ export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root:
     option.xAxis = { ...axis, name: key === 'tags' ? labels.tag_axis : labels.date, type: 'category', boundaryGap: key === 'tags', data: ordered.map(item => item.name) }
     option.yAxis = { ...axis, name: key === 'trends' ? labels.visits : labels.count, type: 'value', minInterval: 1 }
     option.yAxis.splitLine = { show: true, lineStyle: { color: palette.grid, type: 'dashed', opacity: 1 } }
-    option.series = [{ type: key === 'tags' ? 'bar' : 'line', name: key === 'trends' ? labels.visits : labels.count, data: ordered.map(item => item.value), smooth: true, showSymbol: false, barCategoryGap: '20%', itemStyle: { color: gradient, barBorderRadius: [3, 3, 0, 0] }, lineStyle: { color: palette.barBottom, width: 1 }, areaStyle: { color: gradient, opacity: 1 }, markLine: { symbol: ['circle', 'arrow'], lineStyle: { color: palette.average, width: 1, type: 'dashed' }, label: { color, position: key === 'tags' ? 'end' : 'insideEndTop' }, data: [{ type: 'average', name: labels.average }] } }]
+    option.series = [{ type: key === 'tags' ? 'bar' : 'line', name: key === 'trends' ? labels.visits : labels.count, data: ordered.map(item => item.value), smooth: false, showSymbol: false, barCategoryGap: '35%', itemStyle: { color: gradient, barBorderRadius: [3, 3, 0, 0] }, lineStyle: { color: pink.scale[2], width: 2 }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: pink.bar[0] }, { offset: 1, color: pink.scale[0] }]), opacity: dark ? .2 : .35 }, markLine: { silent: true, symbol: 'none', lineStyle: { color: pink.scale[2], opacity: .55, width: 1, type: 'dashed' }, emphasis: { lineStyle: { width: 1, type: 'dashed' } }, label: { color, position: 'insideEndTop' }, data: [{ type: 'average', name: labels.average }] } }]
   }
   return option
 }

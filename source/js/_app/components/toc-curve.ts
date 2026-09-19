@@ -32,7 +32,7 @@ export function refreshTocCurve() {
   defs.append(clip)
   progress.setAttribute('clip-path', `url(#${clip.id})`)
   const dot = document.createElementNS(ns, 'circle')
-  dot.setAttribute('r', '2.5')
+  dot.setAttribute('r', '1.75')
   svg.append(defs, rail, progress, dot)
   list.prepend(svg)
   let frame = 0

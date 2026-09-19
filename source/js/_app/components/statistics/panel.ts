@@ -5,9 +5,18 @@ export function createPanel(element: HTMLElement, key: ChartKey, labels: Labels,
   element.classList.add('statistics-panel')
   element.classList.remove('is-ready')
   element.dataset.chart = key
-  const heading = document.createElement('h2')
+  const heading = document.createElement('h1')
   heading.className = 'statistics-heading'
+  heading.id = `statistics-${key}`
   heading.textContent = labels[key]
+  const anchor = document.createElement('a')
+  anchor.className = 'anchor'
+  anchor.href = `#${heading.id}`
+  anchor.setAttribute('aria-label', labels[key])
+  heading.append(anchor)
+  const header = document.createElement('div')
+  header.className = 'statistics-header'
+  header.append(heading)
   const status = document.createElement('p')
   status.className = 'statistics-status'
   status.setAttribute('role', 'status')
@@ -26,10 +35,10 @@ export function createPanel(element: HTMLElement, key: ChartKey, labels: Labels,
   loader.setAttribute('role', 'status')
   loader.setAttribute('aria-label', labels.loading)
   feedback.append(loader, status, button)
-  element.append(heading, feedback, body)
+  element.append(header, feedback, body)
   let pending = 0
   return {
-    element, body, button,
+    element, header, body, button,
     begin() {
       pending++
       pendingChange(1)
@@ -46,11 +55,12 @@ export function createPanel(element: HTMLElement, key: ChartKey, labels: Labels,
         feedback.hidden = pending === 0 && Boolean(status.hidden) && Boolean(button.hidden)
       }
     },
-    ready() { element.classList.add('is-ready'); body.hidden = false; status.hidden = true },
+    ready() { element.classList.add('is-ready'); body.hidden = false; status.hidden = button.hidden = true; feedback.hidden = pending === 0 },
     empty() { status.textContent = labels.empty; status.hidden = false; feedback.hidden = false },
     success() { status.hidden = true },
     fail(error: unknown) {
-      status.textContent = error instanceof Error && error.message === 'expired' ? labels.expired : labels.failed
+      const reason = error instanceof Error ? error.message : ''
+      status.textContent = reason === 'expired' ? labels.expired : labels[`failed_${reason}`] || labels.failed
       status.hidden = false
       button.hidden = false
       feedback.hidden = false

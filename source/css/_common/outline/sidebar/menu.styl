@@ -69,20 +69,26 @@
   // Equal side columns keep the label on the sidebar centerline on either side of the page.
   > .item > a, > .item > .sidebar-menu-toggle:not(.sidebar-menu-chevron)
     display grid
-    grid-template-columns 1.15rem minmax(0, 1fr) 1.15rem
+    grid-template-columns 1.15rem minmax(2rem, max-content) 1.15rem
+    justify-content center
+    column-gap .85rem
     text-align center
     padding 0 1rem
 
   > .item > a::after
     content ''
 
+  > .item > .sidebar-menu-toggle:not(.sidebar-menu-chevron)::after
+    justify-self center
+    margin-left 0
+
   > .item > a > .ic, > .item > .sidebar-menu-toggle > .ic
-    transform translateX(.65rem)
+    transform none
 
   .item > .sidebar-menu-chevron
     position absolute
     top 0
-    right 0
+    right calc(50% - 3.675rem)
     width 40px
     min-height 44px
     justify-content center
@@ -97,13 +103,13 @@
     opacity 0
     visibility hidden
     overflow hidden
-    margin 0 .4rem 0 1.45rem
-    padding 0 0 0 1rem
+    margin 0 .4rem 0 0
+    padding 0 0 0 calc(50% - 1.6rem)
     transition max-height .28s ease, opacity .2s, padding .28s
     &::before
       content ''
       position absolute
-      left 4px
+      left calc(50% - 2.425rem + .2rem)
       top .5rem
       bottom .5rem
       width 1px
@@ -115,7 +121,7 @@
       &::before
         content ''
         position absolute
-        left -15px
+        left calc(-.825rem - 2px)
         top 50%
         width 5px
         height 5px

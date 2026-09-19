@@ -1,23 +1,83 @@
 #statistics_container
-  --statistics-map-fill #e8eff3
-  --statistics-map-border #a7b8c2
-  --statistics-map-hover rgba(126, 189, 224, .72)
-  --statistics-map-label #23465e
+  --statistics-scale-low #fce9ee
+  --statistics-scale-mid #f1acc0
+  --statistics-scale-high #df5d82
+  --statistics-bar-start #f3b3c5
+  --statistics-summary-bg rgba(237, 111, 145, .045)
+  --statistics-ui-accent var(--primary-color)
+  --statistics-map-fill #f2edf0
+  --statistics-map-border #c4b3bd
+  --statistics-map-hover rgba(236, 140, 105, .3)
+  --statistics-map-label var(--grey-7)
+  --statistics-map-accent var(--statistics-ui-accent)
   display grid
-  gap 2.5rem
+  gap 1.5rem
   min-width 0
 
   .statistics-panel
     min-width 0
     position relative
-    padding .5rem 0
+    padding 1.25rem
+    border 1px solid var(--grey-3)
+    border-radius .5rem
+    background var(--grey-1)
+    box-shadow 0 3px 12px var(--box-bg-shadow)
+
+  .statistics-header
+    display flex
+    align-items center
+    justify-content space-between
+    flex-wrap wrap
+    gap .75rem 1.25rem
+    margin-bottom 1rem
 
   .statistics-heading
-    margin 0 0 1rem
-    font-size 1.1rem
-    text-align center
-    border 0
+    margin 0 0 0 1.875rem
     padding 0
+    min-width 0
+    overflow-wrap anywhere
+    &::after
+      display none
+    .anchor::before
+      top 0
+      left -1.875rem
+      line-height inherit
+
+  .statistics-map-toolbar
+    display flex
+    align-items center
+    flex-shrink 0
+    gap .75rem
+    margin-left auto
+
+  .statistics-map-summary
+    margin 0
+    color var(--grey-6)
+    font-size .8rem
+    strong
+      color var(--primary-color)
+      font-weight 600
+      font-variant-numeric tabular-nums
+
+  .statistics-map-detail
+    order 1
+    flex-basis 100%
+    display flex
+    align-items center
+    justify-content space-between
+    flex-wrap wrap
+    gap .75rem
+
+  .statistics-map-ranking-title
+    padding .25rem .45rem .65rem
+    color var(--statistics-map-accent)
+    font-size .85rem
+    font-weight 600
+
+  .statistics-map-tooltip-title
+    color var(--statistics-map-accent)
+    font-weight 600
+    margin-bottom 4px
 
   .statistics-loading
     width 2.75rem
@@ -74,26 +134,34 @@
     outline 2px solid var(--primary-color)
     outline-offset 3px
 
-  .statistics-map-controls
+  .statistics-map-controls, .statistics-map-zoom, .statistics-content-controls
     display flex
     width fit-content
-    gap .1rem
-    padding .15rem
-    margin 0 0 .5rem auto
-    border-radius .6rem
-    background var(--grey-3)
+    gap .125rem
+    padding .1875rem
+    margin 0
+    border-radius .5rem
+    background var(--grey-2)
     button
       display grid
       place-items center
       margin 0
-      width 2rem
-      height 1.65rem
-      padding .25rem .4rem
+      width 2.25rem
+      height 2.25rem
+      padding 0
       border 0
-      border-radius .45rem
+      border-radius .375rem
       color var(--grey-6)
+      &:hover:not(:disabled), &:focus-visible:not(:disabled)
+        color var(--statistics-ui-accent)
+        background var(--color-red-a1)
+      &:focus-visible
+        outline-color var(--primary-color)
+      &:disabled
+        opacity .35
+        cursor default
       &[aria-pressed="true"]
-        color var(--primary-color)
+        color var(--statistics-ui-accent)
         background var(--grey-1)
         box-shadow 0 1px 4px var(--box-bg-shadow)
     .ic
@@ -107,16 +175,22 @@
     height 260px
     width 100%
 
+  .statistics-legend-frame
+    position relative
+    min-width 0
+    padding 0 1.875rem
+
   .statistics-legend
     display flex
     align-items center
     gap .85rem
     max-width 100%
     overflow-x auto
-    padding .25rem .15rem .55rem
+    padding .25rem .15rem
     overscroll-behavior-x contain
-    scrollbar-width thin
-    scrollbar-color var(--grey-4) transparent
+    scrollbar-width none
+    &::-webkit-scrollbar
+      display none
     touch-action pan-x pan-y
     cursor grab
     user-select none
@@ -164,7 +238,7 @@
       position relative
       width 12px
       height 105px
-      background linear-gradient(0deg, #92d0f9, #49b1f5)
+      background linear-gradient(0deg, var(--statistics-scale-low), var(--statistics-scale-mid), var(--statistics-scale-high))
       &::before, &::after
         content ''
         position absolute
@@ -174,10 +248,10 @@
         border-radius 3px
       &::before
         top -5px
-        background #49b1f5
+        background var(--statistics-scale-high)
       &::after
         bottom -5px
-        background #92d0f9
+        background var(--statistics-scale-low)
       span
         position absolute
         left 21px
@@ -190,44 +264,12 @@
   .statistics-map-aside
     position absolute
     right 0
-    top 50%
-    transform translateY(-50%)
+    top 1rem
     z-index 4
     max-width 30%
     max-height 100%
     display flex
     flex-direction column
-
-  .statistics-map-zoom
-    display flex
-    justify-content center
-    align-self center
-    flex-shrink 0
-    gap .1rem
-    padding .15rem
-    margin 0 .35rem .6rem
-    border-radius .6rem
-    background var(--grey-3)
-    button
-      display grid
-      place-items center
-      width 2rem
-      height 1.65rem
-      padding 0
-      border 0
-      border-radius .45rem
-      color var(--statistics-map-label)
-      background transparent
-      transition background .2s, box-shadow .2s, opacity .2s
-      &:hover:not(:disabled), &:focus-visible:not(:disabled)
-        background var(--grey-1)
-        box-shadow 0 1px 4px var(--box-bg-shadow)
-      &:disabled
-        opacity .35
-        cursor default
-      .ic
-        margin 0
-        font-size 1rem
 
   .statistics-map-ranking
     min-height 0
@@ -293,7 +335,7 @@
         z-index -1
         inset 0 auto 0 0
         width var(--visit-share)
-        background linear-gradient(90deg, #92d0f9, #49b1f5)
+        background linear-gradient(90deg, var(--statistics-bar-start), var(--statistics-scale-high))
         opacity .6
         border-radius inherit
     .statistics-map-ranking-empty
@@ -329,11 +371,101 @@
 
   .statistics-calendar-scroll
     overflow-x auto
-    scrollbar-width thin
+    overflow-y hidden
+    scrollbar-width none
+    cursor grab
+    touch-action pan-x pan-y
+    &::-webkit-scrollbar
+      display none
+    &.is-dragging
+      cursor grabbing
+      user-select none
+    canvas
+      touch-action pan-x pan-y !important
     .statistics-chart
       min-width 640px
       height auto
       aspect-ratio 54 / 10
+
+  .statistics-calendar-frame
+    position relative
+    min-width 0
+
+  .statistics-calendar-arrow
+    position absolute
+    z-index 5
+    top 50%
+    transform translateY(-50%)
+    display grid
+    place-items center
+    width 1.75rem
+    height 1.75rem
+    padding 0
+    border 0
+    background transparent
+    box-shadow none
+    color var(--statistics-ui-accent)
+    &:hover
+      background transparent
+    .ic
+      display block
+      margin 0
+      font-size 1rem
+      line-height 1
+      animation statistics-scroll-hint 1.8s ease-in-out infinite
+    &.is-left
+      left 0
+      --scroll-hint-distance -3px
+    &.is-right
+      right 0
+      --scroll-hint-distance 3px
+    @media (prefers-reduced-motion: reduce)
+      .ic
+        animation none
+
+  .statistics-calendar-frame
+    &:has(> .statistics-calendar-arrow:not([hidden]))
+      padding-bottom 2rem
+    > .statistics-calendar-arrow
+      top auto
+      bottom 0
+      transform none
+
+  .statistics-calendar-frame, .statistics-legend-frame
+    > .statistics-calendar-arrow
+      border-radius 6px
+      background unquote('color-mix(in srgb, var(--grey-1) 65%, transparent)')
+      border 1px solid unquote('color-mix(in srgb, var(--grey-4) 35%, transparent)')
+      backdrop-filter blur(8px)
+      -webkit-backdrop-filter blur(8px)
+      &:hover
+        background unquote('color-mix(in srgb, var(--grey-2) 85%, transparent)')
+
+  .statistics-content-plot
+    position relative
+  .statistics-content-links
+    position absolute
+    top 10px
+    bottom 35px
+    left 0
+    display grid
+    font-size 12px
+    a
+      display flex
+      align-items center
+      justify-content flex-end
+      min-width 0
+      padding-right 4px
+      color var(--grey-7)
+      &:hover, &:focus-visible
+        color var(--color-blue)
+      span
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
+
+  .statistics-map-toggle
+    display none
 
   .statistics-calendar-footer
     display flex
@@ -357,17 +489,26 @@
       border-radius 2px
 
   .statistics-calendar-totals
+    position relative
+    isolation isolate
     display grid
     grid-template-columns repeat(3, minmax(0, 1fr))
-    gap .75rem
+    gap 0
+    overflow hidden
+    border-radius 8px
+    &::before
+      content ''
+      position absolute
+      inset 0
+      z-index -1
+      border-radius 8px
+      background var(--statistics-summary-bg)
+      pointer-events none
     > div
       display flex
       flex-direction column
       gap .25rem
-      padding .9rem .6rem
-      border 1px solid var(--grey-3)
-      border-radius .8rem
-      background linear-gradient(135deg, var(--color-red-a1), transparent)
+      padding 1rem .6rem
       text-align center
     span
       font-size .8rem
@@ -384,11 +525,13 @@
       font-variant-numeric tabular-nums
 
   @media (max-width: 600px)
+    .statistics-calendar-scroll .statistics-chart
+      min-width 600px
     .statistics-calendar-totals
       grid-template-columns minmax(0, 1fr)
       > div
         display grid
-        grid-template-columns 1fr auto
+        grid-template-columns minmax(0, 1fr) auto
         align-items center
         padding .7rem 1rem
         text-align left
@@ -397,9 +540,111 @@
         grid-row 1 / 3
         font-size 1.4rem
 
+  .statistics-trend-controls
+    display flex
+    flex-wrap wrap
+    gap .25rem
+    margin-left auto
+    button
+      border 0
+      color var(--grey-6)
+      font-size .8rem
+      min-height 2rem
+      &[aria-pressed="true"]
+        color var(--primary-color)
+        background var(--color-red-a1)
+
+  .statistics-content-toolbar
+    display contents
+
+  .statistics-posts-range
+    margin-left auto
+    display flex
+    align-items center
+    gap .5rem
+    font-size .8rem
+    color var(--grey-6)
+
+  [data-chart="posts"] .statistics-chart
+    height 310px
+
+  [data-chart="clock"] .statistics-chart
+    height 340px
+
+  .statistics-content-controls
+    max-width 100%
+    flex-wrap wrap
+    button
+      width auto
+      height auto
+      min-height 2rem
+      padding .3rem .7rem
+      font-size .8rem
+      white-space nowrap
+
+  .statistics-content-actions
+    display flex
+    align-items center
+    justify-content flex-end
+    flex-wrap wrap
+    gap .5rem
+    margin-left auto
+
+  .statistics-content-picker
+    display flex
+    align-items center
+
+  .statistics-content-picker .select-picker-trigger, .statistics-posts-range .select-picker-trigger
+    padding .4rem .65rem
+    min-width 6rem
+    min-height 2.375rem
+    justify-content space-between
+    border 1px solid var(--grey-3)
+    border-radius .5rem
+    color var(--grey-6)
+    background var(--grey-2)
+    font-size .8rem
+    line-height 1.5
+    &[aria-expanded="true"]
+      color var(--statistics-ui-accent)
+      border-color currentColor
+
+  .statistics-trend-summary
+    display grid
+    grid-template-columns repeat(3, minmax(0, 1fr))
+    gap 1rem
+    margin-bottom 1rem
+    > div
+      display flex
+      flex-direction column
+      gap .25rem
+    span
+      color var(--grey-6)
+      font-size .8rem
+    strong
+      font-size 1.4rem
+      font-weight 500
+      font-variant-numeric tabular-nums
+
+  .statistics-trend-range
+    color var(--grey-6)
+    font-size .75rem
+    margin .5rem 0 0
+
+  [data-chart="trends"] .statistics-chart
+    height 320px
+
+  @media (max-width: 600px)
+    .statistics-trend-summary
+      grid-template-columns 1fr
+      > div
+        flex-direction row
+        align-items center
+        justify-content space-between
+
   @media (max-width: 600px)
     .statistics-panel
-      padding .5rem 0
+      padding 1rem .75rem
     [data-chart="map"] .statistics-chart
       width 100%
     .statistics-map-layout
@@ -408,22 +653,92 @@
       top 7rem
       bottom auto
     .statistics-map-aside
-      position relative
-      top auto
-      right auto
+      position absolute
+      top .75rem
+      right 0
       transform none
-      max-width none
-      width fit-content
-      margin .5rem auto 0
+      z-index 6
+      max-width calc(100% - 2rem)
+      width 15rem
+      max-height calc(100% - 1.5rem)
+      margin 0
+      padding 2.5rem .5rem .5rem
+      border 1px solid var(--grey-3)
+      border-radius 8px
+      background var(--grey-1)
+      background unquote('color-mix(in srgb, var(--grey-1) 82%, transparent)')
+      backdrop-filter blur(16px)
+      -webkit-backdrop-filter blur(16px)
+      box-shadow 0 4px 18px var(--box-bg-shadow)
     .statistics-map-ranking
-      max-height 260px
+      max-height 340px
+      flex 1
+    .statistics-map-toggle
+      display grid
+      place-items center
+      position absolute
+      top .75rem
+      right 0
+      z-index 7
+      width 1.75rem
+      height 3rem
+      padding 0
+      border 1px solid unquote('color-mix(in srgb, var(--grey-4) 40%, transparent)')
+      border-radius 6px 0 0 6px
+      color var(--statistics-ui-accent)
+      background unquote('color-mix(in srgb, var(--grey-1) 55%, transparent)')
+      backdrop-filter blur(8px)
+      -webkit-backdrop-filter blur(8px)
+      box-shadow 0 1px 4px var(--box-bg-shadow)
+      --scroll-hint-distance -3px
+      .ic
+        display block
+        margin 0
+        line-height 1
+        animation statistics-scroll-hint 1.8s ease-in-out infinite
+      @media (prefers-reduced-motion: reduce)
+        .ic
+          animation none
+      &:hover
+        background unquote('color-mix(in srgb, var(--grey-1) 75%, transparent)')
+    .is-ranking-open .statistics-map-toggle
+      --scroll-hint-distance 3px
+      height 2rem
+      border 0
+      background transparent
+      box-shadow none
 
 @keyframes statistics-spin
   to
     transform rotate(360deg)
 
+@keyframes statistics-scroll-hint
+  0%, 100%
+    transform translateX(0)
+  50%
+    transform translateX(var(--scroll-hint-distance))
+
 [data-theme="dark"] #statistics_container
-  --statistics-map-fill #435767
-  --statistics-map-border #819baa
-  --statistics-map-hover rgba(98, 168, 209, .72)
+  --statistics-scale-low #67434f
+  --statistics-scale-mid #b37187
+  --statistics-scale-high #f0a1b8
+  --statistics-bar-start #b87a8e
+  --statistics-summary-bg rgba(240, 161, 184, .045)
+  --statistics-ui-accent #f0adc7
+  --statistics-map-fill #3c343a
+  --statistics-map-border #9c8490
+  --statistics-map-hover rgba(244, 174, 148, .4)
   --statistics-map-label #f3fbff
+
+.select-picker-menu[data-picker="statistics"]
+  border-color var(--grey-3)
+  border-radius .5rem
+  .select-picker-option
+    &:hover, &:focus-visible
+      background var(--color-red-a1)
+    &[aria-selected="true"]
+      color var(--primary-color)
+      background var(--color-red-a1)
+
+[data-theme="dark"] .select-picker-menu[data-picker="statistics"] .select-picker-option[aria-selected="true"]
+  color #f0adc7

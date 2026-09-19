@@ -53,12 +53,13 @@
     color: var(--grey-6);
     span { min-width: 0; overflow-wrap: anywhere; }
     .ic { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 1em; height: 1em; line-height: 1; font-size: .95rem; color: var(--summary-accent); }
-    .summary-picker-trigger {
+    &.select-picker-enhanced > .ic { display: none !important; }
+    .select-picker-trigger {
       gap: .3rem;
       padding: 0;
       line-height: 1.25;
       align-items: center;
-      .summary-picker-arrow { margin-inline-start: .1rem; }
+      .select-picker-arrow { margin-inline-start: .1rem; }
     }
     select { min-width: 0; max-width: 100%; font: inherit; color: inherit; background: transparent; border: 0; cursor: pointer; padding: .15rem 0; }
     option { background: var(--grey-1); color: var(--grey-7); }

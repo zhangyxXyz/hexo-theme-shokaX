@@ -41,6 +41,12 @@ export const postImageViewer = (p: string) => {
     },
     filter: (image) => image.classList.contains('shokax-image-viewer'),
     url: (image) => image.currentSrc || image.src,
+    title: function (_image, imageData) {
+      // Read the original alt; Viewer.js substitutes a filename on its cloned image.
+      const description = images[(this as Viewer & { index: number }).index]?.alt.trim()
+      const dimensions = `${imageData.naturalWidth} × ${imageData.naturalHeight}`
+      return description ? `${description} (${dimensions})` : dimensions
+    },
     navbar: false,
     navigation: true,
     // Viewer.js 1.14.0 preloads images[-1] at non-looping gallery boundaries.

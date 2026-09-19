@@ -3,6 +3,8 @@ import { siteData } from './site'
 import { createPanel } from './panel'
 import { mountDataChart } from './charts'
 import { mountMap } from './map'
+import { mountTrends } from './trends'
+import { mountContentRanking } from './content-ranking'
 import { chartKeys, siteCharts } from './types'
 import type { BaiduChart, ChartKey, RegisterChart, Settings, SiteChart } from './types'
 
@@ -45,6 +47,8 @@ export function refreshStatistics() {
       root.setAttribute('aria-busy', String(pending > 0))
     })
     if (key === 'map') void mountMap(panel, source, config, root, controller.signal, register)
+    else if (key === 'trends') void mountTrends(panel, source, config, controller.signal, register)
+    else if (key === 'content') void mountContentRanking(panel, source, config, controller.signal, register)
     else {
       const getData = siteCharts.includes(key as SiteChart) ? () => siteData(config, key as SiteChart) : source[key as BaiduChart]
       void mountDataChart(key, panel, getData, config, root, controller.signal, register)

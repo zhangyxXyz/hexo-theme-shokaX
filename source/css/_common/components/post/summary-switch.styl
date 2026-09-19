@@ -1,3 +1,4 @@
+.summary-model-picker.select-picker-enhanced > span, .summary-model-picker.select-picker-enhanced > .ic { display: none !important; }
 .index.wrap .meta.footer.summary-footer {
   align-items: center;
   line-height: 1.4;
@@ -20,7 +21,7 @@
   }
   .summary-switch button:hover { color: var(--primary-color); }
   .summary-switch, .summary-model-picker, .summary-category { display: inline-flex; align-items: center; line-height: inherit; }
-  .summary-switch .summary-picker-trigger, .summary-category > a {
+  .summary-switch .select-picker-trigger, .summary-category > a {
     display: inline-flex;
     align-items: center;
     gap: .2em;
@@ -28,7 +29,7 @@
     height: 1.4em;
     line-height: 1.4;
   }
-  .summary-switch .summary-picker-trigger .ic, .summary-category .ic {
+  .summary-switch .select-picker-trigger .ic, .summary-category .ic {
     width: 1em;
     height: 1em;
     flex: 0 0 1em;
@@ -36,7 +37,7 @@
     font-size: 1em;
     line-height: 1;
   }
-  .summary-switch .summary-picker-trigger .ic, .summary-fixed > .ic {
+  .summary-switch .select-picker-trigger .ic, .summary-fixed > .ic {
     // Compensate for the icon font's lower visual baseline without moving the label.
     transform: translateY(-.08em);
   }
@@ -76,7 +77,7 @@
     padding: 0;
     color: var(--grey-6);
     select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-    .summary-picker-trigger {
+    .select-picker-trigger {
       justify-content: center;
       gap: .28rem;
       padding: 0 .12rem;
@@ -84,7 +85,7 @@
       height: 1.2em;
       line-height: 1;
       .ic { display: inline-flex; align-items: center; line-height: 1; }
-      .summary-picker-arrow { width: .65rem; height: .65rem; flex-basis: .65rem; }
+      .select-picker-arrow { width: .65rem; height: .65rem; flex-basis: .65rem; }
     }
   }
 }

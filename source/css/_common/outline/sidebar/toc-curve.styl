@@ -70,12 +70,14 @@
     pointer-events: none;
     overflow: visible;
     fill: none;
-    stroke: var(--grey-4);
+    stroke: unquote('color-mix(in srgb, var(--toc-accent) 22%, transparent)');
     stroke-width: 1.5;
     stroke-linecap: round;
+    stroke-linejoin: round;
 
     .toc-curve-progress {
       stroke: var(--toc-accent);
+      stroke-width: 1.75;
     }
 
     circle {

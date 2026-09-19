@@ -10,11 +10,10 @@
       gap: .125rem;
       padding: .25rem;
       margin: 0;
-      border: .0625rem solid var(--grey-3);
-      border-radius: .75rem;
-      background: var(--grey-1-a7);
-      box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .12);
-      backdrop-filter: blur(16px);
+      border: 0;
+      border-radius: .7rem;
+      background: var(--grey-3);
+      box-shadow: 0 .125rem .5rem var(--box-bg-shadow);
 
       > li {
         --viewer-control-bg: transparent;
@@ -33,34 +32,32 @@
   .viewer-button {
     display: grid;
     place-items: center;
-    color: var(--text-color);
-    transition: color .18s ease, background-color .18s ease;
+    color: var(--primary-color);
+    transition: color .18s ease, background-color .18s ease, box-shadow .18s ease;
 
     &::before {
       display: none;
     }
 
-    svg {
+    .ic {
       width: 1.25rem;
       height: 1.25rem;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.6;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      font-size: 1.25rem;
+      line-height: 1;
       pointer-events: none;
     }
 
     &:focus {
-      color: var(--text-color);
-      background: var(--viewer-control-bg, var(--grey-1-a7));
+      color: var(--primary-color);
+      background: var(--viewer-control-bg, var(--grey-1));
       box-shadow: none;
       outline: none;
     }
 
     &:hover {
-      color: white;
-      background: var(--primary-color);
+      color: var(--primary-color);
+      background: var(--grey-1);
+      box-shadow: 0 1px 4px var(--box-bg-shadow);
     }
 
     &:focus-visible {
@@ -74,7 +71,8 @@
       cursor: default;
       pointer-events: auto;
       color: var(--text-color);
-      background: var(--viewer-control-bg, var(--grey-1-a7));
+      background: var(--viewer-control-bg, var(--grey-1));
+      box-shadow: none;
     }
   }
 
@@ -84,9 +82,13 @@
 
     > div {
       pointer-events: auto;
-      background: var(--grey-1-a7);
+      width: 2.75rem;
+      height: 2.75rem;
+      margin-top: -1.375rem;
+      border-radius: .65rem;
+      background: var(--grey-1);
       border: .0625rem solid var(--grey-3);
-      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 4px var(--box-bg-shadow);
     }
   }
 
@@ -95,11 +97,15 @@
     right: 1rem;
     width: 2.75rem;
     height: 2.75rem;
-    border-radius: .75rem;
+    border-radius: .7rem;
     border: .0625rem solid var(--grey-3);
-    background: var(--grey-1-a7);
-    backdrop-filter: blur(16px);
+    background: var(--grey-1);
+    box-shadow: 0 1px 4px var(--box-bg-shadow);
     z-index: 4;
+  }
+
+  .viewer-toolbar > ul > li:not(:hover):not(:focus-visible) {
+    color: var(--grey-6);
   }
 
   +mobile-small() {
@@ -110,19 +116,45 @@
       margin: .5rem auto;
 
       > ul > li {
-        width: 2.75rem;
-        height: 2.75rem;
+        width: 2.25rem;
+        height: 2.25rem;
       }
     }
 
     .viewer-button {
       top: unquote('max(.625rem, env(safe-area-inset-top))');
       right: unquote('max(.625rem, env(safe-area-inset-right))');
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: .6rem;
+      border-color: rgba(255, 255, 255, .12);
+      background: rgba(40, 43, 49, .65);
+      color: #e3e5ec;
+      box-shadow: none;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -.25rem;
+      }
+
+      &:hover, &:focus-visible {
+        color: var(--primary-color);
+        background: rgba(40, 43, 49, .85);
+      }
     }
 
     .viewer-navigation > div {
-      width: 2.75rem;
-      height: 2.75rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      margin-top: -1.125rem;
+      border-radius: .5rem;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -.25rem;
+      }
     }
   }
 }
