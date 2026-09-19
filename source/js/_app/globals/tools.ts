@@ -40,7 +40,9 @@ export const positionInit = (comment?: boolean) => {
   }
 
   if (anchor) {
-    target = document.querySelector(decodeURI(anchor))
+      try { target = document.getElementById(decodeURIComponent(anchor.slice(1))) } catch { return }
+      // Comment loading and drawer scrolling are handled after Waline renders.
+      if (target?.closest('.comment-dialog, .comment-shell') || /^#(?:comments|\d+|[a-f\d]{24})$/i.test(anchor)) return
   } else {
     target = CONFIG.auto_scroll ? parseInt(localStorage.getItem(LOCAL_URL)) : 0
   }

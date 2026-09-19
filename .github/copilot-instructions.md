@@ -19,7 +19,7 @@
 - Package manager: **pnpm** (`packageManager: pnpm@10.x`), Node **>= 20** (`package.json#engines`).
 - Typecheck: `pnpm test` (runs `tsc --build --verbose`; root `tsconfig.json` references `./source` and `./scripts`).
 - ⚠️ **Do not casually run `pnpm build`:** it runs `toolbox/compiler.mjs`, which compiles `scripts/**/*.ts` to CJS **and then deletes the TS/JSON sources**. Only run for packaging/release on a clean working tree.
-- Dependency “hoist” helper for Hexo sites: `toolbox/hoistdep.mjs` fetches the latest theme deps from npm mirror and installs them into the detected Hexo root.
+- Dependency “hoist” helper for Hexo sites: `toolbox/hoistdep.mjs` reads dependencies from this theme's local `package.json`, installs them into the detected Hexo root, and waits for the installer to finish. It does not fetch a remote theme manifest. The blog's normal `setup` installs theme dependencies separately and does not call this helper.
 
 ## Runtime/environment constraints (don’t break these silently)
 - `scripts/plugin/check.ts` enforces environment expectations and can stop generation (e.g. `hexo.config.syntax_highlighter` must be off; renderer deps like `hexo-renderer-aether`, `shokax-uikit`, `nyx-player` must exist; Node must be >= 20).

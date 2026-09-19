@@ -12,4 +12,4 @@
 
 公共样式位于 `_common/components/select-picker.styl`。`summary-picker.ts` 仅适配文章 AI 摘要和首页摘要的特殊文案、图标；统计排行直接调用公共组件，不使用 `data-summary-select`，避免触发摘要业务监听。
 
-验证：`node toolbox/test-select-picker.cjs`，并检查首页摘要、文章摘要及统计页 TOP 选择的实际交互。
+验证：`pnpm test`，并检查首页摘要、文章摘要及统计页 TOP 选择的实际交互，包括键盘操作、禁用项和 PJAX 清理。

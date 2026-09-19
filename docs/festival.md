@@ -60,6 +60,6 @@ New artwork types require a template and a registered scene in `calendar.ts`;
 adding a YAML key alone does not create artwork. The old `footer.lantern` setting
 has been replaced by `festival` plus this table.
 
-Run `node toolbox/test-festival.mjs` with Node 24 and `pnpm test` from the theme.
+Run `pnpm test` from the theme, then check festival date boundaries and artwork in the browser.
 In the blog workspace use its safe `theme:build` command, not the theme's upstream
 in-place compiler. Restart the local Hexo server after editing theme config.

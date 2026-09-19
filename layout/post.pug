@@ -38,6 +38,7 @@ block content
         +BCRender(page, true)
         != partial('_partials/post/post.pug', {post: page})
     != partial('_partials/post/nav.pug', {post: page})
+    +CommentFooter()
     +CommentRender
 
 block sidebar

@@ -21,7 +21,7 @@
     "dependencies": {
         "@algolia/client-search": "^5.57.0",
         "@common.js/p-limit": "^7.3.2",
-        "@waline/client": "^3.15.2",
+        "@waline/client": "3.15.2",
         "algoliasearch": "5.57.0",
         "es-toolkit": "^1.51.0",
         "esbuild": "^0.28.2",
@@ -38,6 +38,7 @@
         "katex": "^0.18.4",
         "mouse-firework": "^0.3.0",
         "nyx-player": "^0.1.1",
+        "shiki": "3.23.0",
         "shokax-uikit": "0.0.5",
         "theme-shokax-anime": "^0.0.8",
         "twikoo": "^1.7.19",

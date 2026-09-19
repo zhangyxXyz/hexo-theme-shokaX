@@ -8,6 +8,7 @@ import {pagePosition} from '../globals/tools'
 import {initVue} from '../library/vue'
 import {createChild} from '../library/proto'
 import {transition} from '../library/anime'
+import { attachFireworkLayer } from '../components/firework-layer'
 
 const siteInit = async () => {
   initVue()
@@ -57,10 +58,7 @@ const siteInit = async () => {
       const canvas = Array.from(document.querySelectorAll<HTMLCanvasElement>('body > canvas'))
         .find(item => !existingCanvases.has(item))
       if (canvas) {
-        canvas.dataset.siteFireworks = ''
-        canvas.setAttribute('aria-hidden', 'true')
-        // A modal dialog is in the top layer, above every body z-index.
-        document.querySelector('#site-search[open]')?.append(canvas)
+        attachFireworkLayer(canvas)
       }
     })
   }

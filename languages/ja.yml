@@ -1,4 +1,5 @@
 ---
+comment_region: "{region}"
 name: 日本語
 code_block:
   wrap: "折り返しを切り替え"
@@ -89,6 +90,7 @@ post:
   related_posts: 関連記事
   next: 次の記事
   prev: 前の記事
+  random: 別の記事を読んでみる
   copyright:
     author: 著者
     link: 記事へのリンク
@@ -331,3 +333,13 @@ statistics:
   tags: "人気タグ"
   categories: "記事カテゴリ"
   source: "アクセスデータは Baidu Analytics、記事統計は当サイトより。"
+comment_friend: "お友達"
+comment_panel:
+  title: "コメント"
+  close: "コメントを閉じる"
+  missing: "対象のコメントは表示できません。"
+
+comment_entry:
+  title: "コメントしませんか"
+  description: "感想やご意見をお聞かせください。"
+  action: "コメントを見る"

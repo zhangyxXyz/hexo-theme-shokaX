@@ -45,7 +45,7 @@ export default async function domInit () {
                   <div class="item contents">
                     <i class="ic i-list-ol"></i>
                   </div>
-                  <div class="item chat">
+                  <div class="item chat" role="button" tabindex="0" hidden>
                     <i class="ic i-comments"></i>
                   </div>
                   <div class="item back-to-top">
@@ -61,6 +61,9 @@ export default async function domInit () {
 
   backToTop.addEventListener('click', backToTopHandle)
   goToComment.addEventListener('click', goToCommentHandle)
+  goToComment.addEventListener('keydown', (event: KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); goToCommentHandle() }
+  })
   showContents.addEventListener('click', sideBarToggleHandle)
 
   if (__shokax_player__) {

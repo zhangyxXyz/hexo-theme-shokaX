@@ -1,4 +1,5 @@
 import { showtip } from '../globals/tools'
+import { openedByPointer, restoreModalFocus } from './input-modality'
 
 let dispose: (() => void) | undefined
 
@@ -21,6 +22,11 @@ const setIcon = (button: HTMLButtonElement, name: keyof typeof icons) => {
 
 export function refreshCodeBlocks() {
   dispose?.()
+  dispose = enhanceCodeBlocks(document, '.md pre.shiki')
+}
+
+// Shared by articles and asynchronously rendered Waline content.
+export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comment = false) {
   const controller = new AbortController()
   const { signal } = controller
   const labels = LOCAL.codeBlock
@@ -30,7 +36,8 @@ export function refreshCodeBlocks() {
   let previousOverflow = ''
   let closeActive: (() => void) | undefined
 
-  document.querySelectorAll<HTMLPreElement>('.md pre.shiki').forEach(pre => {
+  root.querySelectorAll<HTMLPreElement>(selector).forEach(pre => {
+    if (pre.closest('.shokax-code')) return
     const code = pre.querySelector('code')
     if (!code) return
     const text = code.textContent || ''
@@ -81,7 +88,7 @@ export function refreshCodeBlocks() {
           label(copy, labels.copied)
           setIcon(copy, 'copied')
           status.textContent = labels.copied
-          showtip(LOCAL.copyright || labels.copied)
+          showtip(comment ? labels.copied : LOCAL.copyright || labels.copied)
         } catch {
           if (signal.aborted) return
           label(copy, labels.copyFailed)
@@ -101,15 +108,17 @@ export function refreshCodeBlocks() {
     wrapper.addEventListener('copy', event => {
       event.stopPropagation()
       if (LOCAL.nocopy) event.preventDefault()
-      showtip(LOCAL.copyright)
+      if (!comment) showtip(LOCAL.copyright)
     }, { signal })
     const status = document.createElement('span')
     status.className = 'code-status'
     status.setAttribute('role', 'status')
     header.append(status)
     const toggleFullscreen = () => {
-      if (wrapper.closest('dialog')) { closeActive?.(); return }
+      if (wrapper.closest('.shokax-code-dialog')) { closeActive?.(); return }
       closeActive?.()
+      const pointerOpened = openedByPointer()
+      const focusTarget = document.activeElement as HTMLElement | null
       const dialog = document.createElement('dialog')
       dialog.className = 'shokax-code-dialog'
       dialog.setAttribute('aria-label', names[language] || language)
@@ -133,7 +142,7 @@ export function refreshCodeBlocks() {
         label(fullscreen, labels.fullscreen)
         label(title, labels.fullscreen)
         setIcon(fullscreen, 'fullscreen')
-        if (fullscreen.isConnected && !signal.aborted) fullscreen.focus({ preventScroll: true })
+        if (!signal.aborted) restoreModalFocus(focusTarget, pointerOpened)
       }
       dialog.addEventListener('cancel', event => { event.preventDefault(); closeActive?.() }, { signal })
       label(fullscreen, labels.exitFullscreen)
@@ -164,7 +173,7 @@ export function refreshCodeBlocks() {
     }
     restores.push(() => { wrapper.replaceWith(pre) })
   })
-  dispose = () => {
+  return () => {
     controller.abort()
     if (active) closeActive?.()
     timers.forEach(clearTimeout)

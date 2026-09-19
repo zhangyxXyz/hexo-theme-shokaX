@@ -1,11 +1,67 @@
 import { CONFIG } from '../globals/globalVars'
-import { init, RecentComments } from '@waline/client'
+import { formatCommentRegion } from './comment-region'
+import { syncFriendBadges } from './comment-friend'
+import { createCommentMarkdown } from './comment-markdown'
+import { createCommentMedia } from './comment-media'
+import { init } from '@waline/client'
 import { pageviewCount } from '@waline/client/pageview'
 // @ts-ignore
 await import('@waline/client/style')
+// Browser / OS icons supplied by the installed Waline version.
+// @ts-ignore
+await import('@waline/client/meta')
+
+let instance: ReturnType<typeof init> | undefined
+let previewObserver: MutationObserver | undefined
+let markdown: ReturnType<typeof createCommentMarkdown> | undefined
+let media: ReturnType<typeof createCommentMedia> | undefined
+
+// Enhance the native toggle; Waline still owns preview rendering and state.
+const syncCommentDecorations = (container: HTMLElement) => {
+  markdown?.sync()
+  media?.sync()
+  syncFriendBadges(container, CONFIG.waline.friendUrls || [], container.dataset.friendLabel || '')
+  container.querySelectorAll<HTMLButtonElement>('.wl-actions > button:last-child').forEach(button => {
+    if (!button.closest('.wl-panel')?.querySelector('.wl-preview')) return
+    if (!button.classList.contains('shokax-preview-switch')) {
+      button.classList.add('shokax-preview-switch')
+      button.setAttribute('role', 'switch')
+      const label = document.createElement('span')
+      label.className = 'shokax-preview-label'
+      button.append(label)
+    }
+    const label = button.querySelector('.shokax-preview-label')!
+    if (label.textContent !== button.title) label.textContent = button.title
+    const checked = String(button.classList.contains('active'))
+    if (button.getAttribute('aria-checked') !== checked) button.setAttribute('aria-checked', checked)
+  })
+  const template = container.dataset.regionTemplate || '{region}'
+  container.querySelectorAll<HTMLElement>('.wl-meta > .wl-addr[data-value]').forEach(address => {
+    const text = formatCommentRegion(address.dataset.value || '', template)
+    if (address.textContent !== text) address.textContent = text
+  })
+}
+
+export const destroyWaline = () => {
+  previewObserver?.disconnect()
+  previewObserver = undefined
+  markdown?.destroy()
+  markdown = undefined
+  media?.destroy()
+  media = undefined
+  instance?.destroy()
+  instance = undefined
+}
+document.addEventListener('pjax:send', destroyWaline)
 
 export const walineComment = function () {
-  init({
+  destroyWaline()
+  const container = document.getElementById('comments')
+  if (!container) return
+  container.classList.toggle('waline-readonly', CONFIG.waline.readOnly)
+  markdown = createCommentMarkdown(container)
+  media = createCommentMedia(container)
+  instance = init({
     el: '#comments',
     serverURL: CONFIG.waline.serverURL,
     lang: CONFIG.waline.lang,
@@ -16,14 +72,21 @@ export const walineComment = function () {
     wordLimit: CONFIG.waline.wordLimit,
     pageSize: CONFIG.waline.pageSize,
     pageview: CONFIG.waline.pageview,
+    login: CONFIG.waline.readOnly ? 'disable' : CONFIG.waline.login,
+    reaction: false,
+    highlighter: false,
     path: window.location.pathname,
     recaptchaV3Key: CONFIG.waline.recaptchaV3Key,
     turnstileKey: CONFIG.waline.turnstileKey,
     dark: 'html[data-theme="dark"]'
   })
+  syncCommentDecorations(container)
+  previewObserver = new MutationObserver(() => syncCommentDecorations(container))
+  previewObserver.observe(container, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'title', 'data-value', 'href', 'src', 'srcset'] })
 }
 
 export const walinePageview = function () {
+  if (!CONFIG.waline.pageview || CONFIG.waline.readOnly) return
   pageviewCount({
     serverURL: CONFIG.waline.serverURL,
     path: window.location.pathname
@@ -31,15 +94,21 @@ export const walinePageview = function () {
 }
 
 export const walineRecentComments = async function () {
+  const container = document.getElementById('new-comment')
+  if (!container) return
   const root = shokax_siteURL.replace(/^(https?:\/\/)?[^/]*/, '')
   let items = []
-  const { comments } = await RecentComments({
-    serverURL: CONFIG.waline.serverURL.replace(/\/+$/, ''),
-    count: 10
-  })
-  // @ts-ignore
-  comments.data.forEach(function (item) {
-    let cText = (item.orig.length > 50) ? item.orig.substring(0, 50) + '...' : item.orig
+  // Read the server's JSON envelope directly; no widget or login state needed.
+  const url = new URL(`${CONFIG.waline.serverURL.replace(/\/+$/, '')}/api/comment`)
+  url.search = new URLSearchParams({ type: 'recent', count: '10', lang: CONFIG.waline.lang }).toString()
+  const response = await fetch(url)
+  if (!response.ok) throw new Error(`Waline recent comments: HTTP ${response.status}`)
+  const result: { errno: number; errmsg: string; data: Array<{ comment: string; url: string; objectId: string; time: number; nick: string }> } = await response.json()
+  if (result.errno !== 0) throw new Error(result.errmsg)
+  const rows = result.data
+  rows.forEach(function (item) {
+    const plain = new DOMParser().parseFromString(item.comment, 'text/html').body.textContent || ''
+    let cText = plain.length > 50 ? plain.substring(0, 50) + '...' : plain
     item.url = item.url.startsWith('/') ? item.url : '/' + item.url
     const siteLink = item.url + '#' + item.objectId
 
@@ -84,5 +153,5 @@ export const walineRecentComments = async function () {
     newComments.appendChild(commentEl)
   })
 
-  document.getElementById("new-comment").appendChild(newComments)
+  if (container.isConnected) container.replaceChildren(newComments)
 }

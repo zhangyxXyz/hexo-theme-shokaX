@@ -227,6 +227,11 @@ export const goToBottomHandle = () => {
 }
 
 export const goToCommentHandle = () => {
+  if (!document.getElementById('comments')) return
+  if (document.querySelector('[data-comment-layout]') && __shokax_waline__) {
+    document.dispatchEvent(new CustomEvent('shokax:open-comments'))
+    return
+  }
   pageScroll(document.getElementById('comments'))
 }
 

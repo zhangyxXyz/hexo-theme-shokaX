@@ -199,7 +199,17 @@ twikoo:
 
 # https://waline.js.org/
 waline:
+  relativeTimeDays: 60 # 0: absolute dates; otherwise relative time below this many days.
+  layout: bottom # slide | bottom; page/post front matter: comment_layout.
+  friendBadge:
+    enable: false # Website-based fallback label; not a verified identity.
+    source: friend-links/_data.yml # Relative to the blog source directory.
+    colors: # Hex colors; independently configurable for light and dark themes.
+      light: { text: '#347d83', background: '#eaf5f4', border: '#c5e3df' }
+      dark: { text: '#9ad5ce', background: '#253b3c', border: '#3d6262' }
   enable: false
+  readOnly: false # Hide writing controls; enforce write restrictions on the server too.
+  login: enable # enable | disable | force; enforce LOGIN=force on the server too.
   serverURL: ""
   lang: "zh-CN"
   locale: {} # https://waline.js.org/guide/features/i18n.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80

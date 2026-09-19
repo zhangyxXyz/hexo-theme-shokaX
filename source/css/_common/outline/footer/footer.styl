@@ -4,6 +4,9 @@
   color: var(--grey-5);
   font-size: $font-size-small;
   background: var(--body-bg-shadow);
+  position: relative;
+  // Cover the subpixel seam where the main background and its shadow end.
+  box-shadow: 0 -1px 0 var(--body-bg-shadow);
 
   .inner {
     margin: 2rem auto .625rem;

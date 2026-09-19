@@ -1,4 +1,5 @@
 name: English
+comment_region: "{region}"
 
 code_block:
   wrap: "Toggle line wrapping"
@@ -89,6 +90,7 @@ post:
   related_posts: Related Posts
   next: Next Post
   prev: Previous Post
+  random: Explore another story
   copyright:
     author: Post author
     link: Post link
@@ -331,3 +333,13 @@ statistics:
   tags: "Popular tags"
   categories: "Post categories"
   source: "Traffic data from Baidu Analytics; post statistics from this site."
+comment_friend: "Friend"
+comment_panel:
+  title: "Comments"
+  close: "Close comments"
+  missing: "The target comment is unavailable."
+
+comment_entry:
+  title: "Join the conversation"
+  description: "Have something to share? Leave a comment."
+  action: "View comments"

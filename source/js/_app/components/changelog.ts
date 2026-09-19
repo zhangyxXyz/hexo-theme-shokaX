@@ -1,3 +1,5 @@
+import { restoreModalFocus } from './input-modality'
+
 let cleanup: (() => void) | undefined
 
 export const refreshChangelog = () => {
@@ -45,7 +47,7 @@ export const refreshChangelog = () => {
     trigger.setAttribute('aria-expanded', 'false')
     if (previousOverflow !== undefined) document.body.style.overflow = previousOverflow
     previousOverflow = undefined
-    if (restoreFocus && keyboardInteraction && trigger.isConnected) trigger.focus({ preventScroll: true })
+    if (restoreFocus) restoreModalFocus(trigger, !keyboardInteraction)
   }
   const close = () => {
     if (!dialog.open || closing) return
@@ -67,7 +69,6 @@ export const refreshChangelog = () => {
     content.scrollTop = 0
     dialog.focus({ preventScroll: true })
   }, options)
-  dialog.addEventListener('keydown', () => { keyboardInteraction = true }, options)
   closeButton.addEventListener('click', close, options)
   dialog.addEventListener('cancel', event => { event.preventDefault(); close() }, options)
   const outside = (event: MouseEvent) => {

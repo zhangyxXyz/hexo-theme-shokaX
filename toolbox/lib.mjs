@@ -26,11 +26,9 @@ async function findScaffoldsDir(startPath) {
   return null;
 }
 
-const hexoRoot = await findScaffoldsDir(process.cwd())
-
-async function checkFileAccessible(file) {
+async function checkFileAccessible(root, file) {
   try {
-    await fs.access(join((hexoRoot || ''),file))
+    await fs.access(join(root, file))
   } catch {
     return false
   }
@@ -38,27 +36,31 @@ async function checkFileAccessible(file) {
 }
 
 export async function hoistDeps() {
+  const hexoRoot = await findScaffoldsDir(process.cwd())
+  if (!hexoRoot) throw new Error('Cannot find the Hexo root: run this tool inside the blog workspace.')
   let pm
-  if (await checkFileAccessible('pnpm-lock.yml') || await checkFileAccessible('pnpm-lock.yaml') || await checkFileAccessible('enable_pnpm')) {
+  if (await checkFileAccessible(hexoRoot, 'pnpm-lock.yml') || await checkFileAccessible(hexoRoot, 'pnpm-lock.yaml') || await checkFileAccessible(hexoRoot, 'enable_pnpm')) {
     pm = "pnpm add"
-  } else if (await checkFileAccessible('yarn.lock') || await checkFileAccessible('.yarnrc.yml')) {
+  } else if (await checkFileAccessible(hexoRoot, 'yarn.lock') || await checkFileAccessible(hexoRoot, '.yarnrc.yml')) {
     pm = "yarn add"
   } else {
     pm = "npm install"
   }
   console.log(`Using ${pm} to hoist dependencies.`)
-  // TODO 使用本地 package.json 解析
-  const res = await (await fetch('https://registry.npmmirror.com/hexo-theme-shokax')).json()
-  const latestV = res['dist-tags'].latest
-  const deps = res.versions[latestV].dependencies
+  // Resolve from this tool, not cwd: the caller may be in the blog root.
+  const themePackage = JSON.parse(await fs.readFile(new URL('../package.json', import.meta.url), 'utf8'))
+  const deps = themePackage.dependencies || {}
   const depsList = Object.keys(deps).map(d => `${d}@${deps[d]}`)
-  child_process.exec(`${pm} ${depsList.join(' ')}`.trim(), {
-    cwd: hexoRoot
-  }, (code, stdout, stderr) => {
-    if (stderr) {
-      console.error(stderr)
-    } else {
-      console.log(stdout)
-    }
+  if (!depsList.length) {
+    console.log('No theme dependencies to hoist.')
+    return
+  }
+  await new Promise((resolve, reject) => {
+    child_process.exec(`${pm} ${depsList.join(' ')}`, { cwd: hexoRoot }, (error, stdout, stderr) => {
+      if (stdout) console.log(stdout)
+      if (stderr) console.error(stderr)
+      if (error) reject(error)
+      else resolve()
+    })
   })
 }

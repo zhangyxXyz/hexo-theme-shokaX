@@ -187,8 +187,6 @@ export function initializePagefindSearch(selector: string) {
     }
   })
   dialog.addEventListener('close', () => {
-    const fireworks = dialog.querySelector<HTMLCanvasElement>('[data-site-fireworks]')
-    if (fireworks) document.body.append(fireworks)
     document.body.style.overflow = previousOverflow
     if (openedWithPointer) {
       if (document.activeElement === trigger) trigger.blur()
@@ -220,8 +218,6 @@ export function initializePagefindSearch(selector: string) {
       })
     }
     dialog.showModal()
-    const fireworks = document.querySelector<HTMLCanvasElement>('body > [data-site-fireworks]')
-    if (fireworks) dialog.append(fireworks)
     input.focus()
   }
   trigger.addEventListener('click', event => open(event.detail > 0))

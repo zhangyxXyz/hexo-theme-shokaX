@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   border: 0;
-  border-radius: 0;
+  border-radius: 0 0 .9rem .9rem;
   background: transparent;
   box-shadow: none;
   > summary.changelog-trigger {
@@ -16,6 +16,7 @@
     box-sizing: border-box;
     line-height: 1.5;
     margin: 0;
+    border-radius: 0 0 .9rem .9rem;
     color: var(--text-color);
     background: transparent;
     cursor: pointer;
@@ -25,7 +26,8 @@
     transition: background-color .2s;
     &:hover { background: var(--changelog-tint); }
     &:hover .changelog-trigger-arrow, &:focus-visible .changelog-trigger-arrow { color: var(--primary-color); }
-    &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: -3px; }
+    &:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--primary-color); }
+    &:focus:not(:focus-visible) { outline: none; }
   }
   .changelog-trigger-icon { color: var(--grey-6); font-size: .95rem; width: 1rem; text-align: center; }
   .changelog-trigger-label { font-weight: 500; }

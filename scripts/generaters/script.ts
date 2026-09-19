@@ -3,10 +3,20 @@ import fs from 'node:fs/promises'
 import { build } from 'esbuild'
 import { getVendorLink } from '../utils'
 import { htmlTag, url_for } from 'hexo-util'
+import { walineTimePlugin } from '../utils/waline-time'
+import path from 'node:path'
+import yaml from 'js-yaml'
 
 hexo.extend.generator.register('script', async function (locals) {
   const config = hexo.config
   const theme = hexo.theme.config
+  const friendBadge = theme.waline.friendBadge
+  let friendUrls: string[] = []
+  if (theme.waline.enable && friendBadge?.enable === true) {
+    const rows = yaml.load(await fs.readFile(path.resolve(hexo.source_dir, friendBadge.source || 'friend-links/_data.yml'), 'utf8'))
+    if (!Array.isArray(rows)) throw new Error('waline.friendBadge.source must contain a YAML list')
+    friendUrls = rows.filter(row => row && typeof row.url === 'string').map(row => row.url)
+  }
 
   const siteConfig = {
     version: env.version,
@@ -43,6 +53,9 @@ hexo.extend.generator.register('script', async function (locals) {
       ? theme.fireworks.options
       : undefined,
     waline: {
+      friendUrls,
+      readOnly: theme.waline.readOnly === true,
+      login: theme.waline.login ?? 'enable',
       serverURL: theme.waline.serverURL,
       lang: theme.waline.lang,
       locale: theme.waline.locale,
@@ -84,6 +97,7 @@ hexo.extend.generator.register('script', async function (locals) {
     patchDir = 'node_modules/hexo-theme-shokax/source/js/_app/components/cloudflare.ts'
   }
   const resultApp = await build({
+    plugins: theme.waline.enable ? [walineTimePlugin(theme.waline.relativeTimeDays)] : [],
     write: false,
     entryPoints: [enterPoint],
     bundle: true,

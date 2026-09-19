@@ -23,6 +23,7 @@ import { refreshStatistics } from '../components/statistics'
 import { refreshIconPreview } from '../components/icon-preview'
 import { refreshTooltips } from '../components/tooltip'
 import { refreshSidebarMenu } from '../components/sidebar-menu'
+import { refreshCommentPanel } from '../components/comment-panel'
 
 // The encrypted body (including its private cards) can arrive after page setup,
 // either through password entry or the encryption plugin's saved-key flow.
@@ -58,6 +59,11 @@ export const siteRefresh = async (reload) => {
   }
 
   setLocalHash(0)
+  const commentButton = document.querySelector<HTMLElement>('#tool .chat')
+  if (commentButton) {
+    commentButton.hidden = !document.getElementById('comments') || !(__shokax_waline__ || __shokax_twikoo__)
+    commentButton.setAttribute('aria-label', document.querySelector<HTMLElement>('[data-comment-layout]')?.dataset.title || '')
+  }
   refreshFooter()
   refreshFestival()
   refreshTagCloud()
@@ -105,13 +111,23 @@ export const siteRefresh = async (reload) => {
 
   await postBeauty()
 
-  const cpel = document.getElementById('copyright')
-  if (cpel) {
+  const cpel = document.getElementById('comments')
+  if (cpel && __shokax_waline__) {
+    refreshCommentPanel(async () => {
+      const { walinePageview, walineComment } = await import('../components/comments')
+      if (!cpel.isConnected) return
+      walinePageview()
+      walineComment()
+    })
+  }
+  if (cpel && !__shokax_waline__) {
     const comment = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+          if (!cpel.isConnected) { comment.disconnect(); return }
           if (__shokax_waline__) {
             import('../components/comments').then(({walinePageview, walineComment}) => {
+              if (!cpel.isConnected) return
               walinePageview()
               walineComment()
             })

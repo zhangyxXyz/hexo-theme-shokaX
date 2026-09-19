@@ -111,6 +111,9 @@ interface configType {
   }
   search: any,
   waline: {
+    friendUrls: string[]
+    readOnly: boolean
+    login: 'enable' | 'disable' | 'force'
     serverURL: string
     lang: string
     locale: object

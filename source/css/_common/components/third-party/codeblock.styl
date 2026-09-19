@@ -1,9 +1,12 @@
-.shokax-code {
+.shokax-code, #comments .wl-content {
   --code-bg: #f6f8fa;
   --code-header-bg: #edf1f5;
   --code-muted: #74808e;
   --code-fade-bg: rgba(246, 248, 250, 0);
   --code-line-hover-bg: rgba(56, 189, 248, .10);
+}
+
+.shokax-code {
   position: relative;
   margin: 1.5rem 0;
   border-radius: .6rem;
@@ -125,7 +128,8 @@
   .code-expand { display: none; }
 }
 
-html[data-theme='dark'] .shokax-code {
+html[data-theme='dark'] .shokax-code,
+html[data-theme='dark'] #comments .wl-content {
   --code-bg: #252a33;
   --code-header-bg: #2e3540;
   --code-muted: #9aa6b5;

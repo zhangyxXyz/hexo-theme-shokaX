@@ -7,6 +7,17 @@ let article: HTMLElement | undefined
 let gallery: ImageViewerGallery | undefined
 
 const preventImageLinkNavigation = (event: MouseEvent) => {
+  const link = event.target instanceof Element ? event.target.closest('a[data-image-viewer]') : null
+  const linkedImage = link?.querySelector<HTMLImageElement>('img.shokax-image-viewer')
+  if (linkedImage && viewer && article) {
+    const index = Array.from(article.querySelectorAll('img.shokax-image-viewer')).indexOf(linkedImage)
+    if (index >= 0) {
+      event.preventDefault()
+      event.stopPropagation()
+      viewer.view(index)
+      return
+    }
+  }
   const image = event.target
   if (image instanceof HTMLImageElement && image.classList.contains('shokax-image-viewer') && image.closest('a')) {
     event.preventDefault()
