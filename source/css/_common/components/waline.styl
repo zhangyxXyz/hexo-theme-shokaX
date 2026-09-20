@@ -303,6 +303,13 @@
   --waline-box-shadow: none
   color: var(--text-color)
 
+  .wl-comment > .wl-login-info
+    flex-shrink: 0
+    margin-inline-end: .875rem
+
+    + .wl-panel
+      margin-inline-start: 0
+
   .wl-panel
     display: flex
     flex-direction: column
@@ -335,7 +342,7 @@
       background: transparent
 
   .wl-footer
-    order: 1
+    order: 2
     gap: .5rem
     align-items: center
     margin: .75rem 1rem 1rem
@@ -343,10 +350,7 @@
   .wl-actions
     flex: 1 0 auto
     flex-wrap: wrap
-    gap: .25rem
-
-    > .shokax-preview-switch
-      margin-inline-start: auto
+    gap: 0
 
   .wl-info
     flex: 0 0 auto
@@ -355,68 +359,70 @@
   .wl-text-number
     white-space: nowrap
 
-  .wl-action
+  .wl-action, .wl-private-reply
+    box-sizing: border-box !important
+    position: relative
     display: inline-flex
     align-items: center
     justify-content: center
     flex-shrink: 0
-    width: 2.25rem
-    height: 2.25rem
-    margin: 0
+    width: 24px
+    height: 24px
+    margin: 2px
+    padding: 0
+    border: 0
     border-radius: .5rem
+    background: transparent
     color: var(--grey-6)
-    transition: background .2s ease
+    cursor: pointer
+    font-size: 16px
+    transition: color .2s ease, background .2s ease
 
     > svg
       display: block
       flex-shrink: 0
+      width: 24px
+      height: 24px
 
-    &:hover, &.active
-      background: var(--color-red-a1)
+    > .ic
+      font-size: 24px
+      line-height: 1
 
-  .wl-action.shokax-preview-switch
-    box-sizing: border-box !important
-    position: relative
-    gap: .5rem
-    width: auto
-    height: 1.875rem
-    padding: 0 .65rem
-    border: 1px solid var(--grey-3)
-    border-radius: 999px
-    background: var(--grey-2)
-    font-size: .8125rem
-    white-space: nowrap
-
-    > svg
-      display: none
-
-    &::after
-      content: ''
-      width: 1.75rem
-      height: 1rem
-      border-radius: 999px
-      background: var(--grey-4)
-
-    &::before
-      content: ''
-      position: absolute
-      z-index: 1
-      inset-inline-end: 1.5rem
-      width: .75rem
-      height: .75rem
-      border-radius: 50%
-      background: var(--grey-0)
-      transition: inset-inline-end .18s ease
-
-    &[aria-checked='true']
+    &:hover, &.active, &[aria-checked='true'], &:has(input:checked)
       color: var(--primary-color)
-      background: var(--color-red-a1)
 
-      &::after
-        background: var(--primary-color)
+    &:focus-visible, &:has(input:focus-visible)
+      outline: 2px solid var(--primary-color)
+      outline-offset: -2px
 
-      &::before
-        inset-inline-end: .75rem
+  .shokax-comment-controls
+    display: contents
+
+  .shokax-editor-tools
+    position: absolute
+    z-index: 1
+    top: -.625rem
+    inset-inline-start: .375rem
+    display: flex
+    margin: 0
+    padding: 0 .125rem
+    border-radius: .25rem
+    background: var(--waline-bg-color)
+
+    > .shokax-markdown-guide
+      width: 1.5rem
+      height: 1.25rem
+      margin: 0
+      color: var(--color-blue)
+      opacity: .7
+
+      > svg
+        width: 1rem
+        height: 1rem
+
+      &:hover
+        color: var(--color-blue)
+        opacity: 1
 
   .wl-btn
     padding: .6rem 1.1rem
@@ -425,69 +431,129 @@
     transition: color .2s ease, background .2s ease, border-color .2s ease
 
   .wl-footer .wl-btn
+    box-sizing: content-box !important
+    display: inline-block
+    height: auto
+    min-height: 0
+    padding: .5em 1em
+    line-height: 1.5
+    font-size: .75em
+    border-radius: .5em
+
+  .wl-footer .wl-btn.primary, .wl-card .wl-comment-actions .wl-reply
     box-sizing: border-box !important
     display: inline-flex
     align-items: center
     justify-content: center
-    height: 1.875rem
-    min-height: 1.875rem
-    padding: 0 .8rem
-    line-height: 1
+    min-height: 2rem
+    padding: .375rem .875rem
+    border: 1px solid var(--grey-4)
+    border-radius: .85rem
     font-size: .8125rem
-    border-radius: 999px
+    line-height: 1
+    transition: color .22s ease, background .22s ease, border-color .22s ease, box-shadow .22s ease
+
+    &:not(:disabled)
+      background: transparent
+      color: var(--primary-color)
+      box-shadow: 0 2px 5px var(--grey-9-a1)
+
+      &:hover, &:focus-visible, &:active, &.active
+        border-color: var(--primary-color)
+        background: transparent
+        color: var(--primary-color)
+
+  .wl-card .wl-admin-actions
+    display: flex
+    justify-content: flex-end
+    align-items: center
+    flex-wrap: wrap
+    gap: .5rem
+    margin: .75rem 0
+
+    .wl-comment-status
+      display: inline-flex
+      align-items: center
+      gap: .125rem
+      margin: 0
+      padding: .1875rem
+      border: 1px solid var(--grey-3)
+      border-radius: .65rem
+      background: var(--grey-2)
+
+      .wl-btn
+        display: inline-flex
+        box-sizing: border-box !important
+        align-items: center
+        justify-content: center
+        gap: .3rem
+        min-height: 1.75rem
+        min-width: 3.25rem
+        margin: 0
+        padding: .25rem .5rem
+        border: 0
+        border-radius: .45rem
+        background: transparent
+        color: var(--grey-5)
+        font-size: .75rem
+        line-height: 1
+        --moderation-color: var(--primary-color)
+
+        &.wl-approved
+          --moderation-color: var(--color-green)
+        &.wl-waiting
+          --moderation-color: var(--color-orange)
+        &.wl-spam
+          --moderation-color: var(--color-red)
+
+        &:hover:not(:disabled)
+          background: var(--grey-1)
+          color: var(--moderation-color)
+
+        &:disabled
+          opacity: 1
+          cursor: default
+          background: var(--grey-1)
+          color: var(--moderation-color)
+          box-shadow: 0 1px 3px var(--grey-9-a1)
+
+          &::before
+            content: ''
+            width: .3rem
+            height: .3rem
+            border-radius: 50%
+            background: currentColor
+
+    > .wl-sticky
+      min-height: 1.75rem
+      padding: .25rem .65rem
+      border-radius: .6rem
+      font-size: .75rem
 
   .wl-private-reply
-    box-sizing: border-box !important
-    display: inline-flex
-    align-self: flex-start
-    align-items: center
-    gap: .5rem
-    height: 1.875rem
-    margin: .65rem 1rem 0
-    padding: 0 .65rem
-    border: 1px solid var(--grey-3)
-    border-radius: 999px
-    background: var(--grey-2)
-    font-size: 0
-    cursor: pointer
-
-    &::before
-      content: attr(data-label)
-      font-size: .8125rem
+    // Keep the native label and checkbox accessible without a second switch.
+    font-size: 0 !important
 
     input
-      appearance: none
-      position: relative
-      width: 1.75rem
-      height: 1rem
+      position: absolute
+      width: 1px
+      height: 1px
       margin: 0
-      border: 0
-      border-radius: 999px
-      background: var(--grey-4)
-      cursor: inherit
+      opacity: 0
+      clip-path: inset(50%)
 
-      &::before
-        content: ''
-        position: absolute
-        inset: .125rem auto auto .125rem
-        width: .75rem
-        height: .75rem
-        border-radius: 50%
-        background: var(--grey-0)
-        transition: transform .18s ease
-
-      &:checked
-        background: var(--primary-color)
-
-        &::before
-          transform: translateX(.75rem)
+    .is-locked
+      display: none
 
     &:has(input:checked)
-      color: var(--primary-color)
-      background: var(--color-red-a1)
+      .is-unlocked
+        display: none
+      .is-locked
+        display: block
 
     &:has(input:disabled)
       cursor: default
+      opacity: .55
 
   .wl-head .wl-badge.shokax-private-badge
     gap: .3rem
@@ -498,14 +564,6 @@
     &::before
       content: '\1F512'
       font-size: .65rem
-
-  .wl-btn.primary:not(:disabled)
-    background: transparent
-    color: var(--primary-color)
-
-    &:hover
-      background: var(--primary-color)
-      color: var(--grey-0)
 
   button:focus-visible, a:focus-visible, .wl-input:focus-visible
     outline: 2px solid var(--primary-color)
@@ -552,18 +610,30 @@
         box-shadow: inset 0 -2px var(--primary-color)
 
   .wl-preview
-    order: 2
-    margin: 0 1rem 1rem
-    padding: .75rem 1rem
-    border: var(--waline-border)
-    border-radius: .65rem
+    --preview-inline-space: 1rem
+    position: relative
+    order: 1
+    margin: 0 var(--preview-inline-space) .5rem
+    padding: .75rem 0 0
+    border: 0
+    border-top: 1px dashed var(--grey-4)
+    border-radius: 0
+    background: transparent
 
     > hr
       display: none
 
-    h4
-      margin: 0 0 .5rem
-      color: var(--grey-6)
+    > h4
+      position: absolute
+      top: 0
+      inset-inline-start: calc(.5rem - var(--preview-inline-space))
+      transform: translateY(-50%)
+      margin: 0
+      padding: 0 .25rem
+      background: var(--waline-bg-color)
+      color: var(--primary-color)
+      font-size: .875rem
+      line-height: 1.25
 
   .wl-content
     font-size: .9375rem
@@ -705,30 +775,20 @@
       margin-inline-start: auto
 
       .wl-reply
-        display: inline-flex
-        align-items: center
         gap: .35rem
-        padding: .35rem .75rem
-        border: 1px solid var(--grey-3)
-        border-radius: 999px
-        background: var(--grey-2)
-        color: var(--grey-6)
-        font-size: .75rem
-        line-height: 1.5
-        transition: color .2s ease, border-color .2s ease, background .2s ease
 
         &::after
           content: attr(aria-label)
+          display: block
+          line-height: 1
 
         svg
-          width: 1rem
-          height: 1rem
-          color: var(--primary-color)
-
-        &:hover
-          color: var(--primary-color)
-          border-color: var(--color-pink-a3)
-          background: var(--color-red-a1)
+          display: block
+          flex: 0 0 1.125rem
+          width: 1.125rem
+          height: 1.125rem
+          color: inherit
+          transform: translateY(-.03rem)
 
       .wl-like
         display: inline-flex
@@ -950,9 +1010,8 @@
     .wl-footer, .wl-preview
       margin-inline: .75rem
 
-    .wl-action
-      width: 2.75rem
-      height: 2.75rem
+    .wl-preview
+      --preview-inline-space: .75rem
 
     .wl-card .wl-quote .wl-card-item
       padding-inline-start: .35rem
@@ -974,8 +1033,12 @@
       margin-inline-start: .25rem
 
   @media (prefers-reduced-motion: reduce)
-    .wl-panel, .wl-action, .wl-btn, .shokax-preview-switch::before, .wl-card .wl-comment-actions .wl-reply
+    .wl-panel, .wl-action, .wl-btn, .wl-private-reply, .wl-card .wl-comment-actions .wl-reply
       transition: none
+
+@media (max-width: 767px)
+  #comments .wl-comment > .wl-login-info
+    margin-inline-end: .625rem
 
 // Display-only mode. Server authorization remains the write protection.
 .comment-dialog #comments

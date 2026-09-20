@@ -58,7 +58,12 @@ export function refreshCommentPanel(mount: () => Promise<void>) {
     header.append(title, button)
     dialog.append(header, status, comments)
     document.body.append(dialog)
-    dialog.addEventListener('cancel', event => { event.preventDefault(); close() }, options)
+    dialog.addEventListener('cancel', event => {
+      // File pickers also emit a bubbling cancel event; only dismiss the dialog itself.
+      if (event.target !== dialog) return
+      event.preventDefault()
+      close()
+    }, options)
     let backdrop = false
     const outside = (event: MouseEvent) => {
       const rect = dialog.getBoundingClientRect()

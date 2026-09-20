@@ -79,6 +79,9 @@ export function refreshTooltips() {
     pointer = point
     timer = window.setTimeout(() => {
       if (active !== element || !element.isConnected) return
+      // A tooltip for a modal must render inside that dialog's top layer.
+      const host = element.closest('dialog[open]') || document.body
+      if (tip.parentElement !== host) host.append(tip)
       tip.textContent = element.dataset.themeTooltip || ''
       tip.hidden = false
       const ids = (element.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)
@@ -102,6 +105,9 @@ export function refreshTooltips() {
     if (active && !(event.relatedTarget instanceof Node && active.contains(event.relatedTarget))) hide()
   }, { signal: events.signal })
   document.addEventListener('focusout', hide, { signal: events.signal })
+  document.addEventListener('close', event => {
+    if (active?.closest('dialog') === event.target) hide()
+  }, { capture: true, signal: events.signal })
   document.addEventListener('pointerdown', hide, { signal: events.signal })
   document.addEventListener('keydown', event => { if (event.key === 'Escape') hide() }, { signal: events.signal })
   window.addEventListener('scroll', hide, { capture: true, passive: true, signal: events.signal })

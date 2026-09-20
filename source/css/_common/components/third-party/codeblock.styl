@@ -4,6 +4,30 @@
   --code-muted: #74808e;
   --code-fade-bg: rgba(246, 248, 250, 0);
   --code-line-hover-bg: rgba(56, 189, 248, .10);
+  --code-scrollbar-track: transparent;
+  --code-scrollbar-thumb: var(--grey-3);
+  --code-scrollbar-hover: unquote('color-mix(in srgb, var(--grey-3) 65%, var(--grey-4))');
+}
+
+// Shared by article code, comments and the preview before Shiki is ready.
+// The comments scope also overrides Waline's lazily loaded scrollbar rules.
+.shokax-code pre.shiki, #comments .wl-content pre {
+  &::-webkit-scrollbar { width: .3125rem; height: .3125rem; }
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-track-piece { background: var(--code-scrollbar-track); border-radius: 1rem; }
+  &::-webkit-scrollbar-thumb {
+    @extend $scrollbar-thumb;
+    background-color: var(--code-scrollbar-thumb);
+  }
+  &:hover::-webkit-scrollbar-thumb,
+  &::-webkit-scrollbar-thumb:active { background-color: var(--code-scrollbar-hover); }
+  &::-webkit-scrollbar-corner { background: var(--code-scrollbar-track); }
+
+  @supports unquote('not selector(::-webkit-scrollbar)') {
+    scrollbar-width: thin;
+    scrollbar-color: var(--code-scrollbar-thumb) var(--code-scrollbar-track);
+    &:hover { scrollbar-color: var(--code-scrollbar-hover) var(--code-scrollbar-track); }
+  }
 }
 
 .shokax-code {

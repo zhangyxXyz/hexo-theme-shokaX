@@ -4,6 +4,7 @@ import { syncFriendBadges } from './comment-friend'
 import { createCommentMarkdown } from './comment-markdown'
 import { createCommentMedia } from './comment-media'
 import { observeCommentDecorations } from './comment-observer'
+import { syncCommentControls } from './comment-controls'
 import { init } from '@waline/client'
 import { pageviewCount } from '@waline/client/pageview'
 // @ts-ignore
@@ -26,30 +27,10 @@ const syncCommentDecorations = (container: HTMLElement) => {
       if (badge.title !== (container.dataset.privateHint || '')) badge.title = container.dataset.privateHint || ''
     }
   })
-  container.querySelectorAll<HTMLElement>('.wl-private-reply').forEach(toggle => {
-    if (toggle.dataset.label !== privateLabel) toggle.dataset.label = privateLabel
-    if (toggle.title !== (container.dataset.privateHint || '')) toggle.title = container.dataset.privateHint || ''
-    const input = toggle.querySelector('input')
-    if (input?.getAttribute('role') !== 'switch') input?.setAttribute('role', 'switch')
-    if (input?.getAttribute('aria-label') !== privateLabel) input?.setAttribute('aria-label', privateLabel)
-  })
+  syncCommentControls(container)
   markdown?.sync()
   media?.sync()
   syncFriendBadges(container, CONFIG.waline.friendUrls || [], container.dataset.friendLabel || '')
-  container.querySelectorAll<HTMLButtonElement>('.wl-actions > button:last-child').forEach(button => {
-    if (!button.closest('.wl-panel')?.querySelector('.wl-preview')) return
-    if (!button.classList.contains('shokax-preview-switch')) {
-      button.classList.add('shokax-preview-switch')
-      button.setAttribute('role', 'switch')
-      const label = document.createElement('span')
-      label.className = 'shokax-preview-label'
-      button.append(label)
-    }
-    const label = button.querySelector('.shokax-preview-label')!
-    if (label.textContent !== button.title) label.textContent = button.title
-    const checked = String(button.classList.contains('active'))
-    if (button.getAttribute('aria-checked') !== checked) button.setAttribute('aria-checked', checked)
-  })
   const template = container.dataset.regionTemplate || '{region}'
   container.querySelectorAll<HTMLElement>('.wl-meta > .wl-addr[data-value]').forEach(address => {
     const text = formatCommentRegion(address.dataset.value || '', template)
