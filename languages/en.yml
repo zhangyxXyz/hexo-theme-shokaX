@@ -274,6 +274,8 @@ encrypt:
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>"
 statistics:
+  comment_scope: "Public comments and replies across the site"
+  comment_privacy: "Private comments excluded"
   comment-map: "Where conversations begin"
   comment-trend: "Comment trends"
   comment-ranking: "Comment rankings"

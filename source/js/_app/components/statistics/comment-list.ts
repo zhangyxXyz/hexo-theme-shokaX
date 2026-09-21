@@ -77,14 +77,28 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
       count.textContent = labels.comment_total.replace('{count}', String(data.total))
       for (const item of data.items) {
         const row = document.createElement('li')
+        // Chronological rows keep pagination stable; sides alternate without reshuffling.
+        row.style.gridRow = String(list.children.length + 1)
         const meta = document.createElement('div')
+        meta.className = 'statistics-comment-meta'
+        const avatar = document.createElement('span')
+        avatar.className = 'statistics-comment-avatar'
+        avatar.setAttribute('aria-hidden', 'true')
+        avatar.textContent = Array.from(item.nick || '?')[0]
+        if (typeof item.avatar === 'string' && /^https?:\/\//i.test(item.avatar)) {
+          const image = document.createElement('img')
+          image.alt = ''; image.loading = 'lazy'; image.referrerPolicy = 'no-referrer'
+          image.src = item.avatar
+          image.addEventListener('error', () => image.remove(), { once: true })
+          avatar.append(image)
+        }
         const name = document.createElement('strong')
         name.textContent = item.nick || labels.comment_anonymous
         const time = document.createElement('time')
         const date = new Date(item.time)
         time.textContent = Number.isNaN(date.getTime()) ? labels.comment_unknown_date : date.toLocaleString(document.documentElement.lang || undefined)
         if (!Number.isNaN(date.getTime())) time.dateTime = date.toISOString()
-        meta.append(name, time)
+        meta.append(avatar, name, time)
         const known = commentContent(config, item.url)
         const link = document.createElement(known ? 'a' : 'span')
         link.textContent = known?.title || item.url || labels.comment_unknown_page

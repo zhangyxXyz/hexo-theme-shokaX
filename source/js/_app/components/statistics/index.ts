@@ -57,7 +57,7 @@ export function refreshStatistics() {
       panel.element.dataset.chart = 'posts'
       void mountDataChart('posts', panel, comments.trend, commentConfig, root, controller.signal, register)
     } else if (key === 'comment-ranking') {
-      void mountCommentRanking(panel, comments, commentConfig, controller.signal)
+      void mountCommentRanking(panel, comments, commentConfig, controller.signal, register)
     } else if (key === 'map') void mountMap(panel, source, config, root, controller.signal, register)
     else if (key === 'trends') void mountTrends(panel, source, config, controller.signal, register)
     else if (key === 'content') void mountContentRanking(panel, source, config, controller.signal, register)

@@ -274,6 +274,8 @@ encrypt:
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">文章時效性提示</span><br>這是一篇發佈於 {{publish}} 天前，最後一次更新在 {{updated}} 天前的文章，部分信息可能已經發生改變，請注意甄別。</p></div>"
 statistics:
+  comment_scope: "全站公開評論與回覆"
+  comment_privacy: "私密留言不計入"
   tags_all: "全部"
   clock: "創作時鐘"
   posts_range: "統計範圍"

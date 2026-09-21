@@ -50,7 +50,7 @@ export function createCommentSource(config: Settings, signal: AbortSignal) {
 }
 
 export type CommentSource = ReturnType<typeof createCommentSource>
-export type CommentList = { total: number; page: number; hasMore: boolean; items: { id: string; url: string; nick: string; time: string }[] }
+export type CommentList = { total: number; page: number; hasMore: boolean; items: { id: string; url: string; nick: string; time: string; avatar?: string }[] }
 
 export async function loadCommentList(config: Settings, filter: { author?: string; url?: string }, page: number, signal: AbortSignal): Promise<CommentList> {
   if (!config.comments?.api) throw new Error('comments_unavailable')

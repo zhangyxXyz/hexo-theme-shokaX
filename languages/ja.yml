@@ -274,6 +274,8 @@ encrypt:
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">記事の適時性の警告</span><br> {{publish}} 日前に公開され、 {{updated}} 日前に最終更新された記事です。 一部情報が変更されている可能性がありますので、ご了承ください。</p></div>"
 statistics:
+  comment_scope: "サイト全体の公開コメントと返信"
+  comment_privacy: "非公開コメントを除く"
   tags_all: "すべて"
   clock: "執筆時計"
   posts_range: "集計期間"

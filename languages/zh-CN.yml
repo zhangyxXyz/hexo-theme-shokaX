@@ -274,6 +274,8 @@ encrypt:
 outime:
   template: "<div class=\"note warning\"><p><span class=\"label warning\">文章时效性提示</span><br>这是一篇发布于 {{publish}} 天前，最后一次更新在 {{updated}} 天前的文章，部分信息可能已经发生改变，请注意甄别。</p></div>"
 statistics:
+  comment_scope: "全站公开评论与回复"
+  comment_privacy: "私密留言不计入"
   comment-map: "留言者来源地图"
   comment-trend: "评论趋势"
   comment-ranking: "评论排行"
