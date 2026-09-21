@@ -2,21 +2,32 @@ import { pageScroll } from '../library/anime'
 import { BODY, CONFIG, LOCAL_HASH, LOCAL_URL, scrollAction, setLocalHash } from './globalVars'
 import { createChild } from '../library/proto'
 
-// 显示提示(现阶段用于版权及复制结果提示)
-export const showtip = (msg: string): void | never => {
+let activeTip: HTMLElement | null = null
+let tipHideTimer: ReturnType<typeof setTimeout> | undefined
+let tipRemoveTimer: ReturnType<typeof setTimeout> | undefined
+
+// 全局只保留最新一条提示。
+export const showtip = (msg: string, plainText = false): void | never => {
   if (!msg) {
     return
   }
 
+  clearTimeout(tipHideTimer)
+  clearTimeout(tipRemoveTimer)
+  activeTip?.remove()
+
   const tipbox = createChild(document.querySelector<HTMLDialogElement>('dialog[open]') || BODY, 'div', {
-    innerHTML: msg,
+    ...(plainText ? { textContent: msg } : { innerHTML: msg }),
+    role: 'status',
     className: 'tip'
   })
+  activeTip = tipbox
 
-  setTimeout(() => {
+  tipHideTimer = setTimeout(() => {
     tipbox.classList.add('hide')
-    setTimeout(() => {
+    tipRemoveTimer = setTimeout(() => {
       tipbox.remove()
+      if (activeTip === tipbox) activeTip = null
     }, 300)
   }, 3000)
 }

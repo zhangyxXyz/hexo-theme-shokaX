@@ -8,7 +8,7 @@ import type { BaiduSource } from './baidu'
 import type { Panel } from './panel'
 import type { MapMode, Point, RegisterChart, Settings } from './types'
 
-export async function mountMap(panel: Panel, source: BaiduSource, config: Settings, root: HTMLElement, signal: AbortSignal, register: RegisterChart) {
+export async function mountMap(panel: Panel, source: Pick<BaiduSource, 'regions'>, config: Settings, root: HTMLElement, signal: AbortSignal, register: RegisterChart) {
   const finish = panel.begin()
   try {
     const echarts = await loadCharts(config.assets?.echarts)

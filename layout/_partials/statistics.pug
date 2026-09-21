@@ -11,4 +11,6 @@
 - const baidu = settings.baidu || {}
 - const assets = settings.assets || {}
 - const maps = assets.maps || {}
-div(data-statistics-config=JSON.stringify({ baidu: { api: baidu.api, site_id: baidu.site_id, start_date: baidu.start_date, timeout: baidu.timeout }, assets: { echarts: assets.echarts, maps: { china: maps.china, world: maps.world } }, data: statsData, labels: statsLabels }) hidden)
+- for (const key of ['comment-map', 'comment-trend', 'comment-ranking', 'comment_count', 'comment_anonymous', 'comment_map_summary_china', 'comment_map_summary_world', 'comment_ranking_top', 'comment_map_no_record', 'failed_comments_unavailable']) statsLabels[key] = __('statistics.' + key)
+- for (const key of ['comment_by_author', 'comment_by_content', 'comment_list', 'comment_close', 'comment_total', 'comment_more', 'comment_unknown_date', 'comment_unknown_page']) statsLabels[key] = __('statistics.' + key)
+div(data-statistics-config=JSON.stringify({ comments: { api: (theme.waline || {}).serverURL }, baidu: { api: baidu.api, site_id: baidu.site_id, start_date: baidu.start_date, timeout: baidu.timeout }, assets: { echarts: assets.echarts, maps: { china: maps.china, world: maps.world } }, data: statsData, labels: statsLabels }) hidden)

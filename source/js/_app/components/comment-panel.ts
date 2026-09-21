@@ -1,6 +1,7 @@
 import { openedByPointer, restoreModalFocus } from './input-modality'
 import { waitCommentImage } from './comment-media'
 import { createCommentPagination } from './comment-pagination'
+import { CONFIG } from '../globals/globalVars'
 
 let cleanup: (() => void) | undefined
 
@@ -151,14 +152,38 @@ export function refreshCommentPanel(mount: () => Promise<void>) {
       pending = ''
     }
   }
+  const countLabels = document.querySelectorAll('.comment-entry-count')
+  let widgetCountSeen = false
+  const setEntryCount = (count: number) => {
+    const text = ` · ${count}`
+    countLabels.forEach(label => { if (label.textContent !== text) label.textContent = text })
+  }
   const syncEntryCount = () => {
-    const label = document.querySelector('.comment-entry-count')
     const count = comments.querySelector('.wl-count .wl-num')?.textContent?.trim()
-    const text = count && /^\d+$/.test(count) ? ` · ${count}` : ''
-    if (label && label.textContent !== text) label.textContent = text
+    if (count && /^\d+$/.test(count)) {
+      widgetCountSeen = true
+      setEntryCount(Number(count))
+    } else if (comments.querySelector('.wl-empty')) {
+      widgetCountSeen = true
+      setEntryCount(0)
+    }
   }
   const observer = new MutationObserver(() => { syncEntryCount(); locate() })
-  observer.observe(comments, { childList: true, subtree: true })
+  observer.observe(comments, { childList: true, characterData: true, subtree: true })
+  syncEntryCount()
+  // Fetch just the public total while the full comment widget remains lazy-loaded.
+  if (countLabels.length && CONFIG.waline?.serverURL) {
+    const url = new URL(`${CONFIG.waline.serverURL.replace(/\/+$/, '')}/api/comment`)
+    url.search = new URLSearchParams({ type: 'count', url: location.pathname }).toString()
+    void fetch(url, { signal: events.signal }).then(async response => {
+      if (!response.ok) return
+      const result = await response.json()
+      const count = Array.isArray(result.data) ? result.data[0] : result.data
+      if (!events.signal.aborted && !widgetCountSeen && result.errno === 0 && Number.isSafeInteger(count) && count >= 0) {
+        setEntryCount(count)
+      }
+    }).catch(() => { /* Keep the entry usable when the count service is unavailable. */ })
+  }
   const open = (id = '') => {
     pagination.reset()
     targetLoading?.abort()

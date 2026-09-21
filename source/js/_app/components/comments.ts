@@ -1,4 +1,5 @@
 import { CONFIG } from '../globals/globalVars'
+import { showtip } from '../globals/tools'
 import { formatCommentRegion } from './comment-region'
 import { syncFriendBadges } from './comment-friend'
 import { createCommentMarkdown } from './comment-markdown'
@@ -67,6 +68,8 @@ export const walineComment = function () {
     serverURL: CONFIG.waline.serverURL,
     lang: CONFIG.waline.lang,
     locale,
+    // The fork accepts a plain-text notifier; official clients ignore this option.
+    ...{ notify: (message: string) => showtip(message, true) },
     emoji: CONFIG.waline.emoji,
     meta: CONFIG.waline.meta,
     requiredMeta: CONFIG.waline.requiredMeta,

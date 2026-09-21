@@ -57,7 +57,7 @@ export function createPanel(element: HTMLElement, key: ChartKey, labels: Labels,
     },
     ready() { element.classList.add('is-ready'); body.hidden = false; status.hidden = button.hidden = true; feedback.hidden = pending === 0 },
     empty() { status.textContent = labels.empty; status.hidden = false; feedback.hidden = false },
-    success() { status.hidden = true },
+    success() { status.hidden = button.hidden = true; feedback.hidden = pending === 0 },
     fail(error: unknown) {
       const reason = error instanceof Error ? error.message : ''
       status.textContent = reason === 'expired' ? labels.expired : labels[`failed_${reason}`] || labels.failed

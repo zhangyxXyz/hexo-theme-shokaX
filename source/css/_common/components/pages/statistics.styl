@@ -23,6 +23,35 @@
     background var(--grey-1)
     box-shadow 0 3px 12px var(--box-bg-shadow)
 
+  .statistics-comment-ranking
+    height auto
+    max-height 28rem
+    overflow-y auto
+    padding .25rem
+    scrollbar-width thin
+    scrollbar-color var(--grey-4) transparent
+
+  button.statistics-comment-row
+    display grid
+    grid-template-columns 1.5rem minmax(0, 1fr) minmax(5rem, 30%)
+    align-items center
+    gap .75rem
+    width 100%
+    padding .65rem .5rem
+    border 0
+    color var(--grey-7)
+    text-align left
+    font-size .85rem
+    .statistics-comment-name
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+    .statistics-comment-bar
+      border-radius 1rem
+      padding .1rem .65rem
+      background linear-gradient(to right, var(--statistics-scale-mid) var(--fill), var(--statistics-map-fill) var(--fill))
+      font-variant-numeric tabular-nums
+
   .statistics-header
     display flex
     align-items center
@@ -711,6 +740,98 @@
 @keyframes statistics-spin
   to
     transform rotate(360deg)
+
+.statistics-comments-dialog
+  position fixed
+  inset .8rem .8rem .8rem auto
+  margin 0
+  width unquote('min(720px, calc(100vw - 1.6rem))')
+  height calc(100dvh - 1.6rem)
+  max-height none
+  max-width none
+  overflow hidden
+  padding 0
+  border 1px solid var(--grey-3)
+  border-radius 1rem
+  color var(--grey-7)
+  background unquote('color-mix(in srgb, var(--grey-1) 90%, transparent)')
+  backdrop-filter blur(18px)
+  box-shadow 0 1rem 3rem var(--box-bg-shadow)
+  &[open]
+    display flex
+    flex-direction column
+  &::backdrop
+    background rgba(0, 0, 0, .3)
+    backdrop-filter blur(4px)
+  header
+    flex-shrink 0
+    display flex
+    align-items center
+    gap 1rem
+    padding 1rem 1.5rem
+    border-bottom 1px solid var(--grey-4)
+    h2
+      margin 0
+      font-size 1.15rem
+      overflow-wrap anywhere
+    >span
+      color var(--primary-color)
+      white-space nowrap
+  button
+    cursor pointer
+    border 1px solid var(--grey-4)
+    border-radius .75rem
+    padding .4rem .8rem
+    color var(--primary-color)
+    background var(--grey-1)
+    &:hover
+      border-color var(--primary-color)
+    &:focus-visible
+      outline 2px solid var(--primary-color)
+      outline-offset 3px
+  .statistics-comments-close
+    margin-left auto
+    flex-shrink 0
+  .statistics-comments-body
+    flex 1
+    min-height 0
+    overflow-y auto
+    overscroll-behavior contain
+    padding 1.5rem
+    scrollbar-width thin
+    scrollbar-color var(--grey-4) transparent
+    ol
+      list-style none
+      margin 0 0 1rem .5rem
+      padding 0 0 0 1.5rem
+      border-left 2px solid var(--color-red-a3)
+    li
+      position relative
+      border 1px solid var(--grey-3)
+      border-radius .75rem
+      padding 1rem
+      margin 0 0 1rem
+      background var(--grey-1)
+      box-shadow 0 3px 12px var(--box-bg-shadow)
+      &::before
+        content ''
+        position absolute
+        left -1.9rem
+        top 1.3rem
+        width .6rem
+        height .6rem
+        background var(--primary-color)
+        border-radius 50%
+      >div
+        display flex
+        flex-wrap wrap
+        gap .4rem 1rem
+        margin-bottom .6rem
+      time
+        color var(--grey-5)
+        font-size .8rem
+      a, span, strong
+        overflow-wrap anywhere
 
 @keyframes statistics-scroll-hint
   0%, 100%

@@ -14,15 +14,22 @@ const now = new Date(2026, 8, 20, 12)
 const locale = { seconds: 'seconds ago', minutes: 'minutes ago', hours: 'hours ago', days: 'days ago', now: 'now' }
 const dateLabel = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
-for (const [entry, name, next, isString, absolute] of [
-  ['waline', 'De', 'Oe', 'Ce', 'Ee'],
-  ['slim', 'Ke', 'qe', '$', 'Ge'],
-  ['fork', 'kt', 'At', 'wt', 'Ot']
-]) {
+for (const entry of ['waline', 'slim', 'fork']) {
 const bundle = await fs.readFile(new URL(entry === 'fork' ? '../vendor/waline-fork/waline.js' : `../node_modules/@waline/client/dist/${entry}.js`, import.meta.url), 'utf8')
+// Locate the formatter by its behavior, since minified names change on rebuild.
+const cutoff = bundle.indexOf('a<8?`${a} ${n.days}`:')
+assert.ok(cutoff >= 0, 'relative-day formatter must exist')
+const declaration = [...bundle.slice(0, cutoff).matchAll(/([\w$]+)=\(e,t,n\)=>\{/g)].at(-1)
+assert.ok(declaration, 'formatter declaration must exist')
+const name = declaration[1]
+const originalBody = bundle.slice(declaration.index, bundle.indexOf('(r)}', cutoff) + 4)
+const isString = /let r=([\w$]+)\(e\)/.exec(originalBody)[1]
+const absolute = /:\s*([\w$]+)\(r\)\}$/.exec(originalBody)[1]
 for (const threshold of [0, 8, 30, 60, 365]) {
   const patched = adaptWalineTime(bundle, threshold)
-  const body = patched.slice(patched.indexOf(`${name}=(e,t,n)=>`), patched.indexOf(`,${next}=`, patched.indexOf(`${name}=(e,t,n)=>`)))
+  const start = patched.indexOf(`${name}=(e,t,n)=>`)
+  const end = patched.indexOf(`:${absolute}(r)}`, start) + `:${absolute}(r)}`.length
+  const body = patched.slice(start, end)
   const format = new Function(isString, absolute, `let ${body}; return ${name}`)(v => typeof v === 'string', dateLabel)
   for (const days of [0, 1, 7, 8, 29, 30, 59, 60, 364, 365]) {
     const date = new Date(now.getTime() - (days * 86400 + 120) * 1000)

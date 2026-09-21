@@ -5,6 +5,8 @@ import { mountDataChart } from './charts'
 import { mountMap } from './map'
 import { mountTrends } from './trends'
 import { mountContentRanking } from './content-ranking'
+import { createCommentSource, commentSettings } from './comments'
+import { mountCommentRanking } from './comment-ranking'
 import { chartKeys, siteCharts } from './types'
 import type { BaiduChart, ChartKey, RegisterChart, Settings, SiteChart } from './types'
 
@@ -39,6 +41,8 @@ export function refreshStatistics() {
   let pending = 0
   root.setAttribute('aria-busy', 'false')
   const source = createBaiduSource(config.baidu, controller.signal)
+  const comments = createCommentSource(config, controller.signal)
+  const commentConfig = commentSettings(config)
   for (const element of root.querySelectorAll<HTMLElement>('[data-statistics-chart]')) {
     const key = element.dataset.statisticsChart as ChartKey
     if (!chartKeys.includes(key)) continue
@@ -46,7 +50,15 @@ export function refreshStatistics() {
       pending += delta
       root.setAttribute('aria-busy', String(pending > 0))
     })
-    if (key === 'map') void mountMap(panel, source, config, root, controller.signal, register)
+    if (key === 'comment-map') {
+      panel.element.dataset.chart = 'map'
+      void mountMap(panel, comments, commentConfig, root, controller.signal, register)
+    } else if (key === 'comment-trend') {
+      panel.element.dataset.chart = 'posts'
+      void mountDataChart('posts', panel, comments.trend, commentConfig, root, controller.signal, register)
+    } else if (key === 'comment-ranking') {
+      void mountCommentRanking(panel, comments, commentConfig, controller.signal)
+    } else if (key === 'map') void mountMap(panel, source, config, root, controller.signal, register)
     else if (key === 'trends') void mountTrends(panel, source, config, controller.signal, register)
     else if (key === 'content') void mountContentRanking(panel, source, config, controller.signal, register)
     else {

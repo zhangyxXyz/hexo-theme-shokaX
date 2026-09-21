@@ -6,6 +6,12 @@
   bottom: 0;
   the-transition();
 
+  // Keep the same footprint when the inner panel becomes fixed on scroll.
+  @media (min-width: 992px) {
+    height: 100vh;
+    .panels { height: 100vh; }
+  }
+
   +tablet-mobile() {
     display: none;
     position: fixed;
