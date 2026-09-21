@@ -5,7 +5,7 @@ export function observeCommentDecorations(container: HTMLElement, sync: () => vo
   let disposed = false
   const options: MutationObserverInit = {
     childList: true, subtree: true, attributes: true,
-    attributeFilter: ['class', 'title', 'data-value', 'href', 'src', 'srcset']
+    attributeFilter: ['class', 'title', 'data-value', 'data-visibility-reason', 'href', 'src', 'srcset']
   }
   const observer = new MutationObserver(() => {
     if (disposed || frame !== undefined) return

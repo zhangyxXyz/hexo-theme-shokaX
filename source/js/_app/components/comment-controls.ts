@@ -57,7 +57,7 @@ export function syncCommentControls(container: HTMLElement) {
     }
     const privacy = panel.querySelector<HTMLElement>('.wl-private-reply')
     if (privacy) {
-      privacy.dataset.themeTooltip = [privateLabel, container.dataset.privateHint].filter(Boolean).join(' · ')
+      privacy.dataset.themeTooltip = privacy.dataset.visibilityReason || [privateLabel, container.dataset.privateHint].filter(Boolean).join(' · ')
       privacy.removeAttribute('title')
       const input = privacy.querySelector('input')
       input?.setAttribute('role', 'switch')
