@@ -10,44 +10,18 @@ export const twikooComment = function () {
 }
 
 export const twikooRecentComments = async function () {
-  let comments = []
-  const root = shokax_siteURL.replace(/^(https?:\/\/)?[^/]*/, '')
-  const res = await twikoo.getRecentComments({
-    envId: CONFIG.twikoo.envId,
-    pageSize: 10
-  })
-  res.forEach(function (item) {
-    let cText = item.commentText
-    if (item.commentText.length > 50) {
-      cText = item.commentText.substring(0, 50) + '...'
-    }
-    const siteLink = item.url + '#' + item.id
-    comments.push({
-      href: siteLink,
-      nick: item.nick,
-      time: item.relativeTime,
-      text: cText
-    })
-  })
-  const newComments = new DocumentFragment()
-  comments.forEach(function (item) {
-    const commentEl = document.createElement('li')
-    const commentLink = document.createElement('a')
-    const commentTime = document.createElement('span')
-    const commentText = document.createElement('span')
-
-    commentText.innerText = item.text
-    commentTime.className = 'breadcrumb'
-    commentTime.innerText = `${item.nick} @ ${item.time}`
-    commentLink.href = root + item.href
-    commentEl.className = 'item'
-
-    commentText.appendChild(document.createElement('br'))
-    commentLink.appendChild(commentTime)
-    commentLink.appendChild(commentText)
-    commentEl.appendChild(commentLink)
-    newComments.appendChild(commentEl)
-  })
-
-  document.getElementById('new-comment').appendChild(newComments)
+  const container = document.getElementById('new-comment')
+  if (!container || container.dataset.loaded || container.dataset.loading || matchMedia('(max-width: 767px)').matches) return
+  container.dataset.loading = 'true'
+  const { renderFooterComments, footerCommentState } = await import('./footer-comments')
+  try {
+    const rows = await twikoo.getRecentComments({ envId: CONFIG.twikoo.envId, pageSize: Number(container.dataset.limit) || 3 })
+    if (container.isConnected) renderFooterComments(container, rows.map(item => ({
+      nick: item.nick, url: item.url, id: item.id, text: item.commentText, avatar: item.avatar
+    })))
+  } catch {
+    if (container.isConnected) footerCommentState(container, 'error')
+  } finally {
+    delete container.dataset.loading
+  }
 }

@@ -98,63 +98,23 @@ export const walinePageview = function () {
 
 export const walineRecentComments = async function () {
   const container = document.getElementById('new-comment')
-  if (!container) return
-  const root = shokax_siteURL.replace(/^(https?:\/\/)?[^/]*/, '')
-  let items = []
-  // Read the server's JSON envelope directly; no widget or login state needed.
-  const url = new URL(`${CONFIG.waline.serverURL.replace(/\/+$/, '')}/api/comment`)
-  url.search = new URLSearchParams({ type: 'recent', count: '10', lang: CONFIG.waline.lang }).toString()
-  const response = await fetch(url)
-  if (!response.ok) throw new Error(`Waline recent comments: HTTP ${response.status}`)
-  const result: { errno: number; errmsg: string; data: Array<{ comment: string; url: string; objectId: string; time: number; nick: string }> } = await response.json()
-  if (result.errno !== 0) throw new Error(result.errmsg)
-  const rows = result.data
-  rows.forEach(function (item) {
-    const plain = new DOMParser().parseFromString(item.comment, 'text/html').body.textContent || ''
-    let cText = plain.length > 50 ? plain.substring(0, 50) + '...' : plain
-    item.url = item.url.startsWith('/') ? item.url : '/' + item.url
-    const siteLink = item.url + '#' + item.objectId
-
-    const time = new Date(item.time)
-    const now = new Date()
-    const diff = now.valueOf() - time.valueOf()
-    let dateStr:string
-    if (diff < 3600000) {
-      dateStr = `${Math.floor(diff / 60000)} 分钟前`
-    } else if (diff < 86400000) {
-      dateStr = `${Math.floor(diff / 3600000)} 小时前`
-    } else if (diff < 2592000000) {
-      dateStr = `${Math.floor(diff / 86400000)} 天前`
-    } else {
-      dateStr = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
-    }
-
-    items.push({
-      href: siteLink,
-      nick: item.nick,
-      time: dateStr,
-      text: cText
-    })
-  })
-  const newComments = new DocumentFragment()
-  items.forEach(function (item) {
-    const commentEl = document.createElement('li')
-    const commentLink = document.createElement('a')
-    const commentTime = document.createElement('span')
-    const commentText = document.createElement('span')
-
-    commentText.innerText = item.text
-    commentTime.className = 'breadcrumb'
-    commentTime.innerText = `${item.nick} @ ${item.time}`
-    commentLink.href = root + item.href
-    commentEl.className = 'item'
-
-    commentText.appendChild(document.createElement('br'))
-    commentLink.appendChild(commentTime)
-    commentLink.appendChild(commentText)
-    commentEl.appendChild(commentLink)
-    newComments.appendChild(commentEl)
-  })
-
-  if (container.isConnected) container.replaceChildren(newComments)
+  if (!container || container.dataset.loaded || container.dataset.loading || matchMedia('(max-width: 767px)').matches) return
+  container.dataset.loading = 'true'
+  const { renderFooterComments, footerCommentState } = await import('./footer-comments')
+  try {
+    const url = new URL(`${CONFIG.waline.serverURL.replace(/\/+$/, '')}/api/comment`)
+    url.search = new URLSearchParams({ type: 'recent', count: container.dataset.limit || '3', lang: CONFIG.waline.lang }).toString()
+    const response = await fetch(url, { signal: AbortSignal.timeout(10000) })
+    if (!response.ok) throw new Error(`Waline recent comments: HTTP ${response.status}`)
+    const result: { errno: number; errmsg: string; data: Array<{ comment: string; url: string; objectId: string; nick: string; avatar?: string }> } = await response.json()
+    if (result.errno !== 0) throw new Error(result.errmsg)
+    if (container.isConnected) renderFooterComments(container, result.data.map(item => ({
+      nick: item.nick, url: item.url, id: item.objectId, avatar: item.avatar,
+      text: new DOMParser().parseFromString(item.comment, 'text/html').body.textContent || ''
+    })))
+  } catch {
+    if (container.isConnected) footerCommentState(container, 'error')
+  } finally {
+    delete container.dataset.loading
+  }
 }

@@ -99,6 +99,20 @@ post:
     nocopy: "<span class=\"red\">再印刷は禁止されています。</span>"
 
 footer:
+  explore:
+    data: "サイトデータ"
+    tags: "タグを探す"
+    refresh: "入れ替え"
+    articles: "次の記事"
+    comments: "最近のコメント"
+    storage: "リンク集"
+    chance: "次の記事は偶然に任せよう。"
+    journey: "星と歩んだ時間"
+    days: "日"
+    clock: "{hours} 時間 {minutes} 分 {seconds} 秒"
+    empty: "コメントはまだありません。"
+    unavailable: "コメントを読み込めません。"
+    random: "ランダムに読む"
   visitor: "訪問者"
   peoples: "回"
   visitor_preview: "ローカルプレビューでは訪問者数を取得しません"

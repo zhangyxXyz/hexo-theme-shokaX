@@ -1,0 +1,119 @@
+- var footerPosts = site.posts.sort('date', -1).toArray().filter(p => p.published !== false)
+- var footerTags = site.tags.sort('length', -1).toArray()
+- var footerNav = theme.footer.navigation || {archives: '/archives/', tags: '/tags/', about: '/about/'}
+- var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'comments', statistics: 'statistics', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
+.footer-shell
+    .footer-layout
+        .footer-intro
+            .footer-heading
+                .footer-identity
+                    a.footer-brand(href=url_for('/'))
+                        i.with-love.ic(class=`i-${theme.footer.icon.name}` aria-hidden="true")
+                        span= alternate || title
+                    p.footer-tagline= theme.footer.tagline || config.subtitle
+            section.footer-data
+                h2.footer-section-title= __('footer.explore.data')
+                if theme.footer.count
+                    .footer-metrics
+                        if theme.footer.visitor
+                            .footer-metric.footer-visitors(data-site-url=config.url data-script=url_for('/js/extra/busuanzi.pure.min.js'))
+                                strong#busuanzi_value_site_uv(title=__('footer.visitor_preview')) —
+                                span
+                                    i.ic.i-visits(aria-hidden="true")
+                                    = ` ${__('footer.visitor')} · ${__('footer.peoples')}`
+                        .footer-metric
+                            strong!= symbolsCountTotal(site)
+                            span
+                                i.ic.i-chart-area(aria-hidden="true")
+                                = ' ' + __('symbols_count_time.count_total')
+                        .footer-metric
+                            strong!= symbolsTimeTotal(site, config.symbols_count_time.awl, config.symbols_count_time.wpm, __('symbols_count_time.time_minutes'))
+                            span
+                                i.ic.i-coffee(aria-hidden="true")
+                                = ' ' + __('symbols_count_time.time_total')
+            if theme.footer.create_time
+                .site-uptime
+                    span.footer-uptime-label
+                        i.ic.i-run(aria-hidden="true")
+                        = ' ' + __('footer.explore.journey')
+                    span(data-uptime=theme.footer.create_time data-format=__('footer.uptime'))
+                        strong(data-uptime-days)
+                        span= __('footer.explore.days')
+                        small(data-uptime-clock data-format=__('footer.explore.clock'))
+            .copyright
+                - var copyright_year = date(null, 'YYYY')
+                | © 
+                if theme.footer.since && String(theme.footer.since) !== copyright_year
+                    = `${theme.footer.since}–`
+                span(itemprop="copyrightYear")= copyright_year
+                span.with-love
+                    i.ic(class=`i-${theme.footer.icon.name}` aria-hidden="true")
+                span(itemprop="copyrightHolder")= `${author} @ ${alternate || title}`
+        .footer-browse
+            if footerTags.length
+                section.footer-discovery.footer-tags-section
+                    .footer-section-heading
+                        h2.footer-section-title= __('footer.explore.tags')
+                        if footerTags.length > 6
+                            button.footer-shuffle(type="button" data-footer-shuffle aria-controls="footer-tags")
+                                = __('footer.explore.refresh')
+                                span(aria-hidden="true")  ↻
+                    #footer-tags.footer-tags
+                        each tag, index in footerTags
+                            a.footer-tag(href=url_for(tag.path) hidden=index >= 6)
+                                span= tag.name
+                                sup= tag.length
+            .footer-stories
+                if theme.widgets.random_posts && footerPosts.length
+                    section.footer-discovery.footer-articles
+                        h2.footer-section-title= __('footer.explore.articles')
+                        ul.footer-list
+                            each post in site.posts.shuffle().limit(3).toArray()
+                                li
+                                    a(href=url_for(post.path))
+                                        span.footer-article-title= post.title || __('post.untitled')
+                                        if post.categories && post.categories.length
+                                            small= post.categories.last().name
+                if theme.widgets.recent_comments && (theme.waline.enable || (theme.twikoo && theme.twikoo.enable))
+                    section.footer-discovery.footer-comments
+                        h2.footer-section-title= __('footer.explore.comments')
+                        ul#new-comment.footer-list(data-limit="3" data-empty=__('footer.explore.empty') data-error=__('footer.explore.unavailable') aria-live="polite")
+                            li.footer-comment-state= __('footer.loading')
+    nav.footer-navigation(aria-label=__('footer.explore.storage'))
+        strong= __('footer.explore.storage')
+        .footer-nav-links
+            each href, name in footerNav
+                a(href=url_for(href))
+                    if footerIcons[name]
+                        i.ic(class=`i-${footerIcons[name]}` aria-hidden="true")
+                    = __('menu.' + name)
+        .footer-social
+            if config.feed && config.feed.rss && config.feed.rss.output
+                a(href=url_for(config.feed.rss.output) aria-label="RSS")
+                    svg.footer-rss(viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true")
+                        circle(cx="5" cy="19" r="1" fill="currentColor")
+                        path(d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16")
+                    span RSS
+            if theme.social && theme.social.github
+                a(href=theme.social.github.split('||')[0].trim() target="_blank" rel="noopener noreferrer" aria-label="GitHub")
+                    i.ic.i-github(aria-hidden="true")
+    .footer-meta
+        .footer-legal
+            if theme.footer.icp.enable || theme.footer.moe_icp
+                .beian-info
+                    if theme.footer.icp.enable
+                        a.icp-link(href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer")
+                            i.ic.i-badge-full(aria-hidden="true")
+                            |  #{theme.footer.icp.icpnumber}
+                    if theme.footer.moe_icp && theme.footer.moe_icp_link
+                        a.moe-link(href=theme.footer.moe_icp_link target="_blank" rel="noopener noreferrer")
+                            i.ic.i-huizhangguanli(aria-hidden="true")
+                            |  #{theme.footer.moe_icp}
+            if theme.footer.icp.enable && theme.footer.icp.beian && theme.footer.icp.recordcode
+                a.footer-police(target="_blank" rel="noopener noreferrer" href=`https://beian.mps.gov.cn/#/query/webSearch?code=${theme.footer.icp.recordcode}`)
+                    img(loading="lazy" decoding="async" src=theme.statics + theme.assets + '/' + theme.footer.icp.icon width="20" height="20" alt="")
+                    = theme.footer.icp.beian
+            if theme.footer.powered
+                .powered-by!= __('footer.powered', _url('https://hexo.io', 'Hexo') + ' & Theme.' + _url('https://github.com/theme-shoka-x/hexo-theme-shokaX/', 'ShokaX'))
+    != shokax_inject('status')
+!= shokax_inject('footer')

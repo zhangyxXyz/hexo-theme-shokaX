@@ -99,6 +99,20 @@ post:
     nocopy: "<span class=\"red\">This page is prohibited reprint.</span>"
 
 footer:
+  explore:
+    data: "Site notes"
+    tags: "Tag explorer"
+    refresh: "Shuffle"
+    articles: "Read another"
+    comments: "Recent voices"
+    storage: "Storage"
+    chance: "Let chance choose your next read."
+    journey: "Wandering together"
+    days: "days"
+    clock: "{hours} h {minutes} m {seconds} s"
+    empty: "No comments yet."
+    unavailable: "Comments are unavailable."
+    random: "Surprise me"
   visitor: "Visitors"
   peoples: "visits"
   visitor_preview: "Visitor statistics are disabled in local previews"

@@ -25,6 +25,13 @@ import { refreshTooltips } from '../components/tooltip'
 import { refreshSidebarMenu } from '../components/sidebar-menu'
 import { refreshCommentPanel } from '../components/comment-panel'
 
+// A mobile visit can become a desktop view without a PJAX navigation.
+matchMedia('(min-width: 768px)').addEventListener('change', event => {
+  if (!event.matches) return
+  if (__shokax_waline__) void import('../components/comments').then(module => module.walineRecentComments())
+  if (__shokax_twikoo__) void import('../components/tcomments').then(module => module.twikooRecentComments())
+})
+
 // The encrypted body (including its private cards) can arrive after page setup,
 // either through password entry or the encryption plugin's saved-key flow.
 window.addEventListener('hexo-blog-decrypt', () => {

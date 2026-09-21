@@ -14,9 +14,9 @@
     position: relative;
 
     if (hexo-config('sidebar.position') == 'left') {
-      padding-left: 16.25rem;
+      padding-left: unit($sidebar-width + $content-offset, 'rem');
     } else {
-      padding-right: 16.25rem;
+      padding-right: unit($sidebar-width + $content-offset, 'rem');
     }
 
     +desktop-large() {
@@ -78,3 +78,5 @@
 .powered-by, .theme-info {
   display: inline-block;
 }
+
+@import 'discovery';

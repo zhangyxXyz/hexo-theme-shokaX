@@ -99,6 +99,20 @@ post:
     nocopy: "<span class=\"red\">本頁內容禁止轉載！</span>"
 
 footer:
+  explore:
+    data: "站點資料"
+    tags: "標籤漫遊"
+    refresh: "換一組"
+    articles: "再讀一篇"
+    comments: "最近的聲音"
+    storage: "儲藏間"
+    chance: "讓下一篇，交給偶然。"
+    journey: "與星光同行"
+    days: "天"
+    clock: "{hours} 小時 {minutes} 分 {seconds} 秒"
+    empty: "還沒有留言。"
+    unavailable: "暫時無法載入留言。"
+    random: "隨便逛逛"
   visitor: "訪客"
   peoples: "人次"
   visitor_preview: "本機預覽不請求訪客統計"
