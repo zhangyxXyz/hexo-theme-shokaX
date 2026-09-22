@@ -100,16 +100,19 @@ export const renderFooterComments = (container: HTMLElement, rows: FooterComment
     body.className = 'footer-comment-body'
     const head = document.createElement('span')
     head.className = 'footer-comment-head'
+    const identity = document.createElement('span')
+    identity.className = 'footer-comment-identity'
     const name = document.createElement('span')
     name.className = 'footer-comment-name'
     name.textContent = item.nick
-    head.append(name)
+    identity.append(name)
     if (item.badge) {
       const badge = document.createElement('span')
       badge.className = `footer-comment-badge footer-comment-badge-${item.badge.kind}`
       badge.textContent = item.badge.text
-      head.append(badge)
+      identity.append(badge)
     }
+    head.append(identity)
     if (options && typeof item.time === 'number' && Number.isFinite(new Date(item.time).getTime())) {
       const time = document.createElement('time')
       time.className = 'footer-comment-time'
