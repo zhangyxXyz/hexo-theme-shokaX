@@ -30,37 +30,11 @@
   }
 
   .artboard {
+    --brand-glitch-blend: lighten;
     position: relative;
     font-family: $font-family-logo;
     font-size: $font-size-logo;
     line-height: 1.2;
-  }
-
-  .artboard-glitch {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    user-select: none;
-
-    &::before, &::after {
-      content: attr(data-alternate);
-      position: absolute;
-      inset: 0;
-      color: inherit;
-      mix-blend-mode: lighten;
-    }
-
-    &::before {
-      text-shadow: 1px 0 #ff3f1a;
-      transform: translateX(1px);
-      clip-path: inset(18% 0 57%);
-    }
-
-    &::after {
-      text-shadow: -1px 0 #00a7e0;
-      transform: translateX(-1px);
-      clip-path: inset(54% 0 16%);
-    }
   }
 
   h1 {
@@ -156,16 +130,46 @@
   }
 }
 
+// Share the title effect; only the hero blends its layers with the cover.
+#brand .artboard-glitch, #footer .artboard-glitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+
+  &::before, &::after {
+    content: attr(data-alternate);
+    position: absolute;
+    inset: 0;
+    color: inherit;
+    mix-blend-mode: var(--brand-glitch-blend, normal);
+  }
+
+  &::before {
+    text-shadow: 1px 0 #ff3f1a;
+    transform: translateX(1px);
+    clip-path: inset(18% 0 57%);
+  }
+
+  &::after {
+    text-shadow: -1px 0 #00a7e0;
+    transform: translateX(-1px);
+    clip-path: inset(54% 0 16%);
+  }
+}
+
 @keyframes quote-cursor {
   50% { opacity: 0; }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  #brand .logo:hover .artboard-glitch::before, #brand .logo:focus-visible .artboard-glitch::before {
+  #brand .logo:hover .artboard-glitch::before, #brand .logo:focus-visible .artboard-glitch::before,
+  #footer .footer-brand:hover .artboard-glitch::before, #footer .footer-brand:focus-visible .artboard-glitch::before {
     text-shadow: 4px 0 #ff3f1a;
     animation: brand-glitch-red .8s infinite ease-in-out alternate-reverse;
   }
-  #brand .logo:hover .artboard-glitch::after, #brand .logo:focus-visible .artboard-glitch::after {
+  #brand .logo:hover .artboard-glitch::after, #brand .logo:focus-visible .artboard-glitch::after,
+  #footer .footer-brand:hover .artboard-glitch::after, #footer .footer-brand:focus-visible .artboard-glitch::after {
     text-shadow: -3px 0 #00a7e0;
     animation: brand-glitch-blue .8s infinite ease-in-out alternate-reverse;
   }
@@ -189,5 +193,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   #brand .quote-typing::after { display: none; }
-  #brand .artboard-glitch { display: none; }
+  #brand .artboard-glitch, #footer .artboard-glitch { display: none; }
 }

@@ -77,6 +77,8 @@ export function refreshTooltips() {
     if (!element.dataset.themeTooltip?.trim()) return
     active = element
     pointer = point
+    const requestedDelay = Number(element.dataset.tooltipDelay ?? 180)
+    const delay = Number.isFinite(requestedDelay) ? Math.max(0, Math.min(1500, requestedDelay)) : 180
     timer = window.setTimeout(() => {
       if (active !== element || !element.isConnected) return
       // A tooltip for a modal must render inside that dialog's top layer.
@@ -87,7 +89,7 @@ export function refreshTooltips() {
       const ids = (element.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)
       element.setAttribute('aria-describedby', [...new Set([...ids, tip.id])].join(' '))
       position()
-    }, immediate ? 0 : 180)
+    }, immediate ? 0 : delay)
   }
   const target = (event: Event) => event.target instanceof Element ? event.target.closest<HTMLElement>('[data-theme-tooltip]') : null
   document.addEventListener('pointerover', event => {

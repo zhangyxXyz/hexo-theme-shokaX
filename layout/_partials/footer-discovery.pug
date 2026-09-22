@@ -24,7 +24,9 @@
                 .footer-identity
                     a.footer-brand(href=url_for('/'))
                         i.with-love.ic(class=`i-${theme.footer.icon.name}` aria-hidden="true")
-                        span= alternate || title
+                        span.footer-brand-text
+                            = alternate || title
+                            span.artboard-glitch(aria-hidden="true" data-alternate=_striptags(alternate || title))
                     p.footer-tagline= theme.footer.tagline || config.subtitle
             section.footer-data
                 h2.footer-section-title= __('footer.explore.data')
@@ -43,7 +45,11 @@
                                 i.ic.i-chart-area(aria-hidden="true")
                                 = ' ' + __('footer.explore.words_short')
                         .footer-metric
-                            strong!= symbolsTimeTotal(site, config.symbols_count_time.awl, config.symbols_count_time.wpm, __('symbols_count_time.time_minutes'))
+                            - var footerReadingTime = String(symbolsTimeTotal(site, config.symbols_count_time.awl, config.symbols_count_time.wpm, __('symbols_count_time.time_minutes')))
+                            strong
+                                = footerReadingTime
+                                if /^\d+:\d{2}$/.test(footerReadingTime)
+                                    small.footer-metric-unit h
                             span
                                 i.ic.i-coffee(aria-hidden="true")
                                 = ' ' + __('footer.explore.reading_short')
@@ -88,7 +94,7 @@
                         ul.footer-list
                             each post, index in footerPicks.slice(0, 3)
                                 li
-                                    a(href=url_for(post.path))
+                                    a(href=url_for(post.path) title=(post.title || __('post.untitled')) + '\n' + post.permalink data-tooltip-delay="350")
                                         span.footer-article-number(aria-hidden="true")= index + 1
                                         span.footer-article-body
                                             span.footer-article-title= post.title || __('post.untitled')
@@ -97,9 +103,10 @@
                 if theme.widgets.recent_comments && (theme.waline.enable || (theme.twikoo && theme.twikoo.enable))
                     - var footerFriendStyle = {}, footerFriendColors = (theme.waline.friendBadge || {}).colors || {}
                     - for (var mode of ['light', 'dark']) { for (var key of ['text', 'background', 'border']) { var color = (footerFriendColors[mode] || {})[key]; if (typeof color === 'string' && /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(color)) footerFriendStyle['--friend-' + mode + '-' + key] = color; } }
+                    - var footerPageTitles = [...footerPosts, ...site.pages.toArray().filter(p => p.published !== false && !p.hidden && p.path)].map(p => [url_for(p.path), p.title || ''])
                     section.footer-discovery.footer-comments
                         h2.footer-section-title= __('footer.explore.comments')
-                        ul#new-comment.footer-list(style=footerFriendStyle data-friend-label=__('comment_friend') data-limit="3" data-empty=__('footer.explore.empty') data-error=__('footer.explore.unavailable') aria-live="polite")
+                        ul#new-comment.footer-list(style=footerFriendStyle data-page-titles=JSON.stringify(footerPageTitles) data-friend-label=__('comment_friend') data-limit="3" data-empty=__('footer.explore.empty') data-error=__('footer.explore.unavailable') aria-live="polite")
                             li.footer-comment-state= __('footer.loading')
     nav.footer-navigation(aria-label=__('footer.explore.storage'))
         strong= __('footer.explore.storage')

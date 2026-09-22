@@ -56,14 +56,32 @@ export const renderFooterComments = (container: HTMLElement, rows: FooterComment
   if (options) timeOptions.set(container, options)
   else timeOptions.delete(container)
   const fragment = document.createDocumentFragment()
+  const site = new URL(shokax_siteURL)
+  const pageKey = (path: string) => {
+    try { path = decodeURI(path) } catch { /* Keep malformed escapes literal. */ }
+    return path.replace(/\/index\.html$/, '/').replace(/\/$/, '')
+  }
+  const pageTitles = new Map<string, string>()
+  try {
+    const pages: [string, string][] = JSON.parse(container.dataset.pageTitles || '[]')
+    for (const [path, title] of pages) {
+      const page = new URL(path, site)
+      if (page.origin === site.origin) pageTitles.set(pageKey(page.pathname), title)
+    }
+  } catch { /* A URL remains useful when the optional title index is unavailable. */ }
   for (const item of rows.slice(0, Number(container.dataset.limit) || 3)) {
-    const target = new URL(item.url || '/', shokax_siteURL)
+    let target: URL
+    try { target = new URL(item.url || '/', site) } catch { continue }
     // A comment's page must stay on this blog, even if the service returns a full URL.
-    if (target.origin !== new URL(shokax_siteURL).origin) continue
+    if (target.origin !== site.origin) continue
+    target.hash = encodeURIComponent(item.id)
     const li = document.createElement('li')
     const link = document.createElement('a')
     link.className = 'footer-comment-link'
-    link.href = target.pathname + target.search + '#' + encodeURIComponent(item.id)
+    link.href = target.pathname + target.search + target.hash
+    const pageTitle = pageTitles.get(pageKey(target.pathname))
+    link.title = [pageTitle, target.href].filter(Boolean).join('\n')
+    link.dataset.tooltipDelay = '350'
     const avatar = document.createElement('span')
     avatar.className = 'footer-comment-avatar'
     avatar.setAttribute('aria-hidden', 'true')
