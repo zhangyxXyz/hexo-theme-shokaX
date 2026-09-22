@@ -1,0 +1,167 @@
+//- Original seasonal miniatures. Every paint-server ID belongs to one scene.
+mixin solarTermPaint(p)
+    defs
+        linearGradient(id=p+'-gold' x1="0" y1="0" x2="1" y2="1")
+            stop(stop-color="#fff0bd")
+            stop(offset=".34" stop-color="#dec180")
+            stop(offset=".68" stop-color="#ae8044")
+            stop(offset="1" stop-color="#edce91")
+        linearGradient(id=p+'-leaf' x1="0" y1="0" x2="1" y2="1")
+            stop(stop-color="#abcaa0")
+            stop(offset=".43" stop-color="#689c7c")
+            stop(offset="1" stop-color="#2d6259")
+        linearGradient(id=p+'-pink' x1="0" y1="0" x2=".7" y2="1")
+            stop(stop-color="#fff2e8")
+            stop(offset=".48" stop-color="#f3bcb7")
+            stop(offset="1" stop-color="#c56a74")
+        linearGradient(id=p+'-ivory' x1="0" y1="0" x2="1" y2="1")
+            stop(stop-color="#fffdf0")
+            stop(offset=".6" stop-color="#eee7cd")
+            stop(offset="1" stop-color="#b9c4b0")
+        radialGradient(id=p+'-red' cx=".3" cy=".25" r=".8")
+            stop(stop-color="#eb8a68")
+            stop(offset=".45" stop-color="#c34e3f")
+            stop(offset="1" stop-color="#842d35")
+        radialGradient(id=p+'-orange' cx=".3" cy=".2" r=".8")
+            stop(stop-color="#f7c473")
+            stop(offset=".45" stop-color="#e48d42")
+            stop(offset="1" stop-color="#b8512d")
+        linearGradient(id=p+'-jade' x1="0" y1="0" x2="1" y2=".6")
+            stop(stop-color="#d8e9db")
+            stop(offset=".45" stop-color="#98b9ae")
+            stop(offset="1" stop-color="#507f7c")
+        linearGradient(id=p+'-water' x1="0" y1="0" x2=".8" y2="1")
+            stop(stop-color="#e3f5ee" stop-opacity=".85")
+            stop(offset=".55" stop-color="#a2cbd0" stop-opacity=".7")
+            stop(offset="1" stop-color="#527f96" stop-opacity=".9")
+
+mixin solarLeaf(p, x, y, scale, angle, gold)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        g.festival-foliage-breathe
+            path(d="M0 0C-15-12-16-31-5-47 12-37 20-15 0 0Z" fill=`url(#${p}-${gold ? 'gold' : 'leaf'})` stroke=gold ? '#ac824d' : '#59866d' stroke-width=".65")
+            path(d="M0-2-5-42M-1-13-10-21m10 2 8-8M-3-28-10-32m7 5 9-10" fill="none" stroke=gold ? '#fbdf9a' : '#d4ddb0' stroke-width=".8" opacity=".7")
+
+mixin solarFlower(p, x, y, scale, colour)
+    g(transform=`translate(${x} ${y}) scale(${scale || 1})`)
+        each angle in [0, 72, 144, 216, 288]
+            g(transform=`rotate(${angle})`)
+                path(d="M0 1C-14-5-14-20-5-23 0-25 4-23 7-18 14-8 8-1 0 1Z" fill=`url(#${p}-${colour || 'pink'})` stroke=colour === 'red' ? '#b55551' : '#cfaaa0' stroke-width=".7")
+                path(d="M0-3q-4-8-4-14" stroke="#fff1d5" stroke-width=".7" fill="none" opacity=".65")
+        circle(r="4" fill="#d6aa62")
+        each angle in [0, 60, 120, 180, 240, 300]
+            g(transform=`rotate(${angle})` stroke="#9a7441" stroke-width=".65")
+                path(d="M0-2v-7")
+                circle(cy="-9" r="1.25" fill="#f6d28b" stroke="none")
+
+mixin solarSprig(p, x, y, scale, angle, flower)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        g.festival-foliage-breathe
+            path(d="M0 93Q16 36 65 0M24 45 7 16m39 1-3-25M17 65l35-14" fill="none" stroke="#806c52" stroke-width="3" stroke-linecap="round")
+            path(d="M1 90Q18 38 64 1" fill="none" stroke=`url(#${p}-gold)` stroke-width=".8")
+            +solarFlower(p, 9, 18, .66, flower)
+            +solarFlower(p, 46, 16, .77, flower)
+            +solarFlower(p, 32, 48, .59, flower)
+            +solarFlower(p, 65, 1, .43, flower)
+            circle(cx="45" cy="-9" r="4" fill=`url(#${p}-${flower || 'pink'})`)
+
+mixin solarWillow(p, x, y, scale, angle)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        g.festival-willow-breathe
+            path(d="M0 0Q-46 20-43 120M-17 10q-48 14-56 83M-32 34q24 29 5 81" fill="none" stroke="#95a276" stroke-width="1.25")
+            each leaf in [[-32,26,-48],[-43,48,-30],[-45,69,-28],[-45,94,-18],[-65,42,-53],[-71,65,-35],[-29,65,30],[-30,91,24]]
+                g(transform=`translate(${leaf[0]} ${leaf[1]}) rotate(${leaf[2]})`)
+                    path(d="M0 0q-1 21 6 32 7-18-6-32Z" fill=`url(#${p}-leaf)`)
+                    path(d="M0 2 6 28" stroke="#d3d9ad" stroke-width=".5")
+
+mixin solarSwallow(p, x, y, scale, angle)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        g.festival-bird-breathe
+            path(d="M-3 5Q-35-8-37-38-11-30 4-6 26-37 52-31 41-8 11 8L-2 35l-1-21-19 13Z" fill="#354f57" stroke="#71887f" stroke-width=".7")
+            path(d="M-3 5Q-4-5 6-5q13 8 5 13L-2 27 3 12Z" fill=`url(#${p}-ivory)`)
+            path(d="M1 3q5-10 12-7l5 5-11 2Z" fill="#aa6556")
+            path(d="m13-1 8 3-8 1" fill="#b89255")
+            circle(cx="12" cy="-1" r="1.4" fill="#243f45")
+            path(d="M-32-30-5-5M42-25 13-3" stroke="#adb5a8" stroke-width=".6" fill="none")
+
+mixin solarGrain(p, x, y, scale, angle, ripe)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        g.festival-foliage-breathe
+            path(d="M0 125Q-5 51 0-13" fill="none" stroke=ripe ? '#af8b4c' : '#6b9166' stroke-width="1.7")
+            each n in [0,1,2,3,4,5]
+                - const grainY = n * 10
+                g(transform=`translate(0 ${grainY})`)
+                    path(d="M0 12Q-20 5-13-8 1-4 0 12Zm0 0Q20 5 13-8-1-4 0 12Z" fill=`url(#${p}-${ripe ? 'gold' : 'leaf'})` stroke=ripe ? '#bc9755' : '#719363' stroke-width=".6")
+                    path(d="m-10-4-7-18m28 18 7-18" fill="none" stroke=ripe ? '#cfad6a' : '#93ab7e' stroke-width=".8")
+            path(d="M-2 95Q-27 89-34 66-4 72-2 95M-2 114Q13 87 31 84 25 108-2 114" fill=`url(#${p}-${ripe ? 'gold' : 'leaf'})`)
+
+mixin solarLotusLeaf(p, x, y, scale, angle)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        path(d="M0 13Q-15 32-37 16-67 5-43-16-23-38 0-23 24-39 45-17 70 0 42 18 19 33 0 13Z" fill=`url(#${p}-leaf)` stroke="#4e8979" stroke-width=".8")
+        g(stroke="#c8d2a1" stroke-width=".85" fill="none" opacity=".6")
+            path(d="M0 9-36-12M0 9-7-23M0 9 36-12M0 9-37 13M0 9 35 14")
+        path(d="M0 14q0 20-11 34" stroke="#739b7c" stroke-width="1.5" fill="none")
+
+mixin solarLotus(p, x, y, scale)
+    g(transform=`translate(${x} ${y}) scale(${scale || 1})`)
+        path(d="M0 15q-8 31-4 68" stroke="#7fa184" stroke-width="2" fill="none")
+        each angle in [-48,-24,0,24,48]
+            path(d="M0 14Q-24-14 0-47 24-14 0 14Z" transform=`rotate(${angle} 0 13)` fill=`url(#${p}-pink)` stroke="#d39e9f" stroke-width=".7")
+        path(d="M0 15Q-34 22-47-9-11-10 0 15 11-10 47-9 34 22 0 15Z" fill=`url(#${p}-pink)` stroke="#c88a95" stroke-width=".8")
+        path(d="M-6 7 0-28 6 7m-23-3-7-19m41 19 7-19" stroke="#fff1dc" stroke-width=".75" fill="none" opacity=".65")
+        ellipse(cy="13" rx="8" ry="3" fill="#ceb366")
+
+mixin solarDragonfly(p, x, y, scale, angle)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        g(fill=`url(#${p}-water)` stroke="#97b4ac" stroke-width=".65")
+            path(d="M0 0q-39-29-43-7-1 13 43 10M0 0q39-29 43-7 1 13-43 10M0 8q-30-3-28 9 10 10 28-9m0 0q30-3 28 9-10 10-28-9")
+        path(d="M0-8v44" stroke="#ab794d" stroke-width="3" stroke-linecap="round")
+        path(d="M0 12v21" stroke="#e4c392" stroke-width="1")
+        circle(cy="-8" r="4" fill="#8a7150")
+
+mixin solarSnow(p, x, y, scale)
+    g(transform=`translate(${x} ${y}) scale(${scale || 1})` stroke="#a7c5ca" fill="none" stroke-width="1.1" stroke-linecap="round")
+        each angle in [0,60,120,180,240,300]
+            path(d="M0 0v-17m0 6-5-5m5 5 5-5m-5 11-4-4m4 4 4-4" transform=`rotate(${angle})`)
+        circle(r="2.5" fill="#edf7ee" stroke="none")
+
+mixin solarPine(p, x, y, scale, angle, snow)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        path(d="M0 90Q24 33 76 0M23 45 0 11m45 11 12-37M12 65l52-17" stroke="#85745c" stroke-width="3" fill="none")
+        each pos in [[3,13,-35],[26,42,-8],[58,10,35],[63,48,68]]
+            g(transform=`translate(${pos[0]} ${pos[1]}) rotate(${pos[2]})`)
+                each angle in [-65,-42,-20,0,20,42,65]
+                    path(d="M0 5Q-3-10 0-32" transform=`rotate(${angle})` fill="none" stroke=angle % 2 ? '#527c6d' : '#80a388' stroke-width="1.8" stroke-linecap="round")
+                if snow
+                    path(d="M-24-9q5-12 12-9 4-14 13-6 10-5 16 10 12 4 9 10-24-8-50-5Z" fill=`url(#${p}-ivory)` stroke="#d1d9c9" stroke-width=".6")
+
+mixin solarSparrow(p, x, y, scale, angle)
+    g(transform=`translate(${x} ${y}) rotate(${angle || 0}) scale(${scale || 1})`)
+        path(d="m-20 6-27-14 10 25 26 3Z" fill="#746555")
+        ellipse(cx="-1" cy="7" rx="24" ry="19" fill=`url(#${p}-ivory)` stroke="#a9a798" stroke-width=".7")
+        path(d="M-24 7q-3-25 26-15 0 17-26 15" fill="#a08b69")
+        path(d="m-23 7 16-11m-9 13 13-9" stroke="#d6c2a0" stroke-width="1.2")
+        circle(cx="14" cy="-8" r="13" fill="#94745c")
+        path(d="M7-5q9-10 17-2 3 10-9 11Z" fill="#f4e9cd")
+        circle(cx="20" cy="-8" r="2" fill="#304248")
+        circle(cx="20.5" cy="-8.6" r=".6" fill="#fff8de")
+        path(d="m26-7 8 3-8 2" fill="#9c7950")
+        path(d="m-3 31 4-9m-6 9h10m6-2 4-8m-7 9h10" stroke="#8b7352" stroke-width="1.2" fill="none")
+
+mixin solarChrysanthemum(p, x, y, scale, ivory)
+    g(transform=`translate(${x} ${y}) scale(${scale || 1})`)
+        each angle in [0,30,60,90,120,150,180,210,240,270,300,330]
+            path(d="M0 4q-15-23-2-43 12 5 2 43Z" transform=`rotate(${angle})` fill=`url(#${p}-${ivory ? 'ivory' : 'gold'})` stroke=ivory ? '#c6c4aa' : '#bf9857' stroke-width=".55")
+        each angle in [15,60,105,150,195,240,285,330]
+            path(d="M0 2q-7-12 0-23 8 9 0 23Z" transform=`rotate(${angle})` fill="#e9c67d" stroke="#bc954e" stroke-width=".5")
+        circle(r="5" fill="#b59354")
+        circle(cx="-1" cy="-1" r="2" fill="#f7e1a1")
+
+mixin solarCaption(x, y, size, colour, outline)
+    text(data-festival-label='' x=x y=y text-anchor='middle' dominant-baseline='central' font-family='KaiTi, STKaiti, "Noto Serif CJK SC", serif' font-size=size font-weight='500' letter-spacing='.8' fill=colour stroke=outline stroke-width='.4' paint-order='stroke fill' stroke-linejoin='round')= typeof festivalLabel === 'string' ? festivalLabel : ''
+
+mixin solarSeal(p)
+    //- A quiet painter's seal. An empty label leaves the small ink impression.
+    g(transform="translate(230 250) rotate(3)" opacity=".83")
+        rect(x="-12" y="0" width="24" height="16" rx="1" fill=`url(#${p}-red)`)
+        path(d="M-10 5V2h3m14 0h3v3m0 6v3H7m-14 0h-3v-3" fill="none" stroke="#f7e5c5" stroke-width=".55" opacity=".7")
+        +solarCaption(0, 8.5, 8.5, '#f7e5c5', '#aa5949')

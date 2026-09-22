@@ -30,6 +30,13 @@ export function refreshTooltips() {
       tip.style.left = `${Math.max(12, Math.min(x, window.innerWidth - tip.offsetWidth - 12))}px`
       tip.style.top = `${Math.max(12, Math.min(y, window.innerHeight - tip.offsetHeight - 12))}px`
     }
+    // Filtered/transformed dialogs establish a containing block for fixed children.
+    // Convert viewport coordinates to that block instead of adding the dialog offset.
+    const rect = tip.getBoundingClientRect()
+    const left = Number.parseFloat(tip.style.left)
+    const top = Number.parseFloat(tip.style.top)
+    tip.style.left = `${left + left - rect.left}px`
+    tip.style.top = `${top + top - rect.top}px`
   }
   const hide = () => {
     clearTimeout(timer)

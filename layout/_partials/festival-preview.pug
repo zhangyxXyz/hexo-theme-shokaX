@@ -1,0 +1,42 @@
+- const previewGroups = [{ key: 'traditional', scenes: ['spring', 'lantern', 'dragon_boat', 'qixi', 'mid_autumn', 'chongyang', 'laba'] }, { key: 'spring', scenes: ['lichun', 'yushui', 'jingzhe', 'chunfen', 'qingming', 'guyu'] }, { key: 'summer', scenes: ['lixia', 'xiaoman', 'mangzhong', 'xiazhi', 'xiaoshu', 'dashu'] }, { key: 'autumn', scenes: ['liqiu', 'chushu', 'bailu', 'qiufen', 'hanlu', 'shuangjiang'] }, { key: 'winter', scenes: ['lidong', 'xiaoxue', 'daxue', 'dongzhi', 'xiaohan', 'dahan'] }]
+- const previewArtwork = theme.festival_artwork || {}
+- const previewSpring = ((theme.festival_table || {}).items || {}).spring || {}
+- const previewLabels = Object.fromEntries(['auto', 'none', 'daily', 'selected', 'loading', 'failed'].map(key => [key, __('festival_preview.status_' + key)]))
+.festival-preview(data-festival-preview data-labels=JSON.stringify(previewLabels))
+    header.festival-preview-header
+        h2.festival-preview-title= __('festival_preview.title')
+        p#festival-preview-description.festival-preview-description= __('festival_preview.description')
+    .festival-preview-controls
+        .festival-preview-toolbar
+            label.festival-preview-label(for='festival-preview-select')= __('festival_preview.select_label')
+            .festival-preview-control.festival-preview-picker
+                select#festival-preview-select(data-festival-select aria-label=__('festival_preview.select_label') aria-describedby='festival-preview-description')
+                    each mode in ['auto', 'none', 'daily']
+                        option(value=mode selected=mode === 'auto')= __('festival_preview.options.' + mode)
+                    each group in previewGroups
+                        optgroup(label=__('festival_preview.groups.' + group.key))
+                            each scene in group.scenes
+                                option(value=scene)= __('festival_preview.scenes.' + scene)
+            button.festival-preview-control.festival-preview-reset(type='button' data-festival-reset)
+                i.ic.i-reset(aria-hidden='true')
+                span= __('festival_preview.reset')
+        .festival-preview-customize
+            label.festival-preview-label(for='festival-preview-label-input')= __('festival_preview.label_label')
+            .festival-preview-control.festival-preview-text
+                input#festival-preview-label-input.festival-preview-label-input(type='text' data-festival-label-input placeholder=__('festival_preview.label_placeholder') aria-describedby='festival-preview-label-hint' autocomplete='off' spellcheck='false')
+            span#festival-preview-label-hint.festival-preview-label-hint= __('festival_preview.label_hint')
+            span.festival-preview-status(data-festival-status aria-live='polite' aria-atomic='true')= previewLabels.auto
+    each group in previewGroups
+        section.festival-preview-group(aria-labelledby='festival-preview-group-' + group.key)
+            h3.festival-preview-heading(id='festival-preview-group-' + group.key)= __('festival_preview.groups.' + group.key)
+            .festival-preview-grid
+                each scene in group.scenes
+                    button.festival-preview-card(type='button' data-preview-scene=scene aria-pressed='false')
+                        span.festival-preview-thumb(aria-hidden='true')
+                            if scene === 'spring' && previewSpring.blossom
+                                img.festival-preview-spring(src=url_for(previewSpring.blossom) alt='' loading='lazy' decoding='async' width='350' height='231' draggable='false')
+                            else if previewArtwork[scene]
+                                img(src=url_for(previewArtwork[scene]) alt='' loading='lazy' decoding='async' width='260' height='320' draggable='false')
+                            else if scene === 'spring'
+                                span.festival-preview-lantern
+                        span.festival-preview-name= __('festival_preview.scenes.' + scene)

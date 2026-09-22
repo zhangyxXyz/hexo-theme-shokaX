@@ -12,7 +12,7 @@ export function formatVisitorCount(value: number): string {
 }
 
 export function observeVisitorCount(container: HTMLElement, signal: AbortSignal) {
-  const source = container.querySelector<HTMLElement>('#busuanzi_value_site_uv')
+  const source = container.querySelector<HTMLElement>('[data-visitor-site]')
   const display = container.querySelector<HTMLElement>('[data-visitor-count]')
   if (!source || !display) return
   const update = () => {

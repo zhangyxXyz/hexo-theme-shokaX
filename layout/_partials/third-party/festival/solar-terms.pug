@@ -1,0 +1,347 @@
+include solar-term-motifs.pug
+
+//- Twenty-four original botanical miniatures, composed for the page corner.
+//- Paint servers are namespaced by term. Still-life scenes remain still.
+mixin solarTermArtwork(term)
+    - const p = 'festival-term-' + term
+    - const stillLife = ['yushui', 'chunfen', 'qingming', 'guyu', 'mangzhong', 'xiaoshu', 'dongzhi', 'dahan'].includes(term)
+    - const captionPosition = {yushui:[98,92],jingzhe:[90,123],chunfen:[106,221],qingming:[97,163],lixia:[92,138],xiaoman:[95,75],mangzhong:[93,75],xiazhi:[104,118],dashu:[93,164],liqiu:[98,206],chushu:[111,104],bailu:[104,88],shuangjiang:[88,228],lidong:[107,219],xiaoxue:[99,131],daxue:[96,267],xiaohan:[102,243]}
+    svg(viewBox="0 0 260 320" focusable="false" xmlns="http://www.w3.org/2000/svg")
+        +solarTermPaint(p)
+        g
+            g.festival-depth(class=stillLife ? '' : 'festival-botanical-breathe')
+                case term
+                    when 'lichun'
+                        //- The first blossom and the first unfurling leaves.
+                        path(d="M248 47Q202 81 176 132T90 220M199 104l-4-43M150 165l-39-9" fill="none" stroke="#80654e" stroke-width="3" stroke-linecap="round")
+                        path(d="M247 47Q204 81 177 133T91 220" fill="none" stroke=`url(#${p}-gold)` stroke-width=".85")
+                        +solarFlower(p, 218, 79, .78, 'pink')
+                        +solarFlower(p, 182, 123, 1, 'pink')
+                        +solarFlower(p, 146, 171, .76, 'ivory')
+                        +solarFlower(p, 112, 155, .53, 'pink')
+                        +solarFlower(p, 195, 62, .46, 'pink')
+                        +solarLeaf(p, 164, 157, .69, -60)
+                        +solarLeaf(p, 131, 190, .56, 40)
+                        path(d="M103 235q-9-40 5-60m-5 37q-21-12-26-32 23 5 26 32m1-19q5-20 23-25-3 21-23 25" fill=`url(#${p}-leaf)` stroke="#789973" stroke-width=".8")
+                        path(d="m222 153 5 8-9 5m-86-55-4 7" fill="none" stroke="#d7b986" stroke-width="1.3")
+
+                    when 'yushui'
+                        //- A paper umbrella, fine rain and young willow leaves.
+                        +solarWillow(p, 248, 45, .83, -5)
+                        g(transform="translate(126 153) rotate(-17)")
+                            path(d="M0-64V62q0 17 13 14 9-2 7-12" fill="none" stroke="#92734e" stroke-width="4" stroke-linecap="round")
+                            path(d="M-65 1Q-36-44 0-48 36-44 65 1q-15-8-26 0-17-9-39 0-22-9-39 0-11-8-26 0Z" fill=`url(#${p}-jade)` stroke="#648e84" stroke-width="1.1")
+                            path(d="M0-48Q-21-28-39 1M0-48V1m0-49Q21-28 39 1m-103 0Q0-8 65 1" fill="none" stroke="#e5d6a5" stroke-width="1")
+                            path(d="M-57-3Q-34-38 0-43 35-38 57-3" fill="none" stroke="#f6e7bb" stroke-width=".65")
+                            +solarFlower(p, 22, -16, .33, 'ivory')
+                            +solarLeaf(p, 30, -7, .26, 35)
+                            circle(cy="-48" r="3.5" fill=`url(#${p}-gold)`)
+                        each drop in [[89,80,.65],[63,118,.47],[201,185,.6],[172,223,.4]]
+                            g(transform=`translate(${drop[0]} ${drop[1]}) scale(${drop[2]})`)
+                                g.festival-rain-drift
+                                    path(d="M0-12Q-13 4 0 8 13 4 0-12Z" fill=`url(#${p}-water)` stroke="#a0c2c5" stroke-width=".8")
+                                    path(d="M-3 0q-2 4 1 4" fill="none" stroke="#f9fff6" stroke-width="1.5" stroke-linecap="round")
+
+                    when 'jingzhe'
+                        //- Magnolia opens above a small awakening insect.
+                        path(d="M244 66q-38 33-58 85t-83 76m88-79 32 3m-51 23-24-20" fill="none" stroke="#806e54" stroke-width="3" stroke-linecap="round")
+                        each magnolia in [[191,130,.85,-20],[225,81,.63,20],[142,163,.57,-28]]
+                            g(transform=`translate(${magnolia[0]} ${magnolia[1]}) rotate(${magnolia[3]}) scale(${magnolia[2]})`)
+                                path(d="M0 12Q-40-5-34-39-7-36 0 12M0 12Q40-5 34-39 7-36 0 12" fill=`url(#${p}-pink)` stroke="#c89da0" stroke-width=".8")
+                                path(d="M0 12Q-25-22 0-61 25-22 0 12Z" fill=`url(#${p}-ivory)` stroke="#d0c9b5" stroke-width=".8")
+                                path(d="M0 6 0-42m-4 45-20-30m30 27 17-27" fill="none" stroke="#e3b5ad" stroke-width=".8")
+                        +solarLeaf(p, 172, 178, .6, 43)
+                        path(d="m117 62-12 18h12l-9 17m-13-34-8 6m40 15 8 3" fill="none" stroke=`url(#${p}-gold)` stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round")
+                        g(transform="translate(106 223) rotate(-25)")
+                            ellipse(cy="-4" rx="9" ry="15" fill=`url(#${p}-leaf)` stroke="#648e70" stroke-width=".8")
+                            path(d="M0-18v28m-5-16-11-7m21 7 11-7m-20 18-11 5m19-5 11 5m-17-27-5-7m15 7 5-7" fill="none" stroke="#657e5e" stroke-width="1")
+                            circle(cy="-19" r="4" fill="#73835b")
+
+                    when 'chunfen'
+                        //- A pair of swallows crosses a flowering peach bough.
+                        path(d="M252 163q-74 11-130 65m90-54-1-36m-38 52-23-15" fill="none" stroke="#927957" stroke-width="2.4" stroke-linecap="round")
+                        +solarFlower(p, 214, 152, .65, 'pink')
+                        +solarFlower(p, 172, 185, .55, 'pink')
+                        +solarFlower(p, 145, 174, .38, 'pink')
+                        +solarLeaf(p, 195, 183, .45, 65)
+                        +solarLeaf(p, 150, 213, .55, -30)
+                        +solarSwallow(p, 148, 95, .85, -20)
+                        +solarSwallow(p, 203, 121, .56, 14)
+                        path(d="M78 161q22-8 33-3m-19 18q13-5 20-3" stroke="#c8b188" stroke-width=".9" fill="none" stroke-linecap="round")
+                        circle(cx="224" cy="74" r="3" fill="#dfbf81")
+
+                    when 'qingming'
+                        //- Willow and hand-shaped qingtuan on a woven bamboo dish.
+                        +solarWillow(p, 249, 55, 1.08, -9)
+                        +solarSwallow(p, 127, 95, .37, -25)
+                        g(transform="translate(135 211) rotate(-7)")
+                            ellipse(rx="61" ry="25" fill=`url(#${p}-gold)` stroke="#b99b61" stroke-width="1.2")
+                            ellipse(cy="-2" rx="53" ry="20" fill="#d8bd82" stroke="#f0d69d" stroke-width="1")
+                            each n in [-30,-15,0,15,30]
+                                path(d=`M${n-17} -15l24 28m-14-29-23 26` fill="none" stroke="#ac8e58" stroke-width=".65" opacity=".6")
+                            each cake in [[-29,-8,19],[7,-18,23],[31,1,20]]
+                                g(transform=`translate(${cake[0]} ${cake[1]})`)
+                                    ellipse(cy="5" rx=cake[2] ry="10" fill="#587f5d" opacity=".35")
+                                    path(d=`M${-cake[2]} 2C${-cake[2]-2} ${-cake[2]*1.1} ${cake[2]-2} ${-cake[2]*1.4} ${cake[2]} 1Q${cake[2]} 13 0 14Q${-cake[2]} 12 ${-cake[2]} 2Z` fill=`url(#${p}-leaf)` stroke="#618965" stroke-width=".8")
+                                    path(d="M-10-8q6-7 15-4" fill="none" stroke="#d8e1b3" stroke-width="2.2" stroke-linecap="round" opacity=".75")
+                        path(d="m91 122-6 10m114 18-5 10" stroke="#a9c8cb" stroke-width="1.1" stroke-linecap="round")
+
+                    when 'guyu'
+                        //- Spring tea, one bud and two leaves, with porcelain glazes.
+                        path(d="M243 69q-50 43-76 116m45-79-18-29m-5 70 32-11" stroke="#8e9a6f" stroke-width="2" fill="none")
+                        +solarLeaf(p, 216, 105, .85, 50)
+                        +solarLeaf(p, 205, 119, .8, -38)
+                        +solarLeaf(p, 186, 152, .68, 65)
+                        +solarLeaf(p, 179, 174, .7, -28)
+                        +solarLeaf(p, 221, 83, .42, 8)
+                        g(transform="translate(130 208)")
+                            ellipse(cy="22" rx="53" ry="10" fill=`url(#${p}-jade)` stroke="#8cae9d" stroke-width="1")
+                            path(d="M-43-10q2 43 43 43t43-43" fill=`url(#${p}-jade)` stroke="#739b90" stroke-width="1.2")
+                            ellipse(cy="-10" rx="43" ry="13" fill="#dce8d0" stroke="#74958a" stroke-width="1.2")
+                            ellipse(cy="-8" rx="36" ry="9" fill="#b5b46f" stroke="#e3d7a1" stroke-width=".8")
+                            path(d="M-10-10q7-10 16-3-8 9-16 3" fill="#64835b")
+                            path(d="M-29 6q27 14 58 0m-50 6q21 10 42 0" stroke="#e0d5a9" stroke-width=".9" fill="none")
+                            path.festival-steam-rise(d="M-19-33q-10-12 1-23m17 20q12-13 0-27" stroke="#bdc9bc" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".7")
+                        +solarFlower(p, 230, 144, .38, 'ivory')
+
+                    when 'lixia'
+                        //- Rolled young lotus, a broad new leaf and a dragonfly.
+                        path(d="M155 247q-12-60 11-116m-12 115q35-33 42-77" stroke="#759b7c" stroke-width="2.2" fill="none")
+                        +solarLotusLeaf(p, 163, 134, 1.02, -16)
+                        +solarLotusLeaf(p, 205, 188, .64, 22)
+                        path(d="M114 234q-22-17-8-57 4-13 14-27-3 38-6 84Z" fill=`url(#${p}-leaf)` stroke="#689477" stroke-width=".8")
+                        path(d="M111 226q-2-32 7-66" stroke="#d0d6a4" stroke-width=".7" fill="none")
+                        +solarDragonfly(p, 178, 76, .72, 21)
+                        path(d="M92 251q42 9 82-1m-52 12q19 3 40-1" stroke="#a9c7bd" stroke-width="1" fill="none" stroke-linecap="round")
+
+                    when 'xiaoman'
+                        //- Upright, still-green wheat with just-filled grains.
+                        +solarGrain(p, 135, 110, .95, -22, false)
+                        +solarGrain(p, 179, 80, 1.1, 13, false)
+                        +solarGrain(p, 212, 119, .8, 31, false)
+                        path(d="M143 218q21 20 44 10m-12-1q-18 11-22 38m22-38q17 15 18 27" stroke=`url(#${p}-gold)` stroke-width="2.3" fill="none" stroke-linecap="round")
+                        path(d="M115 87q-10-14-20-7 4 13 20 7m1 0q-2-19 10-17 6 11-10 17" fill=`url(#${p}-ivory)` stroke="#cab990" stroke-width=".75")
+
+                    when 'mangzhong'
+                        //- Bowed golden ears, bound sheaf and a bronze sickle.
+                        +solarGrain(p, 133, 94, .94, -22, true)
+                        +solarGrain(p, 177, 76, 1.04, 9, true)
+                        +solarGrain(p, 212, 114, .88, 29, true)
+                        g(transform="translate(107 220) rotate(-30)")
+                            path(d="M0 0q-31-49 4-78-15 34 8 62Z" fill=`url(#${p}-ivory)` stroke="#99a08c" stroke-width="1.2")
+                            path(d="M3-15 20 36" stroke="#865e43" stroke-width="8" stroke-linecap="round")
+                            path(d="m2-14 4 12" stroke=`url(#${p}-gold)` stroke-width="9")
+                            path(d="m7 3 9 27" stroke="#bd9870" stroke-width="1")
+                        path(d="M134 206q23 12 43 3m-25 4-2 19m4-19 17 19" stroke="#b25942" stroke-width="3" fill="none" stroke-linecap="round")
+
+                    when 'xiazhi'
+                        //- A fully open lotus under the longest day's golden sun.
+                        circle(cx="210" cy="72" r="24" fill=`url(#${p}-gold)` opacity=".8")
+                        circle(cx="210" cy="72" r="29" fill="none" stroke="#d9ba7f" stroke-width=".7" stroke-dasharray="2 7")
+                        +solarLotusLeaf(p, 120, 205, .94, -12)
+                        +solarLotusLeaf(p, 209, 213, .62, 19)
+                        +solarLotus(p, 174, 146, 1.06)
+                        path(d="M102 260q42 7 76-1m-59 10h39" stroke="#a2c4b7" stroke-width=".85" fill="none" stroke-linecap="round")
+
+                    when 'xiaoshu'
+                        //- An embroidered round silk fan and a bamboo sprig.
+                        path(d="M250 59q-46 28-68 80m41-46-2-21m-19 44 23-4" fill="none" stroke="#869775" stroke-width="1.8")
+                        +solarLeaf(p, 231, 85, .67, 45)
+                        +solarLeaf(p, 211, 105, .7, -48)
+                        +solarLeaf(p, 191, 130, .52, 56)
+                        g(transform="translate(139 175) rotate(-20)")
+                            path(d="M0 43v72" stroke="#98724e" stroke-width="7" stroke-linecap="round")
+                            path(d="M-2 49v60" stroke="#d1aa76" stroke-width="1.4")
+                            circle(r="57" fill=`url(#${p}-ivory)` stroke=`url(#${p}-gold)` stroke-width="3")
+                            circle(r="52" fill="none" stroke="#cabc94" stroke-width=".65")
+                            +solarLotusLeaf(p, -13, 24, .45, -12)
+                            +solarLotus(p, 14, -2, .49)
+                            path(d="M-36 34q25 4 48 0m-29 7h30" fill="none" stroke="#9cb5a1" stroke-width=".7")
+                            path(d="M0 112q-10 3-6 14m6-14q10 3 6 14" stroke="#b36651" stroke-width="1.4" fill="none")
+
+                    when 'dashu'
+                        //- Seed-filled lotus pods and a cicada in deep summer.
+                        path(d="M142 256q-14-58 1-105m1 106q47-47 49-107" fill="none" stroke="#769974" stroke-width="2.3")
+                        +solarLotusLeaf(p, 176, 103, 1.05, -10)
+                        +solarLotusLeaf(p, 107, 219, .67, -23)
+                        each pod in [[143,163,1,-18],[196,179,.75,25]]
+                            g(transform=`translate(${pod[0]} ${pod[1]}) rotate(${pod[3]}) scale(${pod[2]})`)
+                                path(d="M-28-3 0 34 29-3Z" fill=`url(#${p}-leaf)` stroke="#6b926c" stroke-width=".8")
+                                ellipse(rx="31" ry="14" fill="#b7be77" stroke="#779768" stroke-width="1")
+                                each seed in [[-18,-2],[-5,-7],[9,-6],[21,0],[4,4],[-11,5]]
+                                    ellipse(cx=seed[0] cy=seed[1] rx="3.5" ry="2.5" fill="#647d50" stroke="#e0d995" stroke-width=".7")
+                        g(transform="translate(213 82) rotate(24)")
+                            path(d="M0-7q-21 18-12 43 15-13 12-43m0 0q21 18 12 43-15-13-12-43" fill=`url(#${p}-water)` stroke="#8c9e87" stroke-width=".8")
+                            path(d="M0-5v28" stroke="#796e50" stroke-width="5" stroke-linecap="round")
+                            circle(cy="-8" r="5" fill="#8f7950")
+                            path(d="m-3 4-8 19M3 4l8 19" stroke="#a8ad86" stroke-width=".75")
+
+                    when 'liqiu'
+                        //- Ginkgo fans open along a slender autumn bough.
+                        path(d="M247 54Q214 108 129 231m71-100-40-13m11 59 50-11" stroke="#917955" stroke-width="2.5" fill="none")
+                        each leaf in [[212,111,.9,-21],[161,123,.9,-67],[176,176,1.1,27],[131,231,.7,-40]]
+                            g(transform=`translate(${leaf[0]} ${leaf[1]}) rotate(${leaf[3]}) scale(${leaf[2]})`)
+                                path(d="M0 0q-13-21-35-31 0-22 19-25 7-10 16-3 9-7 16 3 19 3 19 25Q13-21 0 0Z" fill=`url(#${p}-gold)` stroke="#bd9754" stroke-width=".8")
+                                each end in [-27,-17,-7,7,17,27]
+                                    path(d=`M0-2Q${end/2} -30 ${end} -47` fill="none" stroke="#f9e5ae" stroke-width=".7" opacity=".8")
+                        path(d="M88 173q-4 23 12 26-1-22-12-26" fill=`url(#${p}-gold)` stroke="#ba975d" stroke-width=".7")
+
+                    when 'chushu'
+                        //- A white egret among late-summer reeds.
+                        path(d="M205 245q-13-59 13-148m-16 150q28-28 33-67" fill="none" stroke="#929f78" stroke-width="1.5")
+                        +solarLeaf(p, 216, 175, .65, 39, true)
+                        +solarLeaf(p, 204, 213, .64, -38)
+                        g(transform="translate(150 173)")
+                            path(d="M-7 19-8 77m24-62 11 57m-36 5h-14m50-5h15" fill="none" stroke="#9e8865" stroke-width="2" stroke-linecap="round")
+                            path(d="M-36 0Q-34 34 7 28 43 24 27 0 12-18-36 0Z" fill=`url(#${p}-ivory)` stroke="#aebcae" stroke-width=".9")
+                            path(d="M15 4q-19-27 4-55 12-15 18-4 5 8-7 21-15 17-1 30" fill=`url(#${p}-ivory)` stroke="#aebcae" stroke-width=".9")
+                            path(d="M-34 1q31-12 54 19-39 4-54-19" fill="#e9ebd7" stroke="#c4ccb8" stroke-width=".65")
+                            path(d="m-24 7 32 9m-20-2 20 7" stroke="#b9c5b5" stroke-width=".7")
+                            path(d="m35-51 27 3-26 4Z" fill="#bd9659")
+                            circle(cx="31" cy="-51" r="2" fill="#3c5455")
+                            path(d="M27-58 10-66m15 10L9-59" stroke="#c1cdbc" stroke-width="1.2" fill="none")
+                        path(d="M83 263q59 8 94-1" stroke="#aec8bd" stroke-width="1" fill="none")
+
+                    when 'bailu'
+                        //- Pearly dew suspended on fine reed plumes.
+                        each reed in [[134,112,.94,-19],[183,87,1.12,12],[213,136,.75,28]]
+                            g(transform=`translate(${reed[0]} ${reed[1]}) rotate(${reed[3]}) scale(${reed[2]})`)
+                                path(d="M0 0v131" stroke="#919d76" stroke-width="1.4")
+                                each level in [0,9,18,27,36,45]
+                                    path(d=`M0 ${level+12}q-19-9-12-17m12 17q19-9 12-17` fill="none" stroke=level < 18 ? '#e3dcc0' : '#c7c3a2' stroke-width="4" stroke-linecap="round")
+                                path(d="M0 94q-27-30-27-56 24 16 27 56m0 24q26-30 35-55-1 35-35 55" fill=`url(#${p}-leaf)`)
+                        each drop in [[108,157,4],[163,196,5],[207,190,3.5],[121,214,3]]
+                            circle(cx=drop[0] cy=drop[1] r=drop[2] fill=`url(#${p}-water)` stroke="#d4e6db" stroke-width=".9")
+                        path(d="m162 194-1 2m-54-40-1 2" stroke="#fffdf0" stroke-width="1.5" stroke-linecap="round")
+
+                    when 'qiufen'
+                        //- Ripe rice bends beneath a small harvest sun.
+                        circle(cx="206" cy="83" r="30" fill=`url(#${p}-orange)` opacity=".63")
+                        each rice in [[98,172,.9,-22],[150,124,1.12,8],[195,164,.9,26]]
+                            g(transform=`translate(${rice[0]} ${rice[1]}) rotate(${rice[3]}) scale(${rice[2]})`)
+                                path(d="M0 103Q3 7 32 0q22-1 29 21" fill="none" stroke="#b39855" stroke-width="1.5")
+                                each grain in [[9,24,-28],[18,10,-8],[31,5,13],[43,9,29],[52,16,45],[60,26,57],[11,40,-29],[20,28,-6],[31,22,15],[42,27,29]]
+                                    ellipse(cx=grain[0] cy=grain[1] rx="4.4" ry="8" transform=`rotate(${grain[2]} ${grain[0]} ${grain[1]})` fill=`url(#${p}-gold)` stroke="#ba995e" stroke-width=".55")
+                                path(d="M1 82Q-21 57-22 35 2 46 1 82m0 17q24-25 31-50-1 33-31 50" fill=`url(#${p}-leaf)`)
+                        path(d="M90 95q10-8 18 0 10-7 18-1m0-23q8-6 15 0 8-5 14 0" fill="none" stroke="#9e9b79" stroke-width="1" stroke-linecap="round")
+
+                    when 'hanlu'
+                        //- Chrysanthemums, serrated leaves and clear cold dew.
+                        path(d="M155 258q-20-66 8-146m-13 94q34-37 66-42" stroke="#7d9774" stroke-width="2" fill="none")
+                        +solarLeaf(p, 153, 206, .82, -58)
+                        +solarLeaf(p, 163, 236, .72, 55)
+                        +solarLeaf(p, 201, 172, .52, 58)
+                        +solarChrysanthemum(p, 170, 112, 1.12, false)
+                        +solarChrysanthemum(p, 213, 174, .67, true)
+                        +solarChrysanthemum(p, 108, 188, .56, true)
+                        circle(cx="179" cy="219" r="3.4" fill=`url(#${p}-water)` stroke="#d7e4d4" stroke-width=".8")
+
+                    when 'shuangjiang'
+                        //- Two lacquer-orange persimmons and a crimson maple leaf.
+                        path(d="M249 64q-50 28-74 96m30-52 23 55m-39-28-41-1" stroke="#806e52" stroke-width="3" fill="none" stroke-linecap="round")
+                        +solarLeaf(p, 215, 100, .63, 42, true)
+                        +solarLeaf(p, 191, 130, .73, -64, true)
+                        each fruit in [[157,191,1],[224,171,.72]]
+                            g(transform=`translate(${fruit[0]} ${fruit[1]}) scale(${fruit[2]})`)
+                                path(d="M0-26C-42-43-51 6-26 28-8 44 12 42 32 23 53 2 35-43 0-26Z" fill=`url(#${p}-orange)` stroke="#c17a3f" stroke-width="1")
+                                path(d="M0-29q-18-8-24 3 14 0 19 9 6-7 13-2 1-9 17-10-15-11-25 0" fill="#7c8451" stroke="#656f46" stroke-width=".8")
+                                path(d="M0-26 4-39" stroke="#846a44" stroke-width="3" stroke-linecap="round")
+                                path(d="M-23-7q-10 11-1 22" stroke="#fbd5a1" stroke-width="2.1" fill="none" stroke-linecap="round" opacity=".55")
+                        g(transform="translate(97 143) rotate(-20)")
+                            path(d="m0 16-23-7 8-5-15-19 17 4 2-20 12 15L12-34l6 23 15-4L20 4l9 5-26 8Z" fill=`url(#${p}-red)` stroke="#ba7860" stroke-width=".7")
+                            path(d="M0 28V-14M0 9-17-8M1 8l19-13" stroke="#e9c08b" stroke-width=".8" fill="none")
+                        +solarSnow(p, 230, 110, .34)
+
+                    when 'lidong'
+                        //- Glossy camellia foliage shelters a layered red blossom.
+                        path(d="M246 72q-54 40-92 170m32-85-51-16m40 44 45 5" stroke="#7d7157" stroke-width="3" fill="none")
+                        +solarLeaf(p, 207, 123, 1, 38)
+                        +solarLeaf(p, 178, 169, .95, -52)
+                        +solarLeaf(p, 175, 201, .89, 65)
+                        +solarLeaf(p, 151, 232, .74, -35)
+                        g(transform="translate(198 148)")
+                            +solarFlower(p, 0, 0, 1.35, 'red')
+                            g(transform="rotate(36)")
+                                +solarFlower(p, 0, 0, .85, 'red')
+                            +solarFlower(p, 0, 0, .44, 'pink')
+                        circle(cx="138" cy="151" r="11" fill=`url(#${p}-red)` stroke="#8f5140" stroke-width=".8")
+                        path(d="M128 154q11 7 20-2" fill="none" stroke="#77926a" stroke-width="3")
+                        +solarSnow(p, 116, 103, .38)
+
+                    when 'xiaoxue'
+                        //- First snow settles on a golden branch with a small bird.
+                        path(d="M248 87q-42 43-85 80t-73 69m114-104 2-43m-38 76 42 29" stroke="#927c5e" stroke-width="3" fill="none" stroke-linecap="round")
+                        +solarLeaf(p, 206, 132, .83, 49, true)
+                        +solarLeaf(p, 163, 178, .79, -54, true)
+                        +solarLeaf(p, 133, 213, .66, 35, true)
+                        path(d="M172 158q17-19 28-20m-70 62 18-13" stroke="#ecf2df" stroke-width="5" fill="none" stroke-linecap="round")
+                        +solarSparrow(p, 185, 181, .72, -7)
+                        +solarSnow(p, 139, 88, .63)
+                        +solarSnow(p, 226, 217, .4)
+                        +solarSnow(p, 92, 163, .28)
+
+                    when 'daxue'
+                        //- Snow-loaded pine needles and a richly scaled pine cone.
+                        +solarPine(p, 141, 110, 1.16, -15, true)
+                        +solarPine(p, 100, 171, .9, 17, true)
+                        g(transform="translate(180 211) rotate(15)")
+                            path(d="M0-31C-35-17-33 32 0 43 33 32 35-17 0-31Z" fill="#8f7756" stroke="#796348" stroke-width=".8")
+                            each row in [0,1,2,3,4]
+                                each col in [-1,0,1]
+                                    path(d="M-9-3q9-12 18 0-4 13-9 14-5-1-9-14Z" transform=`translate(${col * (row === 0 || row === 4 ? 9 : 14)} ${row * 12 - 19}) scale(${row === 0 || row === 4 ? .72 : 1})` fill=`url(#${p}-gold)` stroke="#9c7b4e" stroke-width=".8")
+                            path(d="M-20-10q6-15 15-12 7-13 14-5 10 1 14 15-12-5-22 0-12-6-21 2Z" fill=`url(#${p}-ivory)` stroke="#d8dfce" stroke-width=".6")
+                        +solarSnow(p, 113, 88, .71)
+                        +solarSnow(p, 227, 165, .48)
+                        +solarSnow(p, 104, 238, .38)
+
+                    when 'dongzhi'
+                        //- A warm bowl of tangyuan below a plum branch and a nine-petal winter charm.
+                        +solarSprig(p, 174, 75, .85, -3, 'red')
+                        g(transform="translate(131 219)")
+                            ellipse(cy="31" rx="46" ry="9" fill=`url(#${p}-jade)` stroke="#71978a" stroke-width=".8")
+                            path(d="M-57-7q4 49 57 48T57-7" fill=`url(#${p}-jade)` stroke="#6a9689" stroke-width="1.1")
+                            ellipse(cy="-7" rx="57" ry="20" fill="#e9e5ca" stroke="#769d8f" stroke-width="1.2")
+                            ellipse(cy="-5" rx="49" ry="14" fill="#d3cfaa")
+                            each ball in [[-26,-5,13],[0,-12,15],[26,-5,13],[-10,7,13],[16,8,12]]
+                                circle(cx=ball[0] cy=ball[1] r=ball[2] fill=`url(#${p}-${ball[0] === 26 ? 'pink' : 'ivory'})` stroke="#d2c4a5" stroke-width=".7")
+                            path(d="M-28-8q4-6 10-4m14-7q5-6 10-3M-16 5q3-5 7-4" fill="none" stroke="#fffdf0" stroke-width="1.6" stroke-linecap="round")
+                            path(d="M-39 19q40 14 78 0M-31 27q30 8 62 0" fill="none" stroke="#e8d8aa" stroke-width=".9")
+                            path.festival-steam-rise(d="M-23-34q-10-14 0-28m21 21q10-13 0-27" fill="none" stroke="#bacabe" stroke-width="1.3" stroke-linecap="round" opacity=".7")
+                        g(transform="translate(98 117)")
+                            each angle in [0,40,80,120,160,200,240,280,320]
+                                ellipse(cy="-12" rx="4" ry="10" transform=`rotate(${angle})` fill="none" stroke="#c5ad7b" stroke-width=".7")
+                            circle(r="4" fill="#bd6755")
+
+                    when 'xiaohan'
+                        //- A red plum bough and a sparrow keeping winter company.
+                        path(d="M247 75Q209 114 183 164T95 233M192 148l-8-54m-29 91-44-18" stroke="#816d54" stroke-width="3" fill="none" stroke-linecap="round")
+                        +solarFlower(p, 225, 98, .68, 'red')
+                        +solarFlower(p, 184, 97, .72, 'red')
+                        +solarFlower(p, 177, 167, .93, 'red')
+                        +solarFlower(p, 114, 168, .55, 'red')
+                        +solarFlower(p, 137, 209, .58, 'pink')
+                        +solarSparrow(p, 208, 172, .68, -12)
+                        path(d="M197 135q-3-14-3-24m-63 81 14-9" stroke="#eff2df" stroke-width="4" fill="none" stroke-linecap="round")
+                        +solarSnow(p, 121, 104, .4)
+
+                    when 'dahan'
+                        //- Narcissus above a celadon basin with fine ice-crackle lines.
+                        path.festival-foliage-breathe(d="M162 235q-26-61-12-121 18 46 12 121m0 0q9-79 47-116-7 59-47 116m-3-1q-49-36-49-79 35 26 49 79m8 0q34-35 58-43-12 35-58 43" fill=`url(#${p}-leaf)` stroke="#658b6e" stroke-width=".7")
+                        path(d="M162 235q-8-85 12-137m-5 137q22-61 38-82m-48 81q-16-54-30-75" fill="none" stroke="#8fa881" stroke-width="2")
+                        each flower in [[174,99,.84],[207,153,.75],[129,160,.65]]
+                            g(transform=`translate(${flower[0]} ${flower[1]}) scale(${flower[2]})`)
+                                each angle in [0,60,120,180,240,300]
+                                    path(d="M0 3Q-17-12-7-30 9-26 0 3Z" transform=`rotate(${angle})` fill=`url(#${p}-ivory)` stroke="#cbc9ae" stroke-width=".7")
+                                path(d="M-8-5q2-8 8-4 6-4 8 4 5 8-2 12-6 6-12 0-7-4-2-12Z" fill=`url(#${p}-gold)` stroke="#c7a45c" stroke-width=".8")
+                                circle(r="4" fill="#d59d4d")
+                        g(transform="translate(161 246)")
+                            path(d="M-47-8q2 31 47 31t47-31" fill=`url(#${p}-jade)` stroke="#779d91" stroke-width="1")
+                            ellipse(cy="-8" rx="47" ry="10" fill="#c7d7c0" stroke="#87a99b" stroke-width="1")
+                            path(d="m-34 0 10 12 14-8 14 14 11-12 16 7m-41-9-1-7m-13 15-2 4m28 2-1 4m13-16 3-5" fill="none" stroke="#dce6d5" stroke-width=".75" opacity=".8")
+                        +solarSnow(p, 111, 83, .43)
+                        +solarSnow(p, 232, 114, .3)
+            if ['lichun', 'guyu', 'xiaoshu', 'qiufen', 'hanlu', 'dongzhi', 'dahan'].includes(term)
+                +solarSeal(p)
+            else
+                - const caption = captionPosition[term] || [100, 254]
+                +solarCaption(caption[0], caption[1], 11.5, '#93684e', '#f9f0dc')

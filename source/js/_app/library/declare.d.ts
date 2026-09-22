@@ -77,6 +77,7 @@ declare const LOCAL: {
   }
 }
 interface configType {
+  visitor: { enable: boolean; type: 'busuanzi' | 'custom' }
   hostname: string;
   fireworks: any;
   audio: AudioItem[];
@@ -112,6 +113,8 @@ interface configType {
   search: any,
   waline: {
     relativeTimeDays: number
+    levelColors: Record<string, { light?: Record<string, string>; dark?: Record<string, string> }>
+    labelColors: Record<string, { light?: Record<string, string>; dark?: Record<string, string> }>
     friendUrls: string[]
     readOnly: boolean
     login: 'enable' | 'disable' | 'force'

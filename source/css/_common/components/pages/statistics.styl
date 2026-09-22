@@ -761,7 +761,10 @@
     h2
       margin 0
       font-size 1.15rem
+      line-height 1.4
       overflow-wrap anywhere
+      &::before, &::after
+        display none
     >span
       color var(--primary-color)
       white-space nowrap
@@ -780,6 +783,23 @@
   .statistics-comments-close
     margin-left auto
     flex-shrink 0
+    display grid
+    place-items center
+    width 2rem
+    height 2rem
+    padding 0
+    border 0
+    border-radius .5rem
+    background transparent
+    color var(--grey-6)
+    font-size 1rem
+    transition background .2s, color .2s, transform .2s
+    &:focus-visible
+      outline none
+    &:hover
+      color var(--primary-color)
+      background var(--color-pink-a1)
+      transform translateY(-1px)
   .statistics-comments-body
     flex 1
     min-height 0
@@ -788,7 +808,7 @@
     padding 1.5rem
     scrollbar-width thin
     scrollbar-color var(--grey-4) transparent
-    ol
+    > ol
       position relative
       list-style none
       margin 0 0 1rem
@@ -804,7 +824,7 @@
         bottom 0
         width 2px
         background var(--color-red-a3)
-    li
+    > ol > li
       grid-column 1
       position relative
       border 1px solid var(--grey-3)
@@ -855,12 +875,119 @@
     grid-template-columns 2.25rem minmax(0, 1fr)
     gap .15rem .65rem
     align-items center
-    margin-bottom .8rem
+    margin-bottom .65rem
+    line-height 1.4
+  .statistics-comment-identity
+    display flex
+    align-items center
+    flex-wrap wrap
+    gap .4rem .5rem
+    min-width 0
+    .statistics-comment-name
+      display inline-flex
+      align-items center
+      font-size 1rem
+      line-height 1.5
+      font-weight 600
+      color var(--primary-color)
     time
-      grid-column 2
+      flex-basis 100%
+      line-height 1.4
+  .statistics-comment-badge
+    display inline-flex
+    align-items center
+    justify-content center
+    box-sizing border-box
+    margin 0
+    padding .2rem .5rem
+    line-height 1.2
+    font-size .75rem
+    font-weight 600
+    border-radius 999px
+    border 1px solid var(--badge-light-border, var(--color-pink-a3))
+    color var(--badge-light-text, var(--primary-color))
+    background var(--badge-light-background, linear-gradient(120deg, var(--color-pink-light), var(--color-red-a3)))
+    html[data-theme='dark'] &
+      border-color var(--badge-dark-border, var(--color-pink-a3))
+      color var(--badge-dark-text, var(--primary-color))
+      background var(--badge-dark-background, linear-gradient(120deg, var(--color-pink-light), var(--color-red-a3)))
+  .statistics-comment-details
+    display flex
+    flex-wrap wrap
+    gap .3rem
+    margin-bottom .5rem
+    &:empty
+      display none
+    >span
+      display inline-flex
+      align-items center
+      gap .3rem
+      font-size .7rem
+      line-height 1.4
+      padding .15rem .4rem
+      border 1px solid var(--grey-3)
+      border-radius 1rem
+      color var(--grey-6)
+  .statistics-comment-excerpt
+    display block
+    overflow-wrap anywhere
+    white-space normal
+    font-size .9375rem
+    line-height 1.85
+    color inherit
+    p, blockquote, pre, ul, ol
+      margin .5rem 0
+    > :first-child
+      margin-top 0
+    > :last-child
+      margin-bottom 0
+    a
+      color var(--color-blue)
+    code
+      padding .1em .3em
+      border-radius .25rem
+      background var(--grey-3)
+      color var(--primary-color)
+      font-family monospace
+    pre
+      padding .75rem
+      background var(--grey-3)
+      border-radius .5rem
+      white-space pre
+      overflow auto
+      code
+        padding 0
+        color inherit
+    blockquote
+      padding-left .75rem
+      border-left 3px solid var(--color-pink-a3)
+      color var(--grey-6)
+    ul, ol
+      padding-left 1.5rem
+    table
+      display block
+      max-width 100%
+      overflow auto
+    img
+      max-width 100%
+      max-height 20rem
+      height auto
+      object-fit contain
+    .statistics-comment-emoji
+      display inline-block
+      width auto
+      height 1.3em
+      max-width 2em
+      max-height 1.3em
+      object-fit contain
+      vertical-align -.2em
+      margin 0 .15em
+      padding 0
+      border 0
+      border-radius 0
+      box-shadow none
   .statistics-comment-avatar
     position relative
-    grid-row span 2
     display grid
     place-items center
     width 2.25rem
@@ -882,12 +1009,12 @@
       gap .5rem
     .statistics-comments-body
       padding 1rem
-      ol
+      > ol
         display block
         padding-left 1.25rem
         &::before
           left 0
-      li
+      > ol > li
         margin-top 0
         &::before, &:nth-child(even)::before
           left -1.6rem

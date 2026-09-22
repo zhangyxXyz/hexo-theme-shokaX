@@ -1,0 +1,114 @@
+// Only opt in ordinary controls. Tag-cloud projection, viewers, chart hit
+// targets, image cards and their 3D buttons retain their own motion.
+interaction-lift(inline = false) {
+  @media (prefers-reduced-motion: no-preference) {
+    if inline {
+      // Relative positioning preserves line wrapping for prose links.
+      position: relative;
+      top: 0;
+      transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease, top .2s ease;
+    } else {
+      // Independent translate leaves icon rotation and existing transforms intact.
+      transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease, translate .2s ease;
+    }
+
+    &:not(:disabled):not([aria-disabled='true']):focus-visible {
+      if inline { top: -1px; }
+      else { translate: 0 -1px; }
+    }
+
+    @media (hover: hover) {
+      &:not(:disabled):not([aria-disabled='true']):hover {
+        if inline { top: -1px; }
+        else { translate: 0 -1px; }
+      }
+    }
+  }
+}
+
+// Target the interactive node, never its wrapping list item as well.
+#nav .menu .item:not(.title) > a,
+#nav .right > .item,
+#nav > .inner > .toggle,
+#tool .item:not(.player),
+#tool .player > .btn,
+#sidebar .overview .menu .item > a,
+#sidebar .overview .menu .item > .sidebar-menu-toggle,
+#sidebar .tab > .item,
+#sidebar .contents .toc-link,
+#sidebar .related a,
+#sidebar .social > .item,
+#quick li > a,
+#quick li > .ic,
+#main .pagination a,
+#main .button,
+#main .post .tags a,
+#main .reward > button,
+#main .summary-switch button,
+#main .select-picker-trigger,
+#main .tag-cloud-widget .tag-cloud-controls > button,
+#main .tabs > .nav li,
+#main .shokax-code .code-actions button,
+#main .comment-entry > .comment-entry-button,
+#main .archive-page .archive-view-controls > button,
+#main .archive-page .archive-expand,
+#main .archive-page .archive-month-collapse,
+#main .archive-page .archive-month-pagination > button,
+#main .archive-page .archive-month-show-all,
+#main .archive-page .archive-rail-toggle,
+#main .archive-page .archive-post-link,
+#main .archive-page .archive-year-pill,
+#main .archive-page .archive-month-more > summary,
+#main .archive-page .archive-month-heading h3 > a,
+#main .archive-page .archive-month-footer > a,
+#main .archive-page .archive-breadcrumb > a,
+#main .archive-page .archive-year-nav > a,
+#main .archive-page .archive-back-top,
+#statistics_container .statistics-trend-controls button,
+#statistics_container .statistics-content-controls button,
+#statistics_container .statistics-comment-note button,
+#statistics_container .statistics-comments-close,
+body > .select-picker-menu .select-picker-option,
+#site-search .search-actions > button,
+#site-search .search-close,
+#site-search .search-topic,
+#site-search .search-pagination > button,
+#site-search .pagefind-ui__button,
+.comment-dialog .comment-dialog-header > button,
+#comments .wl-action,
+#comments .wl-private-reply,
+#comments .wl-btn,
+#comments .wl-card .wl-comment-actions .wl-reply,
+#footer .footer-brand,
+#footer .footer-latest > a,
+#footer .footer-tag,
+#footer .footer-shuffle {
+  interaction-lift();
+}
+
+// Keep inline links inline: changing display would disturb long titles/prose.
+#nav .menu .item.title > a,
+#sidebar .state .item > a,
+#main .collapse .item a,
+#main .breadcrumb a,
+#main .post .meta a,
+#main .post #copyright a,
+#main .segments .info h3 > a,
+#main .segments .summary-category > a,
+#main .md :is(p, li, td) > a:not(.button):not(.item):not(.anchor):not(.tag-cloud-link):not(.tabs .nav a):not(:has(img, picture, svg)),
+#site-search .pagefind-ui__result-link,
+#footer .footer-legal a {
+  interaction-lift(true);
+}
+
+// Keep the full-width year summary and timeline still; lift its visible pill.
+@media (prefers-reduced-motion: no-preference) {
+  #main .archive-page .archive-year-title:focus-visible > .archive-year-pill {
+    translate: 0 -1px;
+  }
+  @media (hover: hover) {
+    #main .archive-page .archive-year-title:hover > .archive-year-pill {
+      translate: 0 -1px;
+    }
+  }
+}

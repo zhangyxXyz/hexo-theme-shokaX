@@ -1,33 +1,96 @@
 # Holiday decoration table. Site data/festivals.yml overrides individual fields.
 # Windows are inclusive, measured in calendar days in this timezone.
 timezone: Asia/Shanghai
-# Earlier entries win when display windows overlap. daily is the fallback.
-priority: [spring, dragon_boat, mid_autumn]
+# Earlier entries win when display windows overlap. Holidays precede solar terms.
+# Lantern Festival takes over the last three days of the Spring Festival window.
+priority: [lantern, spring, dragon_boat, qixi, mid_autumn, chongyang, laba, lichun, yushui, jingzhe, chunfen, qingming, guyu, lixia, xiaoman, mangzhong, xiazhi, xiaoshu, dashu, liqiu, chushu, bailu, qiufen, hanlu, shuangjiang, lidong, xiaoxue, daxue, dongzhi, xiaohan, dahan]
 items:
   daily:
     enable: true
     # Everyday bamboo and crescent; no schedule required.
   spring:
     enable: true
+    label: 春节
     calendar: lunar
     month: 1
     day: 1
     before: 7
     after: 14 # Through lunar January 15 (Lantern Festival).
     blossom: ''
-    word1: ''
-    word2: ''
+    # null uses the corresponding label character; an explicit '' hides it.
+    word1: null
+    word2: null
+  lantern:
+    enable: true
+    label: 元宵
+    calendar: lunar
+    month: 1
+    day: 15
+    before: 2
+    after: 0
   dragon_boat:
     enable: true
+    label: 端午
     calendar: lunar
     month: 5
     day: 5
     before: 3
     after: 2
+  qixi:
+    enable: true
+    label: 七夕
+    calendar: lunar
+    month: 7
+    day: 7
+    before: 1
+    after: 1
   mid_autumn:
     enable: true
+    label: 中秋
     calendar: lunar
     month: 8
     day: 15
     before: 7
     after: 3
+  chongyang:
+    enable: true
+    label: 重阳
+    calendar: lunar
+    month: 9
+    day: 9
+    before: 1
+    after: 1
+  laba:
+    enable: true
+    label: 腊八
+    calendar: lunar
+    month: 12
+    day: 8
+    before: 1
+    after: 1
+  # Official HKO civil dates for 2020–2050; see docs/festival-calendar-sources.md.
+  # Each solar term appears on its date and the following calendar day.
+  lichun: { enable: true, label: 立春, calendar: solar_term, before: 0, after: 1 }
+  yushui: { enable: true, label: 雨水, calendar: solar_term, before: 0, after: 1 }
+  jingzhe: { enable: true, label: 惊蛰, calendar: solar_term, before: 0, after: 1 }
+  chunfen: { enable: true, label: 春分, calendar: solar_term, before: 0, after: 1 }
+  qingming: { enable: true, label: 清明, calendar: solar_term, before: 0, after: 1 }
+  guyu: { enable: true, label: 谷雨, calendar: solar_term, before: 0, after: 1 }
+  lixia: { enable: true, label: 立夏, calendar: solar_term, before: 0, after: 1 }
+  xiaoman: { enable: true, label: 小满, calendar: solar_term, before: 0, after: 1 }
+  mangzhong: { enable: true, label: 芒种, calendar: solar_term, before: 0, after: 1 }
+  xiazhi: { enable: true, label: 夏至, calendar: solar_term, before: 0, after: 1 }
+  xiaoshu: { enable: true, label: 小暑, calendar: solar_term, before: 0, after: 1 }
+  dashu: { enable: true, label: 大暑, calendar: solar_term, before: 0, after: 1 }
+  liqiu: { enable: true, label: 立秋, calendar: solar_term, before: 0, after: 1 }
+  chushu: { enable: true, label: 处暑, calendar: solar_term, before: 0, after: 1 }
+  bailu: { enable: true, label: 白露, calendar: solar_term, before: 0, after: 1 }
+  qiufen: { enable: true, label: 秋分, calendar: solar_term, before: 0, after: 1 }
+  hanlu: { enable: true, label: 寒露, calendar: solar_term, before: 0, after: 1 }
+  shuangjiang: { enable: true, label: 霜降, calendar: solar_term, before: 0, after: 1 }
+  lidong: { enable: true, label: 立冬, calendar: solar_term, before: 0, after: 1 }
+  xiaoxue: { enable: true, label: 小雪, calendar: solar_term, before: 0, after: 1 }
+  daxue: { enable: true, label: 大雪, calendar: solar_term, before: 0, after: 1 }
+  dongzhi: { enable: true, label: 冬至, calendar: solar_term, before: 0, after: 1 }
+  xiaohan: { enable: true, label: 小寒, calendar: solar_term, before: 0, after: 1 }
+  dahan: { enable: true, label: 大寒, calendar: solar_term, before: 0, after: 1 }

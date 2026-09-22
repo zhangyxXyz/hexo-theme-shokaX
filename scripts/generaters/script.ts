@@ -21,6 +21,10 @@ hexo.extend.generator.register('script', async function (locals) {
   const siteConfig = {
     version: env.version,
     hostname: config.url,
+    visitor: {
+      enable: theme.visitor?.enable === true,
+      type: theme.visitor?.type || 'busuanzi'
+    },
     root: config.root,
     statics: theme.statics,
     favicon: {
@@ -54,6 +58,8 @@ hexo.extend.generator.register('script', async function (locals) {
       : undefined,
     waline: {
       relativeTimeDays: theme.waline.relativeTimeDays ?? 60,
+      levelColors: theme.waline.levelColors || {},
+      labelColors: theme.waline.labelColors || {},
       friendUrls,
       readOnly: theme.waline.readOnly === true,
       login: theme.waline.login ?? 'enable',
@@ -65,7 +71,7 @@ hexo.extend.generator.register('script', async function (locals) {
       requiredMeta: theme.waline.requiredMeta,
       wordLimit: theme.waline.wordLimit,
       pageSize: theme.waline.pageSize,
-      pageview: theme.waline.pageview,
+      pageview: theme.visitor?.enable ? false : theme.waline.pageview,
       recaptchaV3Key: theme.waline.recaptchaV3Key,
       turnstileKey: theme.waline.turnstileKey
     },

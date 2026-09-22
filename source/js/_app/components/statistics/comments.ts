@@ -50,7 +50,13 @@ export function createCommentSource(config: Settings, signal: AbortSignal) {
 }
 
 export type CommentSource = ReturnType<typeof createCommentSource>
-export type CommentList = { total: number; page: number; hasMore: boolean; items: { id: string; url: string; nick: string; time: string; avatar?: string }[] }
+export type CommentListItem = {
+  id: string; url: string; nick: string; time: string; avatar?: string; link?: string; comment?: string;
+  label?: string; labelColors?: { light?: Record<string, string>; dark?: Record<string, string> };
+  levelColors?: { light?: Record<string, string>; dark?: Record<string, string> };
+  level?: number; levelLabel?: string; addr?: string; browser?: string; os?: string; type?: string
+}
+export type CommentList = { total: number; page: number; hasMore: boolean; items: CommentListItem[] }
 
 export async function loadCommentList(config: Settings, filter: { author?: string; url?: string }, page: number, signal: AbortSignal): Promise<CommentList> {
   if (!config.comments?.api) throw new Error('comments_unavailable')

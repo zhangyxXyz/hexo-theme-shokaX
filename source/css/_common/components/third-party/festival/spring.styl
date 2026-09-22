@@ -2,7 +2,7 @@
 .festival-decoration {
   pointer-events: none;
   user-select: none;
-  .festival-blossom { position: fixed; top: 0; right: 0; z-index: 10; width: 350px; height: 231px; animation: festival-fade 3s linear; }
+  .festival-blossom { position: fixed; top: 0; right: 0; z-index: 10; width: 350px; height: 231px; transform-origin: right top; animation: festival-fade 3s linear, festival-blossom-sway 8s ease-in-out infinite; }
   .deng-box, .deng-box1 { position: fixed; z-index: 11; }
   .deng-box { top: -40px; right: -20px; }
   .deng-box1 { top: -30px; right: 10px; }
@@ -31,7 +31,7 @@
   .shui-a { position: relative; width: 5px; height: 20px; margin: -5px 0 0 59px; animation: festival-swing 4s infinite ease-in-out; transform-origin: 50% -45px; background: #ffa500; border-radius: 0 0 5px 5px; }
   .shui-b { position: absolute; top: 14px; left: -2px; width: 10px; height: 10px; background: #dc8f03; border-radius: 50%; }
   .shui-c { position: absolute; top: 18px; left: -2px; width: 10px; height: 35px; background: #ffa500; border-radius: 0 0 0 5px; }
-  .deng-t { font-size: 3.2rem; color: #dc8f03; font-weight: bold; line-height: 85px; text-align: center; }
+  .deng-t { font-family: 'Kaiti SC', KaiTi, STKaiti, serif; font-size: 2rem; color: #e8b56b; opacity: .82; font-weight: 500; line-height: 85px; text-align: center; }
 }
 
 @keyframes festival-swing {
@@ -41,6 +41,10 @@
 @keyframes festival-fade {
   from { opacity: .1; }
   to { opacity: 1; }
+}
+@keyframes festival-blossom-sway {
+  0%, 100% { transform: rotate(-.5deg); }
+  50% { transform: rotate(.5deg); }
 }
 @media (prefers-reduced-motion: reduce) {
   .festival-decoration .deng, .festival-decoration .shui-a, .festival-decoration .festival-blossom { animation: none; }

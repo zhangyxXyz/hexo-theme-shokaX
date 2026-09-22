@@ -84,6 +84,8 @@ seo:
   baidu:
 
 visitor:
+  enable: false # Article views and site visitors; production hostname only.
+  type: busuanzi # busuanzi | custom (reserved, no requests yet)
   clarity: false
   baiduAnalytics: false
   googleAnalytics: false
@@ -201,6 +203,8 @@ twikoo:
 waline:
   client: official # official | seiun (private replies require the matching fork server)
   relativeTimeDays: 60 # 0: absolute dates; otherwise relative time below this many days.
+  levelColors: {} # level0..level19: { light: { text, background, border }, dark: { text, background, border } }; hex colors.
+  labelColors: {} # Same format, keyed by exclusive label text; overrides server colors.
   layout: bottom # slide | bottom; page/post front matter: comment_layout.
   friendBadge:
     enable: false # Website-based fallback label; not a verified identity.
@@ -299,10 +303,28 @@ widgets:
   recent_comments: true
 
 footer:
+  latest_post: true
+  tags:
+    enable: true
+    limit: 6
+  random_posts:
+    enable: null # Unset: inherit widgets.random_posts; true/false overrides it.
+    limit: 3
+  recent_comments:
+    enable: null # Unset: inherit widgets.recent_comments; true/false overrides it.
+    limit: 3
+  # Link order follows this mapping. Keys use menu translations and built-in icons.
+  # navigation:
+  #   archives: /archives/
+  #   tags: /tags/
+  #   about: /about/
+  social_links:
+    rss: true # URL from feed.rss.output.
+    github: true # URL from social.github.
   # Specify the date when the site was set up. If not defined, current year will be used.
   since: 2022
   create_time: '' # ISO 8601 timestamp with timezone for site uptime.
-  visitor: false # Busuanzi site visitors; disabled on local previews.
+  visitor: false # Show site visitors; requires visitor.enable. Disabled on local previews.
   moe_icp: ''
   moe_icp_link: ''
   icon:
@@ -322,7 +344,7 @@ footer:
 
 festival:
   enable: false
-  theme: auto # auto | daily | spring | dragon_boat | mid_autumn | none
+  theme: auto # auto | daily | none | a scene ID from _festivals.yml
   mobile: false
   # Dates, windows and artwork: _festivals.yml.
   # Site overrides: source/_data/festivals.yml.
@@ -342,6 +364,15 @@ reward:
     wechatpay: /wechatpay.png
     alipay: /alipay.png
     # paypal: /paypal.png
+
+# Archive display: a timeline tree or the classic archive.
+archive_view:
+  mode: tree # Initial view: tree | classic.
+  switchable: true # Remember visitor choices; false locks the configured view.
+
+category_view:
+  mode: cards # cards | classic
+  switchable: true # false locks the configured view, ignoring visitor choices.
 
 # TagCloud settings for tags page.
 tagcloud:

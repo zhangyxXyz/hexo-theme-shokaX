@@ -129,6 +129,8 @@ class SummaryDatabase {
         this.fileChanged = true
       }
       return cached
+    } else if (settings.cacheOnly) {
+      return null
     } else {
       hexo.log.info(`[ShokaX Summary AI] 正在向 API 请求 ${path} 的摘要`)
       const summaryContent = await getSummaryByAPI(content, settings)
@@ -196,7 +198,7 @@ hexo.extend.filter.register('before_generate', async function () {
     const localId = model.id || model.model
     const merged = { ...settings, ...provider, ...model, provider: hasProviders ? provider.id : undefined, id: hasProviders ? `${provider.id}/${localId}` : localId }
     if (!merged.model || !merged.id || ids.has(merged.id)) throw new Error('Summary models require unique IDs and model names')
-    if (typeof merged.apiUrl !== 'string' || !/^https?:\/\//.test(merged.apiUrl)) throw new Error('Summary provider requires an HTTP(S) apiUrl')
+    if (!merged.cacheOnly && (typeof merged.apiUrl !== 'string' || !/^https?:\/\//.test(merged.apiUrl))) throw new Error('Summary provider requires an HTTP(S) apiUrl')
     ids.add(merged.id)
     return merged
     })
@@ -216,7 +218,7 @@ hexo.extend.filter.register('before_generate', async function () {
       const versions = await Promise.all(models.map(model => concurrencyLimit(async () => {
         try {
           const summary = await db.getPostSummary(path, content, model)
-          return { ...summary, id: model.id }
+          return summary ? { ...summary, id: model.id } : null
         } catch (error) {
           hexo.log.error(`[ShokaX Summary AI] ${path} (${model.id}):`, error.message)
           return null

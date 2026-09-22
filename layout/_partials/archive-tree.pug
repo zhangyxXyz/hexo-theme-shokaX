@@ -1,0 +1,82 @@
+mixin archivePostList(posts)
+    ol.archive-post-list
+        each post in posts
+            li(itemscope itemtype="https://schema.org/Article")
+                a.archive-post-link(href=post.link ? post.link : url_for(post.path) class=post.link ? 'external' : undefined rel=post.link ? 'noopener external' : undefined itemprop="url")
+                    time(datetime=moment(post.date).format() title=date(post.date, config.date_format) itemprop="dateCreated")= date(post.date, 'DD')
+                    span.archive-post-title(itemprop="name")
+                        = post.title || post.link || __('post.untitled')
+                        if post.link
+                            i.ic.i-link-alt(aria-hidden="true")
+
+if archiveTreeData.years.length
+    .archive-tree-layout
+        .archive-tree-content
+            .archive-tree
+                each year, yearIndex in archiveTreeData.years
+                    details.archive-year(id='archive-year-' + year.year open=archiveScoped || yearIndex < 3)
+                        summary.archive-year-title
+                            span.archive-year-pill
+                                a.archive-year-number(href=url_for(config.archive_dir + '/' + year.year + '/') title=__('title.archive_in', year.year + __('symbol.year')))= year.year
+                                small.archive-year-count= __('archive_view.posts', year.total)
+                                i.ic.i-angle-down(aria-hidden="true")
+                        .archive-year-body
+                            each month, monthIndex in year.months
+                                article.archive-month-card(class=[(yearIndex + monthIndex) % 2 ? 'is-right' : '', monthIndex % 2 ? 'is-offset' : '', month.latest ? 'is-latest' : ''] style='--archive-row: ' + (Math.floor(monthIndex / 2) + 1))
+                                    span.archive-month-node(aria-hidden="true")
+                                    header.archive-month-heading
+                                        h3
+                                            a(href=url_for(config.archive_dir + '/' + year.year + '/' + month.month + '/'))
+                                                span.archive-month-number= month.month
+                                                span.archive-month-unit= __('symbol.month')
+                                        if month.latest
+                                            span.archive-latest= __('archive_view.latest')
+                                        small
+                                            = __('archive_view.posts', month.total)
+                                    +archivePostList(month.posts)
+                                    if month.posts.length > 5
+                                        nav.archive-month-pagination(data-archive-month-pages hidden aria-label=year.year + ' / ' + month.month + ' · ' + __('archive_view.month_link'))
+                                            button(type="button" data-archive-month-prev aria-label=__('accessibility.prev_page'))
+                                                i.ic.i-angle-left(aria-hidden="true")
+                                            span(data-archive-month-page aria-live="polite" aria-atomic="true")= '1 / ' + Math.ceil(month.posts.length / 5)
+                                            button(type="button" data-archive-month-next aria-label=__('accessibility.next_page'))
+                                                i.ic.i-angle-right(aria-hidden="true")
+                                    footer.archive-month-footer
+                                        span.archive-categories= month.categories.slice(0, 2).join(' · ')
+                                        if month.posts.length > 5
+                                            button.archive-month-show-all(type="button" data-archive-month-all hidden data-expand-label=__('archive_view.show_all', month.posts.length) data-collapse-label=__('archive_view.paged_view') aria-expanded="false")= __('archive_view.show_all', month.posts.length)
+                                        a(href=url_for(config.archive_dir + '/' + year.year + '/' + month.month + '/'))
+                                            = __('archive_view.month_link')
+                                            i.ic.i-angle-right(aria-hidden="true")
+                            if !archiveScoped && yearIndex < 2 && year.months.length === 1
+                                .archive-year-note(class=yearIndex % 2 ? 'is-left' : '' aria-hidden="true")
+                                    span ✧
+                                    p= yearIndex ? __('archive_view.memories') : __('archive_view.ongoing')
+            if !archiveScoped
+                .archive-tree-end
+                    span(aria-hidden="true") ✦
+                    p= __('archive_view.beginning')
+                    small= archiveTreeData.firstYear
+        aside.archive-year-rail
+            .archive-year-rail-inner
+                button.archive-rail-toggle(type="button" data-archive-rail-toggle aria-label=__('archive_view.rail_toggle') aria-expanded="false" aria-controls="archive-year-options")
+                    i.ic.i-timeline(aria-hidden="true")
+                    span(data-archive-current-year)= archiveTreeData.years[0].year
+                    i.ic.i-angle-up(aria-hidden="true")
+                p.archive-rail-title= __('archive_view.index')
+                nav.archive-year-nav#archive-year-options(aria-label=__('archive_view.index'))
+                    each year in archiveTreeData.years
+                        a(href='#archive-year-' + year.year data-archive-year='archive-year-' + year.year)
+                            span= year.year
+                            small= __('archive_view.posts', year.total)
+                .archive-rail-note
+                    span(aria-hidden="true") ✧
+                    p= __('archive_view.ongoing')
+                if archiveScoped
+                    a.archive-back-top(href=url_for(config.archive_dir))= __('title.all')
+                else
+                    a.archive-back-top(href="#archive")
+                        i.ic.i-arrow-up(aria-hidden="true")
+                        = __('archive_view.back_top')
+else
+    p.archive-empty= __('archive_view.empty')

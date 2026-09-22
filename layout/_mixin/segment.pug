@@ -7,6 +7,7 @@ mixin SMRender(item, lazy)
         - var postTitleIcon = '<i class="ic i-link-alt"></i>'
     - var postText = item.title || item.link || __('post.untitled')
     - var cardSummary = is_home() ? summary_card(item) : null
+    - cardSummary = cardSummary ? sort_summary_models(cardSummary) : null
     - var currentSummary = cardSummary && cardSummary[0]
     - var summaryMode = theme.summary.home && theme.summary.home.mode || 'switch'
     - var summaryDefault = theme.summary.home && theme.summary.home.default || 'original'

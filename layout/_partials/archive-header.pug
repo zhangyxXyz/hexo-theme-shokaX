@@ -1,0 +1,24 @@
+header.archive-heading.collapse
+    h2.item.header
+        if is_month()
+            a(href=url_for(config.archive_dir))= __('title.all')
+            small /
+            a(href=url_for(config.archive_dir + '/' + page.year + '/'))= page.year + ' ' + __('symbol.year')
+            small /
+            = page.month + __('symbol.month')
+            small= __('title.archive')
+        else if is_year()
+            a(href=url_for(config.archive_dir))= __('title.all')
+            small /
+            = page.year + __('symbol.year')
+            small= __('title.archive')
+        else
+            a(href=url_for('/'))= __('menu.home')
+            small /
+            != _p('counter.archive_posts', archiveData.total)
+        small.archive-heading-description
+            if archiveScoped
+                span.archive-tree-count= __('archive_view.posts', archiveTreeData.count)
+                span.archive-classic-count= __('archive_view.page_posts', archiveData.count)
+            else
+                = __('archive_view.heading')

@@ -3,6 +3,7 @@
   --festival-moon: #efd9a0;
   .festival-art { position: fixed; top: 1rem; right: 0; width: 240px; z-index: 10; opacity: .94; }
   .festival-daily { width: 210px; opacity: .65; }
+  .festival-current { width: 250px; top: .25rem; }
   .festival-art svg { display: block; width: 100%; height: auto; overflow: visible; }
   .festival-bamboo { color: var(--festival-leaf); }
   .festival-moon { fill: var(--festival-moon); filter: drop-shadow(0 0 9px #efd9a02b); }
@@ -12,6 +13,17 @@
   .festival-bamboo-sway { transform-origin: 240px 22px; animation: festival-bamboo-sway 9s ease-in-out infinite; }
   .festival-leaf { transform-box: fill-box; transform-origin: right center; animation: festival-leaf-flutter 5s ease-in-out infinite; animation-delay: var(--leaf-delay); }
   .festival-tassel { transform-origin: 148px 202px; animation: festival-pendant 4s ease-in-out infinite reverse; }
+  .festival-ornament-sway { transform-origin: var(--festival-origin, 170px 10px); animation: festival-ornament-sway 7s ease-in-out infinite; }
+  .festival-silk { transform-box: fill-box; transform-origin: top center; animation: festival-silk 4.5s ease-in-out infinite; }
+  // These classes sit on transform-free inner groups; SVG placement stays intact.
+  .festival-botanical-breathe { transform-box: fill-box; transform-origin: 75% 70%; animation: festival-botanical-breathe 9s ease-in-out infinite; }
+  .festival-foliage-breathe { transform-box: fill-box; transform-origin: 60% 100%; animation: festival-foliage-breathe 7.5s ease-in-out infinite; }
+  .festival-branch-breathe { transform-box: view-box; transform-origin: var(--festival-branch-origin, 100% 0%); animation: festival-foliage-breathe var(--festival-motion-duration, 8s) ease-in-out infinite; }
+  .festival-willow-breathe { transform-box: fill-box; transform-origin: right top; animation: festival-foliage-breathe 8.5s ease-in-out infinite reverse; }
+  .festival-bird-breathe { transform-box: fill-box; transform-origin: center; animation: festival-bird-breathe 7s ease-in-out infinite; }
+  .festival-thread-sway { transform-box: view-box; transform-origin: var(--festival-thread-origin, 50% 0%); animation: festival-thread-sway 7.5s ease-in-out infinite; animation-delay: var(--festival-motion-delay, 0s); }
+  .festival-steam-rise { animation: festival-steam-rise 6.5s ease-in-out infinite; }
+  .festival-rain-drift { animation: festival-rain-drift 6s ease-in-out infinite; }
 }
 html[data-theme='dark'] .festival-decoration {
   --festival-leaf: #87aa9a;
@@ -31,8 +43,41 @@ html[data-theme='dark'] .festival-decoration {
   0%, 100% { transform: rotate(-1.5deg); }
   50% { transform: rotate(2deg); }
 }
+@keyframes festival-ornament-sway {
+  0%, 100% { transform: rotate(-1.8deg); }
+  50% { transform: rotate(1.8deg); }
+}
+@keyframes festival-silk {
+  0%, 100% { transform: skewX(-3deg); }
+  50% { transform: skewX(3deg); }
+}
+@keyframes festival-botanical-breathe {
+  0%, 100% { transform: translateY(.7px) rotate(-1deg); }
+  50% { transform: translateY(-.7px) rotate(1deg); }
+}
+@keyframes festival-foliage-breathe {
+  0%, 100% { transform: rotate(-1.25deg); }
+  50% { transform: rotate(1.25deg); }
+}
+@keyframes festival-bird-breathe {
+  0%, 100% { transform: translate(.5px, 1.5px) rotate(-.8deg); }
+  50% { transform: translate(-.5px, -1.5px) rotate(.8deg); }
+}
+@keyframes festival-thread-sway {
+  0%, 100% { transform: rotate(-1.6deg); }
+  50% { transform: rotate(1.6deg); }
+}
+@keyframes festival-steam-rise {
+  0%, 100% { transform: translateY(.7px); opacity: .56; }
+  50% { transform: translateY(-2px); opacity: .88; }
+}
+@keyframes festival-rain-drift {
+  0%, 100% { transform: translate(.5px, -1.8px); opacity: .68; }
+  50% { transform: translate(-.5px, 1.8px); opacity: .98; }
+}
 @media (prefers-reduced-motion: reduce) {
   .festival-decoration {
-    .festival-pendant, .festival-bamboo-sway, .festival-leaf, .festival-tassel { animation: none; }
+    .festival-pendant, .festival-bamboo-sway, .festival-leaf, .festival-tassel, .festival-ornament-sway, .festival-silk { animation: none; }
+    .festival-botanical-breathe, .festival-foliage-breathe, .festival-branch-breathe, .festival-willow-breathe, .festival-bird-breathe, .festival-thread-sway, .festival-steam-rise, .festival-rain-drift { animation: none; }
   }
 }

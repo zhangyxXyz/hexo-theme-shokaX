@@ -722,17 +722,16 @@
       align-items: center
       max-width: 100%
       margin: 0
-      // Optical centering for the theme's rounded CJK font; total height stays 21px.
       box-sizing: border-box
       justify-content: center
-      padding: .3125rem .5rem .125rem
+      padding: .2rem .5rem
       border: 1px solid var(--color-pink-a3)
       border-radius: 999px
       background: linear-gradient(120deg, var(--color-pink-light), var(--color-red-a3))
       color: var(--primary-color)
       font-size: .75rem
       font-weight: 600
-      line-height: 1
+      line-height: 1.2
       overflow-wrap: anywhere
 
     .wl-badge.shokax-friend-badge
@@ -846,6 +845,11 @@
     background: linear-gradient(120deg, var(--color-red-a3), var(--color-pink-a3))
     border-color: var(--color-red-a3)
     box-shadow: 0 2px 6px var(--color-red-a1)
+
+  .wl-card .wl-badge
+    --waline-badge-default-text: var(--primary-color)
+    --waline-badge-default-background: linear-gradient(120deg, var(--color-pink-light), var(--color-red-a3))
+    --waline-badge-default-border: var(--color-pink-a3)
 
   .wl-user-avatar
     border: 2px solid var(--grey-1)

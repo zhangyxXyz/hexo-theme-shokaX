@@ -1,24 +1,24 @@
 - const festival = theme.festival || {}
 - const festivalTable = theme.festival_table || {items: {}}
 - const spring = festivalTable.items.spring || {}
-if festival.enable
-    .festival-decoration(aria-hidden="true" data-festival=JSON.stringify({...festival, table: festivalTable}) data-mobile=String(!!festival.mobile))
+- const springWords = Array.from(typeof spring.label === 'string' ? spring.label.trim() : '春节').slice(0, 2)
+- const springWord = index => Array.from(String(spring['word' + (index + 1)] ?? springWords[index] ?? '').trim())[0] || ''
+- const artwork = Object.fromEntries(Object.entries(theme.festival_artwork || {}).map(([scene, path]) => [scene, url_for(path)]))
+if festival.enable || theme.festival_preview_enabled
+    .festival-decoration(aria-hidden="true" data-festival=JSON.stringify({...festival, table: festivalTable}) data-artwork=JSON.stringify(artwork) data-mobile=String(!!festival.mobile))
         div(data-festival-scene="spring" hidden)
             if spring.blossom
                 img.festival-blossom(data-src=url_for(spring.blossom) alt="" width="350" height="231" decoding="async")
-            each word, index in [spring.word2, spring.word1]
+            each character, index in [1, 0]
                 div(class=index === 0 ? 'deng-box' : 'deng-box1')
                     .deng
                         .xian
                         .deng-a
                             .deng-b
-                                .deng-t= word || ''
+                                .deng-t(data-festival-character=character)= springWord(character)
                         .shui-a
                             .shui-c
                             .shui-b
         .festival-art.festival-daily(data-festival-scene="daily" hidden)
             include festival/daily.pug
-        .festival-art.festival-dragon(data-festival-scene="dragon_boat" hidden)
-            include festival/dragon-boat.pug
-        .festival-art.festival-autumn(data-festival-scene="mid_autumn" hidden)
-            include festival/mid-autumn.pug
+        .festival-art.festival-current(data-festival-artwork hidden)

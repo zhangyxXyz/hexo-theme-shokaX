@@ -1,0 +1,71 @@
+// Keep the three directory view switches in the same heading row, independent of content.
+.category-directory, .tag-directory, .archive-page .archive-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+.category-directory > .item.title, .tag-directory > .item.title,
+.archive-page .archive-heading {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  padding-right: 0;
+}
+.tag-directory .tag-cloud-widget,
+.archive-page .archive-toolbar,
+.archive-page[data-mode='classic'] .archive-toolbar {
+  display: contents;
+}
+.category-directory .category-controls,
+.tag-directory .tag-cloud-controls,
+.archive-page .archive-view-controls {
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  margin: 1.25rem 1.875rem 0 .75rem;
+  display: flex;
+  gap: .1rem;
+  padding: .15rem;
+  border: 0;
+  border-radius: .6rem;
+  background: var(--grey-3);
+  button {
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 1.65rem;
+    padding: .25rem .4rem;
+    border: 0;
+    border-radius: .45rem;
+    font-size: 1rem;
+    line-height: 1;
+    svg { width: 1rem; height: 1rem; }
+    &[aria-pressed='true'] { box-shadow: 0 1px 4px var(--box-bg-shadow); }
+  }
+}
+.category-directory .category-cards, .category-directory .category-classic,
+.tag-directory .tag.cloud {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.archive-page [data-archive-tree-tools] {
+  grid-column: 1 / -1;
+  margin: .5rem 1.875rem 1.5rem;
+}
+@media (max-width: 767px) {
+  .category-directory > .item.title, .tag-directory > .item.title,
+  .archive-page .archive-heading { grid-column: 1 / -1; }
+  .category-directory .category-controls,
+  .tag-directory .tag-cloud-controls,
+  .archive-page .archive-view-controls {
+    grid-row: 2;
+    margin: .5rem 0 1rem .75rem;
+  }
+  .archive-page [data-archive-tree-tools] {
+    grid-column: 1;
+    grid-row: 2;
+    margin: .5rem 0 1rem 1.875rem;
+  }
+}

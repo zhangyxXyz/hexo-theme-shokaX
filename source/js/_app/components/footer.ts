@@ -2,7 +2,6 @@ import { observeVisitorCount } from './footer-visitors'
 import { refreshFooterCommentMedia } from './footer-comments'
 
 let uptimeTimer: ReturnType<typeof setInterval> | undefined
-let visitorsLoaded = false
 let footerEvents: AbortController | undefined
 
 const refreshDiscovery = () => {
@@ -24,7 +23,36 @@ const refreshDiscovery = () => {
     // Keep native link navigation, including modifier clicks and PJAX interception.
     random.addEventListener('click', pick, { signal })
   }
+  const articleList = document.querySelector<HTMLElement>('#footer-article-list')
+  const shufflePosts = document.querySelector<HTMLButtonElement>('[data-footer-post-shuffle]')
+  if (articleList && shufflePosts) {
+    const posts: { url: string; title: string; category: string }[] = JSON.parse(articleList.dataset.posts || '[]')
+    const links = Array.from(articleList.querySelectorAll<HTMLAnchorElement>('li > a'))
+    shufflePosts.addEventListener('click', () => {
+      const shown = new Set(links.map(link => link.getAttribute('href')))
+      const remaining = posts.filter(post => !shown.has(post.url))
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[remaining[i], remaining[j]] = [remaining[j], remaining[i]]
+      }
+      const picks = [...remaining, ...posts.filter(post => shown.has(post.url))].slice(0, links.length)
+      links.forEach((link, index) => {
+        const post = picks[index]
+        if (!post) return
+        link.setAttribute('href', post.url)
+        link.title = post.title
+        link.querySelector<HTMLElement>('.footer-article-title')!.textContent = post.title
+        const body = link.querySelector<HTMLElement>('.footer-article-body')!
+        let category = body.querySelector('small')
+        if (post.category) {
+          if (!category) { category = document.createElement('small'); body.append(category) }
+          category.textContent = post.category
+        } else category?.remove()
+      })
+    }, { signal })
+  }
   const tags = Array.from(document.querySelectorAll<HTMLElement>('#footer-tags .footer-tag'))
+  const tagLimit = Number(document.querySelector<HTMLElement>('#footer-tags')?.dataset.limit) || 6
   document.querySelector('[data-footer-shuffle]')?.addEventListener('click', () => {
     // Prefer hidden tags so a small tag pool still visibly changes each time.
     const shuffled = tags.filter(tag => tag.hidden)
@@ -32,7 +60,7 @@ const refreshDiscovery = () => {
       const j = Math.floor(Math.random() * (i + 1))
       ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
-    const visible = new Set([...shuffled, ...tags.filter(tag => !tag.hidden)].slice(0, 6))
+    const visible = new Set([...shuffled, ...tags.filter(tag => !tag.hidden)].slice(0, tagLimit))
     tags.forEach(tag => { tag.hidden = !visible.has(tag) })
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       tags.filter(tag => !tag.hidden).forEach((tag, index) => {
@@ -76,14 +104,4 @@ export const refreshFooter = () => {
     uptimeTimer = setInterval(update, 1000)
   }
 
-  const visitors = document.querySelector<HTMLElement>('.footer-visitors')
-  if (!visitors || visitorsLoaded) return
-  const site = new URL(visitors.dataset.siteUrl, location.href)
-  if (location.hostname !== site.hostname || ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return
-  const script = document.createElement('script')
-  script.src = visitors.dataset.script
-  script.async = true
-  script.onerror = () => { visitorsLoaded = false; script.remove() }
-  visitorsLoaded = true
-  document.head.appendChild(script)
 }

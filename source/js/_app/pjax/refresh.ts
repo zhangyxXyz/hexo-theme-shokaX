@@ -14,8 +14,11 @@ import { refreshHitokoto } from '../components/hitokoto'
 import { refreshTocCurve } from '../components/toc-curve'
 import { refreshTocTooltip } from '../components/toc-tooltip'
 import { refreshFooter } from '../components/footer'
+import { refreshVisitors } from '../components/visitors'
 import { refreshFestival } from '../components/festival'
 import { refreshTagCloud } from '../components/tagcloud'
+import { refreshCategoryDirectory } from '../components/category-directory'
+import { refreshArchive } from '../components/archive'
 import { refreshSummarySwitch } from '../components/summary-switch'
 import { postBeauty } from '../page/post'
 import { refreshArticleRelock } from '../components/article-relock'
@@ -72,8 +75,11 @@ export const siteRefresh = async (reload) => {
     commentButton.setAttribute('aria-label', document.querySelector<HTMLElement>('[data-comment-layout]')?.dataset.title || '')
   }
   refreshFooter()
+  refreshVisitors()
   refreshFestival()
   refreshTagCloud()
+  refreshCategoryDirectory()
+  refreshArchive()
   refreshStatistics()
   refreshIconPreview()
   refreshSummarySwitch()

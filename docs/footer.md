@@ -1,5 +1,36 @@
 # 页尾
 
+## 内容配置
+
+站点在 `_config.shokax.yml` 的 `footer` 下配置；省略字段保留原有行为。
+
+```yaml
+footer:
+  latest_post: true # 最近落笔，仍只在宽屏显示
+  tags:
+    enable: true
+    limit: 6
+  random_posts:
+    enable: true
+    limit: 3
+  recent_comments:
+    enable: true
+    limit: 3
+  navigation: # 按书写顺序显示；空对象 {} 隐藏快捷链接
+    archives: /archives/
+    friend-links: /friend-links/
+    projects: /projects/
+    guestbook: /guestbook/
+    statistics: /statistics/
+  social_links:
+    rss: true # 地址来自 feed.rss.output
+    github: true # 地址来自 social.github
+```
+
+`limit` 必须为正整数，无效值回退到标签 6、文章 3、评论 3；关闭使用 `enable: false`。标签首次展示与换组共用数量，评论请求与展示共用数量。文章／评论开关未填写或为 `null` 时兼容对应的 `widgets` 旧开关，明确设置 `true/false` 后不再依赖旧开关；最新评论仍需启用 Waline 或 Twikoo。所有开关均不改变现有移动端显示规则。
+
+关闭文章或评论后另一栏自动填满；右侧全部关闭时取消空栏。社交入口关闭或没有地址时不展示，也不保留空分隔线。其他年份、签名、计数、运行时间和备案配置沿用原字段。
+
 `layout/_partials/footer-discovery.pug` 渲染页尾，`source/css/_common/outline/footer/discovery.styl` 负责响应式样式。外层沿用正文宽度和侧栏预留空间，侧栏仍可固定显示到页面底部。
 
 - 桌面左侧是站点名片、真实字数／阅读时长／访客数据和运行时间；运行天数与时分秒并排，版权位于备案信息上方居中。

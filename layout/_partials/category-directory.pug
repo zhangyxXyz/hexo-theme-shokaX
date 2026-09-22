@@ -1,0 +1,36 @@
+- const categoryNodes = site.categories.sort('name', 1).toArray().filter(category => category.length)
+- const categoryChildren = parent => categoryNodes.filter(category => String(category.parent || '') === String(parent || ''))
+mixin categoryLink(category, root)
+    a.category-link(href=url_for(category.path))
+        if root
+            svg.category-icon(viewBox="0 0 24 24" aria-hidden="true")
+                path(d="M3 7V5a2 2 0 0 1 2-2h5l3 3h6a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z")
+        span.category-name= category.name
+        span.category-count(aria-label=__('counter.index.post', category.length))= category.length
+mixin categoryBranch(category, root)
+    - const children = categoryChildren(category._id)
+    if children.length
+        details.category-branch(open class=root ? 'category-card' : null)
+            summary(aria-label=category.name)
+                +categoryLink(category, root)
+                i.ic.i-angle-down.category-chevron(aria-hidden="true")
+            .category-children
+                each child in children
+                    +categoryBranch(child, false)
+    else
+        div(class=root ? 'category-card category-leaf' : 'category-leaf')
+            +categoryLink(category, root)
+.category-controls(role="group" aria-label=__('category_view.label') hidden)
+    button(type="button" data-category-view="cards" aria-pressed=String(categoryMode === 'cards') aria-label=__('category_view.cards'))
+        svg(viewBox="0 0 24 24" aria-hidden="true")
+            rect(x="3" y="3" width="7" height="7" rx="1.5")
+            rect(x="14" y="3" width="7" height="7" rx="1.5")
+            rect(x="3" y="14" width="7" height="7" rx="1.5")
+            rect(x="14" y="14" width="7" height="7" rx="1.5")
+    button(type="button" data-category-view="classic" aria-pressed=String(categoryMode === 'classic') aria-label=__('category_view.classic'))
+        i.ic.i-list-alt(aria-hidden="true")
+.category-cards(hidden=categoryMode !== 'cards')
+    each category in categoryChildren()
+        +categoryBranch(category, true)
+.category-classic(hidden=categoryMode !== 'classic')
+    != _list_categories(3)

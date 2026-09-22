@@ -71,6 +71,17 @@
     .select-picker-check { background: currentColor; }
   }
 }
+.select-picker-group + .select-picker-group {
+  margin-top: .2rem;
+  padding-top: .2rem;
+  border-top: 1px solid var(--grey-3);
+}
+.select-picker-group-label {
+  padding: .4rem .55rem .2rem;
+  color: var(--grey-5);
+  font-size: .7rem;
+  font-weight: 600;
+}
 @media (prefers-reduced-motion: reduce) {
   .select-picker-arrow { transition: none; }
 }

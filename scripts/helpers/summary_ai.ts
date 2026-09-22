@@ -28,6 +28,17 @@ function modelRule(model: string) {
   return null
 }
 
+hexo.extend.helper.register('sort_summary_models', (versions = []) => {
+  const providers = hexo.locals.get('data').model_icons?.providers
+  if (!Array.isArray(providers)) return versions.slice()
+  const rank = (model: string) => {
+    const index = providers.indexOf(modelRule(model))
+    return index < 0 ? providers.length : index
+  }
+  // Stable sort preserves configured order within a family and for unknown models.
+  return versions.slice().sort((a, b) => rank(a.model) - rank(b.model))
+})
+
 hexo.extend.helper.register('summary_model_icon', (model: string) => {
   const table = hexo.locals.get('data').model_icons || {}
   return modelRule(model)?.icon || (/^i-[a-zA-Z0-9_-]+$/.test(table.fallback || '') ? table.fallback : 'i-robot')

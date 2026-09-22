@@ -17,7 +17,8 @@ export function enhanceSelect(select: HTMLSelectElement, options: PickerOptions 
   const trigger = document.createElement('button')
   trigger.type = 'button'
   trigger.className = 'select-picker-trigger'
-  trigger.setAttribute('aria-label', select.getAttribute('aria-label') || '')
+  const description = select.getAttribute('aria-describedby')
+  if (description) trigger.setAttribute('aria-describedby', description)
   trigger.setAttribute('aria-haspopup', 'listbox')
   trigger.setAttribute('aria-expanded', 'false')
   const label = document.createElement('span'), icon = document.createElement('i'), arrow = document.createElement('i')
@@ -29,6 +30,7 @@ export function enhanceSelect(select: HTMLSelectElement, options: PickerOptions 
   const sync = () => {
     const option = select.selectedOptions[0]
     label.textContent = option?.text || ''
+    trigger.setAttribute('aria-label', [select.getAttribute('aria-label'), option?.text].filter(Boolean).join(': '))
     trigger.title = option?.dataset.tooltip || option?.text || ''
     trigger.disabled = select.disabled
     icon.className = option?.dataset.icon ? 'ic ' + option.dataset.icon : ''
@@ -62,10 +64,26 @@ export function enhanceSelect(select: HTMLSelectElement, options: PickerOptions 
       closeOwn = undefined
     }
     closeOwn = closePicker = close
+    const groups = new Map<HTMLOptGroupElement, HTMLElement>()
     const buttons = Array.from(select.options).map(option => {
+      const group = option.parentElement?.tagName === 'OPTGROUP' ? option.parentElement as HTMLOptGroupElement : undefined
+      let container = group && groups.get(group)
+      if (group && !container) {
+        container = document.createElement('div')
+        container.className = 'select-picker-group'
+        container.setAttribute('role', 'group')
+        container.setAttribute('aria-label', group.label)
+        const heading = document.createElement('div')
+        heading.className = 'select-picker-group-label'
+        heading.setAttribute('aria-hidden', 'true')
+        heading.textContent = group.label
+        container.append(heading)
+        menu.append(container)
+        groups.set(group, container)
+      }
       const button = document.createElement('button')
       button.type = 'button'
-      button.disabled = option.disabled
+      button.disabled = option.disabled || !!group?.disabled
       button.className = 'select-picker-option'
       button.title = option.dataset.tooltip || option.text
       button.setAttribute('role', 'option')
@@ -87,7 +105,8 @@ export function enhanceSelect(select: HTMLSelectElement, options: PickerOptions 
         close()
         trigger.focus({ preventScroll: true })
       }
-      menu.append(button)
+      const destination = container || menu
+      destination.append(button)
       return button
     })
     document.body.append(menu)
@@ -101,6 +120,7 @@ export function enhanceSelect(select: HTMLSelectElement, options: PickerOptions 
     const selected = buttons[select.selectedIndex]
     const initial = selected && !selected.disabled ? selected : enabled[0]
     initial?.focus({ preventScroll: true })
+    initial?.scrollIntoView({ block: 'nearest' })
     document.addEventListener('pointerdown', e => {
       if (!menu.contains(e.target as Node) && !trigger.contains(e.target as Node)) close()
     }, { signal: lifecycle.signal })
@@ -112,6 +132,7 @@ export function enhanceSelect(select: HTMLSelectElement, options: PickerOptions 
         const index = enabled.indexOf(document.activeElement as HTMLButtonElement)
         const next = e.key === 'Home' ? 0 : e.key === 'End' ? enabled.length - 1 : (index + (e.key === 'ArrowDown' ? 1 : -1) + enabled.length) % enabled.length
         enabled[next]?.focus({ preventScroll: true })
+        enabled[next]?.scrollIntoView({ block: 'nearest' })
       }
     }, { signal: lifecycle.signal })
     window.addEventListener('resize', close, { signal: lifecycle.signal })

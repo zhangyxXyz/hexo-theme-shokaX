@@ -10,13 +10,13 @@
     if visibleTags.length
         if cloudOptions.switchable !== false
             .tag-cloud-controls(role="group" aria-label=__('tagcloud.view') hidden)
-                button(type="button" data-cloud-mode="2d" aria-pressed="true" aria-label=__('tagcloud.flat') title=__('tagcloud.flat'))
+                button(type="button" data-cloud-mode="2d" aria-pressed="true" aria-label=__('tagcloud.flat'))
                     svg(viewBox="0 0 24 24" aria-hidden="true")
                         rect(x="3" y="4" width="7" height="6" rx="1.5")
                         rect(x="14" y="4" width="7" height="6" rx="1.5")
                         rect(x="3" y="14" width="7" height="6" rx="1.5")
                         rect(x="14" y="14" width="7" height="6" rx="1.5")
-                button(type="button" data-cloud-mode="3d" aria-pressed="false" aria-label=__('tagcloud.sphere') title=__('tagcloud.sphere'))
+                button(type="button" data-cloud-mode="3d" aria-pressed="false" aria-label=__('tagcloud.sphere'))
                     svg(viewBox="0 0 24 24" aria-hidden="true")
                         circle(cx="12" cy="12" r="9")
                         ellipse(cx="12" cy="12" rx="4" ry="9")

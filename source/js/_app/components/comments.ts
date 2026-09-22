@@ -69,6 +69,7 @@ export const walineComment = function () {
     serverURL: CONFIG.waline.serverURL,
     lang: CONFIG.waline.lang,
     locale,
+    ...{ levelColors: CONFIG.waline.levelColors, labelColors: CONFIG.waline.labelColors },
     // The fork accepts a plain-text notifier; official clients ignore this option.
     ...{ notify: (message: string) => showtip(message, true) },
     emoji: CONFIG.waline.emoji,

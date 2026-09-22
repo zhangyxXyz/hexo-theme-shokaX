@@ -1,0 +1,45 @@
+include traditional-mixins.pug
+//- Blue-and-white porcelain, eight-treasure porridge, grain and winter plum.
+svg(viewBox='0 0 260 320' focusable='false')
+    +festivalCraftPalette('laba')
+    defs
+        radialGradient#laba-porridge(cx='35%' cy='30%' r='80%' gradientUnits='objectBoundingBox')
+            stop(stop-color='#efd7b3')
+            stop(offset='.6' stop-color='#cea276')
+            stop(offset='1' stop-color='#aa7855')
+        clipPath#laba-bowl-clip
+            path(d='M99 172q9 59 65 61 56-2 67-61Z')
+    g(transform='translate(-26 -46) scale(1.1)')
+        g(fill='none' stroke-linecap='round')
+            path(d='M192 170q26-26 29-62t16-49m-17 53-18-15m24-12 24-4m-40 49-14-4' stroke='#6d4b3e' stroke-width='3')
+            path(d='M192 170q26-26 29-62t16-49' stroke='#ac8764' stroke-width='.8')
+            path(d='M114 184q-37-42-28-83m21 77q-35-21-41-51' stroke='#b18a48' stroke-width='1.5')
+        g(fill='url(#laba-gold)' stroke='#aa7d3d' stroke-width='.45')
+            each grain in [[86,113,-24],[85,124,-32],[90,137,-32],[96,149,-39],[77,119,32],[77,132,34],[84,145,36],[72,140,-39],[65,128,-28],[68,148,35],[77,159,42]]
+                ellipse(cx=grain[0] cy=grain[1] rx='3' ry='7' transform=`rotate(${grain[2]} ${grain[0]} ${grain[1]})`)
+        each blossom in [[236,68,1],[222,103,.83],[202,97,.73],[246,83,.62],[207,130,.74]]
+            g(transform=`translate(${blossom[0]} ${blossom[1]}) scale(${blossom[2]})`)
+                each angle in [0,72,144,216,288]
+                    ellipse(cy='-5' rx='4.5' ry='6' transform=`rotate(${angle})` fill='url(#laba-red)' stroke='#aa5050' stroke-width='.5')
+                circle(r='3' fill='url(#laba-gold)')
+                each angle in [0,72,144,216,288]
+                    path(d='M0 0v-4' transform=`rotate(${angle})` stroke='#ffdf9e' stroke-width='.7')
+        g.festival-steam-rise(fill='none' stroke='#c0a16e' stroke-width='1.2' stroke-linecap='round' opacity='.7')
+            path(d='M145 141q-11-12 0-23 8-10 0-19m20 44q13-12 3-24-8-10 1-20m17 42q-8-8 0-18')
+        g.festival-depth
+            path(d='M99 172q9 59 65 61 56-2 67-61Z' fill='url(#laba-porcelain)' stroke='#7793a4' stroke-width='1.2')
+            g(clip-path='url(#laba-bowl-clip)')
+                path(d='M101 179q61 29 129 0m-124 13q58 26 119 0M125 224q40 12 80-1' fill='none' stroke='#2e5d82' stroke-width='2')
+                each stem in [123,204]
+                    g(transform=`translate(${stem} 207)` fill='none' stroke='#386c92' stroke-width='1')
+                        path(d='M-12 2q12-13 24 0m-12 0q-9-8-3-12 9 0 3 12m0 0q9-8 13-2-2 7-13 2m0 0q-7 8-12 2 1-6 12-2')
+                path(d='M113 186q8 23 27 30' fill='none' stroke='#ffffff' stroke-width='3' opacity='.55')
+                +festivalCaption(165, 211, 12, '#376587', '#edf3e9')
+            ellipse(cx='165' cy='172' rx='67' ry='23' fill='url(#laba-porcelain)' stroke='#738e9e' stroke-width='1.2')
+            ellipse(cx='165' cy='171' rx='61' ry='18' fill='url(#laba-porridge)' stroke='#4f718a' stroke-width='1.4')
+            each grain, i in [[126,168,5,3],[144,158,5,2.5],[164,170,6,3],[184,159,5,3],[207,170,5,3],[150,179,4,2.5],[186,179,5,3],[176,164,3,2],[134,178,4,2],[198,164,3,2],[155,164,3,2],[173,181,4,2],[116,172,3,2],[216,174,3,2]]
+                ellipse(cx=grain[0] cy=grain[1] rx=grain[2] ry=grain[3] transform=`rotate(${i % 2 ? 23 : -19} ${grain[0]} ${grain[1]})` fill=['#8f4341','#ead6a8','#ddbf7a','#786654'][i % 4] stroke='#936e4e' stroke-width='.4')
+            path(d='M138 168q4-6 8-1-1 6-8 1m48 6q4-6 8-1-1 6-8 1' fill='url(#laba-red)' stroke='#8c4240' stroke-width='.6')
+            path(d='M103 174q58 25 124 0' fill='none' stroke='#f9f6e8' stroke-width='2.4')
+            path(d='M141 230v7q23 7 47 0v-7' fill='url(#laba-porcelain)' stroke='#63849a' stroke-width='1')
+            path(d='M141 235q24 7 47 0' fill='none' stroke='#315e81' stroke-width='1.8')

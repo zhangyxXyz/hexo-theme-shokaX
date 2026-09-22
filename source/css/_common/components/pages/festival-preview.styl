@@ -1,0 +1,292 @@
+.festival-preview
+  min-width 0
+  color var(--grey-7)
+
+  .festival-preview-header
+    margin-bottom 1.25rem
+
+  .festival-preview-title
+    margin 0 0 .6rem
+    padding 0
+    font-size 1.4rem
+    line-height 1.5
+    &::before, &::after
+      display none
+
+  .festival-preview-description
+    margin 0
+    color var(--grey-6)
+    font-size .9rem
+    line-height 1.8
+
+  .festival-preview-controls
+    display grid
+    gap .85rem
+    padding 1rem
+    margin-bottom 1.75rem
+    border 1px solid var(--grey-3)
+    border-radius .5rem
+    background var(--grey-1)
+
+  .festival-preview-toolbar, .festival-preview-customize
+    display flex
+    align-items center
+    flex-wrap wrap
+    gap .55rem .75rem
+    min-width 0
+
+  .festival-preview-label
+    color var(--grey-6)
+    font-size .875rem
+    font-weight 500
+    line-height 1.5
+    flex-shrink 0
+
+  // Shared outer skin; native input and enhanced select supply only content.
+  .festival-preview-control
+    display inline-flex
+    align-items center
+    box-sizing border-box
+    min-width 0
+    max-width 100%
+    height 2.125rem
+    margin 0
+    padding 0
+    border 1px solid var(--grey-3)
+    border-radius .8rem
+    color var(--grey-7)
+    background var(--grey-2)
+    box-shadow 0 2px 8px var(--box-bg-shadow)
+    font inherit
+    font-size .875rem
+    line-height 1.5
+    outline 0
+    transition border-color .18s, background .18s, box-shadow .18s
+    &:hover
+      border-color var(--color-pink-a3)
+      background var(--grey-1)
+    &:focus-within
+      border-color var(--primary-color)
+      box-shadow 0 0 0 2px var(--color-pink-a3)
+    &:has(input:disabled)
+      opacity .5
+      box-shadow none
+    input, select, .select-picker-trigger
+      box-sizing border-box
+      width 100%
+      min-width 0
+      height 100%
+      min-height 0
+      margin 0
+      padding .25rem .75rem
+      border 0
+      border-radius inherit
+      background transparent
+      color inherit
+      font inherit
+      line-height inherit
+      outline 0
+      box-shadow none
+      &:focus, &:focus-visible
+        outline 0
+        box-shadow none
+
+  .festival-preview-picker
+    width 7rem
+    flex 0 0 auto
+    .select-picker-trigger
+      justify-content space-between
+      > span
+        min-width 0
+        white-space nowrap
+        overflow hidden
+        text-overflow ellipsis
+
+  .festival-preview-reset
+    justify-content center
+    gap .4rem
+    flex-shrink 0
+    padding .25rem .75rem
+    color var(--primary-color)
+    white-space nowrap
+    cursor pointer
+    .ic
+      display inline-flex
+      align-items center
+      justify-content center
+      width 1em
+      height 1em
+      margin 0
+      font-size 1em
+      line-height 1
+
+  .festival-preview-text
+    width 5rem
+    flex-shrink 0
+
+  .festival-preview-label-input
+    text-align center
+    &::placeholder
+      color var(--grey-5)
+      font inherit
+    &:disabled
+      cursor default
+
+  .festival-preview-label-hint
+    color var(--grey-5)
+    font-size .75rem
+    line-height 1.6
+
+  .festival-preview-status
+    margin-left auto
+    color var(--grey-6)
+    font-size .8rem
+    line-height 1.6
+
+  .festival-preview-group
+    margin 0 0 1.75rem
+
+  .festival-preview-heading
+    margin 0 0 .75rem
+    padding 0
+    font-size 1.05rem
+    font-weight 500
+    line-height 1.6
+    &::before, &::after
+      display none
+
+  .festival-preview-grid
+    display grid
+    grid-template-columns repeat(4, minmax(0, 1fr))
+    gap .75rem
+
+  .festival-preview-card
+    position relative
+    display flex
+    flex-direction column
+    align-items center
+    min-width 0
+    margin 0
+    padding .6rem .5rem .75rem
+    border 1px solid var(--grey-3)
+    border-radius .5rem
+    color var(--grey-7)
+    background var(--grey-1)
+    font inherit
+    text-align center
+    cursor pointer
+    transition border-color .18s, background .18s, box-shadow .18s
+    &:hover
+      border-color var(--primary-color)
+      background var(--grey-2)
+    &:focus-visible
+      outline 2px solid var(--primary-color)
+      outline-offset 3px
+    &[aria-pressed='true']
+      border-color var(--primary-color)
+      box-shadow inset 0 0 0 1px var(--primary-color)
+      .festival-preview-name
+        color var(--primary-color)
+        font-weight 600
+      &::after
+        content ''
+        position absolute
+        top .65rem
+        right .65rem
+        width .4rem
+        height .7rem
+        border solid var(--primary-color)
+        border-width 0 2px 2px 0
+        transform rotate(45deg)
+
+  .festival-preview-thumb
+    display flex
+    align-items center
+    justify-content center
+    width 100%
+    height 9rem
+    overflow hidden
+    pointer-events none
+    img
+      display block
+      width auto
+      height 100%
+      max-width 100%
+      margin 0
+      padding 0
+      border 0
+      border-radius 0
+      box-shadow none
+      object-fit contain
+    img.festival-preview-spring
+      width 100%
+      height auto
+      max-height 100%
+
+  .festival-preview-name
+    display block
+    margin-top .35rem
+    font-size .9rem
+    line-height 1.6
+
+  .festival-preview-lantern
+    position relative
+    width 3.25rem
+    height 3.75rem
+    border 2px solid #d5aa61
+    border-radius 45%
+    background linear-gradient(90deg, #932e38, #df6860 48%, #932e38)
+    box-shadow inset 8px 0 0 -6px #e8bd77, inset -8px 0 0 -6px #e8bd77
+    &::before, &::after
+      content ''
+      position absolute
+      left 50%
+      width 1.6rem
+      height .3rem
+      transform translateX(-50%)
+      border-radius .1rem
+      background #d5aa61
+    &::before
+      top -.25rem
+    &::after
+      bottom -.25rem
+
+  @media (max-width: 1199px)
+    .festival-preview-grid
+      grid-template-columns repeat(3, minmax(0, 1fr))
+
+  @media (max-width: 600px)
+    .festival-preview-grid
+      grid-template-columns repeat(2, minmax(0, 1fr))
+      gap .65rem
+    .festival-preview-controls
+      padding .85rem
+    .festival-preview-customize
+      gap .5rem
+    .festival-preview-status
+      flex-basis 100%
+      margin-left 0
+    .festival-preview-thumb
+      height 8rem
+
+  @media (prefers-reduced-motion: reduce)
+    .festival-preview-card, .festival-preview-control
+      transition none
+
+.select-picker-menu[data-picker='festival']
+  border-color var(--grey-3)
+  border-radius .8rem
+  font-size .875rem
+  .select-picker-group-label
+    margin .2rem 0
+    padding .3rem .55rem
+    border-radius .35rem
+    color var(--primary-color)
+    background var(--color-red-a1)
+    font-size .75rem
+  .select-picker-option
+    &:hover, &:focus-visible
+      background var(--color-red-a1)
+    &[aria-selected='true']
+      color var(--primary-color)
+      background var(--color-red-a1)
