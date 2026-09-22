@@ -20,7 +20,15 @@ export function observeVisitorCount(container: HTMLElement, signal: AbortSignal)
     if (!/^\d+$/.test(text)) return
     const value = Number(text)
     if (!Number.isSafeInteger(value) || value < 0) return
-    display.textContent = formatVisitorCount(value)
+    const formatted = formatVisitorCount(value)
+    const parts = formatted.match(/^([\d.]+)([kMBT])$/)
+    display.textContent = parts ? parts[1] : formatted
+    if (parts) {
+      const unit = document.createElement('small')
+      unit.className = 'footer-metric-unit'
+      unit.textContent = parts[2]
+      display.append(unit)
+    }
     const exact = value.toLocaleString(document.documentElement.lang || undefined)
     const description = (display.dataset.format || '{count}').replace('{count}', exact)
     display.title = description

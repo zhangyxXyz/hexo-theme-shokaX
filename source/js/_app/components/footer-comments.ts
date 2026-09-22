@@ -68,7 +68,7 @@ export const renderFooterComments = (container: HTMLElement, rows: FooterComment
       const page = new URL(path, site)
       if (page.origin === site.origin) pageTitles.set(pageKey(page.pathname), title)
     }
-  } catch { /* A URL remains useful when the optional title index is unavailable. */ }
+  } catch { /* Keep the generic comment action when the optional title index is unavailable. */ }
   for (const item of rows.slice(0, Number(container.dataset.limit) || 3)) {
     let target: URL
     try { target = new URL(item.url || '/', site) } catch { continue }
@@ -80,7 +80,7 @@ export const renderFooterComments = (container: HTMLElement, rows: FooterComment
     link.className = 'footer-comment-link'
     link.href = target.pathname + target.search + target.hash
     const pageTitle = pageTitles.get(pageKey(target.pathname))
-    link.title = [pageTitle, target.href].filter(Boolean).join('\n')
+    link.title = [container.dataset.commentAction, pageTitle].filter(Boolean).join(' · ')
     link.dataset.tooltipDelay = '350'
     const avatar = document.createElement('span')
     avatar.className = 'footer-comment-avatar'

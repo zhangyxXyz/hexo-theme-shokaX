@@ -3,7 +3,7 @@
 - for (let i = footerPicks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [footerPicks[i], footerPicks[j]] = [footerPicks[j], footerPicks[i]] }
 - var footerTags = site.tags.sort('length', -1).toArray()
 - var footerNav = theme.footer.navigation || {archives: '/archives/', tags: '/tags/', about: '/about/'}
-- var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'comments', statistics: 'statistics', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
+- var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'message-board', statistics: 'statistics', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
 .footer-shell
     svg.footer-starlight(viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false")
         g.footer-orbits(fill="none" stroke="currentColor" stroke-width="1")
@@ -40,16 +40,23 @@
                                     i.ic.i-visits(aria-hidden="true")
                                     = ' ' + __('footer.explore.visitor_short')
                         .footer-metric
-                            strong!= symbolsCountTotal(site)
+                            - var footerWordCount = String(symbolsCountTotal(site))
+                            - var footerWordParts = footerWordCount.match(/^([\d.]+)([a-zA-Z]+)$/)
+                            strong
+                                = footerWordParts ? footerWordParts[1] : footerWordCount
+                                if footerWordParts
+                                    small.footer-metric-unit= footerWordParts[2]
                             span
                                 i.ic.i-chart-area(aria-hidden="true")
                                 = ' ' + __('footer.explore.words_short')
                         .footer-metric
                             - var footerReadingTime = String(symbolsTimeTotal(site, config.symbols_count_time.awl, config.symbols_count_time.wpm, __('symbols_count_time.time_minutes')))
+                            - var footerReadingParts = footerReadingTime.match(/^(\d+:\d{2}|\d+)(?:\s+(.+))?$/)
+                            - var footerReadingUnit = /^\d+:\d{2}$/.test(footerReadingTime) ? 'h' : (footerReadingParts && footerReadingParts[2])
                             strong
-                                = footerReadingTime
-                                if /^\d+:\d{2}$/.test(footerReadingTime)
-                                    small.footer-metric-unit h
+                                = footerReadingParts ? footerReadingParts[1] : footerReadingTime
+                                if footerReadingUnit
+                                    small.footer-metric-unit= footerReadingUnit
                             span
                                 i.ic.i-coffee(aria-hidden="true")
                                 = ' ' + __('footer.explore.reading_short')
@@ -94,7 +101,7 @@
                         ul.footer-list
                             each post, index in footerPicks.slice(0, 3)
                                 li
-                                    a(href=url_for(post.path) title=(post.title || __('post.untitled')) + '\n' + post.permalink data-tooltip-delay="350")
+                                    a(href=url_for(post.path) title=post.title || __('post.untitled') data-tooltip-delay="350")
                                         span.footer-article-number(aria-hidden="true")= index + 1
                                         span.footer-article-body
                                             span.footer-article-title= post.title || __('post.untitled')
@@ -106,10 +113,9 @@
                     - var footerPageTitles = [...footerPosts, ...site.pages.toArray().filter(p => p.published !== false && !p.hidden && p.path)].map(p => [url_for(p.path), p.title || ''])
                     section.footer-discovery.footer-comments
                         h2.footer-section-title= __('footer.explore.comments')
-                        ul#new-comment.footer-list(style=footerFriendStyle data-page-titles=JSON.stringify(footerPageTitles) data-friend-label=__('comment_friend') data-limit="3" data-empty=__('footer.explore.empty') data-error=__('footer.explore.unavailable') aria-live="polite")
+                        ul#new-comment.footer-list(style=footerFriendStyle data-page-titles=JSON.stringify(footerPageTitles) data-comment-action=__('comment_entry.action') data-friend-label=__('comment_friend') data-limit="3" data-empty=__('footer.explore.empty') data-error=__('footer.explore.unavailable') aria-live="polite")
                             li.footer-comment-state= __('footer.loading')
     nav.footer-navigation(aria-label=__('footer.explore.storage'))
-        strong= __('footer.explore.storage')
         .footer-nav-links
             each href, name in footerNav
                 a(href=url_for(href))
