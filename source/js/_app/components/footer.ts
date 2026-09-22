@@ -6,6 +6,19 @@ const refreshDiscovery = () => {
   footerEvents?.abort()
   footerEvents = new AbortController()
   const { signal } = footerEvents
+  const random = document.querySelector<HTMLAnchorElement>('[data-footer-random]')
+  if (random) {
+    const canonical = (path: string) => path.replace(/\/index\.html$/, '/').replace(/\/$/, '')
+    const paths: string[] = JSON.parse(random.dataset.footerRandom || '[]')
+    const candidates = paths.filter(path => canonical(new URL(path, location.href).pathname) !== canonical(location.pathname))
+    random.hidden = candidates.length === 0
+    const pick = () => {
+      if (candidates.length) random.href = candidates[Math.floor(Math.random() * candidates.length)]
+    }
+    pick()
+    // Keep native link navigation, including modifier clicks and PJAX interception.
+    random.addEventListener('click', pick, { signal })
+  }
   const tags = Array.from(document.querySelectorAll<HTMLElement>('#footer-tags .footer-tag'))
   document.querySelector('[data-footer-shuffle]')?.addEventListener('click', () => {
     // Prefer hidden tags so a small tag pool still visibly changes each time.

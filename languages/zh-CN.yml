@@ -104,6 +104,7 @@ footer:
     tags: "标签漫游"
     refresh: "换一组"
     articles: "再读一篇"
+    random_article: "随机读一篇"
     comments: "最近的声音"
     storage: "储藏间"
     chance: "让下一篇，交给偶然。"

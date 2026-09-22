@@ -104,6 +104,7 @@ footer:
     tags: "タグを探す"
     refresh: "入れ替え"
     articles: "次の記事"
+    random_article: "記事をランダムに読む"
     comments: "最近のコメント"
     storage: "リンク集"
     chance: "次の記事は偶然に任せよう。"

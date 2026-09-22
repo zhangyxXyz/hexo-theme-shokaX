@@ -104,6 +104,7 @@ footer:
     tags: "標籤漫遊"
     refresh: "換一組"
     articles: "再讀一篇"
+    random_article: "隨機讀一篇"
     comments: "最近的聲音"
     storage: "儲藏間"
     chance: "讓下一篇，交給偶然。"

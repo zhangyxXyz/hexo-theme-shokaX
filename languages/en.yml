@@ -104,6 +104,7 @@ footer:
     tags: "Tag explorer"
     refresh: "Shuffle"
     articles: "Read another"
+    random_article: "Read a random article"
     comments: "Recent voices"
     storage: "Storage"
     chance: "Let chance choose your next read."

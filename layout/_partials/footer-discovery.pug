@@ -1,4 +1,6 @@
-- var footerPosts = site.posts.sort('date', -1).toArray().filter(p => p.published !== false)
+- var footerPosts = site.posts.sort('date', -1).toArray().filter(p => p.published !== false && !p.hidden && p.path)
+- var footerPicks = footerPosts.slice()
+- for (let i = footerPicks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [footerPicks[i], footerPicks[j]] = [footerPicks[j], footerPicks[i]] }
 - var footerTags = site.tags.sort('length', -1).toArray()
 - var footerNav = theme.footer.navigation || {archives: '/archives/', tags: '/tags/', about: '/about/'}
 - var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'comments', statistics: 'statistics', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
@@ -57,7 +59,7 @@
                         if footerTags.length > 6
                             button.footer-shuffle(type="button" data-footer-shuffle aria-controls="footer-tags")
                                 = __('footer.explore.refresh')
-                                span(aria-hidden="true")  ↻
+                                i.ic.i-shuffle(aria-hidden="true")
                     #footer-tags.footer-tags
                         each tag, index in footerTags
                             a.footer-tag(href=url_for(tag.path) hidden=index >= 6)
@@ -66,14 +68,19 @@
             .footer-stories
                 if theme.widgets.random_posts && footerPosts.length
                     section.footer-discovery.footer-articles
-                        h2.footer-section-title= __('footer.explore.articles')
+                        .footer-article-heading
+                            h2.footer-section-title= __('footer.explore.articles')
+                            a.footer-random(href=url_for(footerPicks[0].path) data-footer-random=JSON.stringify(footerPosts.map(post => url_for(post.path))) title=__('footer.explore.random_article') aria-label=__('footer.explore.random_article'))
+                                i.ic.i-dice(aria-hidden="true")
                         ul.footer-list
-                            each post in site.posts.shuffle().limit(3).toArray()
+                            each post, index in footerPicks.slice(0, 3)
                                 li
                                     a(href=url_for(post.path))
-                                        span.footer-article-title= post.title || __('post.untitled')
-                                        if post.categories && post.categories.length
-                                            small= post.categories.last().name
+                                        span.footer-article-number(aria-hidden="true")= index + 1
+                                        span.footer-article-body
+                                            span.footer-article-title= post.title || __('post.untitled')
+                                            if post.categories && post.categories.length
+                                                small= post.categories.last().name
                 if theme.widgets.recent_comments && (theme.waline.enable || (theme.twikoo && theme.twikoo.enable))
                     section.footer-discovery.footer-comments
                         h2.footer-section-title= __('footer.explore.comments')
