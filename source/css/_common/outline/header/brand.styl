@@ -30,9 +30,37 @@
   }
 
   .artboard {
+    position: relative;
     font-family: $font-family-logo;
     font-size: $font-size-logo;
     line-height: 1.2;
+  }
+
+  .artboard-glitch {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+
+    &::before, &::after {
+      content: attr(data-alternate);
+      position: absolute;
+      inset: 0;
+      color: inherit;
+      mix-blend-mode: lighten;
+    }
+
+    &::before {
+      text-shadow: 1px 0 #ff3f1a;
+      transform: translateX(1px);
+      clip-path: inset(18% 0 57%);
+    }
+
+    &::after {
+      text-shadow: -1px 0 #00a7e0;
+      transform: translateX(-1px);
+      clip-path: inset(54% 0 16%);
+    }
   }
 
   h1 {
@@ -132,6 +160,34 @@
   50% { opacity: 0; }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  #brand .logo:hover .artboard-glitch::before, #brand .logo:focus-visible .artboard-glitch::before {
+    text-shadow: 4px 0 #ff3f1a;
+    animation: brand-glitch-red .8s infinite ease-in-out alternate-reverse;
+  }
+  #brand .logo:hover .artboard-glitch::after, #brand .logo:focus-visible .artboard-glitch::after {
+    text-shadow: -3px 0 #00a7e0;
+    animation: brand-glitch-blue .8s infinite ease-in-out alternate-reverse;
+  }
+}
+
+@keyframes brand-glitch-red {
+  0%, 100% { clip-path: inset(12% 0 72%); transform: translateX(1px); }
+  20% { clip-path: inset(43% 0 41%); transform: translateX(-1px); }
+  40% { clip-path: inset(64% 0 14%); transform: translateX(2px); }
+  60% { clip-path: inset(27% 0 63%); transform: translateX(0); }
+  80% { clip-path: inset(73% 0 10%); transform: translateX(1px); }
+}
+
+@keyframes brand-glitch-blue {
+  0%, 100% { clip-path: inset(76% 0 8%); transform: translateX(-1px); }
+  20% { clip-path: inset(14% 0 69%); transform: translateX(-2px); }
+  40% { clip-path: inset(49% 0 36%); transform: translateX(1px); }
+  60% { clip-path: inset(66% 0 20%); transform: translateX(-1px); }
+  80% { clip-path: inset(25% 0 61%); transform: translateX(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   #brand .quote-typing::after { display: none; }
+  #brand .artboard-glitch { display: none; }
 }

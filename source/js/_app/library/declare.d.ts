@@ -111,6 +111,7 @@ interface configType {
   }
   search: any,
   waline: {
+    relativeTimeDays: number
     friendUrls: string[]
     readOnly: boolean
     login: 'enable' | 'disable' | 'force'

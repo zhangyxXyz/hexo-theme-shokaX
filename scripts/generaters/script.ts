@@ -53,6 +53,7 @@ hexo.extend.generator.register('script', async function (locals) {
       ? theme.fireworks.options
       : undefined,
     waline: {
+      relativeTimeDays: theme.waline.relativeTimeDays ?? 60,
       friendUrls,
       readOnly: theme.waline.readOnly === true,
       login: theme.waline.login ?? 'enable',

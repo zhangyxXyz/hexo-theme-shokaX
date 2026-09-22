@@ -95,9 +95,11 @@
                                             if post.categories && post.categories.length
                                                 small= post.categories.last().name
                 if theme.widgets.recent_comments && (theme.waline.enable || (theme.twikoo && theme.twikoo.enable))
+                    - var footerFriendStyle = {}, footerFriendColors = (theme.waline.friendBadge || {}).colors || {}
+                    - for (var mode of ['light', 'dark']) { for (var key of ['text', 'background', 'border']) { var color = (footerFriendColors[mode] || {})[key]; if (typeof color === 'string' && /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(color)) footerFriendStyle['--friend-' + mode + '-' + key] = color; } }
                     section.footer-discovery.footer-comments
                         h2.footer-section-title= __('footer.explore.comments')
-                        ul#new-comment.footer-list(data-limit="3" data-empty=__('footer.explore.empty') data-error=__('footer.explore.unavailable') aria-live="polite")
+                        ul#new-comment.footer-list(style=footerFriendStyle data-friend-label=__('comment_friend') data-limit="3" data-empty=__('footer.explore.empty') data-error=__('footer.explore.unavailable') aria-live="polite")
                             li.footer-comment-state= __('footer.loading')
     nav.footer-navigation(aria-label=__('footer.explore.storage'))
         strong= __('footer.explore.storage')

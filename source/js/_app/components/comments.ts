@@ -6,7 +6,8 @@ import { createCommentMarkdown } from './comment-markdown'
 import { createCommentMedia } from './comment-media'
 import { observeCommentDecorations } from './comment-observer'
 import { syncCommentControls } from './comment-controls'
-import { init } from '@waline/client'
+import { init, defaultLocales } from '@waline/client'
+import { getFooterCommentBadge } from './footer-comment-badge'
 import { pageviewCount } from '@waline/client/pageview'
 // @ts-ignore
 await import('@waline/client/style')
@@ -106,12 +107,16 @@ export const walineRecentComments = async function () {
     url.search = new URLSearchParams({ type: 'recent', count: container.dataset.limit || '3', lang: CONFIG.waline.lang }).toString()
     const response = await fetch(url, { signal: AbortSignal.timeout(10000) })
     if (!response.ok) throw new Error(`Waline recent comments: HTTP ${response.status}`)
-    const result: { errno: number; errmsg: string; data: Array<{ comment: string; url: string; objectId: string; nick: string; avatar?: string }> } = await response.json()
+    const result: { errno: number; errmsg: string; data: Array<{ comment: string; url: string; objectId: string; nick: string; avatar?: string; time?: number; label?: string; type?: string; link?: string }> } = await response.json()
     if (result.errno !== 0) throw new Error(result.errmsg)
     if (container.isConnected) renderFooterComments(container, result.data.map(item => ({
-      nick: item.nick, url: item.url, id: item.objectId, avatar: item.avatar,
+      nick: item.nick, url: item.url, id: item.objectId, avatar: item.avatar, time: item.time,
+      badge: getFooterCommentBadge(item, CONFIG.waline.friendUrls || [], container.dataset.friendLabel || ''),
       text: new DOMParser().parseFromString(item.comment, 'text/html').body.textContent || ''
-    })))
+    })), {
+      relativeTimeDays: CONFIG.waline.relativeTimeDays ?? 60,
+      locale: { ...(defaultLocales[(CONFIG.waline.lang || 'en-US').toLowerCase() as keyof typeof defaultLocales] || defaultLocales['en-us']), ...CONFIG.waline.locale }
+    })
   } catch {
     if (container.isConnected) footerCommentState(container, 'error')
   } finally {
