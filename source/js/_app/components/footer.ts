@@ -1,3 +1,6 @@
+import { observeVisitorCount } from './footer-visitors'
+import { refreshFooterCommentMedia } from './footer-comments'
+
 let uptimeTimer: ReturnType<typeof setInterval> | undefined
 let visitorsLoaded = false
 let footerEvents: AbortController | undefined
@@ -6,6 +9,8 @@ const refreshDiscovery = () => {
   footerEvents?.abort()
   footerEvents = new AbortController()
   const { signal } = footerEvents
+  const visitors = document.querySelector<HTMLElement>('.footer-visitors')
+  if (visitors) observeVisitorCount(visitors, signal)
   const random = document.querySelector<HTMLAnchorElement>('[data-footer-random]')
   if (random) {
     const canonical = (path: string) => path.replace(/\/index\.html$/, '/').replace(/\/$/, '')
@@ -29,11 +34,20 @@ const refreshDiscovery = () => {
     }
     const visible = new Set([...shuffled, ...tags.filter(tag => !tag.hidden)].slice(0, 6))
     tags.forEach(tag => { tag.hidden = !visible.has(tag) })
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      tags.filter(tag => !tag.hidden).forEach((tag, index) => {
+        tag.getAnimations().forEach(animation => animation.cancel())
+        tag.animate([{ opacity: 0, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], {
+          duration: 220, delay: index * 25, easing: 'ease-out', fill: 'backwards'
+        })
+      })
+    }
   }, { signal })
 }
 
 export const refreshFooter = () => {
   refreshDiscovery()
+  refreshFooterCommentMedia()
   if (uptimeTimer) clearInterval(uptimeTimer)
   uptimeTimer = undefined
   const uptime = document.querySelector<HTMLElement>('[data-uptime]')
@@ -70,7 +84,6 @@ export const refreshFooter = () => {
   script.src = visitors.dataset.script
   script.async = true
   script.onerror = () => { visitorsLoaded = false; script.remove() }
-  script.onload = () => document.getElementById('busuanzi_value_site_uv')?.removeAttribute('title')
   visitorsLoaded = true
   document.head.appendChild(script)
 }

@@ -1,3 +1,25 @@
+import { createImageMedia } from './image-media'
+
+let media: ReturnType<typeof createImageMedia> | undefined
+let mediaContainer: HTMLElement | undefined
+
+const destroyFooterMedia = () => {
+  media?.destroy()
+  media = undefined
+  mediaContainer = undefined
+}
+document.addEventListener('pjax:send', destroyFooterMedia)
+
+export const refreshFooterCommentMedia = () => {
+  const container = document.getElementById('new-comment') || undefined
+  if (container !== mediaContainer) {
+    destroyFooterMedia()
+    mediaContainer = container
+    if (container) media = createImageMedia(container, { selector: '.footer-comment-avatar img' })
+  }
+  media?.sync()
+}
+
 export interface FooterComment {
   nick: string
   text: string
@@ -24,6 +46,7 @@ export const renderFooterComments = (container: HTMLElement, rows: FooterComment
       const img = document.createElement('img')
       img.alt = ''
       img.loading = 'lazy'
+      img.decoding = 'async'
       img.referrerPolicy = 'no-referrer'
       img.src = item.avatar
       img.addEventListener('error', () => { img.remove(); avatar.textContent = Array.from(item.nick || '?')[0] }, { once: true })
@@ -44,6 +67,7 @@ export const renderFooterComments = (container: HTMLElement, rows: FooterComment
   container.replaceChildren(fragment)
   if (!container.children.length) footerCommentState(container, 'empty')
   container.dataset.loaded = 'true'
+  refreshFooterCommentMedia()
 }
 
 export const footerCommentState = (container: HTMLElement, state: 'empty' | 'error') => {
@@ -51,4 +75,5 @@ export const footerCommentState = (container: HTMLElement, state: 'empty' | 'err
   li.className = 'footer-comment-state'
   li.textContent = container.dataset[state] || ''
   container.replaceChildren(li)
+  refreshFooterCommentMedia()
 }

@@ -100,10 +100,15 @@ post:
 
 footer:
   explore:
+    visitor_short: "訪問者"
+    words_short: "総文字数"
+    reading_short: "総読書時間"
+    visitor_exact: "訪問者 {count} 人"
     data: "サイトデータ"
     tags: "タグを探す"
     refresh: "入れ替え"
     articles: "次の記事"
+    latest: "最近の記事"
     random_article: "記事をランダムに読む"
     comments: "最近のコメント"
     storage: "リンク集"

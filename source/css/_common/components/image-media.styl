@@ -1,0 +1,22 @@
+// Shared by comment media, recent-comment avatars and article images.
+img.comment-media-pending
+  filter: blur(5px)
+  opacity: .45
+  background: var(--grey-3)
+  transition: filter .25s ease, opacity .25s ease
+
+img.comment-media-ready
+  transition: filter .25s ease, opacity .25s ease
+  animation: comment-media-reveal .8s ease-in-out both
+
+@keyframes comment-media-reveal
+  from
+    filter: blur(10px)
+  to
+    filter: blur(0)
+
+@media (prefers-reduced-motion: reduce)
+  img.comment-media-pending, img.comment-media-ready
+    filter: none
+    transition: none
+    animation: none

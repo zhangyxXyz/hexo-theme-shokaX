@@ -5,6 +5,19 @@
 - var footerNav = theme.footer.navigation || {archives: '/archives/', tags: '/tags/', about: '/about/'}
 - var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'comments', statistics: 'statistics', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
 .footer-shell
+    svg.footer-starlight(viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false")
+        g.footer-orbits(fill="none" stroke="currentColor" stroke-width="1")
+            path(d="M875 -25C1000 100 1225 20 1190 -35M940 -30C840 72 1100 96 1170 -20")
+            path(d="M-60 490C80 430 225 550 178 620M-30 530C82 462 225 568 150 620")
+        g.footer-stars(fill="currentColor")
+            path(d="M1085 49l2.5 6.5 6.5 2.5-6.5 2.5-2.5 6.5-2.5-6.5-6.5-2.5 6.5-2.5z")
+            path(d="M112 489l2 5 5 2-5 2-2 5-2-5-5-2 5-2z")
+            path(d="M463 280l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z")
+            circle(cx="455" cy="62" r="1.4")
+            circle(cx="32" cy="270" r="1.2")
+            circle(cx="727" cy="486" r="1.5")
+            circle(cx="1137" cy="353" r="1.2")
+            circle(cx="1000" cy="116" r="1")
     .footer-layout
         .footer-intro
             .footer-heading
@@ -19,20 +32,21 @@
                     .footer-metrics
                         if theme.footer.visitor
                             .footer-metric.footer-visitors(data-site-url=config.url data-script=url_for('/js/extra/busuanzi.pure.min.js'))
-                                strong#busuanzi_value_site_uv(title=__('footer.visitor_preview')) —
+                                span#busuanzi_value_site_uv(hidden aria-hidden="true")
+                                strong(data-visitor-count data-format=__('footer.explore.visitor_exact') tabindex="0" title=__('footer.visitor_preview')) —
                                 span
                                     i.ic.i-visits(aria-hidden="true")
-                                    = ` ${__('footer.visitor')} · ${__('footer.peoples')}`
+                                    = ' ' + __('footer.explore.visitor_short')
                         .footer-metric
                             strong!= symbolsCountTotal(site)
                             span
                                 i.ic.i-chart-area(aria-hidden="true")
-                                = ' ' + __('symbols_count_time.count_total')
+                                = ' ' + __('footer.explore.words_short')
                         .footer-metric
                             strong!= symbolsTimeTotal(site, config.symbols_count_time.awl, config.symbols_count_time.wpm, __('symbols_count_time.time_minutes'))
                             span
                                 i.ic.i-coffee(aria-hidden="true")
-                                = ' ' + __('symbols_count_time.time_total')
+                                = ' ' + __('footer.explore.reading_short')
             if theme.footer.create_time
                 .site-uptime
                     span.footer-uptime-label
@@ -42,15 +56,14 @@
                         strong(data-uptime-days)
                         span= __('footer.explore.days')
                         small(data-uptime-clock data-format=__('footer.explore.clock'))
-            .copyright
-                - var copyright_year = date(null, 'YYYY')
-                | © 
-                if theme.footer.since && String(theme.footer.since) !== copyright_year
-                    = `${theme.footer.since}–`
-                span(itemprop="copyrightYear")= copyright_year
-                span.with-love
-                    i.ic(class=`i-${theme.footer.icon.name}` aria-hidden="true")
-                span(itemprop="copyrightHolder")= `${author} @ ${alternate || title}`
+            if footerPosts.length
+                .footer-latest
+                    .footer-latest-heading
+                        i.ic.i-pen(aria-hidden="true")
+                        span= __('footer.explore.latest')
+                        span.footer-meta-dot(aria-hidden="true") ·
+                        time(datetime=date(footerPosts[0].date, 'YYYY-MM-DD'))= date(footerPosts[0].date, 'YYYY.MM.DD')
+                    a(href=url_for(footerPosts[0].path) title=footerPosts[0].title)= footerPosts[0].title || __('post.untitled')
         .footer-browse
             if footerTags.length
                 section.footer-discovery.footer-tags-section
@@ -96,15 +109,21 @@
                     = __('menu.' + name)
         .footer-social
             if config.feed && config.feed.rss && config.feed.rss.output
-                a(href=url_for(config.feed.rss.output) aria-label="RSS")
-                    svg.footer-rss(viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true")
-                        circle(cx="5" cy="19" r="1" fill="currentColor")
-                        path(d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16")
-                    span RSS
+                a(href=url_for(config.feed.rss.output) aria-label="RSS" title="RSS")
+                    i.ic.i-rss(aria-hidden="true")
             if theme.social && theme.social.github
                 a(href=theme.social.github.split('||')[0].trim() target="_blank" rel="noopener noreferrer" aria-label="GitHub")
                     i.ic.i-github(aria-hidden="true")
     .footer-meta
+        .copyright
+            - var copyright_year = date(null, 'YYYY')
+            = '© '
+            if theme.footer.since && String(theme.footer.since) !== copyright_year
+                = `${theme.footer.since}–`
+            span(itemprop="copyrightYear")= copyright_year
+            span.with-love
+                i.ic(class=`i-${theme.footer.icon.name}` aria-hidden="true")
+            span(itemprop="copyrightHolder")= `${author} @ ${alternate || title}`
         .footer-legal
             if theme.footer.icp.enable || theme.footer.moe_icp
                 .beian-info
@@ -113,14 +132,19 @@
                             i.ic.i-badge-full(aria-hidden="true")
                             |  #{theme.footer.icp.icpnumber}
                     if theme.footer.moe_icp && theme.footer.moe_icp_link
+                        if theme.footer.icp.enable
+                            span.footer-meta-dot(aria-hidden="true") ·
                         a.moe-link(href=theme.footer.moe_icp_link target="_blank" rel="noopener noreferrer")
                             i.ic.i-huizhangguanli(aria-hidden="true")
                             |  #{theme.footer.moe_icp}
             if theme.footer.icp.enable && theme.footer.icp.beian && theme.footer.icp.recordcode
+                span.footer-meta-dot(aria-hidden="true") ·
                 a.footer-police(target="_blank" rel="noopener noreferrer" href=`https://beian.mps.gov.cn/#/query/webSearch?code=${theme.footer.icp.recordcode}`)
                     img(loading="lazy" decoding="async" src=theme.statics + theme.assets + '/' + theme.footer.icp.icon width="20" height="20" alt="")
                     = theme.footer.icp.beian
             if theme.footer.powered
+                if theme.footer.icp.enable || (theme.footer.moe_icp && theme.footer.moe_icp_link)
+                    span.footer-meta-dot(aria-hidden="true") ·
                 .powered-by!= __('footer.powered', _url('https://hexo.io', 'Hexo') + ' & Theme.' + _url('https://github.com/theme-shoka-x/hexo-theme-shokaX/', 'ShokaX'))
     != shokax_inject('status')
 != shokax_inject('footer')

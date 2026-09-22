@@ -100,11 +100,16 @@ post:
 
 footer:
   explore:
+    visitor_short: "訪客人次"
+    words_short: "總字數"
+    reading_short: "總閱讀時長"
+    visitor_exact: "訪客 {count} 人次"
     data: "站點資料"
     tags: "標籤漫遊"
     refresh: "換一組"
     articles: "再讀一篇"
-    random_article: "隨機讀一篇"
+    latest: "最近落筆"
+    random_article: "隨機前往一篇文章"
     comments: "最近的聲音"
     storage: "儲藏間"
     chance: "讓下一篇，交給偶然。"

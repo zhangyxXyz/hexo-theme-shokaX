@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
-import fs from 'node:fs/promises'
-import { transform } from 'esbuild'
+import { fileURLToPath } from 'node:url'
+import { build } from 'esbuild'
 
-const source = await fs.readFile(new URL('../source/js/_app/components/comment-media.ts', import.meta.url), 'utf8')
-const { code } = await transform(source, { loader: 'ts', format: 'esm' })
+const bundled = await build({ entryPoints: [fileURLToPath(new URL('../source/js/_app/components/comment-media.ts', import.meta.url))], bundle: true, write: false, format: 'esm' })
+const code = bundled.outputFiles[0].text
 const { waitCommentImage: wait, createCommentMedia } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`)
 class Image extends EventTarget {
   complete = false
@@ -43,6 +43,10 @@ console.log('Comment media: cached, decode, broken, error, timeout and cancellat
 
 class PreviewImage extends Image {
   srcset = ''
+  sizes = ''
+  currentSrc = ''
+  loading = 'eager'
+  closest = () => null
   classes = new Set()
   classList = {
     add: (...names) => names.forEach(name => this.classes.add(name)),
@@ -58,7 +62,9 @@ const media = createCommentMedia({
   querySelectorAll: selector => selector === '.wl-emoji-popup img' ? pickerImages : images
 })
 const settle = async () => { await Promise.resolve(); await Promise.resolve(); await Promise.resolve() }
+const slow = () => new Promise(resolve => setTimeout(resolve, 110))
 media.sync()
+await slow()
 assert.ok(images[0].classes.has('comment-media-pending'))
 images[0].dispatchEvent(new Event('load'))
 await settle()
@@ -70,6 +76,7 @@ assert.equal(images[0].classes.size, 0, 'replaced preview node must not blur or 
 images[0].src = 'https://example.com/new.png'
 images[0].complete = false
 media.sync()
+await slow()
 assert.ok(images[0].classes.has('comment-media-pending'), 'new resource still loads with a reveal')
 images[0].dispatchEvent(new Event('load'))
 await settle()
@@ -81,6 +88,7 @@ await settle()
 images = [new PreviewImage('https://example.com/retry.png')]
 images[0].complete = false
 media.sync()
+await slow()
 assert.ok(images[0].classes.has('comment-media-pending'), 'failed resources must not count as revealed')
 images[0].dispatchEvent(new Event('load'))
 await settle()

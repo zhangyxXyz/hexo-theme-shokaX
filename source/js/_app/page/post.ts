@@ -1,4 +1,5 @@
 import { postImageViewer } from './imageviewer'
+import { refreshPostMedia } from './image-media'
 import { clipBoard, showtip } from '../globals/tools'
 import { BODY } from '../globals/globalVars'
 import { pageScroll, transition } from '../library/anime'
@@ -10,6 +11,7 @@ let codeObserver: IntersectionObserver | undefined
 
 export const postBeauty = async () => {
   codeObserver?.disconnect()
+  refreshPostMedia()
   postImageViewer('.post.block');
   refreshCodeBlocks()
 

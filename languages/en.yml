@@ -100,10 +100,15 @@ post:
 
 footer:
   explore:
+    visitor_short: "Visitors"
+    words_short: "Words"
+    reading_short: "Reading time"
+    visitor_exact: "{count} visitors"
     data: "Site notes"
     tags: "Tag explorer"
     refresh: "Shuffle"
     articles: "Read another"
+    latest: "Latest post"
     random_article: "Read a random article"
     comments: "Recent voices"
     storage: "Storage"

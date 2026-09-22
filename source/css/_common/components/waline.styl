@@ -231,28 +231,6 @@
   .wl-user
     position: relative
 
-  .wl-user img, .wl-content img
-    transition: filter .25s ease, opacity .25s ease
-
-    &.comment-media-pending
-      filter: blur(5px)
-      opacity: .45
-      background: var(--grey-3)
-
-  img.comment-media-ready
-    animation: comment-media-reveal .8s ease-in-out both
-
-  @keyframes comment-media-reveal
-    from
-      filter: blur(10px)
-    to
-      filter: blur(0)
-
-  @media (prefers-reduced-motion: reduce)
-    .wl-user img, .wl-content img
-      transition: none
-      animation: none
-
   .comment-locate-burst
     position: absolute
     z-index: 1

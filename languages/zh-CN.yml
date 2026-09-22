@@ -101,10 +101,15 @@ post:
 footer:
   explore:
     data: "站点数据"
+    visitor_short: "访客人次"
+    words_short: "总字数"
+    reading_short: "总阅读时长"
+    visitor_exact: "访客 {count} 人次"
     tags: "标签漫游"
     refresh: "换一组"
     articles: "再读一篇"
-    random_article: "随机读一篇"
+    latest: "最近落笔"
+    random_article: "随机前往一篇文章"
     comments: "最近的声音"
     storage: "储藏间"
     chance: "让下一篇，交给偶然。"
