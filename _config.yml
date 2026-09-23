@@ -1,13 +1,20 @@
+# ShokaX 独立主题默认配置；站点可通过 _config.shokax.yml 覆盖。
+# 新增功能和原有功能按类别放在一起；保留原注释，补充说明见 docs/configuration.md。
+# 站点域名、凭据、统计接口及专属文案请填写在站点配置中。
+
+# ======================================================================
+# 01 站点标识、图标与分享
+# ======================================================================
+
 alternate: testName # 站点大标题
+
+# 站内链接的统一根地址（HTTP(S)）；留空沿用 Hexo url，可由环境 theme_config 覆盖。
+# console_welcome.links 的相对链接使用此地址，完整外部链接不变。
+site_url:
 
 # Browser tab title only; does not hide the subtitle in the page header.
 title:
   show_subtitle: true
-
-statics: "/" # 静态文件根目录
-assets: "assets"
-css: "css"
-js: "js"
 
 open_graph:
 #twitter_id:
@@ -15,64 +22,6 @@ open_graph:
 #fb_admins:
 #fb_app_id:
 
-grayMode: false # 全站黑白滤镜
-# 请注意: 本主题的PWA功能只是一个装载器,需要自备js和manifest
-# 图片可通过https://lp-pwa.gitee.io/pwa-genicon/生成
-pwa:
-  enable: false # 开启PWA功能
-  serviceworker: sw.js #serviceworker脚本位置,使用以/为基准的绝对路径
-  manifest: manifest.json #manifest位置,使用以/为基准的绝对路径
-
-# 实验性特性
-experiments:
-  mobileWidth: 820px # 移动版和桌面版导航栏最短切换长度
-  copyrightLength: 50 # 自定义复制时显示copyright的长度
-  antiFakeWebsite: true # 防止恶意网站伪装
-
-hitokoto:
-  api: https://v1.hitokoto.cn # JSON endpoint; environment configuration may override.
-  home: false # Random quote in the home subtitle.
-  post: false # Random quote beneath article titles.
-  typewriter: false # Shared typing effect, respecting reduced motion.
-
-homeConfig:
-  subtitle:
-    enable: true
-  gradient: false # 使用CSS渐变作为文章封面
-  # fixedCover 性能比默认的更好，且开启时将启用LCP优化和预加载
-  fixedCover: "" # 主页面cover(为空则使用bing随机图片)
-  coverConfig:
-    enableCover: true # 是否开启头图
-    enablePreload: true #是否开启预加载头图
-    enableNextGradientCover: false # 使用CSS渐变作为上/下一页封面
-  cateCards:
-    - slug: # 分类 slug
-      cover: # 分类封面
-
-# ShokaX 模块化分包引入设置
-# 请关闭所有不使用的模块以优化主题 js 体积和性能
-modules:
-  debug: false # 启用调试模式
-  player: true # 启用音乐播放器
-  fireworks: true # 启用鼠标点击烟花特效
-  visibilityListener: true # 启用可见度监听器，当你不需要页面标题随标签页切换而变化可关闭
-  tabs: true # 启用选项卡扩展支持，如需开启 summary 功能请一并开启
-  quiz: true # 启用文章内问题扩展支持
-  # 使用 Cloudflare Rocket 或其他优化功能时需开启下列补丁，否则主题无法渲染
-  cloudflarePatch: false
-
-# 优化性能区
-performance:
-  # 使用preconnect预加载的网址(不建议超过三个)
-  preConnect:
-    - "https://s4.zstatic.net"
-    - "https://at.alicdn.com"
-  # 使用dns-prefetch预解析的网址
-  dnsPrefetch:
-
-playerAPI: "https://api.injahow.cn" # 结尾不带/,只填写域名
-# 如果条件允许,请参考 https://github.com/injahow/meting-api 自建API
-# 使用vercel自行部署,请参考: https://github.com/xizeyoupan/Meting-API
 
 icon:
   favicon: "/favicon.ico"
@@ -84,24 +33,115 @@ seo:
   yandex:
   baidu:
 
-visitor:
-  enable: false # Independent from opening the comment panel.
-  type: busuanzi # busuanzi (UV) | waline (PV, shares waline.serverURL)
-  page: true # Display the current page count.
-  site: true # Display the site total.
-  readOnly: false # Waline is always read-only on loopback or noncanonical hosts.
-  clarity: false
-  baiduAnalytics: false
-  googleAnalytics: false
+# ======================================================================
+# 02 导航、社交与侧栏
+# ======================================================================
 
-live2d:
-  enable: false
-  cdn: https://npm.elemecdn.com/akilar-live2dapi@latest/
+menu:
+  home: / || home
+  # about:
+  #   default: / || user
+  #   aboutsite: /about/  || user
+  #   admiration: /admiration/ || coffee
+  # posts:
+  #   default: / || feather
+  #   archives: /archives/ || list-alt
+  #   categories: /categories/ || th
+  #   tags: /tags/ || tags
+  # friends: /friends/ || heart
 
-article_script:
-  enable: true # Simplified/traditional Chinese toggle for article text.
+# Social Links
+# Usage: `Key: permalink || icon || color`
+# Key is the link label showing to end users.
+# Value before `||` delimiter is the target permalink,
+# secend value is the name of Font icon.
+social:
+  github: https://github.com/yourname || github || "#191717"
+  #gitee: https://gitee.com/yourname || gitee || "#e60026"
+  #google: https://plus.google.com/yourname || google
+  #twitter: https://twitter.com/yourname || twitter || "#00aff0"
+  #zhihu: https://www.zhihu.com/people/yourname || zhihu || "#1e88e5"
+  #music: https://music.163.com/#/user/home?id=yourid || cloud-music || "#e60026"
+  #weibo: https://weibo.com/yourname || weibo || "#ea716e"
+  #about: https://about.me/yourname || address-card || "#3b5998"
+  #email: mailto:foo@xxx.com || envelope || "#55acd5"
+  #facebook: https://www.facebook.com/yourname || facebook
+  #stackoverflow: https://stackoverflow.com/ || stack-overflow
+  #youtube: https://youtube.com/yourname || youtube
+  #instagram: https://instagram.com/yourname || instagram
+  #skype: skype:yourname?call|chat || skype
+  #douban: https://www.douban.com/people/yourname/ || douban
+
+sidebar:
+  toc_style: default # default | curve (expanded outline with a curved progress rail)
+  # Override per article with front-matter: toc_style: default | curve
+  # Sidebar Position.
+  position: left
+  # position: right
+  # Replace the default avatar image under <root>/source/_data/assets/ and set the url here.
+  avatar: avatar.jpg
+
+widgets:
+  # if true, will show random posts
+  random_posts: true
+  # if true, will show recent comments
+  recent_comments: true
+
+# ======================================================================
+# 03 页脚与备案
+# ======================================================================
+
+footer:
+  latest_post: true
+  tagline: '' # Empty falls back to the site's subtitle.
+  tags:
+    enable: true
+    limit: 6
+  random_posts:
+    enable: null # Unset: inherit widgets.random_posts; true/false overrides it.
+    limit: 3
+  recent_comments:
+    enable: null # Unset: inherit widgets.recent_comments; true/false overrides it.
+    limit: 3
+  # Link order follows this mapping. Keys use menu translations and built-in icons.
+  # navigation:
+  #   archives: /archives/
+  #   tags: /tags/
+  #   about: /about/
+  navigation: # Null uses the default archive/tags/about links; a site mapping replaces that fallback.
+  social_links:
+    rss: true # URL from feed.rss.output.
+    github: true # URL from social.github.
+  # Specify the date when the site was set up. If not defined, current year will be used.
+  since: 2022
+  create_time: '' # ISO 8601 timestamp with timezone for site uptime.
+  visitor: false # Show site visitors; requires visitor.enable. Disabled on local previews.
+  moe_icp: ''
+  moe_icp_link: ''
+  icon:
+    name: sakura rotate
+    # Change the color of icon, using Hex Code.
+    color: "#ffc0cb"
+  # Dependencies: https://github.com/theme-next/hexo-symbols-count-time
+  count: true
+  powered: true
+  icp: # ICP备案
+    enable: false
+    # 请在登录后从 https://beian.mps.gov.cn/web/business/businessHome/website 下载对应图标
+    icon: "" #网安备案图片
+    icpnumber: "xxx" # ICP备案号
+    beian: "xxx" # 网安备案号
+    recordcode: "xxx" # 网安备案链接中的recordcode参数
+
+# ======================================================================
+# 04 外观、字体与阅读体验
+# ======================================================================
+
+
+grayMode: false # 全站黑白滤镜
 
 darkmode: true
+
 auto_dark: # 自动亮/暗模式
   enable: true #是否开启
   start: 20 #开始时间
@@ -113,38 +153,13 @@ loader:
   start: true # 进入页面时显示加载动画
   switch: false # 切换页面时显示加载动画
 
-# 显示的动画(烟花)
-# 参阅 https://github.com/D-Sketon/mouse-firework
-fireworks:
-  enable: true
-  options:
-    excludeElements: ["a"]
-    particles:
-      - shape: circle
-        move: ["emit"]
-        easing: easeOutExpo
-        colors:
-          - "rgba(255,182,185,.9)"
-          - "rgba(250,227,217,.9)"
-          - "rgba(187,222,214,.9)"
-          - "rgba(138,198,209,.9)"
-        number: 30
-        duration: [1200, 1800]
-        shapeOptions:
-          radius: [16, 32]
-      - shape: circle
-        move: ["diffuse"]
-        easing: easeOutExpo
-        colors: ["#fff"]
-        number: 1
-        duration: [1200, 1800]
-        shapeOptions:
-          radius: 20
-          alpha: 0.5
-          lineWidth: 6
-
 font:
   enable: true
+  # Optional CJK fallback family; empty preserves the built-in system stack.
+  chinese:
+    external: false
+    family:
+    size:
   # 从google字体库加载,如果自定义@font-face请关闭
   loadFromGoogle: true
   # 字体选项:
@@ -190,25 +205,133 @@ font:
 # 自定义iconfont图标参见文档教程
 iconfont: "4415496_59g1326wajd"
 
-menu:
-  home: / || home
-  # about:
-  #   default: / || user
-  #   aboutsite: /about/  || user
-  #   admiration: /admiration/ || coffee
-  # posts:
-  #   default: / || feather
-  #   archives: /archives/ || list-alt
-  #   categories: /categories/ || th
-  #   tags: /tags/ || tags
-  # friends: /friends/ || heart
+# ======================================================================
+# 05 首页、封面与一言
+# ======================================================================
 
-# https://twikoo.js.org
-twikoo:
+homeConfig:
+  subtitle:
+    enable: true
+  gradient: false # 使用CSS渐变作为文章封面
+  # fixedCover 性能比默认的更好，且开启时将启用LCP优化和预加载
+  fixedCover: "" # 主页面cover(为空则使用bing随机图片)
+  coverConfig:
+    enableCover: true # 是否开启头图
+    enablePreload: true #是否开启预加载头图
+    enableNextGradientCover: false # 使用CSS渐变作为上/下一页封面
+  cateCards:
+    - slug: # 分类 slug
+      cover: # 分类封面
+
+hitokoto:
+  api: https://v1.hitokoto.cn # JSON endpoint; environment configuration may override.
+  home: false # Random quote in the home subtitle.
+  post: false # Random quote beneath article titles.
+  typewriter: false # Shared typing effect, respecting reduced motion.
+
+image_server:
+
+# ======================================================================
+# 06 归档、分类与标签视图
+# ======================================================================
+
+# Archive display: a timeline tree or the classic archive.
+archive_view:
+  # tree = 年份/月度时间树；classic = 经典年月列表。
+  # switchable=true 时访客已保存的选择优先；false 固定 mode 并忽略访客偏好。
+  mode: tree # Initial view: tree | classic.
+  switchable: true # Remember visitor choices; false locks the configured view.
+
+category_view:
+  # cards = 卡片目录；classic = 经典列表；switchable 的优先级与归档相同。
+  mode: cards # cards | classic
+  switchable: true # false locks the configured view, ignoring visitor choices.
+
+# TagCloud settings for tags page.
+tagcloud:
+  # 2d = 平面标签云；3d = 球形标签云；允许切换时记住访客选择。
+  mode: 2d # Initial view: 2d | 3d. Without JavaScript, always shows 2D links.
+  switchable: true # false locks the configured view.
+  # All values below are same as default, change them by yourself.
+  min: 16 # Minimun font size in px
+  max: 22 # Maxium font size in px
+  start: "#72cecf" # Start color (hex, rgba, hsla or color keywords)
+  end: "#ffbac3" # End color (hex, rgba, hsla or color keywords)
+  amount: 200 # Amount of tags, change it if you have more than 200 tags
+
+# ======================================================================
+# 07 文章、时效、赞赏与版权
+# ======================================================================
+
+post:
+  count: true
+
+article_script:
+  enable: true # Simplified/traditional Chinese toggle for article text.
+
+# 文章是否失效
+# Preferred optional alias; null inherits outime below. Example: { enable: true, days: 30 }.
+# This only shows an age notice; per-post isOutdated: false disables it.
+isOutdated:
+
+outime:
   enable: false
-  mode: vercel # vercel或tencent
-  envId: "https://example.com" # twikoo环境ID,vercel填地址
-  region:
+  days: 90 # 超过 90 天文章失效
+
+reward:
+  # If true, reward will be displayed in every article by default.
+  enable: true
+  account:
+    wechatpay: /wechatpay.png
+    alipay: /alipay.png
+    # paypal: /paypal.png
+
+# ---------------------------------------------------------------
+# Third Party Plugins & Services Settings
+# ---------------------------------------------------------------
+
+# Creative Commons 4.0 International License.
+# See: https://creativecommons.org/share-your-work/licensing-types-examples
+# Available values of license: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | zero
+# You can set a language value if you prefer a translated version of CC license, e.g. deed.zh
+# CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org
+creative_commons:
+  license: by-nc-sa
+  language: deed.zh
+
+# ======================================================================
+# 08 AI 摘要
+# ======================================================================
+
+summary:
+  enable: false
+  # Shared defaults; provider/model settings may override these individually.
+  # providers: [{ id: example, apiUrl: https://api.example.com/v1/chat/completions,
+  #   apiKey: '', models: [{ model: example-model }] }]
+  # cacheOnly=true reads imported summaries without requesting the provider.
+  cacheOnly: false
+  apiType: chat-completions # chat-completions | responses; use the matching full API URL.
+  home:
+    mode: switch # switch | original | ai; no AI summary always falls back to original.
+    default: original # original | ai | provider-id/model-id | model name; missing target falls back to first AI, then original.
+  providers: [] # [{id, apiUrl, apiKey, models: [model-name, ...]}]; all requests share concurrency.
+  models: [] # Legacy single-provider configuration; ignored when providers is non-empty.
+  defaultModel: # Default model ID; falls back to the first successful configured model.
+  include: [] # Post paths; empty means all eligible published posts.
+  timeout: 60000
+  maxInputChars: 16000
+  sessionHeader: # Optional gateway routing session header.
+  introduce: "" # AI自我介绍
+  model:
+  apiKey:
+  apiUrl:
+  temperature:
+  initalPrompt:
+  concurrency: 5
+
+# ======================================================================
+# 09 评论与身份标签
+# ======================================================================
 
 # https://waline.js.org/
 waline:
@@ -249,25 +372,16 @@ waline:
   recaptchaV3Key: # reCAPTCHA v3密钥
   turnstileKey: # Turnstile密钥
 
-summary:
+# https://twikoo.js.org
+twikoo:
   enable: false
-  home:
-    mode: switch # switch | original | ai; no AI summary always falls back to original.
-    default: original # original | ai | provider-id/model-id | model name; missing target falls back to first AI, then original.
-  providers: [] # [{id, apiUrl, apiKey, models: [model-name, ...]}]; all requests share concurrency.
-  models: [] # Legacy single-provider configuration; ignored when providers is non-empty.
-  defaultModel: # Default model ID; falls back to the first successful configured model.
-  include: [] # Post paths; empty means all eligible published posts.
-  timeout: 60000
-  maxInputChars: 16000
-  sessionHeader: # Optional gateway routing session header.
-  introduce: "" # AI自我介绍
-  model:
-  apiKey:
-  apiUrl:
-  temperature:
-  initalPrompt:
-  concurrency: 5
+  mode: vercel # vercel或tencent
+  envId: "https://example.com" # twikoo环境ID,vercel填地址
+  region:
+
+# ======================================================================
+# 10 搜索
+# ======================================================================
 
 # 由于 Hexo 的 ESM 模块支持存在严重缺陷，ShokaX 无法引入自动索引流程，Pagefind 构建需要通过 CLI 手动执行
 # 在每次 generate 完成后需要执行`pnpm dlx pagefind --site public`，再 deploy，否则 Pagefind 无法正常工作
@@ -275,139 +389,137 @@ summary:
 pagefind: # pagefind 本地搜索 https://pagefind.app/
   enable: false # 是否启用
 
+# Algolia Search
+# For more information: https://www.algolia.com
+search:
+  hits:
+    per_page: 10
 
-# Social Links
-# Usage: `Key: permalink || icon || color`
-# Key is the link label showing to end users.
-# Value before `||` delimiter is the target permalink,
-# secend value is the name of Font icon.
-social:
-  github: https://github.com/yourname || github || "#191717"
-  #gitee: https://gitee.com/yourname || gitee || "#e60026"
-  #google: https://plus.google.com/yourname || google
-  #twitter: https://twitter.com/yourname || twitter || "#00aff0"
-  #zhihu: https://www.zhihu.com/people/yourname || zhihu || "#1e88e5"
-  #music: https://music.163.com/#/user/home?id=yourid || cloud-music || "#e60026"
-  #weibo: https://weibo.com/yourname || weibo || "#ea716e"
-  #about: https://about.me/yourname || address-card || "#3b5998"
-  #email: mailto:foo@xxx.com || envelope || "#55acd5"
-  #facebook: https://www.facebook.com/yourname || facebook
-  #stackoverflow: https://stackoverflow.com/ || stack-overflow
-  #youtube: https://youtube.com/yourname || youtube
-  #instagram: https://instagram.com/yourname || instagram
-  #skype: skype:yourname?call|chat || skype
-  #douban: https://www.douban.com/people/yourname/ || douban
+# ======================================================================
+# 11 访问量与统计页
+# ======================================================================
 
-sidebar:
-  toc_style: default # default | curve (expanded outline with a curved progress rail)
-  # Override per article with front-matter: toc_style: default | curve
-  # Sidebar Position.
-  position: left
-  # position: right
-  # Replace the default avatar image under <root>/source/_data/assets/ and set the url here.
-  avatar: avatar.jpg
+visitor:
+  enable: false # Independent from opening the comment panel.
+  type: busuanzi # busuanzi (UV) | waline (PV, shares waline.serverURL)
+  page: true # Display the current page count.
+  site: true # Display the site total.
+  readOnly: false # Waline is always read-only on loopback or noncanonical hosts.
+  clarity: false
+  baiduAnalytics: false
+  googleAnalytics: false
 
-widgets:
-  # if true, will show random posts
-  random_posts: true
-  # if true, will show recent comments
-  recent_comments: true
 
-footer:
-  latest_post: true
-  tags:
-    enable: true
-    limit: 6
-  random_posts:
-    enable: null # Unset: inherit widgets.random_posts; true/false overrides it.
-    limit: 3
-  recent_comments:
-    enable: null # Unset: inherit widgets.recent_comments; true/false overrides it.
-    limit: 3
-  # Link order follows this mapping. Keys use menu translations and built-in icons.
-  # navigation:
-  #   archives: /archives/
-  #   tags: /tags/
-  #   about: /about/
-  social_links:
-    rss: true # URL from feed.rss.output.
-    github: true # URL from social.github.
-  # Specify the date when the site was set up. If not defined, current year will be used.
-  since: 2022
-  create_time: '' # ISO 8601 timestamp with timezone for site uptime.
-  visitor: false # Show site visitors; requires visitor.enable. Disabled on local previews.
-  moe_icp: ''
-  moe_icp_link: ''
-  icon:
-    name: sakura rotate
-    # Change the color of icon, using Hex Code.
-    color: "#ffc0cb"
-  # Dependencies: https://github.com/theme-next/hexo-symbols-count-time
-  count: true
-  powered: true
-  icp: # ICP备案
-    enable: false
-    # 请在登录后从 https://beian.mps.gov.cn/web/business/businessHome/website 下载对应图标
-    icon: "" #网安备案图片
-    icpnumber: "xxx" # ICP备案号
-    beian: "xxx" # 网安备案号
-    recordcode: "xxx" # 网安备案链接中的recordcode参数
+# Statistics pages are opt-in via front matter: type: statistics.
+# Chart blocks in page content determine which APIs/assets are requested.
+# No site credentials or reporting endpoints are supplied by the theme.
+statistics:
+  baidu:
+    endpoints: [] # Reporting API URLs; health probes select a reachable node.
+    api: '' # Legacy single endpoint, used only when endpoints is empty.
+    start_date: # YYYYMMDD string; set it when enabling Baidu charts.
+    timeout: 20000 # Report request timeout, milliseconds.
+  assets: # Legacy asset overrides; vendors.js.echarts / vendors.assets.map_* take precedence.
+    echarts:
+    maps:
+      china:
+      world:
 
-festival:
+# ======================================================================
+# 12 可选模块与互动效果
+# ======================================================================
+
+# Optional console greeting. First full page load only, never on every PJAX visit.
+# Uses browser language and these strings directly, not the theme i18n pipeline.
+console_welcome:
   enable: false
-  theme: auto # auto | daily | none | a scene ID from _festivals.yml
-  mobile: false
-  # Dates, windows and artwork: _festivals.yml.
-  # Site overrides: source/_data/festivals.yml.
+  title: '' # Empty uses the site's title.
+  # Override this multiline artwork in the site's _config.shokax.yml; '' hides only the art.
+  # |2- preserves leading spaces with an explicit two-space content indent. No escaping needed.
+  # Sleeping cat by Felix Lee: https://www.asciiart.eu/art/541e3ee2d56759f6
+  art: |2-
+          |\      _,,,---,,_
+    ZZZzz /,`.-'`'    -.  ;-;;,_
+         |,4-  ) )-,_. ,\ (  `'-'
+        '---''(_/--'  `-'\_)  Felix Lee
+  messages:
+    # Chinese browser preferences use zh; all other languages fall back to en.
+    zh:
+      subtitle: CONSOLE / 星空终端
+      message: |-
+        你发现了页面背后的星空。
+        愿你的下一次调试，刚好遇见那个消失的 bug。
+      links: { source: 翻翻源码, guestbook: 留个脚印 }
+    en:
+      subtitle: CONSOLE / Starry Terminal
+      message: |-
+        You found the stars behind the page.
+        May your next debugging session catch that elusive bug.
+      links: { source: Explore the source, guestbook: Leave a message }
+  links: {} # Named HTTP(S) URLs or site-relative paths; label keys match messages.*.links.
 
-post:
-  count: true
+# 请注意: 本主题的PWA功能只是一个装载器,需要自备js和manifest
+# 图片可通过https://lp-pwa.gitee.io/pwa-genicon/生成
+pwa:
+  enable: false # 开启PWA功能
+  serviceworker: sw.js #serviceworker脚本位置,使用以/为基准的绝对路径
+  manifest: manifest.json #manifest位置,使用以/为基准的绝对路径
 
-# 文章是否失效
-outime:
+# 实验性特性
+experiments:
+  mobileWidth: 820px # 移动版和桌面版导航栏最短切换长度
+  copyrightLength: 50 # 自定义复制时显示copyright的长度
+  antiFakeWebsite: true # 防止恶意网站伪装
+
+# ShokaX 模块化分包引入设置
+# 请关闭所有不使用的模块以优化主题 js 体积和性能
+modules:
+  debug: false # 启用调试模式
+  player: true # 启用音乐播放器
+  fireworks: true # 启用鼠标点击烟花特效
+  visibilityListener: true # 启用可见度监听器，当你不需要页面标题随标签页切换而变化可关闭
+  tabs: true # 启用选项卡扩展支持，如需开启 summary 功能请一并开启
+  quiz: true # 启用文章内问题扩展支持
+  # 使用 Cloudflare Rocket 或其他优化功能时需开启下列补丁，否则主题无法渲染
+  cloudflarePatch: false
+
+live2d:
   enable: false
-  days: 90 # 超过 90 天文章失效
+  cdn: https://npm.elemecdn.com/akilar-live2dapi@latest/
 
-reward:
-  # If true, reward will be displayed in every article by default.
+# 显示的动画(烟花)
+# 参阅 https://github.com/D-Sketon/mouse-firework
+fireworks:
   enable: true
-  account:
-    wechatpay: /wechatpay.png
-    alipay: /alipay.png
-    # paypal: /paypal.png
+  options:
+    excludeElements: ["a"]
+    particles:
+      - shape: circle
+        move: ["emit"]
+        easing: easeOutExpo
+        colors:
+          - "rgba(255,182,185,.9)"
+          - "rgba(250,227,217,.9)"
+          - "rgba(187,222,214,.9)"
+          - "rgba(138,198,209,.9)"
+        number: 30
+        duration: [1200, 1800]
+        shapeOptions:
+          radius: [16, 32]
+      - shape: circle
+        move: ["diffuse"]
+        easing: easeOutExpo
+        colors: ["#fff"]
+        number: 1
+        duration: [1200, 1800]
+        shapeOptions:
+          radius: 20
+          alpha: 0.5
+          lineWidth: 6
 
-# Archive display: a timeline tree or the classic archive.
-archive_view:
-  mode: tree # Initial view: tree | classic.
-  switchable: true # Remember visitor choices; false locks the configured view.
-
-category_view:
-  mode: cards # cards | classic
-  switchable: true # false locks the configured view, ignoring visitor choices.
-
-# TagCloud settings for tags page.
-tagcloud:
-  mode: 2d # Initial view: 2d | 3d. Without JavaScript, always shows 2D links.
-  switchable: true # false locks the configured view.
-  # All values below are same as default, change them by yourself.
-  min: 16 # Minimun font size in px
-  max: 22 # Maxium font size in px
-  start: "#72cecf" # Start color (hex, rgba, hsla or color keywords)
-  end: "#ffbac3" # End color (hex, rgba, hsla or color keywords)
-  amount: 200 # Amount of tags, change it if you have more than 200 tags
-
-# ---------------------------------------------------------------
-# Third Party Plugins & Services Settings
-# ---------------------------------------------------------------
-
-# Creative Commons 4.0 International License.
-# See: https://creativecommons.org/share-your-work/licensing-types-examples
-# Available values of license: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | zero
-# You can set a language value if you prefer a translated version of CC license, e.g. deed.zh
-# CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org
-creative_commons:
-  license: by-nc-sa
-  language: deed.zh
+playerAPI: "https://api.injahow.cn" # 结尾不带/,只填写域名
+# 如果条件允许,请参考 https://github.com/injahow/meting-api 自建API
+# 使用vercel自行部署,请参考: https://github.com/xizeyoupan/Meting-API
 
 # bgm
 audio:
@@ -418,11 +530,39 @@ audio:
 #    list:
 #      - https://music.163.com/#/playlist?id=2031842656
 
-# Algolia Search
-# For more information: https://www.algolia.com
-search:
-  hits:
-    per_page: 10
+festival:
+  enable: false
+  theme: auto # auto | daily | none | a scene ID from _festivals.yml
+  mobile: false
+  # Dates, windows and artwork: _festivals.yml.
+  # Site overrides: source/_data/festivals.yml.
+
+# ======================================================================
+# 13 资源目录与静态依赖
+# ======================================================================
+
+# 优化性能区
+performance:
+  # 使用preconnect预加载的网址(不建议超过三个)
+  preConnect:
+    - "https://s4.zstatic.net"
+    - "https://at.alicdn.com"
+  # 使用dns-prefetch预解析的网址
+  dnsPrefetch:
+
+statics: "/" # 静态文件根目录
+
+assets: "assets"
+
+css: "css"
+
+js: "js"
+
+# Legacy image directory and random-cover endpoint; leave empty to use image lists.
+images: images
+
+# Base for relative vendors paths; named/absolute vendor URLs take precedence.
+resource:
 
 #! ---------------------------------------------------------------
 #! DO NOT EDIT THE FOLLOWING `vendors` SETTINGS
@@ -434,6 +574,10 @@ vendors:
   cdns:
     cdnjs: https://s4.zstatic.net/ajax/libs
     jsdelivr: https://cdn.jsdelivr.net
+    geojson: https://geojson.cn
+    github_raw: https://raw.githubusercontent.com
+    elemecdn: https://npm.elemecdn.com
+    iconfont: https://at.alicdn.com/t/c
   js:
     echarts:
     live2d_game: { source: jsdelivr, url: gh/stevenjoezhang/asteroids/asteroids.js }
