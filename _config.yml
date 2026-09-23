@@ -434,10 +434,9 @@ vendors:
   cdns:
     cdnjs: https://s4.zstatic.net/ajax/libs
     jsdelivr: https://cdn.jsdelivr.net
-    jsdelivr_fastly: https://fastly.jsdelivr.net
   js:
     echarts:
-    live2d_game: { source: jsdelivr_fastly, url: gh/stevenjoezhang/asteroids/asteroids.js }
+    live2d_game: { source: jsdelivr, url: gh/stevenjoezhang/asteroids/asteroids.js }
   assets:
     live2d_widget: { source: jsdelivr, url: gh/stevenjoezhang/live2d-widget@b352ba5838157cf366e5e73de221c448e2e63545/ }
     live2d_models: # falls back to live2d.cdn

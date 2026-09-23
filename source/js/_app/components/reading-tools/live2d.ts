@@ -54,7 +54,7 @@ function adaptWidget(onHide: () => void, onError: () => void) {
     try {
       const host = window as WidgetWindow
       if (host.Asteroids) (host.ASTEROIDSPLAYERS ??= []).push(new host.Asteroids())
-      else await asset(resourceURL('js.live2d_game', 'https://fastly.jsdelivr.net/gh/stevenjoezhang/asteroids/asteroids.js'))
+      else await asset(resourceURL('js.live2d_game', 'https://cdn.jsdelivr.net/gh/stevenjoezhang/asteroids/asteroids.js'))
     } catch { onError() }
     finally { startingGame = false }
   }, true)
