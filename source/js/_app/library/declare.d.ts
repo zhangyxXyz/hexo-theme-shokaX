@@ -83,6 +83,8 @@ interface configType {
   audio: AudioItem[];
   version: number
   root: string
+  resource?: string
+  vendors: import('../../../../lib/vendors.cjs').VendorRegistry
   statics: string
   outime: {
     enable: boolean

@@ -8,6 +8,7 @@ import { mountContentRanking } from './content-ranking'
 import { createCommentSource, commentSettings } from './comments'
 import { mountCommentRanking } from './comment-ranking'
 import { chartKeys, siteCharts } from './types'
+import { resourceURL } from '../../globals/resources'
 import type { BaiduChart, ChartKey, RegisterChart, Settings, SiteChart } from './types'
 
 let cleanup: (() => void) | undefined
@@ -19,6 +20,13 @@ export function refreshStatistics() {
   const root = document.getElementById('statistics_container')
   if (!configNode || !root) return
   const config: Settings = JSON.parse(configNode.dataset.statisticsConfig!)
+  config.assets = {
+    echarts: resourceURL('js.echarts', config.assets?.echarts),
+    maps: {
+      china: resourceURL('assets.map_china', config.assets?.maps?.china),
+      world: resourceURL('assets.map_world', config.assets?.maps?.world)
+    }
+  }
   const controller = new AbortController()
   const charts: any[] = []
   const renderers: (() => void)[] = []

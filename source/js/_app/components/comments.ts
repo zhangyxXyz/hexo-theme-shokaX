@@ -10,6 +10,7 @@ import { init, defaultLocales } from '@waline/client'
 import { getFooterCommentBadge } from './footer-comment-badge'
 import { pageviewCount } from '@waline/client/pageview'
 import { isVisitorReadOnly } from './visitors/waline'
+import { resourceURL } from '../globals/resources'
 // @ts-ignore
 await import('@waline/client/style')
 // Browser / OS icons supplied by the installed Waline version.
@@ -73,7 +74,9 @@ export const walineComment = function () {
     ...{ levelColors: CONFIG.waline.levelColors, labelColors: CONFIG.waline.labelColors },
     // The fork accepts a plain-text notifier; official clients ignore this option.
     ...{ notify: (message: string) => showtip(message, true) },
-    emoji: CONFIG.waline.emoji,
+    emoji: CONFIG.vendors?.emoji
+      ? Object.keys(CONFIG.vendors.emoji).map(name => resourceURL(`emoji.${name}`)) as Parameters<typeof init>[0]['emoji']
+      : CONFIG.waline.emoji,
     meta: CONFIG.waline.meta,
     requiredMeta: CONFIG.waline.requiredMeta,
     wordLimit: CONFIG.waline.wordLimit,

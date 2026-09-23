@@ -29,6 +29,8 @@ hexo.extend.generator.register('script', async function (locals) {
       readOnly: theme.visitor?.readOnly === true
     },
     root: config.root,
+    resource: theme.resource,
+    vendors: theme.vendors,
     statics: theme.statics,
     favicon: {
       normal: theme.assets + '/favicon.ico',

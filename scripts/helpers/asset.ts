@@ -3,6 +3,7 @@
 import theme_env from '../../package.json'
 import { htmlTag, url_for, stripHTML } from 'hexo-util'
 import { getVendorLink } from '../utils'
+import { resolveVendor } from '../../lib/vendors.cjs'
 
 hexo.extend.helper.register('_safedump', (source) => {
   return JSON.stringify(source)
@@ -44,7 +45,7 @@ hexo.extend.helper.register('_vendor_font', () => {
   return fontFamilies
     ? htmlTag('link', {
       rel: 'stylesheet',
-      href: `${fontHost}/css?family=${fontFamilies.concat(fontDisplay, fontSubset)}`,
+      href: resolveVendor(hexo.theme.config.vendors, 'fonts.stylesheet', `${fontHost}/css?family=${fontFamilies.concat(fontDisplay, fontSubset)}`, { root: hexo.config.root, resource: hexo.theme.config.resource }),
       media: 'none',
       onload: "this.media='all'"
     })

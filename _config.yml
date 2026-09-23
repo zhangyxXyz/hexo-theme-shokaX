@@ -428,15 +428,32 @@ search:
 #! UNLESS YOU KNOW WHAT YOU ARE DOING
 #! ---------------------------------------------------------------
 vendors:
+  # Resolving never loads a file. Null retains the legacy feature configuration.
+  # Strings use resource/site_resource unless absolute. Objects use source + url.
   cdns:
     cdnjs: https://s4.zstatic.net/ajax/libs
+    jsdelivr: https://cdn.jsdelivr.net
+    jsdelivr_fastly: https://fastly.jsdelivr.net
   js:
+    echarts:
+    live2d_game: { source: jsdelivr_fastly, url: gh/stevenjoezhang/asteroids/asteroids.js }
+  assets:
+    live2d_widget: { source: jsdelivr, url: gh/stevenjoezhang/live2d-widget@b352ba5838157cf366e5e73de221c448e2e63545/ }
+    live2d_models: # falls back to live2d.cdn
+    map_china: # falls back to statistics.assets.maps.china
+    map_world:
+  fonts:
+    stylesheet: # null keeps the font.family/external Google Fonts request
+    iconfont: # filename prefix without extension; null uses the iconfont project
+    code: { source: jsdelivr, url: gh/JetBrains/JetBrainsMono@2.242/fonts/webfonts/JetBrainsMono-Regular.woff2 }
+  emoji: # optional named metadata directories; null keeps waline.emoji
   async_js:
     copy_tex:
       source: cdnjs
       url: KaTeX/0.16.9/contrib/copy-tex.min.js
       sri: "sha384-ww/583aHhxWkz5DEVn6OKtNiIaLi2iBRNZXfJRiY1Ai7tnJ9UXpEsyvOITVpTl4A"
   css:
+    math: { source: cdnjs, url: KaTeX/0.16.9/katex.min.css }
     katex:
       source: cdnjs
       url: KaTeX/0.16.9/katex.min.css

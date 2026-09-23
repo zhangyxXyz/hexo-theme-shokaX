@@ -1,6 +1,8 @@
 import type Hexo from 'hexo'
+import { resolveResource } from '../lib/vendors.cjs'
 
 export interface VendorsConfig {
+  [group: string]: Record<string, any>
   cdns: {
     [index:string]: string
   }
@@ -40,7 +42,7 @@ export function getVendorLink (hexo: Hexo, source:vendorSource):vendorUrl {
     }
   } else {
     return {
-        url: vendorsCfg.cdns[source.source] + '/' + source.url,
+        url: resolveResource(source, vendorsCfg, { root: hexo.config.root, resource: (hexo.theme.config as any).resource }),
         local: false,
         sri: source.sri
     }
