@@ -11,6 +11,14 @@ code_block:
   expand: "Expand code"
   collapse: "Collapse code"
 
+reading_tools:
+  tag: "Explore the %s tag? There are %s articles under this tag."
+  show: Show Live2D
+  hide: Hide Live2D
+  traditional: Convert article to Traditional Chinese
+  simplified: Restore original article
+  error: Loading failed; click to retry
+
 image_viewer:
   zoom_in: "Zoom in"
   zoom_out: "Zoom out"
@@ -101,6 +109,8 @@ post:
 footer:
   explore:
     visitor_short: "Visitors"
+    views_short: "Page views"
+    views_exact: "{count} page views"
     words_short: "Words"
     reading_short: "Reading time"
     visitor_exact: "{count} visitors"

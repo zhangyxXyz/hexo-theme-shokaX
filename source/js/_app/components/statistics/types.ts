@@ -5,7 +5,7 @@ export type BaiduChart = 'calendar' | 'trends' | 'sources'
 export type ChartKey = SiteChart | BaiduChart | 'map' | 'content' | 'comment-map' | 'comment-trend' | 'comment-ranking'
 export type ContentItem = { title: string; url: string; kind: 'article' | 'page' }
 export type MapMode = 'china' | 'world'
-export type BaiduSettings = { api?: string; site_id?: string; start_date?: string; timeout?: number }
+export type BaiduSettings = { api?: string; endpoints?: string[]; start_date?: string; timeout?: number }
 export type Settings = {
   comments?: { api?: string }
   baidu?: BaiduSettings

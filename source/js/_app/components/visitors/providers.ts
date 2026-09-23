@@ -1,3 +1,5 @@
+import { walineVisits } from './waline'
+
 export interface VisitorCounts {
   pageViews: number
   siteVisitors: number
@@ -6,6 +8,9 @@ export interface VisitorCounts {
 export interface VisitorContext {
   path: string
   signal: AbortSignal
+  serverURL: string
+  readOnly: boolean
+  site: boolean
 }
 
 export type VisitorProvider = (context: VisitorContext) => Promise<VisitorCounts | null>
@@ -42,7 +47,7 @@ const busuanzi: VisitorProvider = ({ signal }) => new Promise((resolve, reject) 
   document.head.appendChild(script)
 })
 
-export const visitorProviders: Record<'busuanzi' | 'custom', VisitorProvider> = {
+export const visitorProviders: Record<'busuanzi' | 'waline', VisitorProvider> = {
   busuanzi,
-  custom: async () => null
+  waline: walineVisits
 }

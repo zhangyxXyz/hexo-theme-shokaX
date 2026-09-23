@@ -139,4 +139,6 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
         != _js('siteInit.js')
 
         != partial('_partials/third-party/festival.pug')
+        if (theme.live2d && theme.live2d.enable) || (theme.article_script && theme.article_script.enable)
+            div#reading-tools-config(hidden data-live2d=String(!!(theme.live2d && theme.live2d.enable)) data-live2d-base=url_for('/live2d-widget/') data-live2d-cdn=(theme.live2d && theme.live2d.cdn) data-script=String(!!(theme.article_script && theme.article_script.enable)) data-show=__('reading_tools.show') data-hide=__('reading_tools.hide') data-traditional=__('reading_tools.traditional') data-simplified=__('reading_tools.simplified') data-error=__('reading_tools.error'))
         != shokax_inject('bodyEnd')

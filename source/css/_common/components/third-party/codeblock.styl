@@ -1,4 +1,4 @@
-.shokax-code, #comments .wl-content {
+.shokax-code, #comments .wl-content, .statistics-comment-excerpt {
   --code-bg: #f6f8fa;
   --code-header-bg: #edf1f5;
   --code-muted: #74808e;
@@ -11,7 +11,7 @@
 
 // Shared by article code, comments and the preview before Shiki is ready.
 // The comments scope also overrides Waline's lazily loaded scrollbar rules.
-.shokax-code pre.shiki, #comments .wl-content pre {
+.shokax-code pre.shiki, #comments .wl-content pre, .statistics-comment-excerpt pre {
   &::-webkit-scrollbar { width: .3125rem; height: .3125rem; }
   &::-webkit-scrollbar-track,
   &::-webkit-scrollbar-track-piece { background: var(--code-scrollbar-track); border-radius: 1rem; }
@@ -153,7 +153,8 @@
 }
 
 html[data-theme='dark'] .shokax-code,
-html[data-theme='dark'] #comments .wl-content {
+html[data-theme='dark'] #comments .wl-content,
+html[data-theme='dark'] .statistics-comment-excerpt {
   --code-bg: #252a33;
   --code-header-bg: #2e3540;
   --code-muted: #9aa6b5;

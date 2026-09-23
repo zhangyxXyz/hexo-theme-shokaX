@@ -18,7 +18,9 @@
 
 页面 front matter 设置 `type: statistics`。正文的 `#statistics_container` 内放置 `<section data-statistics-chart="posts"></section>` 等占位块；块的选择、数量和顺序由 Markdown 决定。可选值：`calendar`、`map`、`trends`、`sources`（百度）及 `posts`、`tags`、`categories`（站内）。删除百度块后不会发起对应请求。
 
-站点 `_config.shokax.yml` 配置 `statistics.baidu.api/site_id/start_date/timeout`，以及 `statistics.assets.echarts` 和 `statistics.assets.maps.china/world` 完整资源路径。前端只传递这些公开配置；访问令牌由代理服务保存。站内文章月份起点用页面 `statistics_start: '2018-01'` 配置，未发文月份补零。
+站点 `_config.shokax.yml` 配置 `statistics.baidu.endpoints/start_date`，以及 `statistics.assets.echarts` 和 `statistics.assets.maps.china/world` 完整资源路径。`endpoints` 是报表接口 URL 列表，兼容旧的单地址 `api` 配置。`statistics.baidu.timeout` 可选，默认 20000 毫秒，无需重复配置。前端不配置或发送 `site_id`，站点 ID 和访问令牌由代理服务管理。`start_date` 决定累计报表的查询起点；资源路径供图表和地图加载使用。站内文章月份起点用页面 `statistics_start: '2018-01'` 配置，未发文月份补零。
+
+多个节点首次并行探测 `new URL('healthz', endpoint)`：`/api` 对应 `/healthz`，以 `/` 结尾的代理挂载路径对应挂载路径下的 `healthz`。健康入口必须支持 CORS 并返回 HTTP 200 和 `{"status":"ok"}`。三秒内先返回有效健康响应的节点优先，其他探测取消；同页图表共享探测，选择缓存于当前会话，禁用 sessionStorage 时使用内存缓存。所有健康检查失败时仍尝试第一个报表接口。报表网络错误、超时、5xx、408、429 或百度临时错误允许切换另一个节点一次，成功后更新选择；鉴权、参数和响应格式错误不切换。PJAX 离开取消探测和请求，不触发故障切换。此机制按实际可达性择优，不判断访客国别。
 
 `scripts/helpers/statistics/site.ts` 在生成时聚合 Hexo 数据。`source/js/_app/components/statistics/baidu.ts` 负责请求，`site.ts` 读取生成的数据，`index.ts` 挂载页面声明的块。`options.ts` 管图表样式，`assets.ts` 管资源加载和地图适配，`map.ts` 与 `map-interactions.ts` 管地图切换和南海命中区域，`panel.ts` 管独立加载/重试反馈。
 

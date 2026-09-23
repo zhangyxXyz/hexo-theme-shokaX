@@ -1,6 +1,6 @@
 import { enhanceCodeBlocks } from './codeblock'
 
-export function createCommentMarkdown(container: HTMLElement) {
+export function createCommentMarkdown(container: HTMLElement, contentSelector = '.wl-content') {
   const pending = new WeakSet<Element>()
   const blocks = new Map<HTMLElement, () => void>()
   let disposed = false
@@ -8,7 +8,7 @@ export function createCommentMarkdown(container: HTMLElement) {
     for (const [pre, destroy] of blocks) {
       if (!pre.isConnected) { destroy(); blocks.delete(pre) }
     }
-    container.querySelectorAll<HTMLElement>('.wl-content').forEach(content => {
+    container.querySelectorAll<HTMLElement>(contentSelector).forEach(content => {
       if (!content.classList.contains('md')) content.classList.add('md')
       content.querySelectorAll<HTMLPreElement>('pre').forEach(pre => {
         if (pre.closest('.shokax-code') || pending.has(pre)) return

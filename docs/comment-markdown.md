@@ -1,5 +1,7 @@
 # 评论与主题 Markdown 显示
 
+留言页的评论详情弹窗同样使用 `.md`、`createCommentMarkdown` 和代码工具栏。评论专用的表情、行内代码、引用与表格规则统一在 `source/css/_common/components/comment-content.styl`，由 Waline 和弹窗共同调用。弹窗过滤 HTML 时仅保留已知的旧版表情标记（`emoji` / `vemoji` / `wl-emoji`）和代码语言类名，其余属性仍按白名单处理。普通图片保留弹窗最大尺寸约束，表情按正文的 1.3em 行内显示。
+
 评论正文继续使用 Waline 服务端过滤后的 HTML，预览保留 Waline 原生解析。没有执行 Hexo 构建期渲染器或模板标签，也不重新解析评论原始 HTML。
 
 显示层复用主题 `.md` 排版、Aether 同版本 Shiki 3.23.0 与当前默认 Vitesse 亮暗主题，以及文章的 `enhanceCodeBlocks` 代码组件，提供语言标题、行号、复制、换行、长代码折叠和全屏。全屏支持从评论弹窗中打开，再返回原评论。

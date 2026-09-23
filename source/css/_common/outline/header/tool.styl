@@ -1,4 +1,7 @@
 #tool {
+  .reading-tool { border: 0; padding: 0; background: transparent; font: inherit; }
+  .reading-tool[hidden] { display: none !important; }
+  .reading-tool:disabled { cursor: wait; }
   position: fixed;
   if (hexo-config('sidebar.position') == 'left') {
     right: 1rem;
@@ -205,6 +208,5 @@
     }
   }
 }
-
 
 

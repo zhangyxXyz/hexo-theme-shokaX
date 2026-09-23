@@ -11,6 +11,14 @@ code_block:
   expand: "展开代码"
   collapse: "收起代码"
 
+reading_tools:
+  tag: "要看看 %s 标签吗？该标签下共有 %s 篇文章。"
+  show: 显示看板娘
+  hide: 隐藏看板娘
+  traditional: 正文切换为繁体
+  simplified: 恢复正文原文
+  error: 加载失败，点击重试
+
 image_viewer:
   zoom_in: "放大"
   zoom_out: "缩小"
@@ -102,6 +110,8 @@ footer:
   explore:
     data: "站点数据"
     visitor_short: "访客人次"
+    views_short: "全站访问"
+    views_exact: "全站访问 {count} 次"
     words_short: "总字数"
     reading_short: "总阅读时长"
     visitor_exact: "访客 {count} 人次"

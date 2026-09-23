@@ -31,7 +31,11 @@ export function renderCommentMarkup(html: string): DocumentFragment {
       element.setAttribute('alt', node.getAttribute('alt') || '')
       element.setAttribute('loading', 'lazy')
       element.setAttribute('referrerpolicy', 'no-referrer')
-      if (node.classList.contains('wl-emoji')) element.className = 'statistics-comment-emoji'
+      if (['emoji', 'vemoji', 'wl-emoji'].some(name => node.classList.contains(name))) element.className = 'wl-emoji'
+    }
+    if (node.tagName === 'CODE') {
+      const language = Array.from(node.classList).find(name => /^language-[\w+-]+$/.test(name))
+      if (language) element.className = language
     }
     node.childNodes.forEach(child => append(child, element))
     parent.appendChild(element)

@@ -11,6 +11,14 @@ code_block:
   expand: "コードを展開"
   collapse: "コードを折りたたむ"
 
+reading_tools:
+  tag: "%s タグを見てみませんか？このタグには %s 件の記事があります。"
+  show: Live2Dを表示
+  hide: Live2Dを非表示
+  traditional: 本文を繁体字に変換
+  simplified: 本文の原文を復元
+  error: 読み込みに失敗しました。再試行してください
+
 image_viewer:
   zoom_in: "拡大"
   zoom_out: "縮小"
@@ -101,6 +109,8 @@ post:
 footer:
   explore:
     visitor_short: "訪問者"
+    views_short: "ページビュー"
+    views_exact: "合計 {count} ページビュー"
     words_short: "総文字数"
     reading_short: "総読書時間"
     visitor_exact: "訪問者 {count} 人"

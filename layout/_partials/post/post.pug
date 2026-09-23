@@ -20,7 +20,7 @@ article(itemscope itemtype="http://schema.org/Article" class="post block" data-p
         if post.tags && post.tags.length
             div(class="tags")
                 each tag in post.tags.toArray()
-                    a(href!=url_for(tag.path) rel="tag")
+                    a(href!=url_for(tag.path) rel="tag" data-waifu-tag-message=__('reading_tools.tag', tag.name, tag.length))
                         i(class="ic i-tag")
                         != tag.name
     footer

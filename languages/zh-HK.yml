@@ -11,6 +11,14 @@ code_block:
   expand: "展開程式碼"
   collapse: "收起程式碼"
 
+reading_tools:
+  tag: "要看看 %s 標籤嗎？該標籤下共有 %s 篇文章。"
+  show: 顯示看板娘
+  hide: 隱藏看板娘
+  traditional: 正文切換為繁體
+  simplified: 還原正文原文
+  error: 載入失敗，點擊重試
+
 image_viewer:
   zoom_in: "放大"
   zoom_out: "縮小"
@@ -101,6 +109,8 @@ post:
 footer:
   explore:
     visitor_short: "訪客人次"
+    views_short: "全站瀏覽"
+    views_exact: "全站瀏覽 {count} 次"
     words_short: "總字數"
     reading_short: "總閱讀時長"
     visitor_exact: "訪客 {count} 人次"

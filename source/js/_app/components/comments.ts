@@ -9,6 +9,7 @@ import { syncCommentControls } from './comment-controls'
 import { init, defaultLocales } from '@waline/client'
 import { getFooterCommentBadge } from './footer-comment-badge'
 import { pageviewCount } from '@waline/client/pageview'
+import { isVisitorReadOnly } from './visitors/waline'
 // @ts-ignore
 await import('@waline/client/style')
 // Browser / OS icons supplied by the installed Waline version.
@@ -77,7 +78,7 @@ export const walineComment = function () {
     requiredMeta: CONFIG.waline.requiredMeta,
     wordLimit: CONFIG.waline.wordLimit,
     pageSize: CONFIG.waline.pageSize,
-    pageview: CONFIG.waline.pageview,
+    pageview: false, // The dedicated visitor integration owns counting.
     login: CONFIG.waline.readOnly ? 'disable' : CONFIG.waline.login,
     reaction: false,
     highlighter: false,
@@ -90,10 +91,16 @@ export const walineComment = function () {
   previewObserver = observeCommentDecorations(container, () => syncCommentDecorations(container))
 }
 
+let countedPage: Element | null = null
+let countedPath = ''
 export const walinePageview = function () {
-  if (!CONFIG.waline.pageview || CONFIG.waline.readOnly) return
+  if (!CONFIG.waline.pageview || CONFIG.visitor?.enable) return
+  const page = document.getElementById('main')
+  if (countedPage === page && countedPath === location.pathname) return
+  countedPage = page; countedPath = location.pathname
   pageviewCount({
     serverURL: CONFIG.waline.serverURL,
+    update: !isVisitorReadOnly(location.hostname, CONFIG.hostname, CONFIG.waline.readOnly),
     path: window.location.pathname
   })
 }

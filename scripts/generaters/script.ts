@@ -23,7 +23,10 @@ hexo.extend.generator.register('script', async function (locals) {
     hostname: config.url,
     visitor: {
       enable: theme.visitor?.enable === true,
-      type: theme.visitor?.type || 'busuanzi'
+      type: theme.visitor?.type || 'busuanzi',
+      page: theme.visitor?.page !== false,
+      site: theme.visitor?.site !== false,
+      readOnly: theme.visitor?.readOnly === true
     },
     root: config.root,
     statics: theme.statics,

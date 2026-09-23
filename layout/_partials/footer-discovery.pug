@@ -40,13 +40,13 @@
                 h2.footer-section-title= __('footer.explore.data')
                 if theme.footer.count
                     .footer-metrics
-                        if theme.footer.visitor && theme.visitor && theme.visitor.enable
+                        if theme.footer.visitor && theme.visitor && theme.visitor.enable && theme.visitor.site !== false
                             .footer-metric.footer-visitors
                                 span(data-visitor-site hidden aria-hidden="true")
-                                strong(data-visitor-count data-format=__('footer.explore.visitor_exact') tabindex="0" title=__('footer.visitor_preview')) —
+                                strong(data-visitor-count data-format=__(theme.visitor.type === 'waline' ? 'footer.explore.views_exact' : 'footer.explore.visitor_exact') tabindex="0" title=__('footer.visitor_preview')) —
                                 span
                                     i.ic.i-visits(aria-hidden="true")
-                                    = ' ' + __('footer.explore.visitor_short')
+                                    = ' ' + __(theme.visitor.type === 'waline' ? 'footer.explore.views_short' : 'footer.explore.visitor_short')
                         .footer-metric
                             - var footerWordCount = String(symbolsCountTotal(site))
                             - var footerWordParts = footerWordCount.match(/^([\d.]+)([a-zA-Z]+)$/)
@@ -96,7 +96,7 @@
                                 i.ic.i-shuffle(aria-hidden="true")
                     #footer-tags.footer-tags(data-limit=footerTagLimit)
                         each tag, index in footerTags
-                            a.footer-tag(href=url_for(tag.path) hidden=index >= footerTagLimit)
+                            a.footer-tag(href=url_for(tag.path) data-waifu-tag-message=__('reading_tools.tag', tag.name, tag.length) hidden=index >= footerTagLimit)
                                 span= tag.name
                                 sup= tag.length
             .footer-stories(hidden=!(footerShowPosts || footerShowComments) class=!(footerShowPosts && footerShowComments) ? 'footer-stories-single' : null)

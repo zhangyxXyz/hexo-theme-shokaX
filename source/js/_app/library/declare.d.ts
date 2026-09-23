@@ -77,7 +77,7 @@ declare const LOCAL: {
   }
 }
 interface configType {
-  visitor: { enable: boolean; type: 'busuanzi' | 'custom' }
+  visitor: { enable: boolean; type: 'busuanzi' | 'waline'; page: boolean; site: boolean; readOnly: boolean }
   hostname: string;
   fireworks: any;
   audio: AudioItem[];

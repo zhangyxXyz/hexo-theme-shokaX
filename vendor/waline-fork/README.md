@@ -1,7 +1,7 @@
 # Seiun Waline client snapshot
 
 - Repository: https://github.com/zhangyxXyz/waline (customizations on `dev`).
-- Downloaded 2026-09-22 from release `v1.41.6-seiun`, source Waline `526d86b4`. Includes dashboard level colors, native exclusive-label colors and author website tooltips.
+- Verified 2026-09-23 against release `v1.41.6-seiun`, source Waline `e342c1cc`. The client bytes are unchanged; this release adds server pageview management and loopback read-only protection. Includes dashboard level colors, native exclusive-label colors and author website tooltips.
 - SHA-256: `37053d7739dcbe7f4cdaf3a5370737b34e96a6025708d6f329d8012952c5043f`.
 - Optional `levelColors` and `labelColors` accept light/dark text, background and border palettes. Client fields override server level/label colors; unset fields preserve server colors or default styling.
 - The `notify(message)` callback routes plain-text editor notices to the theme's copy-style toast. Without a callback, the client retains its browser-alert fallback.

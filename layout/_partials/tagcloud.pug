@@ -24,7 +24,7 @@
         .tag.cloud(data-cloud-stage style=`--tag-start: ${cloudOptions.start || 'var(--color-pink)'}; --tag-end: ${cloudOptions.end || 'var(--color-purple)'}`)
             each tag in visibleTags
                 - const weight = cloudSizes.length > 1 ? cloudSizes.indexOf(tag.length) / (cloudSizes.length - 1) : 0
-                a.tag-cloud-link(href=url_for(tag.path) style=`--tag-size: ${cloudMin + (cloudMax - cloudMin) * weight}px; --tag-weight: ${Math.round(weight * 100)}%`)
+                a.tag-cloud-link(href=url_for(tag.path) data-waifu-tag-message=__('reading_tools.tag', tag.name, tag.length) style=`--tag-size: ${cloudMin + (cloudMax - cloudMin) * weight}px; --tag-weight: ${Math.round(weight * 100)}%`)
                     span.tag-cloud-label
                         span= tag.name
                         sup(aria-label=__('counter.index.post', tag.length))= tag.length

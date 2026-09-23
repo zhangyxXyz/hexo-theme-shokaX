@@ -623,66 +623,7 @@
       line-height: 1.25
 
   .wl-content
-    font-size: .9375rem
-    line-height: 1.85
-
-    // MiniValine used .emoji; Waline uses .wl-emoji / .vemoji.
-    // Override the theme's block-image layout only for inline emoji.
-    img.emoji, img.vemoji, img.wl-emoji
-      display: inline-block
-      width: auto
-      height: 1.3em
-      max-width: none
-      max-height: 1.3em
-      margin: 0 .15em
-      padding: 0
-      border: 0
-      border-radius: 0
-      box-shadow: none
-      vertical-align: -.2em
-
-    a
-      max-width: 100%
-      overflow-wrap: anywhere
-
-    pre
-      border: var(--waline-border)
-      border-radius: .5rem
-
-    // Native preview exists before async Shiki finishes; keep its palette stable.
-    pre:not(.shiki)
-      background: var(--code-bg) !important
-      color: var(--text-color)
-
-      code
-        background: transparent !important
-        color: inherit
-
-    .shokax-code
-      margin: .75rem 0
-      max-width: 100%
-
-      pre.shiki
-        margin: 0
-        padding: 1rem
-        border: 0
-        border-radius: 0
-
-      pre.shiki code
-        color: inherit
-        background: transparent
-        padding: 0
-
-    table
-      display: block
-      max-width: 100%
-      overflow-x: auto
-
-    blockquote
-      margin-inline: 0
-      padding: .25rem 1rem
-      border-inline-start: 3px solid var(--primary-color)
-      background: var(--grey-2)
+    comment-content()
 
   .wl-meta-head
     gap: .75rem

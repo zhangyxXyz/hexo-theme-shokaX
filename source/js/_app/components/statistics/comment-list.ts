@@ -5,6 +5,7 @@ import { CONFIG } from '../../globals/globalVars'
 import { defaultLocales } from '@waline/client'
 import { formatCommentRegion } from '../comment-region'
 import { renderCommentMarkup } from './comment-markup'
+import { createCommentMarkdown } from '../comment-markdown'
 
 const safeLink = (value?: string) => {
   try { const url = new URL(value || ''); return ['https:', 'http:'].includes(url.protocol) ? url.href : '' } catch { return '' }
@@ -61,6 +62,7 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
   body.append(list, status, more)
   dialog.append(header, body)
   document.body.append(dialog)
+  let markdown = createCommentMarkdown(list, '.statistics-comment-excerpt')
   let request: AbortController | undefined
   let trigger: HTMLElement | null = null
   let overflow: string | undefined
@@ -155,7 +157,7 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
         }
         const known = commentContent(config, item.url)
         const content = document.createElement('div')
-        content.className = 'statistics-comment-excerpt'
+        content.className = 'statistics-comment-excerpt md'
         const markup = renderCommentMarkup(item.comment || '')
         content.append(markup.textContent?.trim() || markup.querySelector('img, hr') ? markup : document.createTextNode(labels.comment_empty_content))
         if (known) {
@@ -169,6 +171,7 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
         row.append(meta, details, content)
         list.append(row)
       }
+      markdown.sync()
       page++
       hasMore = data.hasMore
       status.textContent = data.total ? '' : labels.empty
@@ -185,7 +188,7 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
   }
   more.onclick = () => { void load() }
   body.addEventListener('scroll', () => { if (hasMore && body.scrollHeight - body.scrollTop - body.clientHeight < 100) void load() }, { passive: true, signal })
-  signal.addEventListener('abort', () => { finish(false); dialog.remove() }, { once: true })
+  signal.addEventListener('abort', () => { finish(false); markdown.destroy(); dialog.remove() }, { once: true })
   return (heading: string, next: { author?: string; url?: string } = {}) => {
     request?.abort()
     trigger = document.activeElement as HTMLElement
@@ -201,7 +204,9 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
       title.replaceChildren(link)
     } else title.textContent = heading
     count.textContent = ''
+    markdown.destroy()
     list.replaceChildren()
+    markdown = createCommentMarkdown(list, '.statistics-comment-excerpt')
     if (!dialog.open) { overflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; dialog.showModal() }
     body.scrollTop = 0
     close.focus({ preventScroll: true })

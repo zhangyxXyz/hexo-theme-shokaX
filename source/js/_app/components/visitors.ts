@@ -1,5 +1,6 @@
 import { CONFIG } from '../globals/globalVars'
 import { visitorProviders } from './visitors/providers'
+import { isVisitorReadOnly } from './visitors/waline'
 
 let active: AbortController | undefined
 let previousPage: Element | null = null
@@ -22,11 +23,11 @@ export const refreshVisitors = () => {
   })
   document.querySelectorAll('[data-visitor-site]').forEach(el => { el.textContent = '' })
   if (!CONFIG.visitor?.enable) return
-  if (location.hostname !== new URL(CONFIG.hostname).hostname ||
-      ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) return
+  const readOnly = isVisitorReadOnly(location.hostname, CONFIG.hostname, CONFIG.visitor.readOnly)
+  if (CONFIG.visitor.type === 'busuanzi' && readOnly) return
   const provider = visitorProviders[CONFIG.visitor.type]
   if (!provider) return
-  void provider({ path, signal }).then(counts => {
+  void provider({ path, signal, readOnly, serverURL: CONFIG.waline.serverURL, site: CONFIG.visitor.site }).then(counts => {
     if (!counts || signal.aborted || path !== location.pathname || page !== document.getElementById('main')) return
     for (const [selector, value] of [
       ['[data-visitor-page]', counts.pageViews],

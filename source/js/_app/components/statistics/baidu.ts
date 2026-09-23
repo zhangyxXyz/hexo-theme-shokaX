@@ -1,10 +1,12 @@
 import type { BaiduSettings, MapMode, Point } from './types'
 import { calendarRange, dateKey } from './dates'
+import { createEndpointRouter } from './endpoints'
 
-// The endpoint and site identity belong to the site configuration, never this module.
+// The endpoint belongs to site configuration; the proxy owns the site identity.
 export function createBaiduSource(settings: BaiduSettings = {}, lifecycle: AbortSignal) {
   const { today, yearAgo, calendarStart } = calendarRange()
   const start = settings.start_date || dateKey(yearAgo)
+  const route = createEndpointRouter(settings, lifecycle)
   async function fetchReport(url: URL, cancellation?: AbortSignal) {
     const active = AbortSignal.any([lifecycle, ...(cancellation ? [cancellation] : [])])
     active.throwIfAborted()
@@ -24,16 +26,19 @@ export function createBaiduSource(settings: BaiduSettings = {}, lifecycle: Abort
     } finally { clearTimeout(timer) }
   }
   async function request(method: string, startDate: string, gran?: string, cancellation?: AbortSignal, endDate = dateKey(today)): Promise<Point[]> {
-    if (!settings.api || !settings.site_id) throw new Error('unconfigured')
-    const url = new URL(settings.api)
-    Object.entries({ site_id: settings.site_id, method, start_date: startDate, end_date: endDate, metrics: 'pv_count', max_results: '0', ...(gran ? { gran } : {}) }).forEach(([key, value]) => url.searchParams.set(key, value))
+    const params = new URLSearchParams({ method, start_date: startDate, end_date: endDate, metrics: 'pv_count', max_results: '0', ...(gran ? { gran } : {}) })
+    const active = AbortSignal.any([lifecycle, ...(cancellation ? [cancellation] : [])])
     const points: Point[] = []
     const pages = method === 'visit/toppage/a'
-    if (pages) url.searchParams.set('max_results', '1000')
+    if (pages) params.set('max_results', '1000')
     let previousBatch = ''
     do {
-      if (pages) url.searchParams.set('start_index', String(points.length))
-      const result = await fetchReport(url, cancellation)
+      if (pages) params.set('start_index', String(points.length))
+      const result = await route(endpoint => {
+        const url = new URL(endpoint)
+        params.forEach((value, key) => url.searchParams.set(key, value))
+        return fetchReport(url, cancellation)
+      }, active)
       const batch = JSON.stringify(result.items[0])
       if (pages && batch === previousBatch) throw new Error('response')
       previousBatch = batch

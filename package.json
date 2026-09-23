@@ -38,6 +38,7 @@
         "katex": "^0.18.4",
         "mouse-firework": "^0.3.0",
         "nyx-player": "^0.1.1",
+        "opencc-js": "1.4.1",
         "shiki": "3.23.0",
         "shokax-uikit": "0.0.5",
         "theme-shokax-anime": "^0.0.8",

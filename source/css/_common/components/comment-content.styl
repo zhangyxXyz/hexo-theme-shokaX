@@ -1,0 +1,64 @@
+// Shared content rules for Waline and the statistics comment dialog.
+// Base typography comes from .md (the article renderer).
+comment-content()
+  font-size: .9375rem
+  line-height: 1.85
+
+  :not(pre) > code
+    padding: .1em .3em
+    border-radius: .25rem
+    background: var(--grey-3)
+    color: var(--primary-color)
+    font-family: $font-family-monospace
+
+  img.emoji, img.vemoji, img.wl-emoji
+    display: inline-block
+    width: auto
+    height: 1.3em
+    max-width: none
+    max-height: 1.3em
+    margin: 0 .15em
+    padding: 0
+    border: 0
+    border-radius: 0
+    box-shadow: none
+    vertical-align: -.2em
+
+  a
+    max-width: 100%
+    overflow-wrap: anywhere
+
+  pre
+    border: var(--waline-border, 1px solid var(--grey-3))
+    border-radius: .5rem
+
+  pre:not(.shiki)
+    background: var(--code-bg) !important
+    color: var(--text-color)
+    code
+      background: transparent !important
+      color: inherit
+
+  .shokax-code
+    margin: .75rem 0
+    max-width: 100%
+    pre.shiki
+      margin: 0
+      padding: 1rem
+      border: 0
+      border-radius: 0
+    pre.shiki code
+      color: inherit
+      background: transparent
+      padding: 0
+
+  table
+    display: block
+    max-width: 100%
+    overflow-x: auto
+
+  blockquote
+    margin-inline: 0
+    padding: .25rem 1rem
+    border-inline-start: 3px solid var(--primary-color)
+    background: var(--grey-2)

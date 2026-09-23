@@ -84,11 +84,21 @@ seo:
   baidu:
 
 visitor:
-  enable: false # Article views and site visitors; production hostname only.
-  type: busuanzi # busuanzi | custom (reserved, no requests yet)
+  enable: false # Independent from opening the comment panel.
+  type: busuanzi # busuanzi (UV) | waline (PV, shares waline.serverURL)
+  page: true # Display the current page count.
+  site: true # Display the site total.
+  readOnly: false # Waline is always read-only on loopback or noncanonical hosts.
   clarity: false
   baiduAnalytics: false
   googleAnalytics: false
+
+live2d:
+  enable: false
+  cdn: https://npm.elemecdn.com/akilar-live2dapi@latest/
+
+article_script:
+  enable: true # Simplified/traditional Chinese toggle for article text.
 
 darkmode: true
 auto_dark: # 自动亮/暗模式
