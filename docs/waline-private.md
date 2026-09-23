@@ -6,4 +6,4 @@ Logged-in visitors can send a private message to the site owner. For replies, th
 
 The switch says “私密” (localized) with a tooltip explaining that both accounts and administrators can read it. Its native checkbox state and disabled behavior are preserved; the theme only supplies capsule styling. Preview and submit controls are 30px high with labels intact.
 
-Vendor source and SHA-256 are recorded in `vendor/waline-fork/README.md`. No database writes or production test comments are needed for theme visual testing.
+Vendor source and SHA-256 are recorded in `vendor/waline@seiun/README.md`. No database writes or production test comments are needed for theme visual testing.

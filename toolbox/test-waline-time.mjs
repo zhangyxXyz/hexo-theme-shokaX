@@ -15,7 +15,7 @@ const locale = { seconds: 'seconds ago', minutes: 'minutes ago', hours: 'hours a
 const dateLabel = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
 for (const entry of ['waline', 'slim', 'fork']) {
-const bundle = await fs.readFile(new URL(entry === 'fork' ? '../vendor/waline-fork/waline.js' : `../node_modules/@waline/client/dist/${entry}.js`, import.meta.url), 'utf8')
+const bundle = await fs.readFile(new URL(entry === 'fork' ? '../vendor/waline@seiun/waline.js' : `../node_modules/@waline/client/dist/${entry}.js`, import.meta.url), 'utf8')
 // Locate the formatter by its behavior, since minified names change on rebuild.
 const cutoff = bundle.indexOf('a<8?`${a} ${n.days}`:')
 assert.ok(cutoff >= 0, 'relative-day formatter must exist')

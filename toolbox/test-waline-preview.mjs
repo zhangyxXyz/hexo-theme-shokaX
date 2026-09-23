@@ -6,7 +6,7 @@ const source = await fs.readFile(new URL('../scripts/utils/waline-preview.ts', i
 const { code } = await transform(source, { loader: 'ts', format: 'esm' })
 const { adaptWalinePreview } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`)
 for (const entry of ['slim', 'waline', 'fork']) {
-  const bundle = await fs.readFile(new URL(entry === 'fork' ? '../vendor/waline-fork/waline.js' : `../node_modules/@waline/client/dist/${entry}.js`, import.meta.url), 'utf8')
+  const bundle = await fs.readFile(new URL(entry === 'fork' ? '../vendor/waline@seiun/waline.js' : `../node_modules/@waline/client/dist/${entry}.js`, import.meta.url), 'utf8')
   const patched = adaptWalinePreview(bundle)
   const dependency = patched.match(/\(\)=>\[([\w$]+)\.value,([\w$]+)\.value.map\],\(\[e\]\)=>\{let\{highlighter/)
   assert.ok(dependency, `${entry}: native preview watches both draft and emoji map`)

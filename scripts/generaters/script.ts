@@ -111,7 +111,7 @@ hexo.extend.generator.register('script', async function (locals) {
   }
   const resultApp = await build({
     plugins: theme.waline.enable ? [walineTimePlugin(theme.waline.relativeTimeDays,
-      theme.waline.client === 'seiun' ? await fs.readFile(path.resolve(hexo.theme_dir, 'vendor/waline-fork/waline.js'), 'utf8') : undefined)] : [],
+      theme.waline.client === 'seiun' ? await fs.readFile(path.resolve(hexo.theme_dir, 'vendor/waline@seiun/waline.js'), 'utf8') : undefined)] : [],
     write: false,
     entryPoints: [enterPoint],
     bundle: true,

@@ -12,7 +12,7 @@ const adapter = await build({ entryPoints: [fileURLToPath(new URL('../scripts/ut
 const module = { exports: {} }
 new Function('require', 'module', 'exports', adapter.outputFiles[0].text)(require, module, module.exports)
 const { adaptWalineTime } = module.exports
-const original = await fs.readFile(new URL('../vendor/waline-fork/waline.js', import.meta.url), 'utf8')
+const original = await fs.readFile(new URL('../vendor/waline@seiun/waline.js', import.meta.url), 'utf8')
 
 // Extract the actual pinned client's formatter and its date-padding helpers.
 // This catches drift from Waline's rounded seconds and configurable day cutoff.
