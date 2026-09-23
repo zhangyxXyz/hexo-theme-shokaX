@@ -1,3 +1,5 @@
+import { fetchHitokoto } from '../globals/hitokoto'
+
 let pending: AbortController | undefined
 let disposeTyping: (() => void) | undefined
 
@@ -62,15 +64,9 @@ export async function refreshHitokoto() {
   pending = controller
   const timeout = window.setTimeout(() => controller.abort(), 6000)
   try {
-    const response = await fetch('https://v1.hitokoto.cn', { signal: controller.signal })
-    if (!response.ok) throw new Error(`Hitokoto HTTP ${response.status}`)
-    const data = await response.json()
-    if (typeof data.hitokoto !== 'string' || !data.hitokoto.trim()) throw new Error('Invalid Hitokoto response')
-    const author = typeof data.from_who === 'string' ? data.from_who.trim() : ''
-    const source = typeof data.from === 'string' ? data.from.trim() : ''
-    const attribution = `${author}${source ? `「${source}」` : ''}`
+    const quote = await fetchHitokoto(controller.signal)
     if (pending === controller && element.isConnected) {
-      showQuote(element, `${data.hitokoto}${attribution ? ` —— ${attribution}` : ''}`)
+      showQuote(element, quote)
     }
   } catch {
     if (pending === controller && element.isConnected) showQuote(element, fallback)

@@ -31,6 +31,7 @@ hexo.extend.generator.register('script', async function (locals) {
     root: config.root,
     resource: theme.resource,
     vendors: theme.vendors,
+    hitokoto: theme.hitokoto,
     statics: theme.statics,
     favicon: {
       normal: theme.assets + '/favicon.ico',

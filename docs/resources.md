@@ -63,3 +63,5 @@ CSS 内字体、模型 JSON 内贴图等二级资源保留相对目录。第三�
 Widget 的 CSS、运行库、脚本与提示 JSON 从 `assets.live2d_widget` 远端加载，固定上游 `stevenjoezhang/live2d-widget` 的 `b352ba5838157cf366e5e73de221c448e2e63545` 版本（`initWidget` 接口）。本地不再保存 `source/live2d-widget` 副本。
 
 主题 `reading-tools/live2d.ts` 在初始化后定点接管关闭与小游戏按钮：关闭同步工具栏状态及本地可见性偏好；小游戏只在点击时加载 `js.live2d_game`。保留主题图标、位置、暗色样式、减少动画偏好和标签悬停提示。模型切换、截图等行为交给原版；普通提示语使用上游 JSON。更换上游版本时需验证初始化接口和 `waifu-tool-*` 按钮 ID，不能直接改为浮动 latest。
+
+一言属于动态服务，使用 `hitokoto.api`，不放进静态 vendors。首页、文章和看板娘一言按钮共用该接口；看板娘由适配层接管按钮，不修改远端原版脚本。缺省为 `https://v1.hitokoto.cn`，环境配置可覆盖。

@@ -30,6 +30,7 @@ experiments:
   antiFakeWebsite: true # 防止恶意网站伪装
 
 hitokoto:
+  api: https://v1.hitokoto.cn # JSON endpoint; environment configuration may override.
   home: false # Random quote in the home subtitle.
   post: false # Random quote beneath article titles.
   typewriter: false # Shared typing effect, respecting reduced motion.

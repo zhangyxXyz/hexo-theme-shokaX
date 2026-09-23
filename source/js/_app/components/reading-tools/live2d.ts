@@ -1,4 +1,5 @@
 import { resourceURL } from '../../globals/resources'
+import { fetchHitokoto } from '../../globals/hitokoto'
 type WidgetWindow = Window & {
   initWidget?: (config: { waifuPath: string; cdnPath: string }) => void
   Asteroids?: new () => unknown
@@ -10,7 +11,7 @@ let loading: Promise<void> | undefined
 let desired: boolean | undefined
 const loaded = new Map<string, Promise<void>>()
 
-// Keep upstream unmodified: only adapt the two theme-owned actions.
+// Keep upstream unmodified; adapt theme-owned actions and the dynamic quote service.
 function adaptWidget(onHide: () => void, onError: () => void) {
   const widget = document.getElementById('waifu')!
   widget.classList.add('shokax-live2d')
@@ -24,11 +25,30 @@ function adaptWidget(onHide: () => void, onError: () => void) {
     if (tool) { tool.replaceChildren(); tool.classList.add('ic', `i-${icon}`) }
   }
   let startingGame = false
+  let quoteRequest: AbortController | undefined
+  let quoteTimer: ReturnType<typeof setTimeout>
   widget.addEventListener('click', async event => {
-    const tool = event.target instanceof Element ? event.target.closest('#waifu-tool-quit, #waifu-tool-asteroids') : null
+    const tool = event.target instanceof Element ? event.target.closest('#waifu-tool-quit, #waifu-tool-asteroids, #waifu-tool-hitokoto') : null
     if (!tool) return
     event.stopImmediatePropagation()
     if (tool.id === 'waifu-tool-quit') { onHide(); return }
+    if (tool.id === 'waifu-tool-hitokoto') {
+      quoteRequest?.abort()
+      const controller = new AbortController()
+      quoteRequest = controller
+      const timeout = setTimeout(() => controller.abort(), 6000)
+      try {
+        const quote = await fetchHitokoto(controller.signal)
+        if (quoteRequest !== controller) return
+        const tips = document.getElementById('waifu-tips')!
+        tips.textContent = quote
+        tips.classList.add('waifu-tips-active')
+        clearTimeout(quoteTimer)
+        quoteTimer = setTimeout(() => tips.classList.remove('waifu-tips-active'), 6000)
+      } catch { if (quoteRequest === controller) onError() }
+      finally { clearTimeout(timeout); if (quoteRequest === controller) quoteRequest = undefined }
+      return
+    }
     if (startingGame) return
     startingGame = true
     try {

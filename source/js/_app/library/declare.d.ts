@@ -85,6 +85,7 @@ interface configType {
   root: string
   resource?: string
   vendors: import('../../../../lib/vendors.cjs').VendorRegistry
+  hitokoto?: { api?: string }
   statics: string
   outime: {
     enable: boolean
