@@ -162,9 +162,11 @@ export const sidebarTOC = () => {
     const anchorScroll = (event:MouseEvent) => {
       event.preventDefault()
       const target = document.getElementById(decodeURI((event.currentTarget as HTMLElement).getAttribute('href').replace('#', '')))
+      if (!target) return
+      const margin = Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0
 
       activeLock = index
-      pageScroll(document.body, target.offsetTop, () => {
+      pageScroll(document.body, Math.max(0, window.scrollY + target.getBoundingClientRect().top - margin), () => {
         activateNavByIndex(index)
         activeLock = null
       })

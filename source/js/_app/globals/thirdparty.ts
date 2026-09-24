@@ -1,35 +1,10 @@
 // 与第三方js的交互或第三方嵌入js
 
 import { CONFIG, loadCat } from './globalVars'
-import { transition } from '../library/anime'
+import { createPageLoader } from '../components/page-loader'
 
 // 加载动画
-export const Loader = {
-  timer: undefined,
-  lock: false,
-  show () {
-    clearTimeout(this.timer)
-    document.body.classList.remove('loaded')
-    loadCat.setAttribute('style', 'display:block')
-    Loader.lock = false
-  },
-  hide (sec?: number) {
-    if (!CONFIG.loader.start) {
-      sec = -1
-    }
-    this.timer = setTimeout(this.vanish, sec || 3000)
-  },
-  vanish (): void {
-    if (Loader.lock) {
-      return
-    }
-    if (CONFIG.loader.start) {
-      transition(loadCat, 0)
-    }
-    document.body.classList.add('loaded')
-    Loader.lock = true
-  }
-}
+export const Loader = createPageLoader(loadCat, CONFIG.loader)
 
 export const isOutime = (): void => {
   let updateTime: Date

@@ -6,6 +6,11 @@
   font-family: $font-family-posts;
   word-wrap();
 
+  // Native fragment navigation and scripted restoration share the same offset.
+  :is(h1, h2, h3, h4, h5, h6)[id] {
+    scroll-margin-top: 4rem;
+  }
+
   .exturl .ic {
     font-size: $font-size-small;
     margin-left: .25rem;

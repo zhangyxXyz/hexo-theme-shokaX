@@ -11,6 +11,23 @@ code_block:
   expand: "Expand code"
   collapse: "Collapse code"
 
+music:
+  lyrics_glyph: LRC
+  lyrics_enable: Enable desktop lyrics
+  lyrics_disable: Disable desktop lyrics
+  lyrics_close: Collapse the desktop lyrics controller. Enable it again with the player's LRC button.
+  next: Next track
+  volume: Volume
+  mute: Mute
+  unmute: Unmute
+  activate: Double-click to play · Enter / Space · Tap on touch screens
+  unavailable: This song is currently unavailable. Choose another song or try again later.
+  play: Play music
+  pause: Pause music
+  show: Music playlists
+  loading: Loading playlists
+  error: Could not load playlists. Click to retry
+
 reading_tools:
   tag: "Explore the %s tag? There are %s articles under this tag."
   show: Show Live2D
@@ -481,6 +498,11 @@ festival_preview:
     dongzhi: "Winter Solstice"
     xiaohan: "Minor Cold"
     dahan: "Major Cold"
+bookmark_view:
+  label: Bookmark view
+  cards: Classic cards
+  axis: Category timeline
+  count: "%s bookmarks in total"
 category_view:
   label: Category view
   cards: Category cards

@@ -40,7 +40,7 @@ export const pagePosition = () => {
   }
 }
 
-export const positionInit = (comment?: boolean) => {
+export const positionInit = (comment?: boolean, instant = false) => {
   // 获取页面锚点
   const anchor = window.location.hash
 
@@ -58,13 +58,13 @@ export const positionInit = (comment?: boolean) => {
     target = CONFIG.auto_scroll ? parseInt(localStorage.getItem(LOCAL_URL)) : 0
   }
 
-  if (target) {
-    pageScroll(target)
+  if (target || instant) {
+    pageScroll(target || 0, undefined, undefined, instant ? 'instant' : 'smooth')
     setLocalHash(1)
   }
 
   if (comment && anchor && !LOCAL_HASH) {
-    pageScroll(target)
+    pageScroll(target, undefined, undefined, instant ? 'instant' : 'smooth')
     setLocalHash(1)
   }
 }

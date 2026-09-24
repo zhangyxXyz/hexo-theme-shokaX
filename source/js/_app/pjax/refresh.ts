@@ -1,10 +1,10 @@
 import { cardActive } from '../page/common'
 import { resizeHandle, syncViewportState } from '../globals/handles'
 import {
-  CONFIG,
-  setLocalHash, setLocalUrl, setOriginTitle,
+  CONFIG, LOCAL_HASH,
+  setLocalHash, setLocalUrl, setOriginTitle, siteNav,
 } from '../globals/globalVars'
-import { positionInit } from '../globals/tools'
+import { createScrollRestoration, scrollDestination } from './scroll-restoration'
 import { menuActive, sideBarTab, sidebarTOC } from '../components/sidebar'
 import { Loader } from '../globals/thirdparty'
 import { refreshArticleInfo } from '../components/article-info'
@@ -19,6 +19,7 @@ import { refreshVisitors } from '../components/visitors'
 import { refreshFestival } from '../components/festival'
 import { refreshTagCloud } from '../components/tagcloud'
 import { refreshCategoryDirectory } from '../components/category-directory'
+import { refreshBookmarks } from '../components/bookmarks'
 import { refreshArchive } from '../components/archive'
 import { refreshSummarySwitch } from '../components/summary-switch'
 import { postBeauty } from '../page/post'
@@ -28,6 +29,7 @@ import { refreshIconPreview } from '../components/icon-preview'
 import { refreshTooltips } from '../components/tooltip'
 import { refreshSidebarMenu } from '../components/sidebar-menu'
 import { refreshCommentPanel } from '../components/comment-panel'
+import { playPageEntry } from '../components/page-entry'
 
 // A mobile visit can become a desktop view without a PJAX navigation.
 matchMedia('(min-width: 768px)').addEventListener('change', event => {
@@ -58,9 +60,29 @@ window.addEventListener('hexo-blog-decrypt', () => {
   refreshTooltips()
 })
 
-export const siteRefresh = async (reload) => {
-  // Update restored viewport state before any asynchronous page setup.
-  syncViewportState()
+let scrollRestoration: ReturnType<typeof createScrollRestoration> | undefined
+let lazyBackgrounds: IntersectionObserver | undefined
+// Reuse the fulfilled promise instead of scheduling a fresh dynamic import per visit.
+const copyTexReady = import('katex/dist/contrib/copy-tex.mjs')
+export const siteRefresh = async (reload, restoredPosition?: [number, number], isCurrent = () => true) => {
+  scrollRestoration?.cancel()
+  let savedTop = 0
+  if (CONFIG.auto_scroll) {
+    try { savedTop = Number.parseFloat(localStorage.getItem(location.href) || '0') } catch { /* Storage may be disabled. */ }
+  }
+  const destination = scrollDestination(location.hash, restoredPosition, savedTop)
+  const page = document.getElementById('main')
+  scrollRestoration = page && destination ? createScrollRestoration({
+    page, destination,
+    // Archive year navigation already owns its initial anchor animation.
+    isCurrent: () => isCurrent() && (Boolean(restoredPosition) || !LOCAL_HASH),
+    offset: () => siteNav.getBoundingClientRect().height,
+    onScroll: syncViewportState
+  }) : undefined
+  const restore = scrollRestoration
+  lazyBackgrounds?.disconnect()
+  // Full loads settle the existing viewport; PJAX batches its DOM writes first.
+  if (reload) syncViewportState()
   if (__shokax_antiFakeWebsite__) {
     if (window.location.origin !== CONFIG.hostname && window.location.origin !== "http://localhost:4000") {
       window.location.href = CONFIG.hostname
@@ -77,10 +99,10 @@ export const siteRefresh = async (reload) => {
   }
   refreshFooter()
   refreshReadingTools()
-  refreshVisitors()
   refreshFestival()
   refreshTagCloud()
   refreshCategoryDirectory()
+  refreshBookmarks()
   refreshArchive()
   refreshStatistics()
   refreshIconPreview()
@@ -91,7 +113,7 @@ export const siteRefresh = async (reload) => {
   refreshArticleRelock()
   void refreshHitokoto()
 
-  await import('katex/dist/contrib/copy-tex.mjs')
+  await copyTexReady
 
   // 懒加载背景图
   const lazyBg = new IntersectionObserver(function (entries, observer) {
@@ -107,14 +129,12 @@ export const siteRefresh = async (reload) => {
     root: null,
     threshold: 0.2
   })
+  lazyBackgrounds = lazyBg
   document.querySelectorAll('[data-background-image]').forEach(el => {
     lazyBg.observe(el)
   })
 
   setOriginTitle(document.title)
-
-  resizeHandle()
-  syncViewportState()
 
   menuActive()
   refreshSidebarMenu()
@@ -179,19 +199,16 @@ export const siteRefresh = async (reload) => {
     tabFormat()
   }
 
-  if (sessionStorage.getItem('loaded') === 'true') {
-    Loader.hide(30)
-  } else {
-    sessionStorage.setItem('loaded', 'true')
-    Loader.hide(500)
-  }
-
-  setTimeout(() => {
-    positionInit()
+  if (isCurrent()) {
+    resizeHandle()
+    restore?.restore()
     syncViewportState()
-  }, 500)
+  } else restore?.cancel()
 
   cardActive()
   refreshTooltips()
+
+  if (isCurrent()) refreshVisitors()
+  if (reload && isCurrent()) Loader.hide(undefined, () => playPageEntry(!location.hash))
 
 }

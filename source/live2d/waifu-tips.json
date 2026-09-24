@@ -1,0 +1,548 @@
+{
+  "mouseover": [],
+  "click": [],
+  "interactions": {
+    "mouseover": [
+      {
+        "selector": "#live2d",
+        "text": ["干嘛呢你，快把手拿开～～", "鼠…鼠标放错地方了！", "你要干嘛呀？", "喵喵喵？", "怕怕(ノ≧∇≦)ノ", "我要生气了哦", "不要动手动脚的！"]
+      },
+      {
+        "selector": "#waifu-tool-hitokoto",
+        "text": ["猜猜我要说些什么？", "我从青蛙王子那里听到了不少人生经验。"]
+      },
+      {
+        "selector": "#waifu-tool-asteroids",
+        "text": ["要不要来玩飞机大战？", "这个按钮上写着「不要点击」。", "怎么，你想来和我玩个游戏？"]
+      },
+      {
+        "selector": "#waifu-tool-switch-model",
+        "text": ["你是不是不爱人家了呀，呜呜呜～", "要见见我的姐姐嘛？", "要切换看板娘吗？"]
+      },
+      {
+        "selector": "#waifu-tool-switch-texture",
+        "text": ["这次要扮演什么呢？", "变装！", "让我们看看接下来会发生什么！"]
+      },
+      {
+        "selector": "#waifu-tool-photo",
+        "text": ["你要给我拍照呀？一二三～茄子～", "要不，我们来合影吧！", "保持微笑就好了～"]
+      },
+      {
+        "selector": "#waifu-tool-info",
+        "text": ["想要知道更多关于我的事么？", "这里记录着我搬家的历史呢。"]
+      },
+      {
+        "selector": "#waifu-tool-quit, .live2d-toggle[aria-pressed='true']",
+        "text": ["到了要说再见的时候了吗？", "呜呜 QAQ 后会有期……", "我们，还能再见面吗……"]
+      },
+      {
+        "selector": ".article-script-toggle[aria-pressed='false']",
+        "text": ["想换成繁体字阅读吗？点一下试试看吧～"]
+      },
+      {
+        "selector": ".article-script-toggle[aria-pressed='true']",
+        "text": ["点一下就可以切回简体字啦～"]
+      },
+      {
+        "selector": ".menu a[href='/'], .footer-nav-links a[href='/'], #nav .title a, .footer-brand, .breadcrumb a[href='/']",
+        "text": ["点它就可以回到首页啦！", "回首页看看吧。", "想回到上一页，也可以使用浏览器的后退功能哦。"]
+      },
+      {
+        "selector": ".menu a[href$='/about/'], .footer-nav-links a[href$='/about/']",
+        "text": ["你想知道我家主人是谁吗？", "这里有一些关于我家主人的秘密哦，要不要看看呢？", "发现主人出没地点！"]
+      },
+      {
+        "selector": ".menu a[href$='/tags/'], .footer-nav-links a[href$='/tags/']",
+        "text": ["点击就可以看文章的标签啦！", "点击来查看所有标签哦。"]
+      },
+      {
+        "selector": ".menu a[href$='/categories/'], .footer-nav-links a[href$='/categories/']",
+        "text": ["文章都分类好啦～", "点击来查看文章分类哦。"]
+      },
+      {
+        "selector": ".menu a[href$='/archives/'], .footer-nav-links a[href$='/archives/']",
+        "text": ["翻页比较麻烦吗，那就来看看文章归档吧。", "文章目录都整理在这里啦！"]
+      },
+      {
+        "selector": ".menu a[href$='/projects/'], .footer-nav-links a[href$='/projects/']",
+        "text": ["看看我主人都在折腾些啥项目吧～"]
+      },
+      {
+        "selector": ".menu a[href$='/friend-links/'], .footer-nav-links a[href$='/friend-links/']",
+        "text": ["这是我的朋友们哦ヾ(◍°∇°◍)ﾉﾞ", "要去大佬们的家看看吗？", "要去拜访一下我的朋友们吗？"]
+      },
+      {
+        "selector": ".menu a[href$='/friend-circle/'], .footer-nav-links a[href$='/friend-circle/']",
+        "text": ["要去看看大佬们最近都新发了啥文章吗？", "这是我的朋友们最近发布的文章哦～"]
+      },
+      {
+        "selector": ".menu a[href$='/webstack-links/'], .footer-nav-links a[href$='/webstack-links/']",
+        "text": ["去看看我的网络书签吗？", "这是我的网络书签哦ヾ(◍°∇°◍)ﾉﾞ"]
+      },
+      {
+        "selector": ".menu a[href$='/statistics/'], .footer-nav-links a[href$='/statistics/']",
+        "text": ["来看看我家主人的博客访问记录吧～", "看看博客都留下了哪些足迹吧！"]
+      },
+      {
+        "selector": ".menu a[href$='/guestbook/'], .footer-nav-links a[href$='/guestbook/']",
+        "text": ["路过也可以留下几句话呀～", "去留言板和主人聊聊天吧！"]
+      },
+      {
+        "selector": ".menu a[href='https://travellings.link/']",
+        "text": ["准备好了吗？即将开往下一个站点哦～"]
+      },
+      {
+        "selector": ".sidebar-menu-toggle[aria-expanded='false']",
+        "text": ["这里还有更多入口，展开看看吧～"]
+      },
+      {
+        "selector": ".sidebar-menu-toggle[aria-expanded='true']",
+        "text": ["点一下就可以收起这一组菜单啦。"]
+      },
+      {
+        "selector": ".menu .item a, .footer-nav-links a",
+        "text": ["快看看这里都有什么呢？"]
+      },
+      {
+        "selector": "#rightNav .item.theme",
+        "text": ["换一个主题模式看看？", "点一下时光穿梭哦～"]
+      },
+      {
+        "selector": "#rightNav .item.search",
+        "text": ["找不到想看的内容？搜索看看吧！", "在找什么东西呢，需要帮忙吗？"]
+      },
+      {
+        "selector": "#sidebar .overview .author",
+        "text": ["我家主人好看吗？", "这是我家主人(*´∇｀*)"]
+      },
+      {
+        "selector": "#sidebar .contents.item",
+        "text": ["这是文章目录，快找找你想看的章节吧～"]
+      },
+      {
+        "selector": "#sidebar .related.item",
+        "text": ["看看和当前文章相关的系列文章？"]
+      },
+      {
+        "selector": "#sidebar .overview.item",
+        "text": ["要看一眼站点概览信息吗？"]
+      },
+      {
+        "selector": "#sidebar .toc-link",
+        "nameSelector": ".toc-text",
+        "text": ["想看 <span>{text}</span> 这一节吗？点一下就能跳过去啦。"]
+      },
+      {
+        "selector": "#sidebar .overview .state .posts a",
+        "text": ["主人写过的文章都在这里啦，要不要翻一翻？"]
+      },
+      {
+        "selector": "#sidebar .overview .state .categories a",
+        "text": ["这些是文章的分类，按兴趣找一找吧～"]
+      },
+      {
+        "selector": "#sidebar .overview .state .tags a",
+        "text": ["从标签里挑一个感兴趣的话题吧～"]
+      },
+      {
+        "selector": ".social a[href*='github.com'], .footer-social a[href*='github.com']",
+        "text": ["GitHub！我是新手！", "去看看主人最近写了些什么代码吧～"]
+      },
+      {
+        "selector": "a[href^='mailto:']",
+        "text": ["点击就可以发送邮件啦～", "有什么想和主人说的，也可以写封邮件哦。"]
+      },
+      {
+        "selector": "#sidebar .social a",
+        "text": ["去相关社交媒体看看主人？"]
+      },
+      {
+        "selector": "#footer .footer-social a[aria-label='RSS']",
+        "text": ["这里可以使用 RSS 订阅呢！", "利用 feed 订阅器，就能快速知道博客有没有更新了呢。"]
+      },
+      {
+        "selector": ".changelog-trigger",
+        "text": ["这里是文章的更新历史记录呢～", "想知道这篇文章又补充了什么吗？"]
+      },
+      {
+        "selector": ".changelog-close",
+        "text": ["看完更新记录，就回去继续读文章吧～"]
+      },
+      {
+        "selector": "#copyright .license a",
+        "text": ["转载前要先注意下这里的版权协议呢。", "要记得按文章标注的许可规范转载哦。"]
+      },
+      {
+        "selector": "#copyright .license",
+        "text": ["这里写着文章的转载要求，分享前先读一下吧。"]
+      },
+      {
+        "selector": "img.shokax-image-viewer, a[data-image-viewer]",
+        "text": ["点击图片可以放大呢！", "想看清楚一点？打开大图看看吧～"]
+      },
+      {
+        "selector": "[data-code-action='copy'], .copy-btn",
+        "text": ["代码可以直接点击复制哟。"]
+      },
+      {
+        "selector": "[data-code-action='wrap'][aria-pressed='false']",
+        "text": ["这一行太长了吗？可以打开自动换行哦。"]
+      },
+      {
+        "selector": "[data-code-action='wrap'][aria-pressed='true']",
+        "text": ["想按代码原来的行数阅读？再点一下就能关闭自动换行啦。"]
+      },
+      {
+        "selector": ".shokax-code-dialog [data-code-action='fullscreen']",
+        "text": ["点一下就可以退出代码全屏啦。"]
+      },
+      {
+        "selector": "[data-code-action='fullscreen']",
+        "text": ["把代码展开到全屏，读起来会更方便哦～"]
+      },
+      {
+        "selector": ".code-expand[aria-expanded='false']",
+        "text": ["下面还有代码没有展开，点一下继续看吧～"]
+      },
+      {
+        "selector": ".code-expand[aria-expanded='true']",
+        "text": ["代码看完啦？可以先把它收起来哦。"]
+      },
+      {
+        "selector": ".archive-post-link",
+        "nameSelector": ".archive-post-title",
+        "text": ["要看看 <span>{text}</span> 这篇文章吗？"]
+      },
+      {
+        "selector": ".info > h3 a, .post-title-link, .title a[href$='.html'], #sidebar .related.panel a",
+        "text": ["要看看 <span>{text}</span> 这篇文章吗？"]
+      },
+      {
+        "selector": "article.item .cover a",
+        "nameAttribute": "title",
+        "text": ["要看看 <span>{text}</span> 这篇文章吗？"]
+      },
+      {
+        "selector": ".info .btn[href*='/posts/'], .info .btn[href$='.html'], a[rel='contents']",
+        "text": ["点击来阅读全文哦。"]
+      },
+      {
+        "selector": ".post-nav a[rel='prev']",
+        "nameSelector": "h3",
+        "text": ["上一篇是 <span>{text}</span>，要继续看看吗？"]
+      },
+      {
+        "selector": ".post-nav a[rel='next']",
+        "nameSelector": "h3",
+        "text": ["下一篇是 <span>{text}</span>，要继续看看吗？"]
+      },
+      {
+        "selector": ".post-nav a:not([rel])",
+        "nameSelector": "h3",
+        "text": ["这里推荐了 <span>{text}</span>，也许你会感兴趣呢～"]
+      },
+      {
+        "selector": "#quick a[data-navigation-kind='post'][rel='prev']",
+        "text": ["来看看上一篇文章吧。", "要翻到上一篇文章吗？"]
+      },
+      {
+        "selector": "#quick a[data-navigation-kind='post'][rel='next']",
+        "text": ["来看看下一篇文章吧。", "要翻到下一篇文章吗？"]
+      },
+      {
+        "selector": ".extend.prev, #quick a[data-navigation-kind='page'][rel='prev'], [data-archive-month-prev]",
+        "text": ["去上一页看看吧。", "点它可以后退哦！"]
+      },
+      {
+        "selector": ".extend.next, #quick a[data-navigation-kind='page'][rel='next'], [data-archive-month-next]",
+        "text": ["去下一页看看吧。", "点它可以前进哦！"]
+      },
+      {
+        "selector": ".back-to-top, #quick .up",
+        "text": ["点它就可以回到顶部啦！", "又回到最初的起点～", "要回到开始的地方么？"]
+      },
+      {
+        "selector": "#quick .down",
+        "text": ["点它就可以去到底部啦！", "要去到页面底部吗？"]
+      },
+      {
+        "selector": "#playBtn[data-play='false']",
+        "text": ["音乐起～～～", "听首歌放松下吧～"]
+      },
+      {
+        "selector": "#playBtn[data-play='true']",
+        "text": ["安静一会儿？", "真的不再听一会儿 Music 了？"]
+      },
+      {
+        "selector": "#showBtn[data-show='false']",
+        "text": ["挑一首音乐吧～", "打开歌单，找首喜欢的歌陪你读文章吧。"]
+      },
+      {
+        "selector": "#showBtn[data-show='true']",
+        "text": ["先把播放器收起来吧，音乐会继续陪着你哦～"]
+      },
+      {
+        "selector": "#MusicPlayerRoot [data-music-action='toggle'][data-music-playing='false']",
+        "text": ["音乐起～～～", "听首歌放松下吧～"]
+      },
+      {
+        "selector": "#MusicPlayerRoot [data-music-action='toggle'][data-music-playing='true']",
+        "text": ["安静一会儿？", "真的不再听一会儿 Music 了？"]
+      },
+      {
+        "selector": "#MusicPlayerRoot [data-music-action='previous']",
+        "text": ["回到上一首，再听听刚才的旋律吧～"]
+      },
+      {
+        "selector": "#MusicPlayerRoot [data-music-action='next']",
+        "text": ["换一首歌，换个心情吧～"]
+      },
+      {
+        "selector": "#MusicPlayerRoot [data-music-action='mode'][data-music-mode='order']",
+        "text": ["现在是顺序播放，点一下可以换种播放方式哦。"]
+      },
+      {
+        "selector": "#MusicPlayerRoot [data-music-action='mode'][data-music-mode='random']",
+        "text": ["现在是随机播放，下一首会遇到什么惊喜呢？"]
+      },
+      {
+        "selector": "#MusicPlayerRoot [data-music-action='mode'][data-music-mode='loop']",
+        "text": ["现在是单曲循环，看来这首歌很合心意呢～"]
+      },
+      {
+        "selector": "#MusicPlayerRoot .playlist .nav li[data-index]",
+        "text": ["要听听 <span>{text}</span> 这组歌单吗？"]
+      },
+      {
+        "selector": "#MusicPlayerRoot .playlist ol > li[role='button']",
+        "text": ["挑一首喜欢的歌吧～"]
+      },
+      {
+        "selector": ".music-volume input[type='range']",
+        "text": ["把音量调到舒服的位置就好啦～"]
+      },
+      {
+        "selector": ".music-volume button",
+        "text": ["需要安静一下，也可以先切换静音哦。"]
+      },
+      {
+        "selector": ".music-lyrics-toggle[aria-pressed='false']",
+        "text": ["要打开歌词，一起跟着唱吗？"]
+      },
+      {
+        "selector": ".music-lyrics-toggle[aria-pressed='true'], #music-lyrics-overlay .music-lyrics-close",
+        "text": ["收起歌词，继续听歌吧～"]
+      },
+      {
+        "selector": "#music-lyrics-overlay .music-lyrics-next",
+        "text": ["换一首歌，换个心情吧～"]
+      },
+      {
+        "selector": ".reward > button[aria-expanded='false']",
+        "text": ["文章帮到你了吗？可以请主人喝杯茶哦～", "要打赏主人嘛？谢谢你的心意～"]
+      },
+      {
+        "selector": ".reward > button[aria-expanded='true']",
+        "text": ["谢谢你的心意～再点一下可以收起赞赏码哦。"]
+      },
+      {
+        "selector": "[data-reward-method='wechatpay']",
+        "text": ["这是主人的微信赞赏码～谢谢你的支持！"]
+      },
+      {
+        "selector": "[data-reward-method='alipay']",
+        "text": ["这是主人的支付宝赞赏码哦，谢谢你的心意！"]
+      },
+      {
+        "selector": "#tool .item.chat, .comment-entry-button, a[itemprop='discussionUrl'], .post a[href='#comments']",
+        "text": ["展开评论，留下你的精彩发言吧～", "展开评论看看吧～", "要去看看评论吗？"]
+      },
+      {
+        "selector": ".comment-dialog-close",
+        "text": ["先收起评论，回去继续阅读吧～"]
+      },
+      {
+        "selector": ".wl-info > button.wl-btn[type='button']",
+        "text": ["先登录一下，就能用自己的账号和主人聊天啦。"]
+      },
+      {
+        "selector": ".wl-editor",
+        "text": ["想要去评论些什么吗？", "要说点什么吗？", "觉得博客不错？快来留言和主人交流吧！"]
+      },
+      {
+        "selector": ".shokax-markdown-guide",
+        "text": ["你会不会熟练使用 Markdown 呀？", "使用 Markdown 让评论更美观吧～"]
+      },
+      {
+        "selector": "[data-comment-action='emoji'], .wl-emoji-popup .wl-tab, .wl-emoji-popup .wl-tab-wrapper > button",
+        "text": ["要插入一个萌萌哒的表情吗？", "要来一发表情吗？"]
+      },
+      {
+        "selector": ".shokax-preview-switch[aria-checked='false']",
+        "text": ["要预览一下你的发言吗？", "先看看评论排版得怎么样吧～"]
+      },
+      {
+        "selector": ".shokax-preview-switch[aria-checked='true']",
+        "text": ["确定要关闭你输入评论的预览吗？"]
+      },
+      {
+        "selector": ".wl-info > button.wl-btn[type='submit']:not(:disabled)",
+        "text": ["要提交了吗？再检查一下你的发言吧～", "说说你的想法，也请耐心等待回复哦。"]
+      },
+      {
+        "selector": ".wl-private-reply",
+        "text": ["这里可以设置留言的可见范围，先看看旁边的提示吧。"]
+      },
+      {
+        "selector": ".wl-reply.active",
+        "text": ["先取消这条回复，继续看看大家的讨论吧。"]
+      },
+      {
+        "selector": ".wl-reply:not(.active)",
+        "text": ["想接着这条评论聊一聊吗？"]
+      },
+      {
+        "selector": ".wl-like",
+        "text": ["这条评论有共鸣吗？点一下可以切换点赞哦～"]
+      },
+      {
+        "selector": ".wl-card .wl-content",
+        "text": ["哇，快看看这个精彩评论！", "有什么想法，也可以加入讨论哦～"]
+      },
+      {
+        "selector": ".footer-comment-link",
+        "text": ["大家又留下新留言啦，点进去看看吧～"]
+      },
+      {
+        "selector": "[data-footer-random]",
+        "text": ["让我帮你随机挑一篇文章吧～"]
+      },
+      {
+        "selector": "[data-footer-post-shuffle]",
+        "text": ["换一组文章，说不定会遇到感兴趣的内容哦。"]
+      },
+      {
+        "selector": "[data-footer-shuffle]",
+        "text": ["换一组标签，发现一点新话题吧～"]
+      },
+      {
+        "selector": "#footer-article-list a",
+        "nameSelector": ".footer-article-title",
+        "text": ["要看看 <span>{text}</span> 这篇文章吗？"]
+      },
+      {
+        "selector": ".footer-latest a",
+        "text": ["主人最近写了 <span>{text}</span>，来看看吧～"]
+      },
+      {
+        "selector": ".beian-info a, .footer-police",
+        "text": ["我也是有户口的人哦。", "我的主人可是遵纪守法的好主人。"]
+      },
+      {
+        "selector": ".powered-by a[href^='https://hexo.io']",
+        "text": ["本站使用 <span>Hexo</span> 生成博客页面，是主人的博客技术方案哦～"]
+      },
+      {
+        "selector": ".powered-by a[href*='/hexo-theme-shokaX']",
+        "text": ["本站使用 <span>ShokaX</span> 主题，主人还为它做了不少定制呢～"]
+      },
+      {
+        "selector": ".links .item",
+        "nameSelector": "a.title",
+        "text": ["要去看看 <span>{text}</span> 么？", "去 <span>{text}</span> 逛逛吧。", "到 <span>{text}</span> 看看吧。"]
+      },
+      {
+        "selector": ".random-post-start",
+        "text": ["点击可以随机抽取一篇朋友圈文章哦～"]
+      },
+      {
+        "selector": ".cf-article-author",
+        "text": ["看一下 <span>{text}</span> 最近的动态？"]
+      },
+      {
+        "selector": "a[href='/categories/']",
+        "text": ["所有文章分类都在这里啦～"]
+      },
+      {
+        "selector": "a[href^='/categories/']:not([href='/categories/'])",
+        "nameSelector": "[itemprop='name'], .category-name",
+        "text": ["要去看看 <span>{text}</span> 分类么？", "点它可以查看这个分类下的文章哟！"]
+      },
+      {
+        "selector": ".pagefind-ui__search-input",
+        "text": ["输入想找的关键词吧，多个词还可以缩小范围哦。"]
+      },
+      {
+        "selector": ".search-topic",
+        "nameAttribute": "data-search-topic",
+        "text": ["搜一搜 <span>{text}</span>，看看有什么好玩的内容吧～"]
+      },
+      {
+        "selector": ".search-dismiss",
+        "text": ["先收起搜索，继续逛逛吧～"]
+      },
+      {
+        "selector": ".ai-summary .select-picker-trigger, .summary-model-picker .select-picker-trigger",
+        "text": ["想换一个角度看摘要吗？这里可以选择哦。"]
+      },
+      {
+        "selector": "[data-archive-mode='tree']",
+        "text": ["按时间慢慢翻，看看主人这些年的足迹吧～"]
+      },
+      {
+        "selector": "[data-archive-mode='classic']",
+        "text": ["换成文章列表，找起来更紧凑哦。"]
+      },
+      {
+        "selector": "[data-archive-year]",
+        "nameSelector": "span",
+        "text": ["去看看 <span>{text}</span> 年留下的文章吧～"]
+      },
+      {
+        "selector": "[data-bookmark-view='cards']",
+        "text": ["把收藏的网站铺成卡片，慢慢挑吧～"]
+      },
+      {
+        "selector": "[data-bookmark-view='axis']",
+        "text": ["换成目录轴，顺着分类逛逛这些书签吧～"]
+      }
+    ],
+    "click": [
+      {
+        "selector": "#live2d",
+        "text": ["是…是不小心碰到了吧…", "你看到我的小熊了吗？", "干嘛动我呀！小心我咬你！", "别摸我，有什么好摸的！", "喵呜，手下留情呀～"]
+      }
+    ]
+  },
+  "seasons": [
+    { "date": "01/01", "text": "<span>元旦</span>了呢，新的一年又开始了，今年是{year}年～" },
+    { "date": "02/14", "text": "又是一年<span>情人节</span>，{year}年找到对象了嘛～" },
+    { "date": "03/08", "text": "今天是<span>国际妇女节</span>！" },
+    { "date": "03/12", "text": "今天是<span>植树节</span>，要保护环境呀！" },
+    { "date": "04/01", "text": "悄悄告诉你一个秘密～<span>今天是愚人节，不要被骗了哦～</span>" },
+    { "date": "05/01", "text": "今天是<span>五一劳动节</span>，计划好假期去哪里了吗～" },
+    { "date": "06/01", "text": "<span>儿童节</span>了呢，快活的时光总是短暂，要是永远长不大该多好啊…" },
+    { "date": "09/03", "text": "<span>中国人民抗日战争胜利纪念日</span>，铭记历史、缅怀先烈、珍爱和平、开创未来。" },
+    { "date": "09/10", "text": "<span>教师节</span>，在学校要给老师问声好呀～" },
+    { "date": "10/01", "text": "<span>国庆节</span>到了，为祖国母亲庆生！" },
+    { "date": "11/05-11/12", "text": "今年的<span>双十一</span>是和谁一起过的呢～" },
+    { "date": "11/14", "text": "呀，今天是主人<span>生日</span>呢，我的生日祝福主人应该能看到吧？" },
+    { "date": "12/20-12/31", "text": "这几天是<span>圣诞节</span>，主人肯定又去剁手买买买了～" }
+  ],
+  "time": [
+    { "hour": "6-7", "text": "早上好！一日之计在于晨，美好的一天就要开始了～" },
+    { "hour": "8-11", "text": "上午好！工作顺利嘛，不要久坐，多起来走动走动哦！" },
+    { "hour": "12-13", "text": "中午了，工作了一个上午，现在是午餐时间！" },
+    { "hour": "14-17", "text": "午后很容易犯困呢，今天的运动目标完成了吗？" },
+    { "hour": "18-19", "text": "傍晚了！窗外夕阳的景色很美丽呢，最美不过夕阳红～" },
+    { "hour": "20-21", "text": "晚上好，今天过得怎么样？" },
+    { "hour": "22-23", "text": ["已经这么晚了呀，早点休息吧，晚安～", "深夜时要爱护眼睛呀！"] },
+    { "hour": "0-5", "text": "你是夜猫子呀？这么晚还不睡觉，明天起的来嘛？" }
+  ],
+  "message": {
+    "default": ["好久不见，日子过得好快呢……", "大坏蛋！你都多久没理人家了呀，嘤嘤嘤～", "嗨～快来逗我玩吧！", "拿小拳拳锤你胸口！", "记得把小家加入收藏夹哦！"],
+    "console": "哈哈，你打开了控制台，是想要看看我的小秘密吗？",
+    "copy": "你都复制了些什么呀，转载要记得加上出处哦！",
+    "visibilitychange": "哇，你终于回来了～"
+  }
+}

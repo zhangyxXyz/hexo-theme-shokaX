@@ -1,8 +1,9 @@
 - var hmSrc = `https://hm.baidu.com/hm.js?${ theme.visitor.baiduAnalytics }`
-if theme.visitor.baiduAnalytics
+if theme.visitor.baiduAnalytics && !theme.visitor.readOnly
     script.
         var _hmt = _hmt || [];
         (function () {
+            if (location.hostname !== new URL(!{JSON.stringify(config.url)}).hostname) return;
             const hm = document.createElement("script");
             hm.src = "#{hmSrc}"
             hm.async = true;

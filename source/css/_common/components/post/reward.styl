@@ -11,6 +11,7 @@
     cursor: pointer;
     line-height: 2;
     outline: 0;
+    &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
     padding: 0 .9375rem;
     vertical-align: text-top;
 
@@ -31,6 +32,9 @@
 }
 
 #qr {
+  max-width: 100%;
+  gap: .75rem;
+  > div { min-width: 0; max-width: 16rem; }
   padding-top: 1.25rem;
   display: none;
 

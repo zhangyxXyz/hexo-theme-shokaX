@@ -1,8 +1,10 @@
 # Seiun Waline client snapshot
 
 - Repository: https://github.com/zhangyxXyz/waline (customizations on `dev`).
-- Verified 2026-09-23 against release `v1.41.6-seiun`, source Waline `e342c1cc`. The client bytes are unchanged; this release adds server pageview management and loopback read-only protection. Includes dashboard level colors, native exclusive-label colors and author website tooltips.
-- SHA-256: `37053d7739dcbe7f4cdaf3a5370737b34e96a6025708d6f329d8012952c5043f`.
+- Verified release 2026-09-24: `v1.41.6-seiun`, source `279e031136c58d2fb6655a09c2a1e55d2c8d3111`, Actions run `35952876956`. Extracted from the checksum-verified client archive. Admin assets are published independently; the matching server supports a persistent admin override with bundled fallback.
+- SHA-256: `2dffeba3790b0c4fdd9301926651d9c90b288848a3fff31b06be2e34b15c4400`.
+- Edit/reply drafts and visibility choices are retained separately per comment in page memory. Successful submission clears that draft; account/page changes clear all operation drafts. Public top-level draft persistence remains unchanged.
+- Editing restores recognized `@waline/emojis` images to emoji tokens, ignoring package version and mirror origin. Unknown images and code examples remain untouched; submission still serializes emoji images for server rendering.
 - Optional `levelColors` and `labelColors` accept light/dark text, background and border palettes. Client fields override server level/label colors; unset fields preserve server colors or default styling.
 - The `notify(message)` callback routes plain-text editor notices to the theme's copy-style toast. Without a callback, the client retains its browser-alert fallback.
 - Edit controls fetch directional visibility permissions and explain denied actions. Draft visibility is local until submission; the server revalidates the revision, audience, ownership and reply tree. Requires the matching server and `assets/migrations/002-visibility-edit.mysql.sql`; old servers disable visibility changes while retaining content editing.

@@ -77,7 +77,7 @@ declare const LOCAL: {
   }
 }
 interface configType {
-  visitor: { enable: boolean; type: 'busuanzi' | 'waline'; page: boolean; site: boolean; readOnly: boolean }
+  visitor: { enable: boolean; type: 'busuanzi' | 'waline'; page: boolean; site: boolean; readOnly: boolean; baiduAnalytics?: string | false; baiduSpa?: 'manual' | 'auto' }
   hostname: string;
   fireworks: any;
   audio: AudioItem[];
@@ -105,6 +105,7 @@ interface configType {
   loader: {
     start: boolean
     switch: boolean
+    scope?: 'content' | 'viewport'
   }
   js: {
     copy_tex: vendorUrl
@@ -139,12 +140,14 @@ interface configType {
   }
   walinePageView: boolean
   playerAPI: string
+  playerAPIKey?: string
   experiments: {
     copyrightLength: number;
   }
 }
 // esbuild 静态常量
 declare const __shokax_player__:boolean
+declare const __shokax_pjax__:boolean
 declare const __shokax_fireworks__:boolean
 declare const __shokax_algolia_search__:boolean
 declare const __shokax_pagefind_search__:boolean

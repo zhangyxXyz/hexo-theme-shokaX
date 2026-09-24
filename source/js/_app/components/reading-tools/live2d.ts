@@ -1,5 +1,6 @@
 import { resourceURL } from '../../globals/resources'
 import { fetchHitokoto } from '../../globals/hitokoto'
+import { createLive2DTips, type TipRules } from './live2d-tips'
 type WidgetWindow = Window & {
   initWidget?: (config: { waifuPath: string; cdnPath: string }) => void
   Asteroids?: new () => unknown
@@ -9,12 +10,15 @@ const key = 'shokax.live2d.visible'
 let initialized = false
 let loading: Promise<void> | undefined
 let desired: boolean | undefined
+let widgetTips: ReturnType<typeof createLive2DTips> | undefined
 const loaded = new Map<string, Promise<void>>()
 
 // Keep upstream unmodified; adapt theme-owned actions and the dynamic quote service.
-function adaptWidget(onHide: () => void, onError: () => void) {
+function adaptWidget(onHide: () => void, onError: () => void, rules: TipRules) {
   const widget = document.getElementById('waifu')!
   widget.classList.add('shokax-live2d')
+  const tips = createLive2DTips(widget, rules)
+  widgetTips = tips
   document.getElementById('waifu-toggle')?.remove()
   const icons: Record<string, string> = {
     hitokoto: 'comments', asteroids: 'paper-plane', 'switch-model': 'paw',
@@ -26,12 +30,11 @@ function adaptWidget(onHide: () => void, onError: () => void) {
   }
   let startingGame = false
   let quoteRequest: AbortController | undefined
-  let quoteTimer: ReturnType<typeof setTimeout>
   widget.addEventListener('click', async event => {
     const tool = event.target instanceof Element ? event.target.closest('#waifu-tool-quit, #waifu-tool-asteroids, #waifu-tool-hitokoto') : null
     if (!tool) return
     event.stopImmediatePropagation()
-    if (tool.id === 'waifu-tool-quit') { onHide(); return }
+    if (tool.id === 'waifu-tool-quit') { quoteRequest?.abort(); tips.clear(); onHide(); return }
     if (tool.id === 'waifu-tool-hitokoto') {
       quoteRequest?.abort()
       const controller = new AbortController()
@@ -40,12 +43,8 @@ function adaptWidget(onHide: () => void, onError: () => void) {
       try {
         const quote = await fetchHitokoto(controller.signal)
         if (quoteRequest !== controller) return
-        const tips = document.getElementById('waifu-tips')!
-        tips.textContent = quote
-        tips.classList.add('waifu-tips-active')
-        clearTimeout(quoteTimer)
-        quoteTimer = setTimeout(() => tips.classList.remove('waifu-tips-active'), 6000)
-      } catch { if (quoteRequest === controller) onError() }
+        tips.show('{text}', 6000, quote)
+      } catch { if (quoteRequest === controller && !controller.signal.aborted) onError() }
       finally { clearTimeout(timeout); if (quoteRequest === controller) quoteRequest = undefined }
       return
     }
@@ -58,17 +57,19 @@ function adaptWidget(onHide: () => void, onError: () => void) {
     } catch { onError() }
     finally { startingGame = false }
   }, true)
-  let tipTimer: ReturnType<typeof setTimeout>
-  window.addEventListener('mouseover', event => {
-    const tag = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-waifu-tag-message]') : null
-    if (!tag || (event.relatedTarget instanceof Node && tag.contains(event.relatedTarget))) return
-    const tips = document.getElementById('waifu-tips')!
-    tips.textContent = tag.dataset.waifuTagMessage || ''
-    tips.classList.add('waifu-tips-active')
-    clearTimeout(tipTimer)
-    tipTimer = setTimeout(() => tips.classList.remove('waifu-tips-active'), 4000)
-    event.stopImmediatePropagation()
-  }, true)
+  window.addEventListener('shokax:hide-live2d', () => { quoteRequest?.abort(); tips.clear() })
+  document.addEventListener('pjax:send', () => quoteRequest?.abort())
+}
+
+async function tipRules(url: string): Promise<TipRules> {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 6000)
+  try {
+    const response = await fetch(url, { signal: controller.signal })
+    if (!response.ok) throw new Error('Live2D tips unavailable')
+    const data = await response.json()
+    return data.interactions || {}
+  } finally { clearTimeout(timeout) }
 }
 
 function asset(url: string, css = false) {
@@ -94,6 +95,7 @@ export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
     button.title = desired ? config.hide! : config.show!
     const widget = document.getElementById('waifu')
     if (widget) widget.style.display = desired ? '' : 'none'
+    if (!desired) widgetTips?.clear()
   }
   const update = async () => {
     sync()
@@ -102,6 +104,7 @@ export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
     try {
       if (!loading) loading = (async () => {
         const base = resourceURL('assets.live2d_widget', config.live2dBase!).replace(/\/?$/, '/')
+        const rules = await tipRules(config.live2dTips!)
         await asset(base + 'waifu.css', true)
         await asset(base + 'live2d.min.js')
         await asset(base + 'waifu-tips.js')
@@ -109,8 +112,8 @@ export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
           localStorage.removeItem('waifu-display')
           const init = (window as WidgetWindow).initWidget
           if (!init) throw new Error('Live2D initWidget unavailable')
-          init({ waifuPath: base + 'waifu-tips.json', cdnPath: resourceURL('assets.live2d_models', config.live2dCdn!) })
-          adaptWidget(() => window.dispatchEvent(new Event('shokax:hide-live2d')), () => { button.title = config.error! })
+          init({ waifuPath: config.live2dTips!, cdnPath: resourceURL('assets.live2d_models', config.live2dCdn!) })
+          adaptWidget(() => window.dispatchEvent(new Event('shokax:hide-live2d')), () => { button.title = config.error! }, rules)
         }
       })().catch(error => { loading = undefined; throw error })
       await loading

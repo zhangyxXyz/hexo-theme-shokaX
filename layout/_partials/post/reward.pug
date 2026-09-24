@@ -1,6 +1,6 @@
 if page.reward !== false
     div(class="reward")
-        button
+        button(type="button" aria-expanded="false" aria-controls="qr")
             i(class="ic i-heartbeat")
             != __('reward.donate')
         p
@@ -12,7 +12,7 @@ if page.reward !== false
                     - var translation = __('reward.' + name)
                 else
                     - var translation = name
-                div
+                div(data-reward-method=name)
                     img(loading="lazy" src=`${url_for(theme.statics + theme.assets + image) }` alt=`${ author } ${ translation }`)
                     p
                         != translation

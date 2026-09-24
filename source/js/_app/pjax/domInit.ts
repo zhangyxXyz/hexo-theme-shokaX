@@ -40,7 +40,7 @@ export default async function domInit () {
     setToolBtn(createChild(siteHeader, 'div', {
       id: 'tool',
       innerHTML: `<div class="item player">
-                    ${__shokax_player__ ? '<div class="play-pause btn" id="playBtn"></div><div class="music btn btn" id="showBtn"></div>' : ''}
+                    ${__shokax_player__ ? '<button type="button" class="play-pause btn" id="playBtn"></button><button type="button" class="music btn" id="showBtn" aria-controls="MusicPlayerRoot"></button>' : ''}
                   </div>
                   <div class="item contents">
                     <i class="ic i-list-ol"></i>

@@ -32,6 +32,13 @@ export function syncCommentControls(container: HTMLElement) {
       actions.querySelector<HTMLButtonElement>(':scope > button:last-child')
     if (!preview || !panel.querySelector('.wl-preview')) return
 
+    // Waline always renders the emoji toggle before its optional GIF/upload
+    // controls; identify that native button without depending on translated titles.
+    const emoji = actions.querySelector<HTMLButtonElement>(':scope > button.wl-action:not(.shokax-preview-switch)')
+    if (emoji && emoji !== preview && panel.querySelector('.wl-emoji-popup')) {
+      emoji.dataset.commentAction = 'emoji'
+    }
+
     const previewHeading = panel.querySelector<HTMLElement>('.wl-preview > h4')
     if (previewHeading) {
       const label = previewHeading.textContent?.replace(/[:：]\s*$/, '') || ''

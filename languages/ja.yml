@@ -11,6 +11,23 @@ code_block:
   expand: "コードを展開"
   collapse: "コードを折りたたむ"
 
+music:
+  lyrics_glyph: 詞
+  lyrics_enable: デスクトップ歌詞を有効にする
+  lyrics_disable: デスクトップ歌詞を無効にする
+  lyrics_close: デスクトップ歌詞コントローラーを閉じます。プレイヤーの「詞」ボタンで再び有効にできます。
+  next: 次の曲
+  volume: 音量
+  mute: ミュート
+  unmute: ミュート解除
+  activate: ダブルクリックで再生 · Enter / Space · タッチ画面ではタップ
+  unavailable: この曲は現在再生できません。別の曲を選ぶか、後でもう一度お試しください。
+  play: 音楽を再生
+  pause: 音楽を一時停止
+  show: プレイリスト
+  loading: プレイリストを読み込み中
+  error: 読み込めませんでした。クリックして再試行
+
 reading_tools:
   tag: "%s タグを見てみませんか？このタグには %s 件の記事があります。"
   show: Live2Dを表示
@@ -462,6 +479,11 @@ festival_preview:
     dongzhi: "冬至"
     xiaohan: "小寒"
     dahan: "大寒"
+bookmark_view:
+  label: ブックマークの表示
+  cards: 標準カード
+  axis: カテゴリタイムライン
+  count: "合計 %s 件のブックマーク"
 category_view:
   label: カテゴリ表示
   cards: カード表示

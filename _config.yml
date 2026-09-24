@@ -152,6 +152,8 @@ auto_scroll: false
 loader:
   start: true # 进入页面时显示加载动画
   switch: false # 切换页面时显示加载动画
+  scope: content # PJAX: content（正文区域）或 viewport（整屏）
+  # title / subtitle 可覆盖加载画面的站点名称及副标题
 
 font:
   enable: true
@@ -407,6 +409,7 @@ visitor:
   readOnly: false # Waline is always read-only on loopback or noncanonical hosts.
   clarity: false
   baiduAnalytics: false
+  baiduSpa: manual # manual | auto; use auto only if Baidu dashboard SPA tracking is enabled.
   googleAnalytics: false
 
 
@@ -474,6 +477,7 @@ experiments:
 # ShokaX 模块化分包引入设置
 # 请关闭所有不使用的模块以优化主题 js 体积和性能
 modules:
+  pjax: false # opt-in navigation; preserve the global music player between pages
   debug: false # 启用调试模式
   player: true # 启用音乐播放器
   fireworks: true # 启用鼠标点击烟花特效
@@ -517,7 +521,7 @@ fireworks:
           alpha: 0.5
           lineWidth: 6
 
-playerAPI: "https://api.injahow.cn" # 结尾不带/,只填写域名
+playerAPI: "https://api.injahow.cn/meting/" # Meting API 完整入口，可包含部署子路径
 # 如果条件允许,请参考 https://github.com/injahow/meting-api 自建API
 # 使用vercel自行部署,请参考: https://github.com/xizeyoupan/Meting-API
 

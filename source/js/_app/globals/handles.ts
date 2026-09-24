@@ -20,7 +20,6 @@ import {
   setOWinHeight, setOWinWidth, setDiffY, setTitleTime, CONFIG
 } from './globalVars'
 import { changeMetaTheme } from './themeColor'
-import { Loader } from './thirdparty'
 import { getHeight, setWidth } from '../library/proto'
 
 const wavesEle = document.getElementById('waves')
@@ -50,12 +49,16 @@ export const scrollHandle = () => {
   const content = document.querySelector<HTMLElement>('main > .inner')
   if (!content || !backToTop) return
   const docHeight = content.offsetHeight
+  // Finish geometry reads before toggling sticky classes, which invalidate layout.
+  const y = window.scrollY
+  const headerBottom = siteHeader.getBoundingClientRect().bottom
+  const bodyWidth = document.body.offsetWidth
   // 计算可见内容高度
   const contentVisibilityHeight = docHeight > winHeight ? docHeight - winHeight : document.body.scrollHeight - winHeight
   // 判断页面是否滚动超过 headerHightInner
-  const SHOW = window.scrollY > headerHightInner
+  const SHOW = y > headerHightInner
   // 判断页面是否开始滚动
-  const startScroll = window.scrollY > 0
+  const startScroll = y > 0
 
   // 根据条件修改 meta theme
   if (SHOW) {
@@ -70,13 +73,13 @@ export const scrollHandle = () => {
   toolBtn.classList.toggle('affix', startScroll)
   // 控制侧边栏的显示隐藏，当滚动高度大于 headerHight 且窗口宽度大于 991px 时显示
   siteBrand.classList.toggle('affix', startScroll)
-  siteBrand.classList.toggle('outside-header', siteHeader.getBoundingClientRect().bottom <= 0)
-  sideBar.classList.toggle('affix', window.scrollY > headerHight && document.body.offsetWidth >= 991)
+  siteBrand.classList.toggle('outside-header', headerBottom <= 0)
+  sideBar.classList.toggle('affix', y > headerHight && bodyWidth >= 991)
   // 初始化滚动时导航栏的显示方向
   if (typeof scrollAction.y === 'undefined') {
-    scrollAction.y = window.scrollY
+    scrollAction.y = y
   }
-  setDiffY(scrollAction.y - window.scrollY)
+  setDiffY(scrollAction.y - y)
 
   // 控制滑动时导航栏显示
   if (diffY < 0) {
@@ -86,12 +89,12 @@ export const scrollHandle = () => {
     siteNav.classList.remove('down')
     siteNav.classList.toggle('up', SHOW)
   } else { /* empty */ }
-  scrollAction.y = window.scrollY
+  scrollAction.y = y
   // 计算滚动百分比
-  const scrollPercent = Math.round(Math.min(100 * window.scrollY / contentVisibilityHeight, 100)) + '%'
+  const scrollPercent = Math.round(Math.min(100 * y / contentVisibilityHeight, 100)) + '%'
   // 更新回到顶部按钮的文字
-  if (backToTop.querySelector('span').innerText !== scrollPercent) {
-    backToTop.querySelector('span').innerText = scrollPercent
+  if (backToTop.querySelector('span').textContent !== scrollPercent) {
+    backToTop.querySelector('span').textContent = scrollPercent
   }
   // 更新百分比进度条的宽度
   if (document.getElementById('sidebar').classList.contains('affix') || document.getElementById('sidebar').classList.contains('on')) {
@@ -125,17 +128,11 @@ export const visibilityListener = () => {
       case 'hidden':
         iconNode.setAttribute('href', statics + CONFIG.favicon.hidden)
         document.title = LOCAL.favicon.hide
-        if (CONFIG.loader.switch) {
-          Loader.show()
-        }
         clearTimeout(titleTime)
         break
       case 'visible':
         iconNode.setAttribute('href', statics + CONFIG.favicon.normal)
         document.title = LOCAL.favicon.show
-        if (CONFIG.loader.switch) {
-          Loader.hide(1000)
-        }
         setTitleTime(setTimeout(() => {
           document.title = originTitle
         }, 2000))

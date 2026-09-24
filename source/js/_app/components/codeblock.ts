@@ -50,6 +50,7 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
     const title = document.createElement('button')
     title.type = 'button'
     title.className = 'code-title'
+    title.dataset.codeAction = 'fullscreen'
     const dots = document.createElement('span')
     dots.className = 'code-dots'
     dots.setAttribute('aria-hidden', 'true')
@@ -66,6 +67,7 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
     const button = (icon: keyof typeof icons, name: string, action: () => void) => {
       const element = document.createElement('button')
       element.type = 'button'
+      element.dataset.codeAction = icon
       setIcon(element, icon)
       label(element, name)
       element.addEventListener('click', action, { signal })
@@ -160,6 +162,7 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
       const expand = document.createElement('button')
       expand.type = 'button'
       expand.className = 'code-expand'
+      expand.dataset.codeAction = 'expand'
       expand.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>'
       label(expand, labels.expand)
       expand.setAttribute('aria-expanded', 'false')

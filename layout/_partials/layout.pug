@@ -8,7 +8,7 @@ include ../_mixin/widgets.pug
 - var enableCover = theme.homeConfig?.coverConfig?.enableCover
 
 doctype html
-html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'filter: grayscale(1);':'' )
+html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'filter: grayscale(1);':'' data-pjax=String(theme.modules.pjax === true && page.pjax !== false))
     head
         != partial('_partials/head/head.pug', {}, {cache: true})
         if enablePreload && enableCover
@@ -81,7 +81,7 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
                         block sidebar
                             +sidebarRender
                     div(class="dimmer")
-                div(id="player")
+                div#player(data-play=__('music.play') data-pause=__('music.pause') data-show=__('music.show') data-loading=__('music.loading') data-error=__('music.error') data-unavailable=__('music.unavailable') data-activate=__('music.activate') data-volume=__('music.volume') data-mute=__('music.mute') data-unmute=__('music.unmute') data-next=__('music.next') data-lyrics-glyph=__('music.lyrics_glyph') data-lyrics-enable=__('music.lyrics_enable') data-lyrics-disable=__('music.lyrics_disable') data-lyrics-close=__('music.lyrics_close'))
             footer(id="footer")
                 div(class="inner")
                     != partial('_partials/footer.pug', {}, {cache: true})
@@ -140,5 +140,5 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
 
         != partial('_partials/third-party/festival.pug')
         if (theme.live2d && theme.live2d.enable) || (theme.article_script && theme.article_script.enable)
-            div#reading-tools-config(hidden data-live2d=String(!!(theme.live2d && theme.live2d.enable)) data-live2d-base=url_for('/live2d-widget/') data-live2d-cdn=(theme.live2d && theme.live2d.cdn) data-script=String(!!(theme.article_script && theme.article_script.enable)) data-show=__('reading_tools.show') data-hide=__('reading_tools.hide') data-traditional=__('reading_tools.traditional') data-simplified=__('reading_tools.simplified') data-error=__('reading_tools.error'))
+            div#reading-tools-config(hidden data-live2d=String(!!(theme.live2d && theme.live2d.enable)) data-live2d-base=url_for('/live2d-widget/') data-live2d-tips=url_for('/live2d/waifu-tips.json') data-live2d-cdn=(theme.live2d && theme.live2d.cdn) data-script=String(!!(theme.article_script && theme.article_script.enable)) data-show=__('reading_tools.show') data-hide=__('reading_tools.hide') data-traditional=__('reading_tools.traditional') data-simplified=__('reading_tools.simplified') data-error=__('reading_tools.error'))
         != shokax_inject('bodyEnd')

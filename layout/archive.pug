@@ -35,11 +35,18 @@ block content
                             i.ic.i-timeline(aria-hidden="true")
                         button(type="button" data-archive-mode="classic" aria-label=__('archive_view.classic') aria-pressed=String(archiveMode === 'classic') aria-controls="archive-classic-panel")
                             i.ic.i-list-alt(aria-hidden="true")
-                if archiveTreeData.years.length
-                    div(data-archive-tree-tools hidden)
-                        button.archive-expand(type="button" data-archive-expand data-expand-label=__('archive_view.expand_all') data-collapse-label=__('archive_view.collapse_all'))
-                            span(data-archive-expand-label)= __('archive_view.expand_all')
-                            i.ic.i-angle-down(aria-hidden="true")
+                .archive-heading-meta
+                    p.archive-heading-description
+                        if archiveScoped
+                            span.archive-tree-count= __('archive_view.posts', archiveTreeData.count)
+                            span.archive-classic-count= __('archive_view.page_posts', archiveData.count)
+                        else
+                            = __('archive_view.heading')
+                    if archiveTreeData.years.length
+                        div(data-archive-tree-tools hidden)
+                            button.archive-expand(type="button" data-archive-expand data-expand-label=__('archive_view.expand_all') data-collapse-label=__('archive_view.collapse_all'))
+                                span(data-archive-expand-label)= __('archive_view.expand_all')
+                                i.ic.i-angle-down(aria-hidden="true")
         .archive-tree-panel#archive-tree-panel(data-archive-panel="tree" hidden=archiveMode !== 'tree')
             include _partials/archive-tree.pug
         .archive-classic-panel#archive-classic-panel(data-archive-panel="classic" hidden=archiveMode !== 'classic')

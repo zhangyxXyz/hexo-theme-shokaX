@@ -38,8 +38,9 @@ export const postImageViewer = (p: string) => {
     if (!parentLink || parentLink.href === img.src) img.classList.add('shokax-image-viewer')
   })
 
-  article.addEventListener('click', preventImageLinkNavigation, true)
   const images = Array.from(article.querySelectorAll<HTMLImageElement>('img.shokax-image-viewer'))
+  if (!images.length) return
+  article.addEventListener('click', preventImageLinkNavigation, true)
   viewer = new Viewer(article, {
     className: 'shokax-post-viewer',
     ready: () => {

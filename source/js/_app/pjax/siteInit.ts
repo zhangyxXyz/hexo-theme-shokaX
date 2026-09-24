@@ -78,6 +78,10 @@ const siteInit = async () => {
     pagePosition()
   })
   await siteRefresh(1)
+  if (__shokax_pjax__) {
+    const { initNavigation } = await import('./navigation')
+    initNavigation()
+  }
   // TODO 修复内页跳转后重复出现加载动画的问题
 }
 

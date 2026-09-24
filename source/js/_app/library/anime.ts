@@ -89,7 +89,7 @@ export const transition = (target: HTMLElement, type: number|string|Function, co
   }, animation)).play()
 }
 
-export const pageScroll = (target: HTMLElement | number, offset?: number, complete?: Function) => {
+export const pageScroll = (target: HTMLElement | number, offset?: number, complete?: Function, behavior: ScrollBehavior = 'smooth') => {
   // 确定滚动容器
   const scrollContainer = (typeof offset === 'number' && typeof target !== 'number')
     ? target.parentNode as HTMLElement
@@ -111,7 +111,7 @@ export const pageScroll = (target: HTMLElement | number, offset?: number, comple
   // 执行平滑滚动
   scrollContainer.scrollTo({
     top: scrollTop,
-    behavior: 'smooth'
+    behavior
   });
 
   // 处理完成回调（模拟动画持续时间）

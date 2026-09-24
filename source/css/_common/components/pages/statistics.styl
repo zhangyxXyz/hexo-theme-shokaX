@@ -870,6 +870,19 @@
         font-size .8rem
       a, span, strong
         overflow-wrap anywhere
+  .statistics-comment-post
+    display block
+    width fit-content
+    max-width 100%
+    margin-bottom .65rem
+    font-size .9rem
+    line-height 1.5
+    font-weight 600
+    color var(--text-color)
+    overflow-wrap anywhere
+    transition color .2s ease
+    &:hover, &:focus-visible
+      color var(--primary-color)
   .statistics-comment-meta
     display grid
     grid-template-columns 2.25rem minmax(0, 1fr)
@@ -891,7 +904,8 @@
       font-weight 600
       color var(--primary-color)
     time
-      flex-basis 100%
+      flex 0 0 auto
+      white-space nowrap
       line-height 1.4
   .statistics-comment-badge
     display inline-flex
@@ -899,14 +913,17 @@
     justify-content center
     box-sizing border-box
     margin 0
-    padding .2rem .5rem
-    line-height 1.2
+    padding .125rem .5rem
+    line-height 1.5
     font-size .75rem
     font-weight 600
     border-radius 999px
     border 1px solid var(--badge-light-border, var(--color-pink-a3))
     color var(--badge-light-text, var(--primary-color))
     background var(--badge-light-background, linear-gradient(120deg, var(--color-pink-light), var(--color-red-a3)))
+    > span
+      // Optical correction for the site's CJK font; keep the pill box centered.
+      transform translateY(.04em)
     html[data-theme='dark'] &
       border-color var(--badge-dark-border, var(--color-pink-a3))
       color var(--badge-dark-text, var(--primary-color))
@@ -928,6 +945,10 @@
       border 1px solid var(--grey-3)
       border-radius 1rem
       color var(--grey-6)
+      &::before
+        flex 0 0 1em
+        margin 0
+        background-size contain
   .statistics-comment-excerpt
     comment-content()
     display block

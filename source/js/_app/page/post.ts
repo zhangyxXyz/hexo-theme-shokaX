@@ -12,10 +12,9 @@ let codeObserver: IntersectionObserver | undefined
 export const postBeauty = async () => {
   codeObserver?.disconnect()
   refreshPostMedia()
-  postImageViewer('.post.block');
   refreshCodeBlocks()
 
-  if (!document.querySelector('.md')) { return }
+  if (!document.querySelector('.md')) { postImageViewer('.post.block'); return }
 
   (document.querySelector('.post.block') as HTMLTextAreaElement).oncopy = (event) => {
     showtip(LOCAL.copyright)
@@ -164,6 +163,8 @@ export const postBeauty = async () => {
     element.addEventListener('click', (event) => {
       event.preventDefault()
       const qr = document.getElementById('qr')
+      if (!qr) return
+      element.setAttribute('aria-expanded', String(getDisplay(qr) !== 'inline-flex'))
       if (getDisplay(qr) === 'inline-flex') {
         transition(qr, 0)
       } else {
@@ -248,4 +249,6 @@ export const postBeauty = async () => {
     codeObserver = io
   }
 
+  // Viewer measures its container; batch article DOM changes before that read.
+  postImageViewer('.post.block')
 }

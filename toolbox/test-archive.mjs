@@ -72,24 +72,31 @@ function render(view, { visiblePosts = posts, allPosts = posts, scope = '', site
   const context = {
     config: { root: siteRoot, url: `https://blog.test${siteRoot}`, archive_dir: 'archives', date_format: 'YYYY-MM-DD' },
     page: { year: 2026, month: 9, posts: collection(visiblePosts) }, site: { posts: collection(allPosts) },
-    theme: { archive_view: { mode, switchable } }, archive_tree: group, _css: () => '',
-    archiveScoped: Boolean(scope), archiveData: group(collection(visiblePosts), collection(allPosts)),
-    archiveTreeData: group(collection(visiblePosts), collection(allPosts), { year: scope ? 2026 : undefined, month: scope === 'month' ? 9 : undefined }),
+    theme: { archive_view: { mode: view === 'page' ? mode : view, switchable } }, archive_tree: group, _css: () => '',
     is_year: () => scope === 'year', is_month: () => scope === 'month',
     date, moment, __: translate, _p: plural
   }
   context.url_for = path => url_for.call(context, path)
   context._url = (...args) => helpers.get('_url').call(context, ...args)
   // Render the real page content without unrelated global navigation/footer helpers.
-  const options = view === 'page' ? {
+  const options = {
     plugins: [{ read: filename => filename.replaceAll('\\', '/').endsWith('/_partials/layout.pug')
       ? 'block head\nblock title\nblock header\nblock content\n'
       : readFileSync(filename) }]
-  } : {}
-  const template = view === 'page' ? 'layout/archive.pug' : `layout/_partials/archive-${view}.pug`
-  const header = view === 'page' ? '' : pug.renderFile(fileURLToPath(new URL('layout/_partials/archive-header.pug', root)), context)
-  const html = header + pug.renderFile(fileURLToPath(new URL(template, root)), { ...context, ...options })
-  return { document: parseDocument(html), context }
+  }
+  const html = pug.renderFile(fileURLToPath(new URL('layout/archive.pug', root)), { ...context, ...options })
+  const document = parseDocument(html)
+  if (view !== 'page') {
+    // Keep the real shared heading/toolbar and selected panel. The full-page
+    // checks below retain both panels and verify their visibility and controls.
+    const panels = elements(document, node => owns(node, 'data-archive-panel'))
+    assert.equal(panels.length, 2)
+    for (const panel of panels) {
+      if (panel.attribs['data-archive-panel'] === view) continue
+      panel.parent.children = panel.parent.children.filter(node => node !== panel)
+    }
+  }
+  return { document, context }
 }
 
 let passed = 0

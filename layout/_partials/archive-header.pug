@@ -16,9 +16,3 @@ header.archive-heading.collapse
             a(href=url_for('/'))= __('menu.home')
             small /
             != _p('counter.archive_posts', archiveData.total)
-        small.archive-heading-description
-            if archiveScoped
-                span.archive-tree-count= __('archive_view.posts', archiveTreeData.count)
-                span.archive-classic-count= __('archive_view.page_posts', archiveData.count)
-            else
-                = __('archive_view.heading')

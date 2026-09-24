@@ -1,13 +1,20 @@
-div(id="loading")
-    div(class="cat")
-        div(class="body")
-        div(class="head")
-            div(class="face")
-        div(class="foot")
-            div(class="tummy-end")
-            div(class="bottom")
-            div(class="legs left")
-            div(class="legs right")
-        div(class="paw")
-            div(class="hands left")
-            div(class="hands right")
+- const loaderSubtitle = theme.loader.subtitle != null ? theme.loader.subtitle : config.subtitle
+div#loading.site-loading(role="status" aria-label=__('footer.loading') aria-live="polite" hidden=!theme.loader.start data-state="loading" data-mode="initial")
+    div.site-loader
+        div.site-loader-stage(aria-hidden="true")
+            div.site-loader-halo
+            div.site-loader-orbit
+                each index in [0, 1, 2, 3, 4, 5]
+                    span(style=`--star-index:${index}`)
+            div.site-loader-core
+                svg(viewBox="0 0 32 32" width="32" height="32" focusable="false")
+                    path(d="M16 2C18 11 21 14 30 16C21 18 18 21 16 30C14 21 11 18 2 16C11 14 14 11 16 2Z" fill="currentColor")
+        p.site-loader-title= theme.loader.title || theme.alternate || config.title
+        if loaderSubtitle
+            p.site-loader-subtitle= loaderSubtitle
+        div.site-loader-progress(aria-hidden="true")
+            span
+noscript
+    style.
+        #loading { display: none !important; }
+        body { overflow: auto !important; }

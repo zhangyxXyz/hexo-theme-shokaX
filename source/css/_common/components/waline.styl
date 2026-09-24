@@ -227,6 +227,10 @@
     transform: translateX(0)
     opacity: 1
 
+@keyframes comment-loading-spin
+  to
+    transform: rotate(360deg)
+
 #comments
   .wl-user
     position: relative
@@ -280,6 +284,33 @@
   --waline-border: 1px solid var(--waline-border-color)
   --waline-box-shadow: none
   color: var(--text-color)
+
+  .wl-loading
+    display: flex
+    align-items: center
+    justify-content: center
+    min-height: 5rem
+    padding: .5rem 0
+
+    // Replace the client's hairline SVG without changing its request lifecycle.
+    > svg
+      display: none
+
+    &::before
+      content: ''
+      display: block
+      box-sizing: border-box
+      width: 1.75rem
+      height: 1.75rem
+      border: 3px solid var(--color-red-a1)
+      border-top-color: var(--primary-color)
+      border-right-color: var(--color-pink-a3)
+      border-radius: 50%
+      animation: comment-loading-spin .85s linear infinite
+
+    @media (prefers-reduced-motion: reduce)
+      &::before
+        animation: none
 
   .wl-comment > .wl-login-info
     flex-shrink: 0

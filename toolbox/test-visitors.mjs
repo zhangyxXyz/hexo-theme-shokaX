@@ -11,13 +11,13 @@ const result = await build({
   } }]
 })
 
-const config = { hostname: 'https://example.com', visitor: { enable: true, type: 'busuanzi' } }
+const config = { hostname: 'https://example.com', visitor: { enable: true, type: 'busuanzi' }, waline: { serverURL: 'https://comments.example' } }
 const node = () => ({ textContent: '—', removeAttribute() {} })
 let page = {}, article = node()
 const site = node(), display = node(), scripts = [], timers = new Map()
 let timerId = 0
 const context = vm.createContext({
-  testConfig: config, URL, AbortController, console,
+  testConfig: config, URL, URLSearchParams, AbortController, console,
   location: { hostname: 'example.com', pathname: '/posts/1.html' },
   document: {
     getElementById: () => page,
@@ -88,3 +88,28 @@ await flush()
 assert.ok(scripts.at(-1).removed)
 assert.equal(article.textContent, '—')
 console.log('Visitors: shared request, duplicate setup, navigation, stale responses, zero/invalid data, disabled/custom/local, failure and timeout passed.')
+
+// Exercise the site's Waline provider without writing any real statistics.
+const requests = []
+context.fetch = async (url, init) => {
+  requests.push({ url: String(url), ...init })
+  return { ok: true, json: async () => ({ errno: 0, data: String(url).includes('site=1') ? { pageViews: 100 } : [{ time: 7 }] }) }
+}
+config.visitor = { enable: true, type: 'waline', site: true, readOnly: false }
+config.waline = { serverURL: 'https://comments.example' }
+const settle = () => new Promise(resolve => setImmediate(resolve))
+navigate('/posts/one.html'); await settle(); refresh(); await settle()
+assert.equal(requests.filter(row => row.method === 'POST').length, 1)
+navigate('/posts/two.html'); await settle()
+navigate('/posts/one.html'); await settle()
+assert.deepEqual(requests.filter(row => row.method === 'POST').map(row => JSON.parse(row.body)), [
+  { path: '/posts/one.html', type: 'time', action: 'inc' },
+  { path: '/posts/two.html', type: 'time', action: 'inc' },
+  { path: '/posts/one.html', type: 'time', action: 'inc' }
+])
+assert.equal(article.textContent, '7')
+assert.equal(site.textContent, '100')
+context.location.hostname = 'localhost'; navigate('/posts/local.html'); await settle()
+assert.equal(requests.filter(row => row.method === 'POST').length, 3)
+assert.ok(requests.some(row => row.url.includes('path=%2Fposts%2Flocal.html') && !row.method))
+console.log('Waline navigation: one increment per page, repeated init ignored, back visit incremented, updated page/site counts and localhost GET-only passed.')

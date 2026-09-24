@@ -13,7 +13,9 @@ const safeLink = (value?: string) => {
 const badge = (label: string, override?: { light?: Record<string, string>; dark?: Record<string, string> }, server?: { light?: Record<string, string>; dark?: Record<string, string> }) => {
   const element = document.createElement('span')
   element.className = 'statistics-comment-badge'
-  element.textContent = label
+  const text = document.createElement('span')
+  text.textContent = label
+  element.append(text)
   const valid = (value?: string) => typeof value === 'string' && /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(value) ? value : undefined
   for (const mode of ['light', 'dark'] as const) for (const key of ['text', 'background', 'border']) {
     const color = valid(override?.[mode]?.[key]) ?? valid(server?.[mode]?.[key])
@@ -36,6 +38,10 @@ export function commentContent(config: Settings, value: string): ContentItem | u
 }
 
 export function createCommentList(config: Settings, signal: AbortSignal) {
+  // Load after the shared application module has initialized. Awaiting this at
+  // module scope can deadlock the CSS chunk's shared-module import cycle.
+  // @ts-expect-error Waline's CSS-only export has no TypeScript declaration.
+  void import('@waline/client/meta')
   const labels = config.labels
   const dialog = document.createElement('dialog')
   dialog.className = 'statistics-comments-dialog'
@@ -140,19 +146,13 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
         identity.append(time)
         meta.append(avatar, identity)
         const details = document.createElement('div')
-        details.className = 'statistics-comment-details'
-        for (const [kind, text, path] of [['region', item.addr, 'M21 3 3 10l7 3 3 8 8-18Z'], ['browser', item.browser, 'M3 4h18v16H3z M3 8h18'], ['os', item.os, 'M3 3h18v14H3z M8 21h8 M12 17v4']]) {
+        details.className = 'statistics-comment-details wl-meta'
+        for (const [kind, text] of [['addr', item.addr], ['browser', item.browser], ['os', item.os]]) {
           if (!text) continue
           const chip = document.createElement('span')
-          const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-          icon.setAttribute('viewBox', '0 0 24 24')
-          icon.setAttribute('width', '14'); icon.setAttribute('height', '14')
-          icon.setAttribute('fill', 'none'); icon.setAttribute('stroke', 'currentColor'); icon.setAttribute('stroke-width', '1.5')
-          const shape = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-          shape.setAttribute('d', path)
-          icon.append(shape)
-          icon.setAttribute('aria-hidden', 'true')
-          chip.append(icon, document.createTextNode(kind === 'region' ? formatCommentRegion(text, '{region}') : text))
+          chip.className = `wl-${kind}`
+          chip.dataset.value = text
+          chip.textContent = kind === 'addr' ? formatCommentRegion(text, '{region}') : text
           details.append(chip)
         }
         const known = commentContent(config, item.url)
@@ -163,10 +163,13 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
         if (known) {
           const link = document.createElement('a')
           const target = new URL(known.url)
+          link.className = 'statistics-comment-post'
+          link.textContent = known.title
+          link.title = [labels.comment_action, known.title].filter(Boolean).join(' · ')
+          link.dataset.tooltipDelay = '350'
           link.href = target.pathname + target.search + '#' + encodeURIComponent(item.id)
           link.addEventListener('click', () => finish(false), { signal })
-          time.replaceWith(link)
-          link.append(time)
+          row.append(link)
         }
         row.append(meta, details, content)
         list.append(row)

@@ -14,7 +14,10 @@ article(itemscope itemtype="http://schema.org/Article" class="post block" data-p
                     img(loading="lazy" decoding="async" src=_image_url(photo, post.path) itemprop="contentUrl")
         != partial('_partials/post/article-info.pug', {post: post})
         != partial('_partials/post/ai-summary.pug', {post: post})
-        != post.content
+        if post.type === 'bookmarks'
+            include ../bookmarks.pug
+        else
+            != post.content
         if post.type === 'icon-preview'
             include ../icon-preview.pug
         if post.tags && post.tags.length
@@ -26,7 +29,7 @@ article(itemscope itemtype="http://schema.org/Article" class="post block" data-p
     footer
         != partial('_partials/post/footer.pug')
         if theme.reward.enable
-            != partial('_partials/post/reward.pug', {}, {cache: true})
+            != partial('_partials/post/reward.pug')
         if theme.creative_commons.license
             != partial('_partials/post/copyright.pug')
     

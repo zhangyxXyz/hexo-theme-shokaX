@@ -4,6 +4,7 @@ import { build } from 'esbuild'
 import { getVendorLink } from '../utils'
 import { htmlTag, url_for } from 'hexo-util'
 import { walineTimePlugin } from '../utils/waline-time'
+import { musicPlayerPlugin } from '../utils/music-player'
 import path from 'node:path'
 import yaml from 'js-yaml'
 
@@ -23,6 +24,8 @@ hexo.extend.generator.register('script', async function (locals) {
     hostname: config.url,
     visitor: {
       enable: theme.visitor?.enable === true,
+      baiduAnalytics: theme.visitor?.baiduAnalytics || false,
+      baiduSpa: theme.visitor?.baiduSpa || 'manual',
       type: theme.visitor?.type || 'busuanzi',
       page: theme.visitor?.page !== false,
       site: theme.visitor?.site !== false,
@@ -55,6 +58,7 @@ hexo.extend.generator.register('script', async function (locals) {
       days: theme.outime.days
     },
     playerAPI: theme.playerAPI,
+    ...(config.configuration_mode === 'local' && theme.playerAPIKey ? { playerAPIKey: theme.playerAPIKey } : {}),
     experiments: {
       copyrightLength: theme.experiments.copyrightLength,
     },
@@ -110,8 +114,11 @@ hexo.extend.generator.register('script', async function (locals) {
     patchDir = 'node_modules/hexo-theme-shokax/source/js/_app/components/cloudflare.ts'
   }
   const resultApp = await build({
-    plugins: theme.waline.enable ? [walineTimePlugin(theme.waline.relativeTimeDays,
-      theme.waline.client === 'seiun' ? await fs.readFile(path.resolve(hexo.theme_dir, 'vendor/waline@seiun/waline.js'), 'utf8') : undefined)] : [],
+    plugins: [
+      ...(theme.waline.enable ? [walineTimePlugin(theme.waline.relativeTimeDays,
+        theme.waline.client === 'seiun' ? await fs.readFile(path.resolve(hexo.theme_dir, 'vendor/waline@seiun/waline.js'), 'utf8') : undefined)] : []),
+      ...(theme.modules.player ? [musicPlayerPlugin(path.resolve(hexo.theme_dir, 'source/js/_app/components/music-source.ts'))] : [])
+    ],
     write: false,
     entryPoints: [enterPoint],
     bundle: true,
@@ -134,6 +141,7 @@ hexo.extend.generator.register('script', async function (locals) {
     splitting: true,
     define: {
       __shokax_player__: theme.modules.player ? 'true' : 'false',
+      __shokax_pjax__: theme.modules.pjax ? 'true' : 'false',
       __shokax_VL__: theme.modules.visibilityListener ? 'true' : 'false',
       __shokax_fireworks__: (theme.fireworks && theme.fireworks.enable && theme.fireworks.options && theme.modules.fireworks) ? 'true' : 'false',
       __shokax_algolia_search__: config?.algolia ? 'true' : 'false',

@@ -1,4 +1,4 @@
-// Keep the three directory view switches in the same heading row, independent of content.
+// Share the dimensions of directory view switches, independent of content.
 .category-directory, .tag-directory, .archive-page .archive-overview {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -18,7 +18,8 @@
 }
 .category-directory .category-controls,
 .tag-directory .tag-cloud-controls,
-.archive-page .archive-view-controls {
+.archive-page .archive-view-controls,
+.bookmark-directory .bookmark-controls {
   position: static;
   grid-column: 2;
   grid-row: 1;
@@ -50,22 +51,28 @@
   grid-column: 1 / -1;
   min-width: 0;
 }
-.archive-page [data-archive-tree-tools] {
+.archive-page .archive-heading-meta {
   grid-column: 1 / -1;
-  margin: .5rem 1.875rem 1.5rem;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .375rem 1.25rem;
+  margin: 0 1.875rem 1.25rem;
+}
+.archive-page [data-archive-tree-tools] {
+  flex-shrink: 0;
+  margin-left: auto;
 }
 @media (max-width: 767px) {
-  .category-directory > .item.title, .tag-directory > .item.title,
-  .archive-page .archive-heading { grid-column: 1 / -1; }
+  .category-directory > .item.title, .tag-directory > .item.title { grid-column: 1 / -1; }
   .category-directory .category-controls,
-  .tag-directory .tag-cloud-controls,
-  .archive-page .archive-view-controls {
+  .tag-directory .tag-cloud-controls {
     grid-row: 2;
     margin: .5rem 0 1rem .75rem;
   }
-  .archive-page [data-archive-tree-tools] {
-    grid-column: 1;
-    grid-row: 2;
-    margin: .5rem 0 1rem 1.875rem;
-  }
+  .archive-page .archive-heading .item.header { padding-right: 0; }
+  .archive-page .archive-view-controls { margin-right: 0; }
+  .archive-page .archive-heading-meta { margin-right: 0; }
 }

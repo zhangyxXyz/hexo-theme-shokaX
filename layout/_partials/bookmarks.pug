@@ -1,0 +1,10 @@
+.bookmark-directory(data-mode="cards" data-count-label=__('bookmark_view.count', '%s'))
+    .bookmark-toolbar(hidden)
+        p.bookmark-status
+        .bookmark-controls(role="group" aria-label=__('bookmark_view.label'))
+            button(type="button" data-bookmark-view="cards" aria-pressed="true" aria-label=__('bookmark_view.cards') title=__('bookmark_view.cards'))
+                i.ic.i-th(aria-hidden="true")
+            button(type="button" data-bookmark-view="axis" aria-pressed="false" aria-label=__('bookmark_view.axis') title=__('bookmark_view.axis'))
+                i.ic.i-timeline(aria-hidden="true")
+    .bookmark-content
+        != post.content
