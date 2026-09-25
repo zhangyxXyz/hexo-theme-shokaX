@@ -52,14 +52,8 @@ const siteInit = async () => {
   }
 
   if (__shokax_fireworks__) {
-    import('mouse-firework').then((firework) => {
-      const existingCanvases = new Set(document.querySelectorAll('body > canvas'))
-      firework.default(CONFIG.fireworks)
-      const canvas = Array.from(document.querySelectorAll<HTMLCanvasElement>('body > canvas'))
-        .find(item => !existingCanvases.has(item))
-      if (canvas) {
-        attachFireworkLayer(canvas)
-      }
+    import('../components/fireworks/renderer').then(({ default: firework }) => {
+      firework(CONFIG.fireworks, attachFireworkLayer)
     })
   }
 

@@ -22,7 +22,12 @@ export function attachFireworkLayer(canvas: HTMLCanvasElement) {
       Array.from(record.addedNodes).some(node => node instanceof Element && (node.matches('dialog[open]') || node.querySelector('dialog[open]'))))) raise()
   })
   observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['open'] })
-  document.addEventListener('toggle', event => {
+  const onToggle = (event: Event) => {
     if (event.target instanceof HTMLDialogElement && event.target.open) raise()
-  }, true)
+  }
+  document.addEventListener('toggle', onToggle, true)
+  return () => {
+    observer.disconnect()
+    document.removeEventListener('toggle', onToggle, true)
+  }
 }
