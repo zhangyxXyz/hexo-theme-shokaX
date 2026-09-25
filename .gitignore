@@ -21,5 +21,7 @@ test.html
 test.ts
 *.d.ts
 *.tsbuildinfo
+!/source/js/_app/components/fireworks/renderer.js
+!/source/js/_app/components/fireworks/renderer.d.ts
 !/toolbox/*
 *.exe
