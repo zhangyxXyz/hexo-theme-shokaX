@@ -1,0 +1,13 @@
+include article-preview.pug
+
+mixin archivePostList(posts, key)
+    ol.archive-post-list
+        each post, postIndex in posts
+            - const previewId = 'article-preview-' + key + '-' + postIndex
+            li.article-preview-row(itemscope itemtype="https://schema.org/Article")
+                time(datetime=moment(post.date).format() itemprop="dateCreated")= date(post.date, 'DD')
+                a.article-preview-link(href=post.link ? post.link : url_for(post.path) class=post.link ? 'external' : undefined rel=post.link ? 'noopener external' : undefined itemprop="url")
+                    span(itemprop="name")= post.title || post.link || __('post.untitled')
+                    if post.link
+                        i.ic.i-link-alt(aria-hidden="true")
+                +articlePreview(post, previewId)

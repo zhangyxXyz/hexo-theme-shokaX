@@ -27,6 +27,63 @@
       }
     }
   }
+  .bookmark-search {
+    display: flex;
+    align-items: center;
+    flex: 1 0 100%;
+    gap: .75rem;
+    min-width: 0;
+    box-sizing: border-box;
+    height: 2.75rem;
+    padding: 0 1rem;
+    border: 1px solid var(--grey-3);
+    border-radius: .75rem;
+    background: var(--grey-1);
+    transition: border-color .2s, box-shadow .2s;
+    &:focus-within {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px var(--color-red-a1);
+    }
+    > .ic { color: var(--primary-color); }
+  }
+  .bookmark-search-input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    color: var(--text-color);
+    font: inherit;
+    font-size: 1rem;
+    line-height: normal;
+    &::placeholder { color: var(--grey-6); }
+    &::-webkit-search-cancel-button { -webkit-appearance: none; }
+  }
+  .bookmark-search-clear {
+    flex: 0 0 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--grey-6);
+    cursor: pointer;
+    &:hover { background: var(--color-red-a1); color: var(--primary-color); }
+  }
+  .bookmark-search-hint {
+    flex: 1 1 16rem;
+    margin: 0;
+    color: var(--grey-6);
+    font-size: .75rem;
+  }
+  .bookmark-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--grey-6);
+    > .ic { color: var(--primary-color); font-size: 1.5rem; }
+  }
   button, a {
     &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
   }

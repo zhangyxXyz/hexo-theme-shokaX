@@ -10,6 +10,7 @@ import yaml from 'js-yaml'
   desc: #description (nullable)
   image: #icon image (nullable)
   color: #block color (nullable)
+  keywords: #optional search aliases (text or list)
 {% endlinks %}
 
 {% linksfile [path] %}
@@ -22,6 +23,7 @@ interface siteLink {
   desc?: string
   image?: string
   color?: string
+  keywords?: string | string[]
 }
 
 function linkGrid (args:string[], content:string) {
@@ -59,7 +61,10 @@ function linkGrid (args:string[], content:string) {
 
     item.color = item.color ? ` style="--block-color:${item.color};"` : ''
 
-    result += `<div class="item" title="${item.owner || item.site}"${item.color}>`
+    const keywords = (Array.isArray(item.keywords) ? item.keywords.join(' ') : String(item.keywords || ''))
+      .replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    const searchAttribute = keywords ? ` data-search-keywords="${keywords}"` : ''
+    result += `<div class="item" title="${item.owner || item.site}"${item.color}${searchAttribute}>`
 
     result += `<a href="${item.url}" class="image" data-background-image="${item_image}"></a>
         <div class="info">

@@ -1,6 +1,11 @@
 import { CONFIG } from './globals/globalVars'
-import { prepareMusic } from './components/music-source'
+import { initMusicQueueViewport } from './components/music-queue-view'
+import { createMusicQueue } from './components/music-queue'
 import { initMusicOverlay } from './components/music-overlay'
+import { initMusicVisualizer } from './components/music-visualizer'
+import { initMusicSeek } from './components/music-seek'
+import { initMusicVolumeTooltip } from './components/music-volume-tooltip'
+import { subscribeMusicState } from './components/music-state'
 // nyx-player exports this CSS entry without a TypeScript declaration.
 // @ts-expect-error side-effect-only CSS import
 import 'nyx-player/style'
@@ -11,7 +16,6 @@ export const initAudioPlayer = function () {
   const show = document.getElementById('showBtn') as HTMLButtonElement
   if (!host || !play || !show || host.dataset.initialized) return
   host.dataset.initialized = 'true'
-  initMusicOverlay()
   const labels = host.dataset
   const showPlaybackError = (event: Event) => {
     const audio = event.target
@@ -35,45 +39,99 @@ export const initAudioPlayer = function () {
   }
   document.addEventListener('loadstart', clearPlaybackError, true)
   document.addEventListener('playing', clearPlaybackError, true)
-  let ready = false
-  let loading = false
+  let ready = false, mounting = false, failed = false
+  let desiredOpen = false, desiredPlay = false
+  let shell: HTMLElement | undefined
+  let queue: ReturnType<typeof createMusicQueue> | undefined
   const sync = () => {
-    play.setAttribute('aria-pressed', String(play.dataset.play === 'true'))
-    show.setAttribute('aria-expanded', String(show.dataset.show === 'true'))
-    for (const [button, label] of [[play, play.dataset.play === 'true' ? labels.pause : labels.play], [show, labels.show]] as const) {
-      button.title = loading ? labels.loading : ready ? label : labels.error
+    play.setAttribute('aria-pressed', String(ready ? play.dataset.play === 'true' : desiredPlay))
+    show.setAttribute('aria-expanded', String(ready ? show.dataset.show === 'true' : desiredOpen))
+    play.title = failed ? labels.error : (ready ? play.dataset.play === 'true' : desiredPlay) ? labels.pause : labels.play
+    show.title = labels.show
+    for (const button of [play, show]) {
       button.setAttribute('aria-label', button.title)
-      button.setAttribute('aria-busy', String(loading))
-      button.disabled = loading
+      button.setAttribute('aria-busy', String(mounting))
+      button.disabled = false
     }
+    if (shell) shell.hidden = !desiredOpen
   }
   new MutationObserver(sync).observe(play, { attributes: true, attributeFilter: ['data-play'] })
   new MutationObserver(sync).observe(show, { attributes: true, attributeFilter: ['data-show'] })
-  const load = async () => {
-    if (loading || ready) return
-    loading = true
+  const showShell = () => {
+    if (shell) return
+    shell = document.createElement('section')
+    shell.className = 'music-loading-panel'
+    shell.setAttribute('aria-label', labels.show)
+    shell.setAttribute('aria-busy', 'true')
+    const close = document.createElement('button')
+    close.type = 'button'
+    close.className = 'music-loading-close'
+    close.setAttribute('aria-label', labels.close)
+    close.textContent = '×'
+    close.onclick = () => { desiredOpen = false; sync() }
+    const title = document.createElement('p')
+    title.setAttribute('role', 'status')
+    title.textContent = labels.loading
+    const list = document.createElement('div')
+    list.className = 'music-loading-rows'
+    for (let index = 0; index < 5; index++) list.append(document.createElement('span'))
+    shell.append(close, title, list)
+    document.body.append(shell)
+  }
+  const mount = async () => {
+    if (mounting || ready) return
+    mounting = true
+    failed = false
+    showShell()
     sync()
     try {
-      const { urls } = await prepareMusic(CONFIG.audio ?? [], CONFIG.playerAPI, fetch, CONFIG.playerAPIKey)
-      if (!urls.length) throw new Error('No music sources available')
+      queue ??= createMusicQueue(CONFIG.audio ?? [], CONFIG.playerAPI, { pending: labels.pending, loading: labels.loading, error: labels.error }, fetch, CONFIG.playerAPIKey)
+      if (!queue.urls.length) throw new Error('No configured music sources')
       const { initPlayer } = await import('nyx-player')
-      // Refresh expiring media URLs on each full page load.
-      // Do not resume saved playback without a new user gesture.
+      initMusicOverlay()
+      initMusicVisualizer()
+      initMusicSeek()
+      initMusicVolumeTooltip()
+      // Never restore stale signed URLs or start playback without user intent.
       try { sessionStorage.removeItem('playing') } catch { /* Storage may be unavailable. */ }
-      initPlayer('#player', '#showBtn', urls, '#playBtn', undefined, 'shokax')
+      await new Promise<void>((resolve, reject) => {
+        const unsubscribe = subscribeMusicState(() => {
+          unsubscribe()
+          clearTimeout(timeout)
+          resolve()
+        })
+        const timeout = window.setTimeout(() => { unsubscribe(); reject(new Error('Music player mount timed out')) }, 10000)
+        try { initPlayer('#player', '#showBtn', queue.urls, '#playBtn', undefined, 'shokax') }
+        catch (error) { unsubscribe(); clearTimeout(timeout); reject(error) }
+      })
       ready = true
+      shell?.remove()
+      shell = undefined
     } catch (error) {
+      failed = true
+      const message = shell?.querySelector('[role="status"]')
+      if (message) message.textContent = labels.error
       console.warn('[ShokaX music]', error)
     } finally {
-      loading = false
+      mounting = false
       sync()
+    }
+    if (ready) {
+      if (desiredOpen) show.click()
+      if (desiredPlay) play.click()
+      queue.start()
+      initMusicQueueViewport()
     }
   }
   for (const button of [play, show]) {
     button.addEventListener('click', event => {
-      if (!ready) { event.stopImmediatePropagation(); void load() }
+      if (ready) return
+      event.stopImmediatePropagation()
+      if (button === show) desiredOpen = !desiredOpen
+      else { desiredPlay = !desiredPlay; desiredOpen = true }
+      sync()
+      void mount()
     })
   }
-  // Metadata loading must not delay navigation, comments or the page loader.
-  void load()
+  sync()
 }

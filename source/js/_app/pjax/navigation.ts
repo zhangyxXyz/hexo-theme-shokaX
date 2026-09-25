@@ -12,10 +12,11 @@ const pageKey = (url: URL) => url.origin + url.pathname + url.search
 type Position = [number, number]
 type NavigationState = { url: string; position: Position }
 
-export function navigationTarget(link: HTMLAnchorElement, event: MouseEvent, current: URL): URL | null {
+export function navigationTarget(link: HTMLAnchorElement | SVGAElement, event: MouseEvent, current: URL): URL | null {
   if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return null
-  if (link.hasAttribute('download') || (link.target && link.target !== '_self') || link.closest('[data-pjax="false"], [data-no-pjax]')) return null
-  const url = new URL(link.href, current)
+  const target = link.getAttribute('target')
+  if (link.hasAttribute('download') || (target && target !== '_self') || link.closest('[data-pjax="false"], [data-no-pjax]')) return null
+  const url = new URL(link.getAttribute('href'), current)
   if (!/^https?:$/.test(url.protocol) || url.origin !== current.origin || pageKey(url) === pageKey(current)) return null
   // Keep native handling of feeds, images and other downloads.
   if (/\.[^/]+$/.test(url.pathname) && !/\.html?$/i.test(url.pathname)) return null

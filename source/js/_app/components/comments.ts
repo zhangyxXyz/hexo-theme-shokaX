@@ -7,7 +7,7 @@ import { createCommentMedia } from './comment-media'
 import { observeCommentDecorations } from './comment-observer'
 import { syncCommentControls } from './comment-controls'
 import { init, defaultLocales } from '@waline/client'
-import { getFooterCommentBadge } from './footer-comment-badge'
+import { getFooterCommentBadge, getFooterLevelBadge, type FooterBadgeColors } from './footer-comment-badge'
 import { pageviewCount } from '@waline/client/pageview'
 import { isVisitorReadOnly } from './visitors/waline'
 import { resourceURL } from '../globals/resources'
@@ -71,6 +71,7 @@ export const walineComment = function () {
     serverURL: CONFIG.waline.serverURL,
     lang: CONFIG.waline.lang,
     locale,
+    ...{ hideAdminLevel: CONFIG.waline.hideAdminLevel },
     ...{ levelColors: CONFIG.waline.levelColors, labelColors: CONFIG.waline.labelColors },
     // The fork accepts a plain-text notifier; official clients ignore this option.
     ...{ notify: (message: string) => showtip(message, true) },
@@ -118,11 +119,14 @@ export const walineRecentComments = async function () {
     url.search = new URLSearchParams({ type: 'recent', count: container.dataset.limit || '3', lang: CONFIG.waline.lang }).toString()
     const response = await fetch(url, { signal: AbortSignal.timeout(10000) })
     if (!response.ok) throw new Error(`Waline recent comments: HTTP ${response.status}`)
-    const result: { errno: number; errmsg: string; data: Array<{ comment: string; url: string; objectId: string; nick: string; avatar?: string; time?: number; label?: string; type?: string; link?: string }> } = await response.json()
+    const result: { errno: number; errmsg: string; data: Array<{ comment: string; url: string; objectId: string; nick: string; avatar?: string; time?: number; label?: string; type?: string; link?: string; level?: number; levelLabel?: string; levelColors?: FooterBadgeColors }> } = await response.json()
     if (result.errno !== 0) throw new Error(result.errmsg)
     if (container.isConnected) renderFooterComments(container, result.data.map(item => ({
       nick: item.nick, url: item.url, id: item.objectId, avatar: item.avatar, time: item.time,
       badge: getFooterCommentBadge(item, CONFIG.waline.friendUrls || [], container.dataset.friendLabel || ''),
+      levelBadge: getFooterLevelBadge(item,
+        (defaultLocales[(CONFIG.waline.lang || 'en-US').toLowerCase() as keyof typeof defaultLocales] || defaultLocales['en-us']) as unknown as Record<string, string>,
+        CONFIG.waline.locale as Record<string, string>, CONFIG.waline.levelColors, CONFIG.waline.hideAdminLevel),
       text: new DOMParser().parseFromString(item.comment, 'text/html').body.textContent || ''
     })), {
       relativeTimeDays: CONFIG.waline.relativeTimeDays ?? 60,

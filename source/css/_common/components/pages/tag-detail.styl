@@ -1,0 +1,26 @@
+.tag-detail-page {
+  &[data-mode='tree'] + .tag-classic-pagination { display: none; }
+  .tag-detail-heading .item.header { padding-bottom: .5rem; overflow-wrap: anywhere; }
+  .tag-detail-count {
+    display: inline-block;
+    margin-left: .75rem;
+    color: var(--grey-6);
+    font-size: .8rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .archive-month-heading h3 { gap: .45rem; }
+  .tag-detail-meta {
+    grid-column: 1 / -1;
+    display: flex;
+    margin: 0 1.875rem .75rem;
+  }
+  &[data-mode='classic'] .tag-detail-meta { display: none; }
+  .archive-month-footer { justify-content: flex-end; }
+}
+@media (max-width: 767px) {
+  .tag-detail-page {
+    .tag-detail-meta, .tag-detail-controls { margin-right: 0; }
+    .tag-detail-heading .item.header { font-size: 1.15rem; line-height: 1.7; }
+  }
+}

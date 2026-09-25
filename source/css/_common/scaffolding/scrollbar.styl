@@ -1,3 +1,17 @@
+:root {
+  --scrollbar-thumb: unquote('color-mix(in srgb, var(--color-pink) 70%, var(--grey-0))');
+  --scrollbar-end: unquote('color-mix(in srgb, var(--color-orange) 70%, var(--grey-0))');
+  --scrollbar-hover: var(--color-pink);
+  --scrollbar-active: var(--color-orange);
+  --scrollbar-stripe: rgba(255, 255, 255, .24);
+}
+
+html[data-theme='dark'] {
+  --scrollbar-thumb: unquote('color-mix(in srgb, var(--color-pink) 60%, var(--grey-3))');
+  --scrollbar-end: unquote('color-mix(in srgb, var(--color-orange) 60%, var(--grey-3))');
+  --scrollbar-stripe: rgba(255, 255, 255, .09);
+}
+
 ::-webkit-scrollbar {
   width: .3125rem;
   height: .3125rem;
@@ -15,7 +29,12 @@
 
 ::-webkit-scrollbar-button {
   background: transparent;
+  width: 0;
   height: 0;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 $scrollbar-thumb {
@@ -27,6 +46,15 @@ $scrollbar-thumb {
 
 ::-webkit-scrollbar-thumb {
   @extend $scrollbar-thumb;
+  background-color: var(--scrollbar-thumb);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-active);
 }
 
 $big-scrollbar {
@@ -35,7 +63,51 @@ $big-scrollbar {
     height: .5rem;
   }
 
+  &::-webkit-scrollbar-track {
+    margin: .25rem 0;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-track:horizontal {
+    margin: 0 .25rem;
+  }
+
   &::-webkit-scrollbar-thumb {
-    background-color: var(--color-pink-light);
+    min-height: 2rem;
+    min-width: 2rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+    background-color: var(--scrollbar-thumb);
+    background-image: linear-gradient(45deg, var(--scrollbar-stripe) 25%, transparent 25%, transparent 50%, var(--scrollbar-stripe) 50%, var(--scrollbar-stripe) 75%, transparent 75%), linear-gradient(to bottom, var(--scrollbar-thumb), var(--scrollbar-end));
+    background-size: .75rem .75rem, 100% 100%;
+  }
+
+  &::-webkit-scrollbar-thumb:horizontal {
+    background-image: linear-gradient(45deg, var(--scrollbar-stripe) 25%, transparent 25%, transparent 50%, var(--scrollbar-stripe) 50%, var(--scrollbar-stripe) 75%, transparent 75%), linear-gradient(to right, var(--scrollbar-thumb), var(--scrollbar-end));
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-hover);
+    background-image: linear-gradient(45deg, var(--scrollbar-stripe) 25%, transparent 25%, transparent 50%, var(--scrollbar-stripe) 50%, var(--scrollbar-stripe) 75%, transparent 75%);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-active);
+    background-image: none;
+  }
+}
+
+// Style the viewport in standards mode as well as the loaded body.
+html {
+  @extend $big-scrollbar;
+}
+
+// Standard properties override WebKit gradients in Chromium; use them only
+// where the pseudo-elements are unavailable (for example, Firefox).
+@supports unquote('not selector(::-webkit-scrollbar)') {
+  html, body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
   }
 }

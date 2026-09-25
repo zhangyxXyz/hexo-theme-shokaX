@@ -43,6 +43,9 @@ if fontConfig
     != _vendor_font()
 != preloadjs()
 != load_async_css()
+- var iconBaselines = icon_baseline_css()
+if iconBaselines
+    style#icon-baselines!= iconBaselines
 
 if theme.modules.cloudflarePatch
     != _js('cf-patch.js')

@@ -1,0 +1,93 @@
+extends page.pug
+
+block head
+    != _css('page.css')
+
+block content
+    - const projects = site.data[page.projects_data || 'projects'] || {}
+    section.projects-page.wrap(data-pagefind-body aria-labelledby="projects-heading")
+        .projects-intro
+            if projects.eyebrow
+                p.projects-eyebrow= projects.eyebrow
+            h2#projects-heading= projects.heading || page.title
+            if projects.intro
+                p.projects-description= projects.intro
+        if page.content && projects.activity_label
+            section.projects-activity(aria-label=projects.activity_label)
+                .projects-activity-content!= page.content
+        .projects-list
+            each project in projects.items || []
+                article.project-card(aria-labelledby=`project-${project.id}`)
+                    .project-copy
+                        p.project-category
+                            if project.icon
+                                i(class=`ic i-${project.icon}` aria-hidden="true")
+                            span= project.category
+                        h3.project-name(id=`project-${project.id}`)= project.name
+                        p.project-description= project.description
+                        if project.tags && project.tags.length
+                            ul.project-tags
+                                each tag in project.tags
+                                    li= tag
+                        .project-actions
+                            each link, index in project.links || []
+                                a(href=link.url target="_blank" rel="noopener noreferrer" aria-label=`${project.name} · ${link.label}`)
+                                    if index === 0
+                                        i.ic.i-github(aria-hidden="true")
+                                    span= link.label
+                    if project.preview && project.preview.kind === 'image'
+                        .project-preview.project-preview-image(role="img" aria-label=project.preview.label)
+                            img.project-image-light(src=url_for(project.preview.light) alt="" loading="lazy" decoding="async" width=project.preview.width height=project.preview.height)
+                            if project.preview.dark
+                                img.project-image-dark(src=url_for(project.preview.dark) alt="" loading="lazy" decoding="async" width=(project.preview.dark_width || project.preview.width) height=(project.preview.dark_height || project.preview.height))
+                    else if project.preview
+                        - const preview = project.preview
+                        .project-preview(role="img" aria-label=preview.label)
+                            .project-windowbar(aria-hidden="true")
+                                .project-window-dots
+                                    span
+                                    span
+                                    span
+                                if preview.kind !== 'blog'
+                                    span= preview.title
+                            .project-preview-content(aria-hidden="true")
+                                if preview.kind === 'blog'
+                                    .project-blog-hero
+                                        strong= preview.title
+                                        span= preview.subtitle
+                                    .project-preview-lines
+                                        span
+                                        span
+                                        span
+                                else if preview.kind === 'comments'
+                                    .project-comment-demo
+                                        .project-comment-compose
+                                            span= preview.placeholder
+                                            .project-comment-tools
+                                                span.project-comment-format
+                                                    i.ic.i-smile(aria-hidden="true")
+                                                    i.ic.i-code(aria-hidden="true")
+                                                    = preview.format
+                                                span.project-comment-submit= preview.submit
+                                        .project-comment-reply
+                                            img.project-comment-avatar(src=url_for(preview.avatar || (theme.statics + theme.assets + '/' + theme.sidebar.avatar)) alt="" loading="lazy" decoding="async" width="28" height="28")
+                                            div
+                                                strong= preview.author
+                                                p= preview.reply
+                                else if preview.kind === 'widget'
+                                    .project-widget-stage
+                                        .project-widget
+                                            span.project-widget-eyebrow= preview.eyebrow
+                                            strong= preview.greeting
+                                            span= preview.subtitle
+                                            .project-widget-flow= preview.flow
+        .projects-footer
+            if projects.footer
+                span= projects.footer
+            if projects.profile
+                a(href=projects.profile.url target="_blank" rel="noopener noreferrer" aria-label=projects.profile.accessible_label)
+                    i.ic.i-github(aria-hidden="true")
+                    span= projects.profile.label
+
+block sidebar
+    +sidebarRender(false)

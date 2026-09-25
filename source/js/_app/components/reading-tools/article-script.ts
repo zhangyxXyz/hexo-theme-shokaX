@@ -4,7 +4,7 @@ let converter: ((text: string) => string) | undefined
 
 export function refreshArticleScript(button: HTMLButtonElement, config: DOMStringMap) {
   cleanup?.()
-  const body = document.querySelector<HTMLElement>('article.post [itemprop="articleBody"]')
+  const body = document.querySelector<HTMLElement>('article.post [itemprop="articleBody"]') || document.getElementById('main')
   button.hidden = !body
   if (!body) return
   const events = new AbortController()
@@ -13,7 +13,7 @@ export function refreshArticleScript(button: HTMLButtonElement, config: DOMStrin
   let active = true
   let busy = false
   const sync = () => {
-    button.querySelector('span')!.textContent = traditional ? '简' : '繁'
+    button.querySelector('i')!.className = `ic i-chinese-${traditional ? 'simplified' : 'traditional'}`
     button.setAttribute('aria-label', traditional ? config.simplified! : config.traditional!)
     button.title = traditional ? config.simplified! : config.traditional!
     button.setAttribute('aria-pressed', String(traditional))

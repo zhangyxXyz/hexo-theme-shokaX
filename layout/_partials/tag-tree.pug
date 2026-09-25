@@ -1,0 +1,34 @@
+include ../_mixin/archive-post-list.pug
+
+if tagTreeData.years.length
+    .archive-tree-layout
+        .archive-tree-content
+            .archive-tree
+                each year, yearIndex in tagTreeData.years
+                    details.archive-year(id='tag-year-' + year.year open=yearIndex < 3)
+                        summary.archive-year-title
+                            span.archive-year-pill
+                                span.archive-year-number= year.year
+                                small.archive-year-count= __('archive_view.posts', year.posts.length)
+                                i.ic.i-angle-down(aria-hidden="true")
+                        .archive-year-body
+                            each month, monthIndex in year.months
+                                article.archive-month-card(class=[(yearIndex + monthIndex) % 2 ? 'is-right' : '', monthIndex % 2 ? 'is-offset' : '', yearIndex === 0 && monthIndex === 0 ? 'is-latest' : ''] style='--archive-row: ' + (Math.floor(monthIndex / 2) + 1))
+                                    span.archive-month-node(aria-hidden="true")
+                                    header.archive-month-heading
+                                        h3
+                                            span.archive-month-number= month.month
+                                            span.archive-month-unit= __('symbol.month')
+                                        small= __('archive_view.posts', month.posts.length)
+                                    +archivePostList(month.posts, year.year + '-' + month.month)
+                                    if month.posts.length > 5
+                                        nav.archive-month-pagination(data-archive-month-pages hidden aria-label=year.year + ' / ' + month.month)
+                                            button(type="button" data-archive-month-prev aria-label=__('accessibility.prev_page'))
+                                                i.ic.i-angle-left(aria-hidden="true")
+                                            span(data-archive-month-page aria-live="polite" aria-atomic="true")= '1 / ' + Math.ceil(month.posts.length / 5)
+                                            button(type="button" data-archive-month-next aria-label=__('accessibility.next_page'))
+                                                i.ic.i-angle-right(aria-hidden="true")
+                                        footer.archive-month-footer
+                                            button.archive-month-show-all(type="button" data-archive-month-all hidden data-expand-label=__('archive_view.show_all', month.posts.length) data-collapse-label=__('archive_view.paged_view') aria-expanded="false")= __('archive_view.show_all', month.posts.length)
+else
+    p= __('archive_view.empty')

@@ -1,5 +1,5 @@
 - const icons = icon_preview_data()
-- const labels = Object.assign({ search: 'Search icons', class: 'Copy class', html: 'Copy HTML', code: 'Copy code', copied: 'Copied', failed: 'Copy failed', empty: 'No matching icons' }, page.icon_preview || {})
+- const labels = Object.assign({ search: 'Search icons', class: 'Copy class', html: 'Copy HTML', code: 'Copy code', copied: 'Copied', failed: 'Copy failed', empty: 'No matching icons', baseline_before: 'Inline', baseline_after: 'test' }, page.icon_preview || {})
 .icon-preview(data-copied=labels.copied data-failed=labels.failed)
   .icon-preview-toolbar
     i.ic.i-search.icon-preview-search-icon(aria-hidden="true")
@@ -19,5 +19,11 @@
           span= icon.name
         button.icon-preview-code(type="button" data-copy="code" aria-label=labels.code + ' ' + icon.code title=labels.code)
           span= '\\' + icon.code
+        .icon-preview-baseline
+          span= labels.baseline_before
+          | #{' '}
+          i(class='ic ' + icon.name aria-hidden="true")
+          | #{' '}
+          span= labels.baseline_after
         span.icon-preview-feedback(role="status" aria-live="polite")
   p.icon-preview-empty(hidden)= labels.empty

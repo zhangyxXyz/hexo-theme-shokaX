@@ -1,5 +1,23 @@
 import { matchesFriendWebsite } from './comment-friend'
 
+export type FooterBadgeColors = { light?: Record<string, string>; dark?: Record<string, string> }
+
+export function getFooterLevelBadge(
+  item: { type?: string; level?: number; levelLabel?: string; levelColors?: FooterBadgeColors },
+  locale: Record<string, string>,
+  overrides: Record<string, string> = {},
+  colors: Record<string, FooterBadgeColors> = {},
+  hideAdminLevel = false
+) {
+  if ((hideAdminLevel && item.type === 'administrator') || typeof item.level !== 'number') return undefined
+  const key = `level${item.level}`
+  return {
+    text: overrides[key] ?? item.levelLabel ?? locale[key] ?? `Level ${item.level}`,
+    colors: item.levelColors,
+    override: colors[key]
+  }
+}
+
 const normalizeWebsite = (link: string) => {
   const value = link.trim()
   if (!value) return ''

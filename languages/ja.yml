@@ -12,10 +12,14 @@ code_block:
   collapse: "コードを折りたたむ"
 
 music:
-  lyrics_glyph: 詞
+  pending: 読み込み待ち
+  close: 音楽パネルを閉じる
+  seek: 再生位置を調整
+  visualizer_enable: 音楽ビジュアライザーを有効にする
+  visualizer_disable: 音楽ビジュアライザーを無効にする
   lyrics_enable: デスクトップ歌詞を有効にする
   lyrics_disable: デスクトップ歌詞を無効にする
-  lyrics_close: デスクトップ歌詞コントローラーを閉じます。プレイヤーの「詞」ボタンで再び有効にできます。
+  lyrics_close: "デスクトップ歌詞を閉じます。プレイヤーの {icon:i-desktop-lyrics-on} ボタンで再表示できます。"
   next: 次の曲
   volume: 音量
   mute: ミュート
@@ -32,8 +36,8 @@ reading_tools:
   tag: "%s タグを見てみませんか？このタグには %s 件の記事があります。"
   show: Live2Dを表示
   hide: Live2Dを非表示
-  traditional: 本文を繁体字に変換
-  simplified: 本文の原文を復元
+  traditional: 内容を繁体字に変換
+  simplified: 元の内容を復元
   error: 読み込みに失敗しました。再試行してください
 
 image_viewer:
@@ -222,6 +226,21 @@ symbol:
   month: 月
 
 reward:
+  eyebrow: PERSONAL NOTES
+  author: AUTHOR
+  title: "応援"
+  description: "この記事はここまで。物語は続く。"
+  retry: "画像を読み込めません。再試行"
+  support: "創作を応援"
+  back: "表面に戻る"
+  thanks: "応援ありがとうございます"
+  methods: "お支払い方法"
+  scan: "%sでスキャン"
+  enlarge: "%sのQRコードを拡大"
+  zoom: "クリックで拡大"
+  note: "お気持ちに感謝します"
+  close: "QRコードを閉じる"
+  save_hint: "長押し・右クリックで保存"
   donate: 寄付
   text: "*~(￣▽￣)~[お茶]を一杯ください"
   wechatpay: WeChat 支払う
@@ -233,6 +252,7 @@ follow_me:
   welcome: Welcome to my other publishing channels
 
 accessibility:
+  theme_toggle: ライト／ダークモードを切り替え
   nav_toggle: ナビゲーションバーの切り替え
   prev_page: 前のページ
   next_page: 次のページ
@@ -263,6 +283,11 @@ tagcloud:
   flat: "2D · 平面"
   sphere: "3D · 球面"
   empty: "タグはまだありません。"
+
+tag_view:
+  view: "タグ記事の表示"
+  classic: "一覧表示"
+  preview: "「%s」の要約を表示"
 
 archive_view:
   show_all: "全 %s 件を表示"
@@ -480,6 +505,14 @@ festival_preview:
     xiaohan: "小寒"
     dahan: "大寒"
 bookmark_view:
+  loading: "ブックマークを検索中…"
+  fallback: "索引を利用できないためローカル照合を使用"
+  search: "ブックマークを検索"
+  placeholder: "名前・用途・URLで検索…"
+  hint: "複数語・別名・英単語の入力ミスに対応"
+  clear: "検索をクリア"
+  results: "%s / %s 件のブックマーク"
+  empty: "見つかりませんでした。別の用途や短い語句をお試しください。"
   label: ブックマークの表示
   cards: 標準カード
   axis: カテゴリタイムライン
@@ -488,3 +521,53 @@ category_view:
   label: カテゴリ表示
   cards: カード表示
   classic: リスト表示
+article_graph:
+  count: "関連 %s 件"
+  title: "記事のつながり"
+  description: "引用をたどって、読み進める。"
+  show_graph: "グラフを表示"
+  zoom_in: "拡大"
+  zoom_out: "縮小"
+  reset: "表示をリセット"
+  expand: "グラフを拡大"
+  help: "ドラッグで移動 · Ctrl / ⌘ + スクロールで拡大縮小 · ノードを選択して読む"
+  legend: "凡例"
+  current: "この記事"
+  incoming: "この記事へのリンク"
+  outgoing: "この記事からのリンク"
+  mutual: "相互リンク"
+  limit: "%s / %s 件を表示。すべての引用は下の一覧にあります。"
+  references: "引用一覧"
+  empty: "なし"
+  close: "グラフを閉じる"
+  load: "グラフを描画"
+  loading: "描画中…"
+  retry: "読み込めませんでした。再試行するか、下の引用一覧をご利用ください。"
+
+related_reading:
+  title: "続きを読む"
+  description: "関連する話題から、次の記事を見つけましょう。"
+
+service_status:
+  checking: "確認中…"
+  up: "正常"
+  down: "異常"
+  unknown: "確認できません"
+  stale: "結果の有効期限切れ"
+  refresh: "再確認"
+  updated: "最終確認"
+  browser: "ブラウザーから確認 · 現在のネットワークでの結果"
+  server: "サーバーから確認 · サーバーのネットワークでの結果"
+  fallback: "確認サーバーに接続できないため、ブラウザーから確認しています"
+  ok: "確認済み"
+  http: "HTTP エラー"
+  invalid: "想定外の応答内容"
+  oversize: "応答が大きすぎます"
+  timeout: "タイムアウト"
+  network: "ネットワーク・CORS・接続制限"
+  empty: "未確認"
+  noscript: "状態を確認するには JavaScript を有効にしてください。"
+  intro: "ブログと関連サービスの現在の状態を確認できます。"
+  notice: "確認時点の結果であり、すべての地域での利用を保証するものではありません。確認不能は障害を意味しません。結果は2分後に期限切れになります。"
+  summary: "正常 {up} · 異常 {down} · 未確認 {unknown}"
+  latency: "応答時間"

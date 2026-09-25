@@ -1,5 +1,6 @@
 import { createImageMedia } from './image-media'
 import { formatCommentTime } from './comment-time'
+import type { FooterBadgeColors } from './footer-comment-badge'
 
 interface FooterCommentTimeOptions {
   relativeTimeDays: number
@@ -50,6 +51,7 @@ export interface FooterComment {
   avatar?: string
   time?: number
   badge?: { text: string; kind: 'author' | 'member' | 'friend' }
+  levelBadge?: { text: string; colors?: FooterBadgeColors; override?: FooterBadgeColors }
 }
 
 export const renderFooterComments = (container: HTMLElement, rows: FooterComment[], options?: FooterCommentTimeOptions) => {
@@ -110,6 +112,17 @@ export const renderFooterComments = (container: HTMLElement, rows: FooterComment
       const badge = document.createElement('span')
       badge.className = `footer-comment-badge footer-comment-badge-${item.badge.kind}`
       badge.textContent = item.badge.text
+      identity.append(badge)
+    }
+    if (item.levelBadge) {
+      const badge = document.createElement('span')
+      badge.className = 'footer-comment-badge footer-comment-badge-level'
+      badge.textContent = item.levelBadge.text
+      const valid = (value?: string) => typeof value === 'string' && /^#(?:[\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.test(value) ? value : undefined
+      for (const mode of ['light', 'dark'] as const) for (const key of ['text', 'background', 'border']) {
+        const color = valid(item.levelBadge.override?.[mode]?.[key]) ?? valid(item.levelBadge.colors?.[mode]?.[key])
+        if (color) badge.style.setProperty(`--badge-${mode}-${key}`, color)
+      }
       identity.append(badge)
     }
     head.append(identity)

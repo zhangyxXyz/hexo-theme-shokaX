@@ -35,7 +35,7 @@ export function refreshSummarySwitch() {
     select.dataset.bound = 'true'
     select.addEventListener('click', event => event.stopPropagation())
     select.addEventListener('change', () => {
-      const articleSummary = select.closest('.ai-summary')
+      const articleSummary = select.closest('.ai-summary, .article-preview-content')
       const root = articleSummary || select.closest('article')
       if (!root) return
       root.querySelectorAll<HTMLElement>('[data-summary-version]').forEach(panel => {
@@ -55,7 +55,7 @@ export function refreshSummarySwitch() {
       }
       if (articleSummary && !applyingPreference && option.dataset.preference) {
         try { localStorage.setItem(preferenceKey, option.dataset.preference) } catch { /* Storage may be disabled. */ }
-        document.querySelectorAll<HTMLSelectElement>('.ai-summary [data-summary-select]').forEach(other => {
+        document.querySelectorAll<HTMLSelectElement>('.ai-summary [data-summary-select], .article-preview-content [data-summary-select]').forEach(other => {
           if (other !== select) restorePreference(other, option.dataset.preference!)
         })
       }
@@ -63,7 +63,7 @@ export function refreshSummarySwitch() {
   })
   let preference: string | null = null
   try { preference = localStorage.getItem(preferenceKey) } catch { /* Keep server defaults. */ }
-  if (preference) document.querySelectorAll<HTMLSelectElement>('.ai-summary [data-summary-select]').forEach(select => restorePreference(select, preference))
+  if (preference) document.querySelectorAll<HTMLSelectElement>('.ai-summary [data-summary-select], .article-preview-content [data-summary-select]').forEach(select => restorePreference(select, preference))
   refreshSummaryPickers()
   // PJAX may insert markup without executing its parser-time inline script.
   document.querySelectorAll<HTMLElement>('.ai-summary[data-summary-pending]').forEach(card => {

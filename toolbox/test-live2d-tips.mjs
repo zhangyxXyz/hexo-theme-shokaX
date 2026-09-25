@@ -91,10 +91,11 @@ function fixture({ popover = true } = {}) {
       return Object.fromEntries([...this.attrs].filter(([name]) => name.startsWith('data-')).map(([name, value]) => [name.slice(5).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()), value]))
     }
     setAttribute(name, value) { this.attrs.set(name, String(value)) }
+    removeAttribute(name) { this.attrs.delete(name) }
     getAttribute(name) { return this.attrs.get(name) ?? null }
     getBoundingClientRect() {
       if (this.id !== 'shokax-waifu-tips' || this.style.left === undefined) return this.bounds
-      const origin = popover ? { left: 0, top: 0 } : this.parentNode.bounds
+      const origin = this.popoverOpen ? { left: 0, top: 0 } : this.parentNode.bounds
       return { left: Number.parseFloat(this.style.left) + origin.left, top: Number.parseFloat(this.style.top) + origin.top }
     }
     matches(selector) {
@@ -293,7 +294,7 @@ for (const popover of [true, false]) {
   f.mount()
   f.controller.show('Plain page')
   assert.equal(f.tip.hidden, false)
-  assert.equal(f.tip.popoverOpen, popover)
+  assert.equal(f.tip.popoverOpen, false, 'ordinary tips stay below the music panel')
   assert.equal(f.tip.getBoundingClientRect().left, 36)
   assert.equal(f.tip.getBoundingClientRect().top, 470, 'the fallback accounts for the transformed widget containing block')
   f.controller.clear()
@@ -312,6 +313,10 @@ for (const popover of [true, false]) {
     f.win.emit('resize')
     assert.equal(f.tip.style.left, '796px')
     assert.equal(f.tip.style.top, '690px', 'the bubble remains within the viewport')
+    dialog.remove()
+    f.controller.show('Back to the music panel')
+    assert.equal(f.tip.popoverOpen, false, 'leaving modal context restores normal stacking')
+    assert.equal(f.tip.getAttribute('popover'), null)
   }
   f.controller.destroy()
   f.assertCleared()

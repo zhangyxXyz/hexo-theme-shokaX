@@ -1,0 +1,77 @@
+include ../../_mixin/article-preview.pug
+- const graph = article_graph(post)
+if graph
+    section.article-graph#article-graph(data-article-graph data-pagefind-ignore="all" aria-labelledby="article-graph-title")
+        .article-graph-heading
+            div
+                .article-graph-title-row
+                    h2#article-graph-title
+                        i.ic.i-graph(aria-hidden="true")
+                        span= __('article_graph.title')
+                    span.article-graph-count= __('article_graph.count', graph.total - 1)
+                p= __('article_graph.description')
+        details.article-graph-figure(open data-graph-figure)
+            summary= __('article_graph.show_graph')
+            .article-graph-stage(data-graph-stage)
+                .article-graph-toolbar(data-graph-controls hidden)
+                    button(type="button" data-graph-zoom="in" aria-label=__('article_graph.zoom_in') title=__('article_graph.zoom_in'))
+                        i.ic.i-plus(aria-hidden="true")
+                    button(type="button" data-graph-zoom="out" aria-label=__('article_graph.zoom_out') title=__('article_graph.zoom_out'))
+                        i.ic.i-minus(aria-hidden="true")
+                    button(type="button" data-graph-reset aria-label=__('article_graph.reset') title=__('article_graph.reset'))
+                        i.ic.i-refresh(aria-hidden="true")
+                    button(type="button" data-graph-expand aria-label=__('article_graph.expand') title=__('article_graph.expand'))
+                        i.ic.i-expand(aria-hidden="true")
+                button.article-graph-load(type="button" data-graph-load data-loading=__('article_graph.loading') data-retry=__('article_graph.retry'))= __('article_graph.load')
+                - const payload = JSON.stringify({nodes: graph.nodes.map(node => ({...node, url: url_for(node.id)})), edges: graph.edges}).replace(/</g, '\\u003c')
+                script(type="application/json" data-graph-data)!= payload
+                svg.article-graph-svg(viewBox="-400 -160 800 320" data-graph-svg class=graph.dense ? 'is-dense' : null role="group" aria-label=__('article_graph.title') aria-describedby="article-graph-help" tabindex="0" hidden)
+                    defs
+                        marker#article-graph-arrow(viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse")
+                            path(d="M0 1L9 5L0 9" fill="none" stroke="context-stroke" stroke-width="1.5")
+                p.article-graph-help#article-graph-help= __('article_graph.help')
+        .article-graph-legend(aria-label=__('article_graph.legend'))
+            span.is-current= __('article_graph.current')
+            each kind in ['incoming', 'outgoing', 'mutual']
+                if graph.nodes.some(node => node.relation === kind)
+                    span(class='is-' + kind)= __('article_graph.' + kind)
+        if graph.truncated
+            p.article-graph-limit= __('article_graph.limit', graph.nodes.length, graph.total)
+        details.article-graph-references(open data-graph-references)
+            summary(aria-controls="article-graph-reference-content")
+                i.ic.i-angle-right(aria-hidden="true")
+                span= __('article_graph.references')
+            .article-graph-reference-content#article-graph-reference-content
+              .article-graph-lists
+                each entries, kind in { incoming: graph.incoming, outgoing: graph.outgoing }
+                    .article-graph-reference-group(class='is-' + kind data-graph-reference-group)
+                        h3
+                            i.ic(class=kind === 'incoming' ? 'i-arrow-down' : 'i-arrow-up' aria-hidden="true")
+                            span= __('article_graph.' + kind)
+                            small= entries.length
+                        if entries.length
+                            ul(id='article-graph-list-' + kind)
+                                each entry, entryIndex in entries
+                                    li.article-preview-row
+                                        i.ic.i-link-alt.article-graph-entry-icon(aria-hidden="true")
+                                        a.article-preview-link(href=url_for(entry.id))= entry.title
+                                        - const linkedPost = site.posts.findOne({path: entry.id})
+                                        if linkedPost
+                                            +articlePreview(linkedPost, 'article-graph-preview-' + kind + '-' + entryIndex)
+                            if entries.length > 5
+                                .article-graph-reference-footer(data-graph-reference-footer hidden)
+                                    nav.article-graph-pagination(data-graph-pages aria-label=__('article_graph.' + kind) + ' · ' + __('article_graph.references'))
+                                        button(type="button" data-graph-page="previous" aria-label=__('accessibility.prev_page') aria-controls='article-graph-list-' + kind)
+                                            i.ic.i-angle-left(aria-hidden="true")
+                                        span(data-graph-page-label aria-live="polite" aria-atomic="true")= '1 / ' + Math.ceil(entries.length / 5)
+                                        button(type="button" data-graph-page="next" aria-label=__('accessibility.next_page') aria-controls='article-graph-list-' + kind)
+                                            i.ic.i-angle-right(aria-hidden="true")
+                                    button.article-graph-show-all(type="button" data-graph-all data-expand-label=__('archive_view.show_all', entries.length) data-collapse-label=__('archive_view.paged_view') aria-expanded="false" aria-controls='article-graph-list-' + kind)= __('archive_view.show_all', entries.length)
+                        else
+                            p.article-graph-empty= __('article_graph.empty')
+        dialog.article-graph-dialog(data-graph-dialog aria-labelledby="article-graph-dialog-title")
+            .article-graph-dialog-heading
+                h2#article-graph-dialog-title= __('article_graph.title')
+                button(type="button" data-graph-close aria-label=__('article_graph.close'))
+                    i.ic.i-times(aria-hidden="true")
+            div(data-graph-dialog-body)

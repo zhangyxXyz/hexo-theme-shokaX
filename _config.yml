@@ -142,6 +142,9 @@ grayMode: false # 全站黑白滤镜
 
 darkmode: true
 
+# 手动明暗切换动画：sunrise（日升日落，原有效果）| moon-stars（月夜星辉）
+theme_transition: sunrise
+
 auto_dark: # 自动亮/暗模式
   enable: true #是否开启
   start: 20 #开始时间
@@ -238,6 +241,10 @@ image_server:
 # ======================================================================
 
 # Archive display: a timeline tree or the classic archive.
+tag_view:
+  mode: tree # tree | classic
+  switchable: true
+
 archive_view:
   # tree = 年份/月度时间树；classic = 经典年月列表。
   # switchable=true 时访客已保存的选择优先；false 固定 mode 并忽略访客偏好。
@@ -279,6 +286,11 @@ isOutdated:
 outime:
   enable: false
   days: 90 # 超过 90 天文章失效
+
+article_graph:
+  enable: false
+  max_nodes: 50
+  domain_aliases: []
 
 reward:
   # If true, reward will be displayed in every article by default.
@@ -339,6 +351,7 @@ summary:
 waline:
   client: official # official | seiun (private replies require the matching fork server)
   relativeTimeDays: 60 # 0: absolute dates; otherwise relative time below this many days.
+  hideAdminLevel: false # Hide administrator level badges only; keep exclusive identity labels.
   levelColors: {} # level0..level19: { light: { text, background, border }, dark: { text, background, border } }; hex colors.
   labelColors: {} # Same format, keyed by exclusive label text; overrides server colors.
   layout: bottom # slide | bottom; page/post front matter: comment_layout.
@@ -583,6 +596,7 @@ vendors:
     elemecdn: https://npm.elemecdn.com
     iconfont: https://at.alicdn.com/t/c
   js:
+    d3: { source: jsdelivr, url: npm/d3@7.9.0/dist/d3.min.js }
     echarts:
     live2d_game: { source: jsdelivr, url: gh/stevenjoezhang/asteroids/asteroids.js }
   assets:
@@ -606,3 +620,7 @@ vendors:
       source: cdnjs
       url: KaTeX/0.16.9/katex.min.css
       sri: "sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+
+# Build-time recommendations; individual posts can set related_reading: false.
+related_reading:
+  enable: true

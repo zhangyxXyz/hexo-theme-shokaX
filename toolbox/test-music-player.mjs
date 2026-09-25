@@ -12,7 +12,7 @@ async function load(path) {
   new Function('require', 'module', 'exports', result.outputFiles[0].text)(require, module, module.exports)
   return module.exports
 }
-const { parseMusicSource, musicApiUrl, prepareMusic, getPreparedPlaylist, playMusic, resetMusicSource, requestMusic, parseMusicLyrics, fetchMusicLyric, loadMusicLyrics } = await load(helperPath)
+const { parseMusicSource, musicApiUrl, prepareMusic, getPreparedPlaylist, playMusic, handleMusicError, resetMusicSource, isMusicRestartPending, cancelMusicRestart, requestMusic, parseMusicLyrics, fetchMusicLyric, loadMusicLyrics } = await load(helperPath)
 const { activateMusicTrack, createMusicLyricView, parseMusicVolume } = await load(fileURLToPath(new URL('../source/js/_app/components/music-state.ts', import.meta.url)))
 const { adaptMusicPlayer, musicPlayerPlugin } = await load(fileURLToPath(new URL('../scripts/utils/music-player.ts', import.meta.url)))
 assert.deepEqual(parseMusicSource('https://y.qq.com/n/ryqq/songDetail/003jjoM94WLiTf'), { server: 'tencent', type: 'song', id: '003jjoM94WLiTf' })
@@ -108,21 +108,55 @@ audio.play = async () => { throw new DOMException('Unavailable', 'NotSupportedEr
 await playMusic(audio, () => paused++)
 assert.equal(paused, 1)
 assert.equal(playbackErrors, 1)
+let corsAttempts = 0, corsLoads = 0
+audio.src = 'https://audio.example/cors'
+audio.crossOrigin = 'anonymous'
+audio.removeAttribute = name => { assert.equal(name, 'crossorigin'); audio.crossOrigin = null }
+audio.load = () => { corsLoads++ }
+audio.play = async () => { corsAttempts++; if (audio.crossOrigin) throw new DOMException('CORS blocked', 'NotSupportedError') }
+await playMusic(audio, () => paused++)
+assert.equal(corsAttempts, 2, 'CORS failure retries once as ordinary media')
+assert.equal(corsLoads, 1)
+assert.equal(paused, 1, 'successful ordinary playback must not pause')
+audio.crossOrigin = 'anonymous'
+audio.play = async () => { throw new DOMException('Unavailable', 'NotSupportedError') }
+await playMusic(audio, () => paused++)
+assert.equal(paused, 2, 'unavailable media stops after the single fallback')
+assert.equal(playbackErrors, 2)
+paused = 1; playbackErrors = 1
 audio.play = async () => { throw new DOMException('Track changed', 'AbortError') }
 await playMusic(audio, () => paused++)
 assert.equal(paused, 1, 'an interrupted old track must not pause the new song')
 audio.play = async () => {}
 await playMusic(audio, () => paused++)
 assert.equal(playbackErrors, 1)
+// Native error can arrive before the rejected play Promise, or mid-track.
+const racedAudio = new EventTarget()
+let rejectOriginal, racePauses = 0, racePlays = 0
+racedAudio.src = 'https://audio.example/race'
+racedAudio.crossOrigin = 'anonymous'
+racedAudio.removeAttribute = () => { racedAudio.crossOrigin = null }
+racedAudio.load = () => {}
+racedAudio.play = () => { racePlays++; return racedAudio.crossOrigin ? new Promise((_, reject) => { rejectOriginal = reject }) : Promise.resolve() }
+const originalPlay = playMusic(racedAudio, () => racePauses++)
+await handleMusicError(racedAudio, () => racePauses++)
+rejectOriginal(new DOMException('Late CORS rejection', 'NotSupportedError'))
+await originalPlay
+assert.equal(racePlays, 2)
+assert.equal(racePauses, 0, 'old rejected promise cannot pause successful fallback')
+await handleMusicError(racedAudio, () => racePauses++)
+assert.equal(racePauses, 1, 'mid-track native errors remain visible')
 assert.ok(adaptMusicPlayer(dist).includes('this.playlist=shokaxPlaylist(this.url)'))
 assert.ok(adaptMusicPlayer(dist).includes('this.lyrics=await shokaxLoadLyrics(this.url)'))
 assert.ok(adaptMusicPlayer(dist).includes('preload:`none`'))
-assert.ok(adaptMusicPlayer(dist).includes('r.playing||r.showPlayer?'))
+assert.ok(adaptMusicPlayer(dist).includes('view=shokaxPanelLyrics'))
+assert.ok(adaptMusicPlayer(dist).includes('s=$(()=>i.loadedSongUrl===i.currentSong?.url?i.currentSong?.url:void 0)'))
 // Exercise the actual adapted Nyx timeupdate callback across route changes.
 // A preserved audio element must be the clock source, never seek to stale state.
 const timeUpdateBody = adaptMusicPlayer(dist).match(/let o=Zc\(e=>\{([\s\S]*?)\},250\)/)?.[1]
 assert.ok(timeUpdateBody, 'review the Nyx timeupdate callback after an upgrade')
-const timeUpdate = new Function('e', 'i', 'window', timeUpdateBody)
+const timeUpdate = new Function('e', 'i', 'window', 'shokaxRestartPending', timeUpdateBody)
+const runTimeUpdate = (event, state, view) => timeUpdate(event, state, view, () => false)
 const clockState = { currentSong: { url: 'https://audio.example/current' }, currentTime: 40, lastPage: '/', songDuration: 0, setCurrentTime(time) { this.currentTime = time } }
 let mediaTime = 40.25
 const mediaClock = {
@@ -131,31 +165,71 @@ const mediaClock = {
   set currentTime(_time) { assert.fail('navigation must not seek the preserved audio element') },
   duration: 292.947
 }
-timeUpdate({ target: { ...mediaClock, currentSrc: 'https://audio.example/previous', currentTime: 251 } }, clockState, {})
+runTimeUpdate({ target: { ...mediaClock, currentSrc: 'https://audio.example/previous', currentTime: 251 } }, clockState, {})
 assert.equal(clockState.currentTime, 40, 'late events from the old source must not restore its playhead')
-timeUpdate({ target: { ...mediaClock, readyState: 0, currentTime: 251 } }, clockState, {})
+runTimeUpdate({ target: { ...mediaClock, readyState: 0, currentTime: 251 } }, clockState, {})
 assert.equal(clockState.currentTime, 40, 'ignore stale progress while the new source is empty')
 for (const pathname of ['/', '/posts/27651.html', '/posts/42926.html', '/', '/posts/27651.html']) {
   mediaTime += 0.25
-  timeUpdate({ target: mediaClock }, clockState, { location: { pathname } })
+  runTimeUpdate({ target: mediaClock }, clockState, { location: { pathname } })
   assert.equal(clockState.currentTime, mediaTime)
   assert.equal(clockState.songDuration, mediaClock.duration)
 }
 assert.throws(() => adaptMusicPlayer('unexpected upgraded bundle'))
 let loads = 0
-const reusedAudio = { currentTime: 251, load() { loads++; assert.equal(this.currentTime, 0) } }
+const reusedAudio = Object.assign(new EventTarget(), { currentTime: 251, load() { loads++; assert.equal(this.currentTime, 0) } })
 resetMusicSource(reusedAudio)
 assert.equal(loads, 1)
 assert.equal(reusedAudio.currentTime, 0)
-const sourceWatch = adaptMusicPlayer(dist).match(/W\(\(\)=>\[i\.currentSong\?\.url,i\.restartId\],\(\)=>\{(.*?)\},\{flush:`post`\}\)/)?.[1]
+const sourceWatch = adaptMusicPlayer(dist).match(/W\(\[\(\)=>i\.currentSong\?\.url,\(\)=>i\.restartId,\(\)=>i\.loadedSongUrl\],\(\)=>\{(.*?)\},\{flush:`post`\}\)/)?.[1]
 assert.ok(sourceWatch)
 const changeSource = new Function('i', 'a', 'shokaxResetMusic', 'shokaxPlayMusic', sourceWatch)
-const switchedState = { playing: true, currentTime: 251, songDuration: 253 }
+const switchedState = { playing: true, currentTime: 251, songDuration: 253, currentSong: { url: 'selected' }, loadedSongUrl: 'selected' }
 let sourceStarts = 0
 changeSource(switchedState, { value: reusedAudio }, resetMusicSource, () => { sourceStarts++ })
 assert.equal(switchedState.currentTime, 0)
 assert.equal(switchedState.songDuration, 0)
 assert.equal(sourceStarts, 1)
+changeSource({ ...switchedState, playing: false, loadedSongUrl: '' }, { value: reusedAudio }, () => assert.fail('opening the panel must not load audio'), () => assert.fail('opening the panel must not play'))
+
+// Reproduce the real Chrome userscript: restore a saved 4:11 position from a
+// playing listener AFTER the player has reset/load()ed the media element.
+const extensionAudio = Object.assign(new EventTarget(), {
+  src: 'https://audio.example/unique', currentSrc: 'https://audio.example/unique',
+  readyState: 4, currentTime: 70, duration: 253.73517, playbackRate: 1,
+  load() { this.currentTime = 0 }
+})
+resetMusicSource(extensionAudio)
+extensionAudio.addEventListener('playing', () => { extensionAudio.currentTime = 251.388 }, { once: true })
+extensionAudio.dispatchEvent(new Event('playing'))
+assert.equal(extensionAudio.currentTime, 251.388, 'reproduce late userscript progress restore')
+const protectedState = { ...clockState, currentSong: { url: extensionAudio.src }, currentTime: 0 }
+timeUpdate({ target: extensionAudio }, protectedState, {}, isMusicRestartPending)
+assert.equal(protectedState.currentTime, 0, 'ignore restored end time until restart settles; must not skip to next track')
+await new Promise(resolve => setTimeout(resolve, 5))
+assert.equal(extensionAudio.currentTime, 0, 'explicit restart wins over the userscript playing listener')
+assert.equal(isMusicRestartPending(extensionAudio), false)
+extensionAudio.currentTime = 60
+extensionAudio.dispatchEvent(new Event('playing'))
+await new Promise(resolve => setTimeout(resolve, 5))
+assert.equal(extensionAudio.currentTime, 60, 'normal pause/resume is not a restart')
+resetMusicSource(extensionAudio)
+extensionAudio.dispatchEvent(new Event('playing'))
+cancelMusicRestart(extensionAudio) // Called by an explicit seek.
+extensionAudio.currentTime = 90
+await new Promise(resolve => setTimeout(resolve, 5))
+assert.equal(extensionAudio.currentTime, 90, 'a user seek cancels the pending restart correction')
+resetMusicSource(extensionAudio)
+extensionAudio.dispatchEvent(new Event('playing'))
+extensionAudio.src = extensionAudio.currentSrc = 'https://audio.example/new'
+resetMusicSource(extensionAudio)
+extensionAudio.currentTime = 25
+await new Promise(resolve => setTimeout(resolve, 5))
+assert.equal(extensionAudio.currentTime, 25, 'a stale timer cannot seek a newer source')
+assert.equal(isMusicRestartPending(extensionAudio), true)
+cancelMusicRestart(extensionAudio)
+cancelMusicRestart(reusedAudio)
+
 
 const trackGroups = [{ index: 0 }, { index: 0 }]
 assert.equal(parseMusicVolume(null), .6)
@@ -197,7 +271,7 @@ const trackState = {
   start() { this.playing = true }
 }
 activateMusicTrack(trackState, 0, 0)
-assert.equal(trackState.currentTime, 0, 'double-clicking the current song restarts it')
+assert.equal(trackState.currentTime, 0, 'explicit track activation restarts the selected song')
 assert.equal(trackState.restartId, 1, 'restart must also notify the native audio when the URL is unchanged')
 assert.equal(trackState.playing, true)
 activateMusicTrack(trackState, 1, 3)
@@ -215,6 +289,8 @@ const lyricController = createMusicLyricView(view => { lyricView = { text: view.
 const snapshot = { song: lyricA, time: 2, playing: false, panelOpen: false }
 lyricController.update(snapshot)
 assert.equal(pendingLyrics.size, 0, 'idle initialization must not download lyrics')
+lyricController.update({ ...snapshot, panelOpen: true, mediaRequested: false })
+assert.equal(pendingLyrics.size, 0, 'opening the panel must not download lyrics')
 lyricController.update({ ...snapshot, playing: true })
 lyricController.update({ ...snapshot, song: lyricB, playing: true })
 pendingLyrics.get(lyricB.lrc)([{ start: 0, end: 5, text: 'B first' }, { start: 5, end: Infinity, text: 'B next' }])
@@ -232,7 +308,13 @@ assert.equal(lyricView.visible, false, 'desktop controls stay hidden while disab
 lyricController.update({ ...snapshot, song: lyricB, playing: true, lyricsEnabled: true })
 assert.equal(lyricView.visible, true, 'desktop lyrics can be re-enabled without restarting playback')
 lyricController.update({ ...snapshot, song: lyricB, playing: true, panelOpen: true })
-assert.equal(lyricView.visible, false, 'opening the panel hides desktop lyrics')
+assert.equal(lyricView.visible, true, 'opening the panel keeps enabled desktop lyrics visible')
+lyricController.update({ ...snapshot, song: lyricB, playing: true, panelOpen: true, lyricsEnabled: false })
+assert.equal(lyricView.visible, false, 'the lyrics switch also hides lyrics while the panel is open')
+lyricController.update({ ...snapshot, song: lyricB, playing: false, panelOpen: true, lyricsEnabled: true })
+assert.equal(lyricView.visible, false, 'pausing hides enabled lyrics while the panel is open')
+lyricController.update({ ...snapshot, song: lyricB, playing: true, panelOpen: true, lyricsEnabled: true })
+assert.equal(lyricView.visible, true, 'resuming restores lyrics without closing the panel')
 lyricController.update({ ...snapshot, song: lyricB })
 assert.equal(lyricView.visible, false, 'paused lyrics are hidden')
 lyricController.update({ ...snapshot, song: song('instrumental'), playing: true })

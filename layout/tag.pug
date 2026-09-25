@@ -11,36 +11,30 @@ block header
         != _p('title.tag_in', page.tag)
 
 block content
-    div(class="collapse wrap")
-        h2(class="item header")
-            a(href=url_for(config.tag_dir))
-                != __('title.all')
-            small /
-            != page.tag
-            small
-                != __('title.tag')
-        - var posts = page.posts
-        each post in posts.toArray()
-            article(class="item normal" itemscope itemtype="http://schema.org/Article")
-                div(class="meta")
-                    time(itemprop="dateCreated"
-                        datetime=moment(post.date).format()
-                        content=date(post.date, config.date_format))
-                        != date(post.date, 'YYYY-MM-DD')
-                    if post.categories && post.categories.length
-                        - var cat_length = post.categories.length
-                        each cat,index in post.categories.toArray()
-                            if index === cat_length && cat.name !== page.category
-                                span
-                                    a(href=url_for(cat.path))
-                                        != cat.name
-                div(class="title")
-                    if post.link
-                        - var postTitleIcon = '<i class="ic i-link-alt"></i>'
-                        - var postText = post.title || post.link
-                        != _url(post.link, postText + postTitleIcon, {class: 'external', itemprop: 'url'})
-                    else
-                        a(href=url_for(post.path) itemprop="url")
-                            span(itemprop="name")
-                                != post.title || __('post.untitled')
-    include _partials/pagination.pug
+    - const tagOptions = theme.tag_view || {}
+    - const tagMode = tagOptions.mode === 'classic' ? 'classic' : 'tree'
+    - const tagTreeData = tag_tree(page.tag, site.tags, page.posts)
+    .tag-detail-page.archive-page.wrap(data-mode=tagMode data-default-mode=tagMode data-switchable=String(tagOptions.switchable !== false))
+        .tag-detail-overview
+            header.tag-detail-heading.collapse
+                h2.item.header
+                    a(href=url_for(config.tag_dir))= __('title.all')
+                    small /
+                    = page.tag
+                    small= __('title.tag')
+                    small.tag-detail-count= __('archive_view.posts', tagTreeData.total)
+            if tagOptions.switchable !== false
+                .tag-detail-controls.archive-view-controls(role="group" aria-label=__('tag_view.view') hidden)
+                    button(type="button" data-archive-mode="tree" title=__('archive_view.tree') aria-label=__('archive_view.tree') aria-pressed=String(tagMode === 'tree') aria-controls="tag-tree-panel")
+                        i.ic.i-timeline(aria-hidden="true")
+                    button(type="button" data-archive-mode="classic" title=__('tag_view.classic') aria-label=__('tag_view.classic') aria-pressed=String(tagMode === 'classic') aria-controls="tag-classic-panel")
+                        i.ic.i-list-alt(aria-hidden="true")
+            if tagTreeData.years.length
+                .tag-detail-meta
+                    include _partials/archive-tree-tools.pug
+        .archive-tree-panel#tag-tree-panel(data-archive-panel="tree" hidden=tagMode !== 'tree')
+            include _partials/tag-tree.pug
+        .archive-classic-panel#tag-classic-panel(data-archive-panel="classic" hidden=tagMode !== 'classic')
+            include _partials/tag-classic.pug
+    .tag-classic-pagination
+        include _partials/pagination.pug

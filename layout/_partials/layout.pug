@@ -76,12 +76,13 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
             main
                 div(class="inner")
                     div(id="main" class="pjax")
+                        script(type="application/json" data-article-preview-manifest)!= JSON.stringify(article_preview_manifest()).replace(/</g, '\\u003c')
                         block content
                     div(id="sidebar")
                         block sidebar
                             +sidebarRender
                     div(class="dimmer")
-                div#player(data-play=__('music.play') data-pause=__('music.pause') data-show=__('music.show') data-loading=__('music.loading') data-error=__('music.error') data-unavailable=__('music.unavailable') data-activate=__('music.activate') data-volume=__('music.volume') data-mute=__('music.mute') data-unmute=__('music.unmute') data-next=__('music.next') data-lyrics-glyph=__('music.lyrics_glyph') data-lyrics-enable=__('music.lyrics_enable') data-lyrics-disable=__('music.lyrics_disable') data-lyrics-close=__('music.lyrics_close'))
+                div#player(data-pending=__('music.pending') data-close=__('music.close') data-play=__('music.play') data-pause=__('music.pause') data-show=__('music.show') data-loading=__('music.loading') data-error=__('music.error') data-unavailable=__('music.unavailable') data-activate=__('music.activate') data-seek=__('music.seek') data-volume=__('music.volume') data-mute=__('music.mute') data-unmute=__('music.unmute') data-next=__('music.next') data-visualizer-enable=__('music.visualizer_enable') data-visualizer-disable=__('music.visualizer_disable') data-lyrics-enable=__('music.lyrics_enable') data-lyrics-disable=__('music.lyrics_disable') data-lyrics-close=__('music.lyrics_close'))
             footer(id="footer")
                 div(class="inner")
                     != partial('_partials/footer.pug', {}, {cache: true})

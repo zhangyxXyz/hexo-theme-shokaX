@@ -12,10 +12,14 @@ code_block:
   collapse: "收起代码"
 
 music:
-  lyrics_glyph: 词
+  pending: 等待加载
+  close: 关闭音乐面板
+  seek: 调整播放进度
+  visualizer_enable: 开启音乐可视化
+  visualizer_disable: 关闭音乐可视化
   lyrics_enable: 开启桌面歌词
   lyrics_disable: 关闭桌面歌词
-  lyrics_close: 收起桌面歌词控制栏，可通过播放器的“词”按钮再次开启
+  lyrics_close: "收起桌面歌词，可通过播放器的 {icon:i-desktop-lyrics-on} 按钮再次开启"
   next: 下一首
   volume: 音量
   mute: 静音
@@ -32,8 +36,8 @@ reading_tools:
   tag: "要看看 %s 标签吗？该标签下共有 %s 篇文章。"
   show: 显示看板娘
   hide: 隐藏看板娘
-  traditional: 正文切换为繁体
-  simplified: 恢复正文原文
+  traditional: 内容切换为繁体
+  simplified: 恢复原文
   error: 加载失败，点击重试
 
 image_viewer:
@@ -222,6 +226,21 @@ symbol:
   month: 月
 
 reward:
+  eyebrow: PERSONAL NOTES
+  author: AUTHOR
+  title: "赞赏"
+  description: "文章至此，故事还在继续。"
+  retry: "图片加载失败，点击重试"
+  support: "赞赏支持"
+  back: "返回卡面"
+  thanks: "谢谢你的支持"
+  methods: "支付方式"
+  scan: "使用%s扫一扫"
+  enlarge: "放大%s收款码"
+  zoom: "点击放大"
+  note: "感谢这份心意"
+  close: "关闭收款码"
+  save_hint: "长按或右键保存收款码"
   donate: 赞赏
   text: 请我喝[茶]~(￣▽￣)~*
   wechatpay: 微信支付
@@ -233,6 +252,7 @@ follow_me:
   welcome: 欢迎关注我的其它发布渠道
 
 accessibility:
+  theme_toggle: 切换明暗模式
   nav_toggle: 切换导航栏
   prev_page: 上一页
   next_page: 下一页
@@ -263,6 +283,11 @@ tagcloud:
   flat: "2D · 平面"
   sphere: "3D · 球面"
   empty: "暂无标签。"
+
+tag_view:
+  view: "标签文章视图"
+  classic: "经典列表"
+  preview: "预览《%s》的摘要"
 
 archive_view:
   show_all: "展开全部 %s 篇"
@@ -499,6 +524,14 @@ festival_preview:
     xiaohan: "小寒"
     dahan: "大寒"
 bookmark_view:
+  loading: "正在检索书签…"
+  fallback: "索引暂不可用，已使用本地匹配"
+  search: "搜索书签"
+  placeholder: "搜索名称、用途或网址…"
+  hint: "支持多词、用途别名与英文拼写容错"
+  clear: "清空搜索"
+  results: "找到 %s / %s 个书签"
+  empty: "没有找到书签，试试其他用途或更短的词。"
   label: 书签视图
   cards: 原版卡片
   axis: 分类轴
@@ -507,3 +540,53 @@ category_view:
   label: 分类视图
   cards: 卡片目录
   classic: 经典列表
+article_graph:
+  count: "%s 篇关联"
+  title: "文章关联"
+  description: "顺着引用的连线，读见篇章交错的脉络"
+  show_graph: "展开关系图"
+  zoom_in: "放大"
+  zoom_out: "缩小"
+  reset: "重置视图"
+  expand: "放大关系图"
+  help: "拖动平移 · Ctrl / ⌘ + 滚轮缩放 · 点击节点阅读"
+  legend: "关系图例"
+  current: "当前文章"
+  incoming: "引用本文"
+  outgoing: "本文引用"
+  mutual: "相互引用"
+  limit: "图中显示 %s / %s 篇文章，完整关系见引用列表。"
+  references: "引用列表"
+  empty: "暂无"
+  close: "关闭关系图"
+  load: "绘制关系图"
+  loading: "正在绘制…"
+  retry: "加载失败，点击重试；仍可使用下方引用列表。"
+
+related_reading:
+  title: "继续阅读"
+  description: "读到此处，不妨再看看那些相关的篇章"
+
+service_status:
+  checking: "正在检测…"
+  up: "正常"
+  down: "异常"
+  unknown: "无法检测"
+  stale: "结果已过期"
+  refresh: "重新检测"
+  updated: "最近检测"
+  browser: "从你的浏览器检测 · 反映当前网络的访问情况"
+  server: "统一接口检测 · 反映检测服务器的访问情况"
+  fallback: "统一接口暂不可用，已切换为当前浏览器检测"
+  ok: "检查通过"
+  http: "HTTP 错误"
+  invalid: "响应内容不符合预期"
+  oversize: "响应内容过大"
+  timeout: "请求超时"
+  network: "网络、跨域或连接限制"
+  empty: "尚未检测"
+  noscript: "请启用 JavaScript 查看即时状态。"
+  intro: "查看博客与关联服务此刻的可用情况。"
+  notice: "此页提供即时检测，不代表所有地区的访问体验。无法检测不等于服务宕机，结果两分钟后过期，可重新检测。"
+  summary: "{up} 项正常 · {down} 项异常 · {unknown} 项待确认"
+  latency: "响应时间"

@@ -2,24 +2,21 @@ mixin navpost(item, type)
     - var enableNextGradientCover = theme?.homeConfig?.coverConfig?.enableNextGradientCover
     - var postText = item.title || item.link || __('post.untitled')
     - var lastcat = item.categories.last()
-    - var itemlink = `<span class="type">${__('post.' + type)}</span>${lastcat && lastcat.name ? `<span class="category"><i class="ic i-flag"></i>${lastcat.name}</span>` : ''}<h3>${postText}</h3>`
+    - var directionIcon = `<i class="ic ${type === 'prev' ? 'i-chevron-left' : type === 'next' ? 'i-chevron-right' : 'i-shuffle'}" aria-hidden="true"></i>`
+    - var directionLabel = `<span>${__('post.' + type)}</span>`
+    - var itemlink = `<span class="type">${type === 'next' ? directionLabel + directionIcon : directionIcon + directionLabel}</span>${lastcat && lastcat.name ? `<span class="category"><i class="ic i-category" aria-hidden="true"></i><span>${lastcat.name}</span></span>` : ''}<h3>${postText}</h3>`
     if enableNextGradientCover
         != _url(item.path, itemlink, {itemprop: 'url', rel: type === 'random' ? undefined : type, title: postText, style: `background-image: linear-gradient(to bottom right, ${random_color()}, ${random_color()});`})
     else
         != _url(item.path, itemlink, {itemprop: 'url', rel: type === 'random' ? undefined : type, 'data-background-image': _cover(item), title: postText})
 
-- var navLeft = post.next
-- var navRight = post.prev
-- var navExcluded = [post.path, navLeft && navLeft.path, navRight && navRight.path]
-- var navCandidates = (!navLeft || !navRight) ? site.posts.toArray().filter(item => item.published !== false && !item.hidden && item.path && !navExcluded.includes(item.path)) : []
-- var pickNavPost = () => navCandidates.length ? navCandidates.splice(Math.floor(Math.random() * navCandidates.length), 1)[0] : null
-- if (!navLeft) navLeft = pickNavPost()
-- if (!navRight) navRight = pickNavPost()
+- var navLeft = navigation.left
+- var navRight = navigation.right
 if navLeft || navRight
     div(class="post-nav")
         if navLeft
             div(class="item left")
-                +navpost(navLeft, post.next ? 'prev' : 'random')
+                +navpost(navLeft, navigation.leftType)
         if navRight
             div(class="item right")
-                +navpost(navRight, post.prev ? 'next' : 'random')
+                +navpost(navRight, navigation.rightType)

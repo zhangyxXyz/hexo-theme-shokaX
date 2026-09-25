@@ -11,7 +11,7 @@
 - var footerShowComments = ((theme.footer.recent_comments || {}).enable ?? theme.widgets.recent_comments) && (theme.waline.enable || (theme.twikoo && theme.twikoo.enable))
 - var footerShowBrowse = footerShowTags || footerShowPosts || footerShowComments
 - var footerNav = theme.footer.navigation || {archives: '/archives/', tags: '/tags/', about: '/about/'}
-- var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'message-board', statistics: 'statistics', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
+- var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'message-board', statistics: 'statistics', 'service-status': 'heartbeat', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
 .footer-shell
     svg.footer-starlight(viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false")
         g.footer-orbits(fill="none" stroke="currentColor" stroke-width="1")

@@ -1,4 +1,5 @@
 #waves {
+  position: relative;
   // Overlap the content edge to avoid fractional-pixel seams at browser zoom levels.
   margin-bottom: -1px;
   line-height: 0;
@@ -14,11 +15,55 @@
   position:relative;
   content-visibility: auto;
   contain-intrinsic-size: 100vw 15vh;
+  transition: opacity .45s ease;
 
   +mobile() {
     height: 10vh;
     contain-intrinsic-size: 100vw 10vh;
   }
+}
+
+#waves .music-visualizer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleY(.75);
+  transform-origin: center bottom;
+  transition: opacity .45s ease, transform .45s ease;
+}
+#waves.music-visualizer-active {
+  .waves { opacity: 0; }
+  .parallax > use { animation-play-state: paused; }
+  .music-visualizer { opacity: 1; transform: scaleY(1); }
+}
+[data-theme="dark"] #waves.music-visualizer-active .music-visualizer { opacity: .85; }
+.music-visualizer-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  // Below lyrics (99), tools (12) and Live2D (10); never intercept page input.
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(.75rem) scaleY(.8);
+  transform-origin: center bottom;
+  transition: opacity .4s ease, transform .4s cubic-bezier(.22, 1, .36, 1);
+  &.is-visible { opacity: .8; transform: translateY(0) scaleY(1); }
+  +tablet-mobile() {
+    height: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+[data-theme="dark"] .music-visualizer-dock.is-visible { opacity: .7; }
+@media (prefers-reduced-motion: reduce) {
+  #waves .music-visualizer, .music-visualizer-dock { display: none; transition: none; }
+  #waves .waves { opacity: 1; transition: none; }
+  #waves .parallax > use { animation: none; }
 }
 /* Animation */
 .parallax>use {

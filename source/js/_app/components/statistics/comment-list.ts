@@ -133,7 +133,7 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
         identity.className = 'statistics-comment-identity'
         identity.append(name)
         if (item.label) identity.append(badge(item.label, CONFIG.waline.labelColors?.[item.label], item.labelColors))
-        if (typeof item.level === 'number') {
+        if (!(CONFIG.waline.hideAdminLevel && item.type === 'administrator') && typeof item.level === 'number') {
           const key = `level${item.level}`
           const locale = { ...(defaultLocales[(CONFIG.waline.lang || 'en-US').toLowerCase() as keyof typeof defaultLocales] || defaultLocales['en-us']) } as Record<string, string>
           const overrides = CONFIG.waline.locale as Record<string, string>

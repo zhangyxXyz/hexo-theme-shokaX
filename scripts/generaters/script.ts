@@ -41,6 +41,7 @@ hexo.extend.generator.register('script', async function (locals) {
       hidden: theme.assets + '/failure.ico'
     },
     darkmode: theme.darkmode,
+    theme_transition: theme.theme_transition ?? 'sunrise',
     auto_dark: theme.auto_dark,
     auto_scroll: theme.auto_scroll,
     css: {
@@ -68,6 +69,7 @@ hexo.extend.generator.register('script', async function (locals) {
       : undefined,
     waline: {
       relativeTimeDays: theme.waline.relativeTimeDays ?? 60,
+      hideAdminLevel: theme.waline.hideAdminLevel ?? false,
       levelColors: theme.waline.levelColors || {},
       labelColors: theme.waline.labelColors || {},
       friendUrls,

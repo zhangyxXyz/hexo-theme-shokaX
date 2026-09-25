@@ -17,5 +17,5 @@ export function refreshReadingTools() {
     return el
   }
   if (config.dataset.live2d === 'true') refreshLive2D(button('live2d-toggle', '<i class="ic i-paw" aria-hidden="true"></i>'), config.dataset)
-  if (config.dataset.script === 'true') refreshArticleScript(button('article-script-toggle', '<span aria-hidden="true">繁</span>'), config.dataset)
+  if (config.dataset.script === 'true') refreshArticleScript(button('article-script-toggle', '<i class="ic i-chinese-traditional" aria-hidden="true"></i>'), config.dataset)
 }

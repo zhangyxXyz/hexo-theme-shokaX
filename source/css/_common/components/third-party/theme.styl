@@ -1,6 +1,14 @@
+@import 'theme-transition/moon-stars';
+
 #neko {
   @extend $fix-fullscreen;
-  display: none;
+  display: block;
+  pointer-events: none;
+  animation: theme-sunrise-in .2s linear both;
+
+  &.is-finished {
+    animation: theme-sunrise-out .2s linear both;
+  }
   background: linear-gradient(to top, #fddb92 0%, #d1fdff 80%);
 
   .planet {
@@ -148,4 +156,24 @@
       }
     }
   }
+}
+
+@keyframes theme-sunrise-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes theme-sunrise-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+#rightNav .theme:focus-visible {
+  outline: 2px solid var(--color-pink);
+  outline-offset: 2px;
+  border-radius: .5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #neko, .theme-moon-stars { display: none; }
 }

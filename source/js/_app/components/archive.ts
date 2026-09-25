@@ -7,7 +7,6 @@ type DisclosureMotion = {
   cancel: () => void
 }
 
-const storageKey = 'shokax.archive.mode'
 let cleanup: (() => void) | undefined
 
 /** Keep both archive views navigable while enhancing the server-rendered tree. */
@@ -16,6 +15,7 @@ export const refreshArchive = () => {
   cleanup = undefined
   const root = document.querySelector<HTMLElement>('.archive-page')
   if (!root) return
+  const storageKey = root.classList.contains('tag-detail-page') ? 'shokax.tag-detail.mode' : 'shokax.archive.mode'
 
   const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-archive-panel]'))
   const available = (value: string | undefined): value is ArchiveMode =>

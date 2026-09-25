@@ -1,0 +1,10 @@
+include _mixin/article-preview.pug
+//- A lazy, public-only preview bank; never indexed as an article.
+doctype html
+html
+    head
+        meta(name="robots" content="noindex")
+    body(data-pagefind-ignore="all")
+        each post, index in page.previewPosts
+            div(data-preview-path=url_for(post.path))
+                +articlePreview(post, 'article-link-preview-' + index)

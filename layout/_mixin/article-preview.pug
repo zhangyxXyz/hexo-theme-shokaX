@@ -1,0 +1,25 @@
+mixin articlePreview(post, previewId)
+    - const preview = article_preview(post)
+    if preview
+        details.article-preview
+            summary.article-preview-toggle(aria-label=__('tag_view.preview', post.title || __('post.untitled')) aria-controls=previewId)
+                i.ic.i-align-left(aria-hidden="true")
+            .article-preview-content(id=previewId data-ai-label=__('ai_summary.label') data-original-label=__('ai_summary.original_excerpt'))
+                .article-preview-title(hidden)= post.title || __('post.untitled')
+                .article-preview-header
+                    span.article-preview-label
+                        span.article-preview-symbol(aria-hidden="true" class=preview.ai ? undefined : 'ic i-align-left')= preview.ai ? '✦' : ''
+                        span(data-preview-label)= preview.ai ? __('ai_summary.label') : __('ai_summary.original_excerpt')
+                    if preview.versions.length
+                        - const selectedVersion = preview.versions[preview.defaultIndex]
+                        span.article-preview-model
+                            i.ic(class=summary_model_icon(selectedVersion.model) aria-hidden="true")
+                            select(data-summary-select aria-label=__('ai_summary.choose_model'))
+                                each version, index in preview.versions
+                                    option(value=String(index) selected=(index === preview.defaultIndex) data-preference=version.id data-icon=summary_model_icon(version.model) data-tooltip=__('ai_summary.by_model', version.model || __('ai_summary.unknown_model')))= summary_model_label(version.model, page.lang || config.language, preview.versions) || __('ai_summary.unknown_model')
+                                if preview.original
+                                    option(value="original" data-preference="original" data-icon="i-align-left" data-tooltip=__('ai_summary.original_hint'))= __('ai_summary.original_excerpt')
+                each version, index in preview.versions
+                    p(data-summary-version=String(index) hidden=index !== preview.defaultIndex)= version.text
+                if preview.original
+                    p(data-summary-version="original" hidden=preview.ai)= preview.original

@@ -2,9 +2,10 @@ import { postImageViewer } from './imageviewer'
 import { refreshPostMedia } from './image-media'
 import { clipBoard, showtip } from '../globals/tools'
 import { BODY } from '../globals/globalVars'
-import { pageScroll, transition } from '../library/anime'
-import { getDisplay, setDisplay, wrapObject } from '../library/proto'
+import { pageScroll } from '../library/anime'
+import { wrapObject } from '../library/proto'
 import { refreshCodeBlocks } from '../components/codeblock'
+import { refreshRewards } from '../components/reward'
 
 const enhanced = new WeakSet<Element>()
 let codeObserver: IntersectionObserver | undefined
@@ -13,6 +14,7 @@ export const postBeauty = async () => {
   codeObserver?.disconnect()
   refreshPostMedia()
   refreshCodeBlocks()
+  refreshRewards()
 
   if (!document.querySelector('.md')) { postImageViewer('.post.block'); return }
 
@@ -155,24 +157,6 @@ export const postBeauty = async () => {
   document.querySelectorAll('pre.mermaid > svg').forEach((element) => {
     const temp = <SVGAElement><unknown>element
     temp.style.maxWidth = ''
-  })
-
-  document.querySelectorAll('.reward button').forEach((element) => {
-    if (enhanced.has(element)) return
-    enhanced.add(element)
-    element.addEventListener('click', (event) => {
-      event.preventDefault()
-      const qr = document.getElementById('qr')
-      if (!qr) return
-      element.setAttribute('aria-expanded', String(getDisplay(qr) !== 'inline-flex'))
-      if (getDisplay(qr) === 'inline-flex') {
-        transition(qr, 0)
-      } else {
-        transition(qr, 1, () => {
-          setDisplay(qr, 'inline-flex')
-        }) // slideUpBigIn
-      }
-    })
   })
 
   // quiz

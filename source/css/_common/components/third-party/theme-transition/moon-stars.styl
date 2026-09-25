@@ -1,0 +1,109 @@
+// Inspired by https://blog.lavender816.top/resources/; adapted to ShokaX's
+// pink palette and the shared transition lifecycle (no remote assets).
+.theme-moon-stars {
+  @extend $fix-fullscreen;
+  overflow: hidden;
+  pointer-events: none;
+  --theme-glow: rgba(232, 153, 198, .55);
+  background: radial-gradient(circle at var(--theme-x) var(--theme-y), rgba(210, 127, 181, .38), transparent 25rem), linear-gradient(145deg, #191b2c, #32243d 55%, #1c2435);
+  clip-path: circle(0 at var(--theme-x) var(--theme-y));
+  will-change: clip-path, opacity;
+
+  &.to-light {
+    background: radial-gradient(circle at var(--theme-x) var(--theme-y), rgba(255, 211, 231, .8), transparent 24rem), linear-gradient(145deg, #fff9fc, #f8eef8 48%, #edf7ff);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 46vmax;
+    height: 46vmax;
+    left: calc(var(--theme-x) - 23vmax);
+    top: calc(var(--theme-y) - 23vmax);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .18);
+    box-shadow: 0 0 0 8vmax rgba(255, 255, 255, .025), 0 0 0 16vmax rgba(237, 153, 198, .025);
+    animation: theme-stars-ring .72s .08s ease-out both;
+  }
+}
+
+.theme-moon-stars__orb {
+  position: absolute;
+  left: var(--theme-x);
+  top: var(--theme-y);
+  width: 4.6rem;
+  height: 4.6rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .34);
+  box-shadow: 0 0 2.8rem var(--theme-glow), inset 0 0 1.2rem rgba(255, 255, 255, .16);
+  animation: theme-stars-orb .58s .05s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.theme-moon-stars__symbol {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+
+  .to-dark & {
+    background: #f5e5ff;
+    box-shadow: 0 0 1.35rem rgba(231, 181, 255, .82);
+    &::after {
+      content: '';
+      position: absolute;
+      width: 1.72rem;
+      height: 1.72rem;
+      left: .52rem;
+      top: -.32rem;
+      border-radius: 50%;
+      background: #32243d;
+    }
+  }
+
+  .to-light & {
+    background: #ffd66f;
+    box-shadow: 0 0 0 .38rem rgba(255, 214, 111, .16), 0 0 1.25rem rgba(255, 197, 76, .72);
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      inset: -.65rem;
+      border-radius: 50%;
+      border: .12rem dotted rgba(255, 224, 137, .9);
+    }
+    &::after { inset: -.38rem; border-style: dashed; opacity: .58; }
+  }
+}
+
+.theme-moon-stars__spark {
+  position: absolute;
+  left: var(--theme-x);
+  top: var(--theme-y);
+  width: .38rem;
+  height: .38rem;
+  margin: -.19rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 .85rem var(--theme-glow);
+  animation: theme-stars-spark .68s calc(var(--i) * .025s) cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes theme-stars-ring {
+  from { opacity: 0; transform: scale(.12); }
+  to { opacity: .55; transform: scale(1.15); }
+}
+
+@keyframes theme-stars-orb {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-28deg); }
+  48% { opacity: 1; transform: translate(-50%, -50%) scale(1.08) rotate(6deg); }
+  100% { opacity: .82; transform: translate(-50%, -50%) scale(.88) rotate(0); }
+}
+
+@keyframes theme-stars-spark {
+  0% { opacity: 0; transform: rotate(calc(var(--i) * 60deg)) translateY(-.7rem) scale(.2); }
+  30% { opacity: .95; }
+  100% { opacity: 0; transform: rotate(calc(var(--i) * 60deg)) translateY(-5.2rem) scale(1); }
+}

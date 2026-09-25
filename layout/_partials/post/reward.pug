@@ -1,18 +1,108 @@
-if page.reward !== false
-    div(class="reward")
-        button(type="button" aria-expanded="false" aria-controls="qr")
-            i(class="ic i-heartbeat")
-            != __('reward.donate')
-        p
-            != __('reward.text')
-        div(id="qr")
-            each image, name  in theme.reward.account
-                - var builtin = ['wechatpay', 'alipay', 'paypal', 'bitcoin']
-                if builtin.includes(name)
-                    - var translation = __('reward.' + name)
-                else
-                    - var translation = name
-                div(data-reward-method=name)
-                    img(loading="lazy" src=`${url_for(theme.statics + theme.assets + image) }` alt=`${ author } ${ translation }`)
-                    p
-                        != translation
+- const rewardAccounts = Object.entries(theme.reward.account || {}).filter(([, image]) => typeof image === 'string' && image.trim())
+- const rewardAuthor = author || config.author
+- const rewardBrand = theme.reward.brand || config.title
+- const rewardLabel = name => ['wechatpay', 'alipay', 'paypal', 'bitcoin'].includes(name) ? __('reward.' + name) : name
+- const rewardIcons = { wechatpay: 'i-wechat', wechat: 'i-wechat', alipay: 'i-alipay', paypal: 'i-paypal' }
+if page.reward !== false && rewardAccounts.length
+    section.reward#reward-heading(aria-label=__('reward.title') data-reward-card)
+        .reward-backdrop(aria-hidden="true")
+            svg(viewBox="0 0 1000 400" fill="none" preserveAspectRatio="xMidYMid slice" focusable="false")
+                g(stroke="currentColor" stroke-width=".8")
+                    ellipse(cx="500" cy="200" rx="475" ry="118" transform="rotate(-12 500 200)")
+                    ellipse(cx="500" cy="200" rx="445" ry="155" transform="rotate(14 500 200)")
+                    ellipse(cx="500" cy="200" rx="390" ry="180" transform="rotate(-24 500 200)")
+                    path(d="M-30 310C170 370 330 55 580 80S845 315 1030 140M-30 100C220 10 345 340 620 315S875 80 1030 100")
+                g(fill="currentColor")
+                    circle(cx="130" cy="140" r="2")
+                    circle(cx="186" cy="310" r="2.5")
+                    circle(cx="820" cy="90" r="2")
+                    circle(cx="885" cy="270" r="2.5")
+                    path(d="m170 205 2.5 7.5 7.5 2.5-7.5 2.5-2.5 7.5-2.5-7.5-7.5-2.5 7.5-2.5Zm665-45 2 6 6 2-6 2-2 6-2-6-6-2 6-2Z")
+        .reward-wallet
+            .reward-flipper
+                .reward-face.reward-front(data-reward-front)
+                    .reward-card-header
+                        span.reward-brand
+                            span.reward-star(aria-hidden="true") ✦
+                            span= rewardBrand
+                        span.reward-eyebrow= __('reward.eyebrow')
+                    .reward-chip(aria-hidden="true")
+                        svg(viewBox="0 0 56 42" fill="none")
+                            defs
+                                linearGradient#reward-chip-metal(x1="0" y1="0" x2="1" y2="1")
+                                    stop(offset="0%" stop-color="#f9dad2")
+                                    stop(offset="45%" stop-color="#dda0a6")
+                                    stop(offset="70%" stop-color="#f7c8c4")
+                                    stop(offset="100%" stop-color="#c38191")
+                            rect(x="1" y="1" width="54" height="40" rx="8")
+                            path(d="M19 1v40M37 1v40M1 14h18m18 0h18M1 28h18m18 0h18M19 9h18v24H19")
+                        svg.reward-contactless(viewBox="0 0 24 32" fill="none")
+                            path(d="M5 11a12 12 0 0 1 0 10M11 6a22 22 0 0 1 0 20M17 1a32 32 0 0 1 0 30")
+                    svg.reward-constellation(viewBox="0 0 280 230" fill="none" aria-hidden="true")
+                        g(stroke="currentColor" stroke-width=".65")
+                            ellipse(cx="142" cy="105" rx="121" ry="40" transform="rotate(-27 142 105)")
+                            ellipse(cx="142" cy="105" rx="108" ry="53" transform="rotate(-42 142 105)")
+                            path(d="M57 137c41-82 174-67 146-125M126 189c-17-17-39-24-64-23l17 31c18-3 31-1 48 5 17-11 35-17 58-15l21-31c-31-1-58 12-80 33Zm0 0 1 13M70 176c20-1 34 5 46 13m-40-5c16 0 29 5 41 12m18-8c18-13 38-20 58-23m-57 29c17-12 33-16 48-19")
+                        g(fill="currentColor")
+                            path(d="m150 65 3 10 10 3-10 3-3 10-3-10-10-3 10-3Zm-57 51 2 6 6 2-6 2-2 6-2-6-6-2 6-2Zm119-11 2 7 7 2-7 2-2 7-2-7-7-2 7-2Z")
+                            circle(cx="110" cy="62" r="1.4")
+                            circle(cx="198" cy="47" r="1.2")
+                            circle(cx="66" cy="149" r="1.4")
+                            circle(cx="226" cy="137" r="1.2")
+                    .reward-card-copy
+                        p.reward-title= __('reward.title')
+                        p.reward-description= __('reward.description')
+                    .reward-card-footer
+                        .reward-author
+                            span= __('reward.author')
+                            strong= rewardAuthor
+                        button.reward-support(type="button" data-reward-open aria-expanded="false" aria-controls="reward-back")
+                            i.ic.i-heart(aria-hidden="true")
+                            span= __('reward.support')
+                .reward-face.reward-back#reward-back(data-reward-back inert aria-hidden="true")
+                    .reward-card-header
+                        span.reward-brand
+                            span.reward-star(aria-hidden="true") ✦
+                            span= rewardBrand
+                        button.reward-return(type="button" data-reward-return)
+                            i.ic.i-chevrons-left(aria-hidden="true")
+                            span= __('reward.back')
+                    .reward-payment-layout
+                        .reward-payment-copy
+                            p.reward-thanks= __('reward.thanks')
+                            p.reward-recipient= rewardAuthor
+                            .reward-methods(role="tablist" aria-label=__('reward.methods'))
+                                each account, index in rewardAccounts
+                                    - const [name] = account
+                                    button.reward-method(class=rewardIcons[name] ? 'reward-method-icon' : null type="button" role="tab" id='reward-tab-' + index aria-label=rewardLabel(name) title=rewardLabel(name) aria-selected=index === 0 ? 'true' : 'false' aria-controls='reward-panel-' + index tabindex=index === 0 ? '0' : '-1' data-reward-method=name)
+                                        if rewardIcons[name]
+                                            i.ic(class=rewardIcons[name] aria-hidden="true")
+                                        else
+                                            span= rewardLabel(name)
+                            p.reward-scan(data-reward-scan)= __('reward.scan', rewardLabel(rewardAccounts[0][0]))
+                        .reward-codes
+                            each account, index in rewardAccounts
+                                - const [name, image] = account
+                                - const label = rewardLabel(name)
+                                - const imageUrl = url_for(theme.statics + theme.assets + image)
+                                .reward-code-panel(role="tabpanel" id='reward-panel-' + index aria-labelledby='reward-tab-' + index hidden=index !== 0 data-reward-panel data-label=label data-scan=__('reward.scan', label))
+                                    button.reward-qr(type="button" data-reward-zoom aria-label=__('reward.enlarge', label) aria-haspopup="dialog")
+                                        img(src=imageUrl alt=rewardAuthor + ' · ' + label loading="eager" decoding="async" width="256" height="256")
+                                    button.reward-retry(type="button" data-reward-retry hidden)= __('reward.retry')
+                                    span.reward-zoom-hint= __('reward.zoom')
+                    .reward-back-footer
+                        span= __('reward.note')
+                        span(aria-hidden="true") ✦
+        dialog.reward-dialog(aria-labelledby="reward-dialog-title" data-reward-dialog)
+            .reward-dialog-header
+                div
+                    p#reward-dialog-title(data-reward-dialog-title)
+                    p.reward-recipient= rewardAuthor
+                button.reward-close(type="button" data-reward-close aria-label=__('reward.close')) ×
+            img.reward-dialog-image(data-reward-dialog-image alt="")
+            p.reward-dialog-scan(data-reward-dialog-scan)
+            p.reward-save-hint= __('reward.save_hint')
+        noscript
+            p.reward-fallback
+                each account in rewardAccounts
+                    a(href=url_for(theme.statics + theme.assets + account[1]) target="_blank" rel="noopener")= rewardLabel(account[0])

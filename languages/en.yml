@@ -12,10 +12,14 @@ code_block:
   collapse: "Collapse code"
 
 music:
-  lyrics_glyph: LRC
+  pending: Waiting to load
+  close: Close music panel
+  seek: Seek playback position
+  visualizer_enable: Enable music visualization
+  visualizer_disable: Disable music visualization
   lyrics_enable: Enable desktop lyrics
   lyrics_disable: Disable desktop lyrics
-  lyrics_close: Collapse the desktop lyrics controller. Enable it again with the player's LRC button.
+  lyrics_close: "Collapse desktop lyrics. Reopen with the player’s {icon:i-desktop-lyrics-on} button."
   next: Next track
   volume: Volume
   mute: Mute
@@ -32,8 +36,8 @@ reading_tools:
   tag: "Explore the %s tag? There are %s articles under this tag."
   show: Show Live2D
   hide: Hide Live2D
-  traditional: Convert article to Traditional Chinese
-  simplified: Restore original article
+  traditional: Convert content to Traditional Chinese
+  simplified: Restore original content
   error: Loading failed; click to retry
 
 image_viewer:
@@ -222,6 +226,21 @@ symbol:
   month: "M"
 
 reward:
+  eyebrow: PERSONAL NOTES
+  author: AUTHOR
+  title: "Support"
+  description: "This page ends. The story continues."
+  retry: "Image unavailable. Click to retry."
+  support: "Support my work"
+  back: "Back to card"
+  thanks: "Thank you for your support"
+  methods: "Payment method"
+  scan: "Scan with %s"
+  enlarge: "Enlarge %s payment code"
+  zoom: "Click to enlarge"
+  note: "Your kindness means a lot"
+  close: "Close payment code"
+  save_hint: "Long-press or right-click to save"
   donate: Donate
   text: Give me a cup of [coffee]~(￣▽￣)~*
   wechatpay: WeChat Pay
@@ -233,6 +252,7 @@ follow_me:
   welcome: Welcome to my other publishing channels
 
 accessibility:
+  theme_toggle: Toggle light/dark mode
   nav_toggle: Toggle navigation bar
   prev_page: Previous page
   next_page: Next page
@@ -263,6 +283,11 @@ tagcloud:
   flat: "2D · List"
   sphere: "3D · Sphere"
   empty: "No tags yet."
+
+tag_view:
+  view: "Tag article view"
+  classic: "Classic list"
+  preview: "Preview summary of %s"
 
 archive_view:
   show_all: "Show all %s posts"
@@ -499,6 +524,14 @@ festival_preview:
     xiaohan: "Minor Cold"
     dahan: "Major Cold"
 bookmark_view:
+  loading: "Searching bookmarks…"
+  fallback: "Index unavailable; using local matching"
+  search: "Search bookmarks"
+  placeholder: "Search names, uses or URLs…"
+  hint: "Multiple words, aliases and English typo tolerance"
+  clear: "Clear search"
+  results: "%s of %s bookmarks found"
+  empty: "No bookmarks found. Try another use or a shorter search."
   label: Bookmark view
   cards: Classic cards
   axis: Category timeline
@@ -507,3 +540,53 @@ category_view:
   label: Category view
   cards: Category cards
   classic: Classic list
+article_graph:
+  count: "%s related"
+  title: "Linked notes"
+  description: "Keep reading through references."
+  show_graph: "Show graph"
+  zoom_in: "Zoom in"
+  zoom_out: "Zoom out"
+  reset: "Reset view"
+  expand: "Expand graph"
+  help: "Drag to pan · Ctrl / ⌘ + scroll to zoom · Select a node to read"
+  legend: "Graph legend"
+  current: "This article"
+  incoming: "Links here"
+  outgoing: "Links from here"
+  mutual: "Mutual links"
+  limit: "Showing %s of %s articles. All references are listed below."
+  references: "References"
+  empty: "None yet"
+  close: "Close graph"
+  load: "Draw graph"
+  loading: "Drawing…"
+  retry: "Could not load. Retry, or use the reference lists below."
+
+related_reading:
+  title: "Continue reading"
+  description: "Discover more articles on related topics."
+
+service_status:
+  checking: "Checking…"
+  up: "Operational"
+  down: "Issue detected"
+  unknown: "Unable to check"
+  stale: "Result expired"
+  refresh: "Check again"
+  updated: "Last checked"
+  browser: "Checked from your browser · reflects your current network"
+  server: "Checked by the server · reflects its network"
+  fallback: "Collector unavailable; checking from your browser"
+  ok: "Check passed"
+  http: "HTTP error"
+  invalid: "Unexpected response content"
+  oversize: "Response too large"
+  timeout: "Request timed out"
+  network: "Network, CORS or connection restriction"
+  empty: "Not checked yet"
+  noscript: "Enable JavaScript to check live status."
+  intro: "Current availability of this blog and its connected services."
+  notice: "These are point-in-time checks, not a guarantee for all regions. An unknown result does not mean an outage. Results expire after two minutes; check again to refresh."
+  summary: "{up} operational · {down} issues · {unknown} unconfirmed"
+  latency: "Response time"

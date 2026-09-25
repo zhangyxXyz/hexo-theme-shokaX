@@ -113,7 +113,7 @@ class SummaryDatabase {
 
   async writeDB () {
     if (this.fileChanged) {
-      await fs.writeFile('summary.json', JSON.stringify(this.data))
+      await fs.writeFile('summary.json', JSON.stringify(this.data, null, 4) + '\n')
     }
   }
 

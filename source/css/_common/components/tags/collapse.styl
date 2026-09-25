@@ -1,13 +1,14 @@
-::-webkit-details-marker {
+// PJAX retains post.css: article folds must not style directory/preview details.
+.md details > summary::-webkit-details-marker {
   display: none;
 }
 
-details{
+.md details {
   > summary:first-of-type {
     list-style-type: none;
   }
 
-  summary {
+  > summary {
     outline: none;
     cursor: pointer;
     padding: .625rem;
@@ -29,7 +30,7 @@ details{
 
   &.primary, &.info, &.success, &.warning, &.danger {
     margin: 0 0 .8rem;
-    summary {
+    > summary {
       color: var(--note-text);
       &::before {
         color: var(--note-text);
@@ -38,12 +39,12 @@ details{
   }
 }
 
-details[open] {
+.md details[open] {
   background: var(--note-bg, none);
   border-radius: .25rem;
   color: var(--grey-6);
 
-  summary {
+  > summary {
     background: var(--note-hover, var(--grey-2));
     border-radius: .25rem;
 

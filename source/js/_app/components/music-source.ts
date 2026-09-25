@@ -34,20 +34,81 @@ export async function requestMusic(url: string, request: typeof fetch, apiKey: s
   }
 }
 
+const pendingRestarts = new WeakMap<HTMLAudioElement, () => void>()
+
+export function cancelMusicRestart(audio: HTMLAudioElement) {
+  pendingRestarts.get(audio)?.()
+}
+
+export function isMusicRestartPending(audio: HTMLAudioElement) {
+  return pendingRestarts.has(audio)
+}
+
+function protectMusicRestart(audio: HTMLAudioElement) {
+  cancelMusicRestart(audio)
+  const source = audio.src
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const cancel = () => {
+    clearTimeout(timer)
+    audio.removeEventListener('playing', onPlaying)
+    pendingRestarts.delete(audio)
+  }
+  const onPlaying = () => {
+    if (audio.currentSrc !== source || audio.readyState < 1 || timer !== undefined) return
+    const started = performance.now()
+    // Media enhancement scripts can restore a saved position in their playing
+    // listener, after load() has reset the clock. Check after those listeners.
+    timer = setTimeout(() => {
+      cancel()
+      if (audio.currentSrc !== source || audio.readyState < 1) return
+      const elapsed = (performance.now() - started) / 1000 * Math.abs(audio.playbackRate || 1)
+      if (audio.currentTime > elapsed + .5) {
+        try { audio.currentTime = 0 } catch { /* The source may have become unavailable. */ }
+      }
+    }, 0)
+  }
+  pendingRestarts.set(audio, cancel)
+  audio.addEventListener('playing', onPlaying)
+}
+
 export function resetMusicSource(audio: HTMLAudioElement) {
+  protectMusicRestart(audio)
   // A new song must not inherit the reused element's previous playhead.
   // load() also cancels requests/play promises belonging to the old source.
   try { audio.currentTime = 0 } catch { /* Metadata may not be ready yet. */ }
+  audio.crossOrigin = 'anonymous'
   audio.load()
 }
 
+const reportedPlaybackErrors = new WeakSet<HTMLAudioElement>()
+export async function handleMusicError(audio: HTMLAudioElement, pause: () => void): Promise<void> {
+  if (audio.crossOrigin === 'anonymous') {
+    audio.removeAttribute('crossorigin')
+    audio.load()
+    return playMusic(audio, pause)
+  }
+  if (reportedPlaybackErrors.has(audio)) return
+  cancelMusicRestart(audio)
+  reportedPlaybackErrors.add(audio)
+  pause()
+  audio.dispatchEvent(new Event('shokax:music-error', { bubbles: true }))
+}
+
 export async function playMusic(audio: HTMLAudioElement, pause: () => void): Promise<void> {
+  reportedPlaybackErrors.delete(audio)
+  const url = audio.src
+  const cors = audio.crossOrigin === 'anonymous'
   try { await audio.play() }
   catch (error) {
     // Changing tracks can abort a pending play; don't pause the new track.
     if (error instanceof DOMException && error.name === 'AbortError') return
-    pause()
-    audio.dispatchEvent(new Event('shokax:music-error', { bubbles: true }))
+    if (audio.src !== url) return
+    if (cors) {
+      // Prefer analysable media, but preserve playback for providers without
+      // CORS. Concurrent play promises must not report the abandoned attempt.
+      if (audio.crossOrigin !== 'anonymous') return
+    }
+    return handleMusicError(audio, pause)
   }
 }
 
@@ -126,6 +187,27 @@ export function musicApiUrl(api: string, source: string): string {
   return url.href
 }
 
+export class EmptyMusicSourceError extends Error {
+  constructor() { super('Music source returned no playable songs'); this.name = 'EmptyMusicSourceError' }
+}
+
+export async function fetchMusicSongs(source: string, api: string, request: typeof fetch = fetch, apiKey = ''): Promise<MusicSong[]> {
+  const response = await requestMusic(musicApiUrl(api, source), request, apiKey)
+  if (!response.ok) throw new Error(`Music API returned HTTP ${response.status}`)
+  const data: unknown = await response.json()
+  if (!Array.isArray(data)) throw new Error('Music API must return a song array')
+  const songs: MusicSong[] = data.flatMap(song => {
+    if (!song || typeof song !== 'object') return []
+    const name = song.title ?? song.name
+    const artist = song.author ?? song.artist
+    if (typeof name !== 'string' || typeof song.url !== 'string' || !/^https?:\/\//.test(song.url)) return []
+    return [{ name, artist: typeof artist === 'string' ? artist : '', url: song.url,
+      pic: typeof song.pic === 'string' ? song.pic : '', lrc: typeof song.lrc === 'string' ? song.lrc : '' }]
+  })
+  if (!songs.length) throw new EmptyMusicSourceError()
+  return songs
+}
+
 export async function prepareMusic(
   groups: { title: string; list: string[] }[],
   api: string,
@@ -140,19 +222,7 @@ export async function prepareMusic(
     while (cursor < jobs.length) {
       const { source, groupIndex, sourceIndex } = jobs[cursor++]
       try {
-        const response = await requestMusic(musicApiUrl(api, source), request, apiKey)
-        if (!response.ok) throw new Error(`Music API returned HTTP ${response.status}`)
-        const data: unknown = await response.json()
-        if (!Array.isArray(data)) throw new Error('Music API must return a song array')
-        const songs: MusicSong[] = data.flatMap(song => {
-          if (!song || typeof song !== 'object') return []
-          const name = song.title ?? song.name
-          const artist = song.author ?? song.artist
-          if (typeof name !== 'string' || typeof song.url !== 'string' || !/^https?:\/\//.test(song.url)) return []
-          return [{ name, artist: typeof artist === 'string' ? artist : '', url: song.url,
-            pic: typeof song.pic === 'string' ? song.pic : '', lrc: typeof song.lrc === 'string' ? song.lrc : '' }]
-        })
-        if (!songs.length) throw new Error('Music source returned no playable songs')
+        const songs = await fetchMusicSongs(source, api, request, apiKey)
         results[groupIndex][sourceIndex] = songs
       } catch (error) {
         failed.push(source)

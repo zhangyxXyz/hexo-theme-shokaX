@@ -1,11 +1,11 @@
 // Share the dimensions of directory view switches, independent of content.
-.category-directory, .tag-directory, .archive-page .archive-overview {
+.category-directory, .tag-directory, .archive-page .archive-overview, .tag-detail-overview {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
 }
 .category-directory > .item.title, .tag-directory > .item.title,
-.archive-page .archive-heading {
+.archive-page .archive-heading, .tag-detail-heading {
   grid-column: 1;
   grid-row: 1;
   min-width: 0;
@@ -19,7 +19,8 @@
 .category-directory .category-controls,
 .tag-directory .tag-cloud-controls,
 .archive-page .archive-view-controls,
-.bookmark-directory .bookmark-controls {
+.bookmark-directory .bookmark-controls,
+.tag-detail-page .tag-detail-controls {
   position: static;
   grid-column: 2;
   grid-row: 1;

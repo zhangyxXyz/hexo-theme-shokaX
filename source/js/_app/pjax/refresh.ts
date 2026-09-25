@@ -8,6 +8,7 @@ import { createScrollRestoration, scrollDestination } from './scroll-restoration
 import { menuActive, sideBarTab, sidebarTOC } from '../components/sidebar'
 import { Loader } from '../globals/thirdparty'
 import { refreshArticleInfo } from '../components/article-info'
+import { refreshArticleGraph } from '../components/article-graph'
 import { refreshChangelog } from '../components/changelog'
 import { tabFormat } from '../page/tab'
 import { refreshHitokoto } from '../components/hitokoto'
@@ -18,6 +19,7 @@ import { refreshReadingTools } from '../components/reading-tools'
 import { refreshVisitors } from '../components/visitors'
 import { refreshFestival } from '../components/festival'
 import { refreshTagCloud } from '../components/tagcloud'
+import { refreshArticlePreviews } from '../components/article-preview'
 import { refreshCategoryDirectory } from '../components/category-directory'
 import { refreshBookmarks } from '../components/bookmarks'
 import { refreshArchive } from '../components/archive'
@@ -25,6 +27,7 @@ import { refreshSummarySwitch } from '../components/summary-switch'
 import { postBeauty } from '../page/post'
 import { refreshArticleRelock } from '../components/article-relock'
 import { refreshStatistics } from '../components/statistics'
+import { refreshServiceStatus } from '../components/service-status'
 import { refreshIconPreview } from '../components/icon-preview'
 import { refreshTooltips } from '../components/tooltip'
 import { refreshSidebarMenu } from '../components/sidebar-menu'
@@ -101,15 +104,18 @@ export const siteRefresh = async (reload, restoredPosition?: [number, number], i
   refreshReadingTools()
   refreshFestival()
   refreshTagCloud()
+  refreshArticlePreviews()
   refreshCategoryDirectory()
   refreshBookmarks()
   refreshArchive()
   refreshStatistics()
+  refreshServiceStatus()
   refreshIconPreview()
   refreshSummarySwitch()
   refreshArticleInfo()
   refreshChangelog()
   setLocalUrl(window.location.href)
+  refreshArticleGraph()
   refreshArticleRelock()
   void refreshHitokoto()
 

@@ -96,6 +96,7 @@ interface configType {
     hidden: string
   }
   darkmode: boolean
+  theme_transition?: string
   auto_dark: {
     enable: boolean
     start: number
@@ -117,6 +118,7 @@ interface configType {
   search: any,
   waline: {
     relativeTimeDays: number
+    hideAdminLevel: boolean
     levelColors: Record<string, { light?: Record<string, string>; dark?: Record<string, string> }>
     labelColors: Record<string, { light?: Record<string, string>; dark?: Record<string, string> }>
     friendUrls: string[]

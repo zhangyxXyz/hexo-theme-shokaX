@@ -1,0 +1,47 @@
+extends page.pug
+
+block head
+    != _css('page.css')
+
+block content
+    - const settings = site.data.service_status || { groups: [] }
+    - const labels = ['checking', 'up', 'down', 'unknown', 'stale', 'refresh', 'updated', 'browser', 'server', 'fallback', 'ok', 'http', 'invalid', 'oversize', 'timeout', 'network', 'empty', 'noscript', 'intro', 'notice', 'summary', 'latency']
+    - const messages = Object.fromEntries(labels.map(key => [key, __('service_status.' + key)]))
+    section.service-status.wrap(data-service-status data-settings=JSON.stringify(settings) data-messages=JSON.stringify(messages) aria-labelledby='service-status-title')
+        .status-intro
+            p.status-eyebrow SERVICE STATUS
+            h2#service-status-title= page.title
+            p= messages.intro
+        .status-overview
+            .status-overview-copy
+                strong(data-status-summary role='status' aria-live='polite')= messages.empty
+                p(data-status-mode)= settings.endpoint ? messages.server : messages.browser
+            button.status-refresh(type='button' data-status-refresh)
+                i.ic.i-refresh(aria-hidden='true')
+                span= messages.refresh
+        .status-timestamp
+            span= messages.updated + ' '
+            time(data-status-updated) —
+        .status-tree
+            each group in settings.groups
+                section.status-group
+                    h3.status-group-heading
+                        span= group.name
+                    .status-list
+                        each service, index in group.services
+                            article.status-service(class=index % 2 ? 'is-right' : '' style='--status-row: ' + (Math.floor(index / 2) + 1) data-status-id=service.id data-state='unknown')
+                                span.status-service-node(aria-hidden='true')
+                                header.status-service-heading
+                                    h4= service.name
+                                    span.status-badge(data-status-state)= messages.empty
+                                p.status-service-description= service.description
+                                a.status-service-host(href=service.url target='_blank' rel='noopener' title=service.url)= new URL(service.url).hostname
+                                .status-service-result
+                                    span.status-latency(data-status-latency) —
+                                    span.status-detail(data-status-detail)
+        p.status-notice= messages.notice
+        noscript
+            p= messages.noscript
+
+block sidebar
+    +sidebarRender(false)

@@ -1,4 +1,6 @@
+import { articlePreviewTarget } from './article-preview-links'
 import { pointerTooltipPosition } from './tooltip-position'
+import { renderTooltipContent, tooltipPlainText } from './tooltip-content'
 
 let cleanup: (() => void) | undefined
 
@@ -54,7 +56,7 @@ export function refreshTooltips() {
     if (title === null || element.closest('.contents.panel, [data-native-tooltip], .wl-panel, .twikoo')) return
     saved.set(element, title)
     if (named.has(element) || (!element.hasAttribute('aria-label') && !element.hasAttribute('aria-labelledby') && !element.textContent?.trim() && !element.querySelector('img[alt]'))) {
-      element.setAttribute('aria-label', title)
+      element.setAttribute('aria-label', tooltipPlainText(title))
       named.add(element)
     }
     element.dataset.themeTooltip = title
@@ -72,8 +74,7 @@ export function refreshTooltips() {
       else record.addedNodes.forEach(scan)
     }
     if (active && !active.isConnected) hide()
-    if (active && tip.textContent !== active.dataset.themeTooltip) {
-      tip.textContent = active.dataset.themeTooltip || ''
+    if (active && renderTooltipContent(tip, active.dataset.themeTooltip || '')) {
       position()
     }
   })
@@ -81,7 +82,7 @@ export function refreshTooltips() {
   const show = (element: HTMLElement, immediate: boolean, point?: { x: number; y: number }) => {
     if (active === element) { pointer = point; position(); return }
     hide()
-    if (!element.dataset.themeTooltip?.trim()) return
+    if (!element.dataset.themeTooltip?.trim() || articlePreviewTarget(element)) return
     active = element
     pointer = point
     const requestedDelay = Number(element.dataset.tooltipDelay ?? 180)
@@ -91,7 +92,7 @@ export function refreshTooltips() {
       // A tooltip for a modal must render inside that dialog's top layer.
       const host = element.closest('dialog[open]') || document.body
       if (tip.parentElement !== host) host.append(tip)
-      tip.textContent = element.dataset.themeTooltip || ''
+      renderTooltipContent(tip, element.dataset.themeTooltip || '')
       tip.hidden = false
       const ids = (element.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)
       element.setAttribute('aria-describedby', [...new Set([...ids, tip.id])].join(' '))
@@ -128,7 +129,7 @@ export function refreshTooltips() {
     tip.remove()
     saved.forEach((title, element) => {
       if (!element.hasAttribute('title')) element.setAttribute('title', title)
-      if (named.has(element) && element.getAttribute('aria-label') === title) element.removeAttribute('aria-label')
+      if (named.has(element) && element.getAttribute('aria-label') === tooltipPlainText(title)) element.removeAttribute('aria-label')
       delete element.dataset.themeTooltip
     })
   }

@@ -162,6 +162,7 @@ input, textarea {
 }
 
 .ic {
+  --icon-baseline: var(--icon-baseline-default, 0em);
   font-family: "ic" !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -174,6 +175,12 @@ input, textarea {
   line-height: 1;
   align-items: center;
   justify-content: center;
+  vertical-align: baseline;
+  // Move only the glyph, preserving line height, hit areas and icon animations.
+  &::before {
+    position: relative;
+    top: var(--icon-baseline);
+  }
 }
 
 .ic em {
@@ -183,24 +190,74 @@ input, textarea {
 .ic-lg {
   font-size: 1.33333em;
   line-height: .75em;
-  vertical-align: -.0667em;
 }
 // Theme adapter for the unmodified remote Live2D widget.
 #waifu.shokax-live2d {
-  left: 4.5rem;
+  // Follow #tool: opposite the configured sidebar, on the right on mobile.
+  --live2d-edge: 4.5rem;
+  if (hexo-config('sidebar.position') == 'left') {
+    left: auto;
+    right: var(--live2d-edge);
+  } else {
+    left: var(--live2d-edge);
+    right: auto;
+  }
+  +desktop-large() { --live2d-edge: 5.5rem; }
+  +tablet-mobile() {
+    left: auto;
+    right: var(--live2d-edge);
+  }
   z-index: 10;
+  // Keep the adjacent capsule aligned with #tool, including on hover.
+  transform: none;
+  &:hover { transform: none; }
   #waifu-tips, #shokax-waifu-tips { color: var(--text-color, #444); }
   &.has-theme-tip #waifu-tips { visibility: hidden; }
-  #waifu-tool { right: 20px; top: 65px; }
+  #live2d {
+    width: unquote('min(300px, calc(100vw - var(--live2d-edge)))');
+    height: unquote('min(300px, calc(100vw - var(--live2d-edge)))');
+  }
+  #waifu-tool {
+    // Keep this inside the widget so its visibility and actions stay in sync.
+    top: auto;
+    bottom: 10px;
+    width: 1.875rem;
+    opacity: 0;
+    transition: opacity .2s;
+    border-radius: .3125rem;
+    box-shadow: 0 0 .5rem rgba(0,0,0,.1);
+    background: var(--grey-1-a3);
+    if (hexo-config('sidebar.position') == 'left') {
+      left: auto;
+      right: -2rem;
+    } else {
+      left: -2rem;
+      right: auto;
+    }
+    +desktop-large() { bottom: calc(10px + 1rem); }
+    +tablet-mobile() {
+      left: auto;
+      right: -2rem;
+    }
+  }
+  &:hover #waifu-tool, #waifu-tool:focus-within { opacity: 1; }
   #waifu-tool .ic {
-    color: #c66677;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 1.875rem;
+    color: var(--primary-color);
+    opacity: .5;
     cursor: pointer;
-    transition: color .3s;
-    &:hover { color: #0684bd; }
+    transition: opacity .2s;
+    &:hover { opacity: .9; }
   }
 }
+body:has(#tool:hover) #waifu.shokax-live2d #waifu-tool { opacity: 1; }
 #shokax-waifu-tips {
-  position: fixed;
+  position: absolute;
+  &[popover] { position: fixed; }
   inset: auto;
   margin: 0;
   width: 250px;
@@ -227,7 +284,7 @@ input, textarea {
   background-color: rgba(35, 35, 35, .94);
 }
 @media (prefers-reduced-motion: reduce) {
-  #waifu.shokax-live2d, #waifu.shokax-live2d #waifu-tips { animation: none; transition: none; }
+  #waifu.shokax-live2d, #waifu.shokax-live2d #waifu-tips, #waifu.shokax-live2d #waifu-tool { animation: none; transition: none; }
 }
 //.weather {
 //      color: var(--text-color) !important;

@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url'
 import vm from 'node:vm'
 import { transform } from 'esbuild'
 import { load } from 'js-yaml'
-import { url_for } from 'hexo-util'
+import hexoUtil from 'hexo-util'
+const { url_for } = hexoUtil
 
 const require = createRequire(import.meta.url)
 const pug = createRequire(require.resolve('hexo-renderer-pug'))('pug')
@@ -14,7 +15,7 @@ const { parseDocument } = createRequire(require.resolve('hexo-util'))('htmlparse
 const moment = createRequire(require.resolve('hexo'))('moment-timezone')
 const root = new URL('../', import.meta.url)
 const helpers = new Map()
-for (const file of ['scripts/helpers/archive.ts', 'scripts/helpers/engine.ts']) {
+for (const file of ['scripts/helpers/archive.ts', 'scripts/helpers/engine.ts', 'scripts/helpers/tag-tree.ts']) {
   const filename = fileURLToPath(new URL(file, root))
   const { code } = await transform(await fs.readFile(filename, 'utf8'), { loader: 'ts', format: 'cjs' })
   const module = { exports: {} }
@@ -72,7 +73,7 @@ function render(view, { visiblePosts = posts, allPosts = posts, scope = '', site
   const context = {
     config: { root: siteRoot, url: `https://blog.test${siteRoot}`, archive_dir: 'archives', date_format: 'YYYY-MM-DD' },
     page: { year: 2026, month: 9, posts: collection(visiblePosts) }, site: { posts: collection(allPosts) },
-    theme: { archive_view: { mode: view === 'page' ? mode : view, switchable } }, archive_tree: group, _css: () => '',
+    theme: { archive_view: { mode: view === 'page' ? mode : view, switchable } }, archive_tree: group, article_preview: post => helpers.get('article_preview').call({}, post), _css: () => '',
     is_year: () => scope === 'year', is_month: () => scope === 'month',
     date, moment, __: translate, _p: plural
   }

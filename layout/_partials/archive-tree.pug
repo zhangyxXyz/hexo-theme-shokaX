@@ -1,13 +1,4 @@
-mixin archivePostList(posts)
-    ol.archive-post-list
-        each post in posts
-            li(itemscope itemtype="https://schema.org/Article")
-                a.archive-post-link(href=post.link ? post.link : url_for(post.path) class=post.link ? 'external' : undefined rel=post.link ? 'noopener external' : undefined itemprop="url")
-                    time(datetime=moment(post.date).format() title=date(post.date, config.date_format) itemprop="dateCreated")= date(post.date, 'DD')
-                    span.archive-post-title(itemprop="name")
-                        = post.title || post.link || __('post.untitled')
-                        if post.link
-                            i.ic.i-link-alt(aria-hidden="true")
+include ../_mixin/archive-post-list.pug
 
 if archiveTreeData.years.length
     .archive-tree-layout
@@ -33,7 +24,7 @@ if archiveTreeData.years.length
                                             span.archive-latest= __('archive_view.latest')
                                         small
                                             = __('archive_view.posts', month.total)
-                                    +archivePostList(month.posts)
+                                    +archivePostList(month.posts, year.year + '-' + month.month)
                                     if month.posts.length > 5
                                         nav.archive-month-pagination(data-archive-month-pages hidden aria-label=year.year + ' / ' + month.month + ' · ' + __('archive_view.month_link'))
                                             button(type="button" data-archive-month-prev aria-label=__('accessibility.prev_page'))

@@ -1,0 +1,8 @@
+include ../../_mixin/article-preview.pug
+if matches.length
+    ul.related-reading-list
+        each match, index in matches
+            li.article-preview-row
+                i.ic.i-link-alt(aria-hidden="true")
+                a.article-preview-link(href=url_for(match.post.path))= match.post.title
+                +articlePreview(match.post, 'related-reading-preview-' + index)

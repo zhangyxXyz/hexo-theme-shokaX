@@ -46,3 +46,14 @@ for (const [name, item, configuredFriends, friendLabel, expected] of cases) {
   assert.deepEqual(badge(item, configuredFriends, friendLabel), expected, name)
 }
 console.log(`Footer comment badges: ${cases.length} identity and URL cases passed.`)
+
+const { getFooterLevelBadge: level } = await import(`data:text/javascript;base64,${Buffer.from(outputFiles[0].text).toString('base64')}`)
+assert.equal(level({type:'administrator',level:4,label:'Author'},{},{},{},true),undefined)
+assert.equal(level({type:'guest'},{}),undefined)
+assert.equal(level({type:'guest',level:0,levelLabel:'Newcomer'},{level0:'Default'}).text,'Newcomer')
+assert.equal(level({type:'guest',level:0,levelLabel:'Server'},{level0:'Default'},{level0:'Custom'}).text,'Custom')
+assert.equal(level({type:'guest',level:1},{level1:'Regular'}).text,'Regular')
+assert.equal(badge({type:'administrator',label:'Author',level:4},[],'Friend').text,'Author')
+console.log('Footer levels: role exclusion, label priority and retained author badge passed.')
+
+assert.equal(level({type:'administrator',level:4},{level4:'Veteran'},{},{},false).text,'Veteran')

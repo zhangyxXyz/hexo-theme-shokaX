@@ -1,0 +1,11 @@
+- const navigation = reading_navigation(post)
+- const matches = related_reading(post, [navigation.left?.path, navigation.right?.path])
+if matches.length || navigation.left || navigation.right
+    section.related-reading(data-pagefind-ignore="all" aria-labelledby="related-reading-title")
+        h2#related-reading-title
+            i.ic.i-link-alt(aria-hidden="true")
+            span= __('related_reading.title')
+        if matches.length
+            p.related-reading-description= __('related_reading.description')
+            != partial('_partials/post/related-reading.pug', {post: post, matches: matches})
+        != partial('_partials/post/nav.pug', {post: post, navigation: navigation})

@@ -1,9 +1,10 @@
 # Seiun Waline client snapshot
 
 - Repository: https://github.com/zhangyxXyz/waline (customizations on `dev`).
-- Verified release 2026-09-24: `v1.41.6-seiun`, source `279e031136c58d2fb6655a09c2a1e55d2c8d3111`, Actions run `35952876956`. Extracted from the checksum-verified client archive. Admin assets are published independently; the matching server supports a persistent admin override with bundled fallback.
-- SHA-256: `2dffeba3790b0c4fdd9301926651d9c90b288848a3fff31b06be2e34b15c4400`.
-- Edit/reply drafts and visibility choices are retained separately per comment in page memory. Successful submission clears that draft; account/page changes clear all operation drafts. Public top-level draft persistence remains unchanged.
+- Verified build 2026-09-26: `v1.41.6-seiun`, source `cc9b2b5b0de431e19309d04b3467cee55f125b84`, Actions run `36158871918`. Extracted from the checksum-verified client archive. Admin assets are published independently; the matching server supports a persistent admin override with bundled fallback.
+- After submission or deletion, visible pages reload their authoritative counts and levels. Deleting the active reply/edit target restores the root editor and preserves its draft; failed deletion keeps the current editor and reports an error.
+- SHA-256: `81ab80b3871a76ba3b033fc5b9f6efd8bff0500967a3d8ca04691fedc8c3d026`.
+- Edit/reply drafts and visibility choices are retained separately per comment in page memory. Successful submission clears that draft; account/page changes clear all operation drafts. Top-level public/private modes share one draft; only public mode persists it. hideAdminLevel optionally hides administrator level badges while preserving exclusive labels.
 - Editing restores recognized `@waline/emojis` images to emoji tokens, ignoring package version and mirror origin. Unknown images and code examples remain untouched; submission still serializes emoji images for server rendering.
 - Optional `levelColors` and `labelColors` accept light/dark text, background and border palettes. Client fields override server level/label colors; unset fields preserve server colors or default styling.
 - The `notify(message)` callback routes plain-text editor notices to the theme's copy-style toast. Without a callback, the client retains its browser-alert fallback.

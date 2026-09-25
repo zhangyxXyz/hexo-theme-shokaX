@@ -3,7 +3,10 @@ import { loadMusicLyrics, type MusicSong } from './music-source'
 export interface MusicPlaybackState {
   song?: MusicSong | null
   time: number
+  duration?: number
+  seek?: (time: number) => boolean
   playing: boolean
+  mediaRequested?: boolean
   panelOpen: boolean
   next?: () => void
   lyricsEnabled?: boolean
@@ -11,6 +14,32 @@ export interface MusicPlaybackState {
 }
 
 const listeners = new Set<(state: MusicPlaybackState) => void>()
+// Panel previews are useful before playback. Keep async responses tied to the
+// selected song and update immediately when lyrics arrive, even while paused.
+export function createMusicPanelLyrics(render: (rows: Awaited<ReturnType<typeof loadMusicLyrics>>) => void, load = loadMusicLyrics) {
+  let state: MusicPlaybackState = { time: 0, playing: false, panelOpen: false }
+  let song: MusicSong | null | undefined
+  let rows: Awaited<ReturnType<typeof loadMusicLyrics>> = []
+  let revision = 0, requested = false
+  const sync = () => {
+    const index = rows.findIndex(row => state.time >= row.start && state.time < row.end)
+    render(rows.slice(Math.max(0, index), Math.max(0, index) + 4))
+  }
+  return { update(next: MusicPlaybackState) {
+    state = next
+    if (state.song !== song) { song = state.song; rows = []; revision++; requested = false }
+    sync()
+    if (!requested && song?.lrc && (state.panelOpen || state.playing)) {
+      requested = true
+      const token = revision
+      void load(song.lrc).then(result => {
+        if (revision !== token) return
+        rows = result.filter(row => row.text)
+        sync()
+      })
+    }
+  } }
+}
 export function publishMusicState(state: MusicPlaybackState) {
   for (const listener of listeners) listener(state)
 }
@@ -25,6 +54,7 @@ export function activateMusicTrack(state: {
   currentTime: number
   currentId: number
   restartId?: number
+  pendingTrack?: number
   setCurrentPlaylist(index: number): void
   start(): void
 }, group: number, index: number) {
@@ -32,6 +62,7 @@ export function activateMusicTrack(state: {
     state.setCurrentPlaylist(group)
     if (state.currentPlaylist) state.currentPlaylist.index = index
   }
+  state.pendingTrack = 0
   state.currentTime = 0
   state.restartId = (state.restartId ?? 0) + 1
   state.start()
@@ -59,7 +90,7 @@ export function musicVolumeLabels() {
 
 export function musicLyricsLabels() {
   const labels = document.getElementById('player')?.dataset
-  return { glyph: labels?.lyricsGlyph ?? '', enable: labels?.lyricsEnable ?? '', disable: labels?.lyricsDisable ?? '' }
+  return { enable: labels?.lyricsEnable ?? '', disable: labels?.lyricsDisable ?? '', visualizerEnable: labels?.visualizerEnable ?? '', visualizerDisable: labels?.visualizerDisable ?? '' }
 }
 
 // No separate timer: both lyric views follow the player's native media clock.
@@ -77,7 +108,7 @@ export function createMusicLyricView(
     const line = rows.findIndex(row => state.time >= row.start && state.time < row.end)
     const text = rows[line]?.text ?? ''
     const nextText = line >= 0 ? rows[line + 1]?.text ?? '' : ''
-    render({ text, nextText, line, track: revision, visible: state.lyricsEnabled !== false && state.playing && !state.panelOpen && !!text })
+    render({ text, nextText, line, track: revision, visible: state.lyricsEnabled !== false && state.playing && !!text })
   }
   return {
     update(next: MusicPlaybackState) {
@@ -90,7 +121,7 @@ export function createMusicLyricView(
         revision++
       }
       sync()
-      if (!requested && song?.lrc && (state.playing || state.panelOpen)) {
+      if (!requested && song?.lrc && (state.mediaRequested ?? state.playing)) {
         requested = true
         const token = revision
         void load(song.lrc).then(result => {

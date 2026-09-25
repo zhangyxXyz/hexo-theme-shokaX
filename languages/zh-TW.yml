@@ -12,10 +12,14 @@ code_block:
   collapse: "收起程式碼"
 
 music:
-  lyrics_glyph: 詞
+  pending: 等待載入
+  close: 關閉音樂面板
+  seek: 調整播放進度
+  visualizer_enable: 開啟音樂視覺化
+  visualizer_disable: 關閉音樂視覺化
   lyrics_enable: 開啟桌面歌詞
   lyrics_disable: 關閉桌面歌詞
-  lyrics_close: 收起桌面歌詞控制列，可透過播放器的「詞」按鈕再次開啟
+  lyrics_close: "收起桌面歌詞，可透過播放器的 {icon:i-desktop-lyrics-on} 按鈕再次開啟"
   next: 下一首
   volume: 音量
   mute: 靜音
@@ -32,8 +36,8 @@ reading_tools:
   tag: "要看看 %s 標籤嗎？該標籤下共有 %s 篇文章。"
   show: 顯示看板娘
   hide: 隱藏看板娘
-  traditional: 正文切換為繁體
-  simplified: 還原正文原文
+  traditional: 內容切換為繁體
+  simplified: 還原原文
   error: 載入失敗，點擊重試
 
 image_viewer:
@@ -222,6 +226,21 @@ symbol:
   month: 月
 
 reward:
+  eyebrow: PERSONAL NOTES
+  author: AUTHOR
+  title: "讚賞"
+  description: "文章至此，故事還在繼續。"
+  retry: "圖片載入失敗，點擊重試"
+  support: "讚賞支持"
+  back: "返回卡面"
+  thanks: "謝謝你的支持"
+  methods: "付款方式"
+  scan: "使用%s掃一掃"
+  enlarge: "放大%s收款碼"
+  zoom: "點擊放大"
+  note: "感謝這份心意"
+  close: "關閉收款碼"
+  save_hint: "長按或右鍵儲存收款碼"
   donate: 捐贈
   text: 請我喝[茶]~(￣▽￣)~*
   wechatpay: 微信支付
@@ -233,6 +252,7 @@ follow_me:
   welcome: 歡迎關注我的其它發布渠道
 
 accessibility:
+  theme_toggle: 切換明暗模式
   nav_toggle: 切換導航欄
   prev_page: 上一頁
   next_page: 下一頁
@@ -263,6 +283,11 @@ tagcloud:
   flat: "2D · 平面"
   sphere: "3D · 球面"
   empty: "暫無標籤。"
+
+tag_view:
+  view: "標籤文章檢視"
+  classic: "經典列表"
+  preview: "預覽《%s》的摘要"
 
 archive_view:
   show_all: "展開全部 %s 篇"
@@ -480,6 +505,14 @@ festival_preview:
     xiaohan: "小寒"
     dahan: "大寒"
 bookmark_view:
+  loading: "正在搜尋書籤…"
+  fallback: "索引暫時無法使用，已改用本機比對"
+  search: "搜尋書籤"
+  placeholder: "搜尋名稱、用途或網址…"
+  hint: "支援多詞、用途別名與英文拼字容錯"
+  clear: "清除搜尋"
+  results: "找到 %s / %s 個書籤"
+  empty: "找不到書籤，試試其他用途或更短的詞。"
   label: 書籤檢視
   cards: 原版卡片
   axis: 分類軸
@@ -488,3 +521,53 @@ category_view:
   label: 分類檢視
   cards: 卡片目錄
   classic: 經典列表
+article_graph:
+  count: "%s 篇關聯"
+  title: "文章關聯"
+  description: "順著引用的連線，讀見篇章交錯的脈絡"
+  show_graph: "展開關係圖"
+  zoom_in: "放大"
+  zoom_out: "縮小"
+  reset: "重設視圖"
+  expand: "放大關係圖"
+  help: "拖曳平移 · Ctrl / ⌘ + 滾輪縮放 · 點擊節點閱讀"
+  legend: "關係圖例"
+  current: "目前文章"
+  incoming: "引用本文"
+  outgoing: "本文引用"
+  mutual: "相互引用"
+  limit: "圖中顯示 %s / %s 篇文章，完整關係見引用列表。"
+  references: "引用列表"
+  empty: "暫無"
+  close: "關閉關係圖"
+  load: "繪製關係圖"
+  loading: "正在繪製…"
+  retry: "載入失敗，點擊重試；仍可使用下方引用列表。"
+
+related_reading:
+  title: "繼續閱讀"
+  description: "讀到此處，不妨再看看那些相關的篇章"
+
+service_status:
+  checking: "正在檢測…"
+  up: "正常"
+  down: "异常"
+  unknown: "無法檢測"
+  stale: "結果已過期"
+  refresh: "重新檢測"
+  updated: "最近檢測"
+  browser: "從你的瀏覽器檢測 · 反映目前網路的存取情況"
+  server: "統一介面檢測 · 反映檢測伺服器的存取情況"
+  fallback: "統一介面暫時無法使用，已切換為瀏覽器檢測"
+  ok: "檢查通過"
+  http: "HTTP 錯誤"
+  invalid: "回應內容不符合預期"
+  oversize: "回應內容過大"
+  timeout: "請求逾時"
+  network: "網路、跨域或連線限制"
+  empty: "尚未檢測"
+  noscript: "請啟用 JavaScript 查看即時狀態。"
+  intro: "查看部落格與相關服務目前的可用情況。"
+  notice: "此頁提供即時檢測，不代表所有地區的存取體驗。無法檢測不等於服務中斷，結果兩分鐘後過期，可重新檢測。"
+  summary: "{up} 項正常 · {down} 項異常 · {unknown} 項待確認"
+  latency: "回應時間"

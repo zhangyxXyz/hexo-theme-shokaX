@@ -1,4 +1,6 @@
 import { createMusicLyricView, subscribeMusicState } from './music-state'
+import { tooltipPlainText } from './tooltip-content'
+import { createMusicWidth } from './music-width'
 
 export function initMusicOverlay() {
   if (document.getElementById('music-lyrics-overlay')) return
@@ -29,7 +31,7 @@ export function initMusicOverlay() {
   closeButton.type = 'button'
   closeButton.className = 'music-lyrics-close'
   closeButton.title = document.getElementById('player')?.dataset.lyricsClose ?? ''
-  closeButton.setAttribute('aria-label', closeButton.title)
+  closeButton.setAttribute('aria-label', tooltipPlainText(closeButton.title))
   const closeIcon = document.createElement('i')
   closeIcon.className = 'ic i-chevrons-left'
   closeIcon.setAttribute('aria-hidden', 'true')
@@ -57,6 +59,16 @@ export function initMusicOverlay() {
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
   let motions: Animation[] = []
   let previous = { line: -1, track: -1, visible: false }
+  const width = createMusicWidth(value => { lines.style.width = `${value}px` })
+  const resize = (animate = previous.visible) => {
+    // Measure intrinsic layout only when content or viewport changes; restore
+    // the current frame before paint so even an interrupted resize stays smooth.
+    const rendered = lines.style.width
+    lines.style.width = 'max-content'
+    const target = lines.getBoundingClientRect().width
+    lines.style.width = rendered
+    width.set(target, animate && !document.hidden && !reducedMotion.matches)
+  }
   const clearMotion = () => {
     for (const motion of motions) motion.cancel()
     motions = []
@@ -80,6 +92,7 @@ export function initMusicOverlay() {
       current.className = 'music-lyric-line'
       upcoming = makeLine(nextText, true)
       lines.replaceChildren(current, upcoming)
+      resize(visible && previous.visible)
       const drift = promote ? oldLeft - (current.firstElementChild?.getBoundingClientRect().left ?? oldLeft) : 18
       if (animate) {
         leaving.className = 'music-lyric-line is-leaving'
@@ -96,7 +109,7 @@ export function initMusicOverlay() {
             { duration: 260, delay: 90, fill: 'backwards', easing: 'cubic-bezier(.16, 1, .3, 1)' })]
       }
     }
-    if (!visible) clearMotion()
+    if (!visible) { clearMotion(); width.finish() }
     previous = { line, track, visible }
   })
   // Like the player, this subscription lives for the document, across PJAX.
@@ -106,7 +119,7 @@ export function initMusicOverlay() {
     nextButton.disabled = !advance
     overlay.classList.toggle('is-playing', state.playing)
     const pic = state.song?.pic ?? ''
-    if (pic !== coverURL && (state.playing || state.panelOpen)) {
+    if (pic !== coverURL && (state.mediaRequested ?? state.playing)) {
       coverURL = pic
       cover.hidden = true
       if (pic) cover.src = pic
@@ -114,7 +127,14 @@ export function initMusicOverlay() {
     }
     view.update(state)
   })
-  const syncVisibility = () => overlay.classList.toggle('is-document-hidden', document.hidden)
+  const syncVisibility = () => {
+    overlay.classList.toggle('is-document-hidden', document.hidden)
+    if (document.hidden) width.finish()
+  }
+  window.addEventListener('resize', () => resize())
+  reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) { clearMotion(); width.finish() } })
+  void document.fonts.ready.then(() => resize())
+  document.fonts.addEventListener('loadingdone', () => resize())
   document.addEventListener('visibilitychange', syncVisibility)
   syncVisibility()
 }
