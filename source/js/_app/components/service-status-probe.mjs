@@ -14,7 +14,18 @@ export function validPayload(service, text) {
   return false
 }
 
-export async function probe(service, { signal, timeout = 8000, server = false, request = fetch } = {}) {
+export function probeHeaders(service, playerAPI, playerAPIKey) {
+  if (!playerAPIKey || service.id !== 'meting') return undefined
+  try {
+    const api = new URL(playerAPI)
+    const target = new URL(service.url)
+    // Never send the local player's key to a different service or mount.
+    if (target.origin !== api.origin || !['health', 'healthz'].some(path => new URL(path, api).href === target.href)) return undefined
+    return { Authorization: `Bearer ${playerAPIKey}` }
+  } catch { return undefined }
+}
+
+export async function probe(service, { signal, timeout = 8000, server = false, request = fetch, headers } = {}) {
   const start = performance.now()
   const controller = new AbortController()
   const abort = () => controller.abort()
@@ -25,7 +36,7 @@ export async function probe(service, { signal, timeout = 8000, server = false, r
     latency: Math.round(performance.now() - start), checkedAt: new Date().toISOString() })
   try {
     const response = await request(service.url, {
-      signal: controller.signal, credentials: 'omit', cache: 'no-store', redirect: 'error'
+      signal: controller.signal, credentials: 'omit', cache: 'no-store', redirect: 'error', headers
     })
     if (!response.ok) {
       await response.body?.cancel()

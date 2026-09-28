@@ -1,4 +1,5 @@
-import { probe } from './service-status-probe.mjs'
+import { probe, probeHeaders } from './service-status-probe.mjs'
+import { CONFIG } from '../globals/globalVars'
 
 type Service = { id: string; url: string; kind: string; contains?: string }
 type Result = { id: string; state: string; reason: string; status?: number; latency: number; checkedAt: string }
@@ -98,8 +99,9 @@ export function refreshServiceStatus() {
         // Shared URLs (cloud gateway / Meting) cause only one network request.
         const pending = new Map<string, Promise<Result>>()
         await Promise.all(services.map(async service => {
-          const key = JSON.stringify([service.url, service.kind, service.contains])
-          if (!pending.has(key)) pending.set(key, probe(service, { signal: life.signal, timeout }))
+          const headers = probeHeaders(service, CONFIG.playerAPI, CONFIG.playerAPIKey)
+          const key = JSON.stringify([service.url, service.kind, service.contains, Boolean(headers)])
+          if (!pending.has(key)) pending.set(key, probe(service, { signal: life.signal, timeout, headers }))
           const result = await pending.get(key)!
           if (life.signal.aborted) return
           results.set(service.id, { ...result, id: service.id })
