@@ -37,7 +37,6 @@ export function sizeGraphLabels(svg: SVGSVGElement) {
   labelLayouts.set(svg, layout)
   for (const text of svg.querySelectorAll<SVGTextElement>('text[data-graph-label]')) {
     text.style.fontSize = `${13 / scale}px`
-    text.style.strokeWidth = `${4 / scale}px`
     const title = text.getAttribute('data-graph-label') || ''
     text.textContent = title
     if (text.getComputedTextLength() * scale <= maxWidth) continue

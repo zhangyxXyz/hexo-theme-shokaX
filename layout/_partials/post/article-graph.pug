@@ -29,7 +29,10 @@ if graph
                     defs
                         marker#article-graph-arrow(viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse")
                             path(d="M0 1L9 5L0 9" fill="none" stroke="context-stroke" stroke-width="1.5")
-                p.article-graph-help#article-graph-help= __('article_graph.help')
+                p.article-graph-help#article-graph-help
+                    span.article-graph-help-desktop= __('article_graph.help')
+                    span.article-graph-help-touch= __('article_graph.help_touch')
+                    span.article-graph-help-touch-dialog= __('article_graph.help_touch_dialog')
         .article-graph-legend(aria-label=__('article_graph.legend'))
             span.is-current= __('article_graph.current')
             each kind in ['incoming', 'outgoing', 'mutual']

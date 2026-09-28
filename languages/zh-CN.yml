@@ -550,6 +550,8 @@ article_graph:
   reset: "重置视图"
   expand: "放大关系图"
   help: "拖动平移 · Ctrl / ⌘ + 滚轮缩放 · 点击节点阅读"
+  help_touch: "使用 + / − 按钮缩放 · 放大视图后可拖动 · 点击节点阅读"
+  help_touch_dialog: "单指拖动平移 · 使用 + / − 按钮缩放 · 点击节点阅读"
   legend: "关系图例"
   current: "当前文章"
   incoming: "引用本文"

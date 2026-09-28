@@ -15,7 +15,7 @@
   [hidden] { display: none !important; }
   h2, h3, p { margin: 0; }
   button, summary { cursor: pointer; }
-  button { font: inherit; }
+  button { font: inherit; appearance: none; -webkit-appearance: none; box-shadow: none; text-shadow: none; }
   :focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
   .article-graph-heading, .article-graph-dialog-heading {
     display: flex;
@@ -59,13 +59,14 @@
     cursor: pointer;
     text-decoration: none;
     .article-graph-dot { fill: currentColor; stroke: var(--graph-surface); stroke-width: 3; }
-    text { fill: var(--grey-6); font-family: inherit; font-size: 13px; paint-order: stroke; stroke: var(--graph-surface); stroke-width: 5px; stroke-linejoin: round; }
+    text { fill: var(--grey-6); font-family: inherit; font-size: 13px; stroke: none; text-shadow: none; }
     &.is-current { color: var(--grey-7); text { fill: var(--grey-7); font-weight: 500; } }
     &:hover, &:focus-visible { outline: none; .article-graph-dot { stroke: var(--primary-color); } text { fill: var(--primary-color); visibility: visible; } }
   }
   .is-dense .article-graph-node:not(.is-current) text { visibility: hidden; }
   .is-dense .article-graph-node:hover text, .is-dense .article-graph-node:focus-visible text { visibility: visible; }
   .article-graph-help { text-align: center; color: var(--grey-5); font-size: .65rem; padding: .25rem 0 .5rem; }
+  .article-graph-help-touch, .article-graph-help-touch-dialog { display: none; }
   .article-graph-legend {
     display: flex;
     flex-wrap: wrap;
@@ -146,6 +147,16 @@
   --graph-mutual: #b4a0dc;
 }
 body:has(.article-graph-dialog[open]) { overflow: hidden; }
+@media (max-width: 600px), (pointer: coarse), (hover: none) {
+  .article-graph {
+    .article-graph-help-desktop { display: none; }
+    .article-graph-help-touch { display: inline; }
+    .article-graph-dialog {
+      .article-graph-help-touch { display: none; }
+      .article-graph-help-touch-dialog { display: inline; }
+    }
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .article-graph .article-graph-references > summary > .ic { transition: none; }
 }
@@ -159,7 +170,6 @@ body:has(.article-graph-dialog[open]) { overflow: hidden; }
     .article-graph-node:focus-visible text { visibility: visible; }
     .article-graph-toolbar button { width: 2.75rem; height: 2.75rem; }
     .article-graph-toolbar { position: static; }
-    .article-graph-figure[open] > summary { display: list-item; }
     .article-graph-legend { margin-top: .75rem; }
   }
 }

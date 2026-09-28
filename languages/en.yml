@@ -550,6 +550,8 @@ article_graph:
   reset: "Reset view"
   expand: "Expand graph"
   help: "Drag to pan · Ctrl / ⌘ + scroll to zoom · Select a node to read"
+  help_touch: "Use + / − to zoom · Expand the view to pan · Tap a node to read"
+  help_touch_dialog: "Drag with one finger to pan · Use + / − to zoom · Tap a node to read"
   legend: "Graph legend"
   current: "This article"
   incoming: "Links here"

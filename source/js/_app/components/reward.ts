@@ -77,8 +77,9 @@ export function refreshRewards() {
     window.addEventListener('blur', () => { pointer = undefined; updateHover() }, options)
     document.addEventListener('scroll', updateHover, { ...options, capture: true, passive: true })
     window.addEventListener('resize', updateHover, options)
-    open.addEventListener('click', () => { hoverOpened = false; flip(true) }, options)
-    returnButton.addEventListener('click', () => { hover.dismiss(); hoverOpened = false; flip(false) }, options)
+    // Only keyboard/assistive activation transfers focus; touch must not open a payment tooltip.
+    open.addEventListener('click', event => { hoverOpened = false; flip(true, event.detail === 0) }, options)
+    returnButton.addEventListener('click', event => { hover.dismiss(); hoverOpened = false; flip(false, event.detail === 0) }, options)
     tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => select(index), options)
       tab.addEventListener('keydown', event => {

@@ -60,7 +60,6 @@ export function refreshArticleGraph() {
     apply()
   }
   const controls = root.querySelector<HTMLElement>('[data-graph-controls]')
-  if (matchMedia('(max-width: 600px)').matches) figure.open = false
   const loadButton = root.querySelector<HTMLButtonElement>('[data-graph-load]')
   let loaded = false, loading = false
   const load = async () => {

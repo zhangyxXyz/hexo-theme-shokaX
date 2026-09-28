@@ -24,7 +24,7 @@ mixin SMRender(item, lazy)
                     != _url(link1, '<img loading="eager" decoding="async" src="'+ _cover(item) +'" alt="article cover">', {itemprop: 'url', title: postText})
         div(class="info")
             +PMRender(item)
-            h3
+            h3(data-no-article-preview=is_home() ? true : undefined)
                 != _url(link1, postText + (postTitleIcon || ''), {itemprop: 'url', title: postText})
             div(class="excerpt" data-summary-panel="original" hidden=summaryAI)
                 if item.description

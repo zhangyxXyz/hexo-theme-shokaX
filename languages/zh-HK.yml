@@ -531,6 +531,8 @@ article_graph:
   reset: "重設視圖"
   expand: "放大關係圖"
   help: "拖曳平移 · Ctrl / ⌘ + 滾輪縮放 · 點擊節點閱讀"
+  help_touch: "使用 + / − 按鈕縮放 · 放大視圖後可拖曳 · 點擊節點閱讀"
+  help_touch_dialog: "單指拖曳平移 · 使用 + / − 按鈕縮放 · 點擊節點閱讀"
   legend: "關係圖例"
   current: "目前文章"
   incoming: "引用本文"
