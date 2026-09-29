@@ -28,6 +28,7 @@ import { postBeauty } from '../page/post'
 import { refreshArticleRelock } from '../components/article-relock'
 import { refreshStatistics } from '../components/statistics'
 import { refreshServiceStatus } from '../components/service-status'
+import { refreshNews } from '../components/news'
 import { refreshIconPreview } from '../components/icon-preview'
 import { refreshTooltips } from '../components/tooltip'
 import { refreshSidebarMenu } from '../components/sidebar-menu'
@@ -110,6 +111,7 @@ export const siteRefresh = async (reload, restoredPosition?: [number, number], i
   refreshArchive()
   refreshStatistics()
   refreshServiceStatus()
+  refreshNews()
   refreshIconPreview()
   refreshSummarySwitch()
   refreshArticleInfo()

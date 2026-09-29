@@ -1,0 +1,66 @@
+extends page.pug
+
+block content
+    - const reader = page.news
+    - const labels = Object.fromEntries(['results', 'empty'].map(key => [key, __('news.' + key)]))
+    .page.wrap
+        section.news(data-news data-labels=JSON.stringify(labels) data-pagefind-ignore)
+            .news-intro
+                .news-eyebrow
+                    i.ic(class='i-' + (reader.icon || 'feather') aria-hidden="true")
+                    span= reader.source_name
+                h2= page.title
+                p= page.description
+                .news-credit
+                    a(href=reader.source_url target="_blank" rel="noopener noreferrer")= __('news.source', reader.source_name)
+                    span= __('news.snapshot')
+            nav.news-channels(aria-label=__('news.channels') data-news-controls hidden)
+                each feed in reader.feeds
+                    button(type="button" data-news-channel=feed.id aria-controls='news-' + feed.id aria-pressed="false")
+                        span= feed.title
+                        small= feed.items.length
+            .news-toolbar(data-news-controls hidden)
+                label.news-search
+                    i.ic.i-search(aria-hidden="true")
+                    span.sr-only= __('news.search')
+                    input(type="search" data-news-search placeholder=__('news.search') autocomplete="off")
+                p.news-results(data-news-results role="status" aria-live="polite")
+            each feed in reader.feeds
+                section.news-channel(id='news-' + feed.id data-news-panel=feed.id aria-label=feed.title)
+                    .news-channel-heading
+                        div
+                            h3= feed.title
+                            p= feed.description
+                        a.news-subscribe(href=feed.url target="_blank" rel="noopener noreferrer")
+                            = __('news.subscribe')
+                    .news-updated
+                        if feed.updatedAt
+                            span= __('news.updated') + ' '
+                            time(datetime=feed.updatedAt)= new Date(feed.updatedAt).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false}) + ' UTC+8'
+                        if feed.state !== 'ready'
+                            p.news-warning(role="status")= __('news.' + feed.state)
+                    .news-list
+                        each item in feed.items
+                            article.news-card(data-news-item)
+                                .news-meta
+                                    if item.category
+                                        span.news-category= item.category
+                                    if item.date
+                                        time(datetime=item.date)= new Date(item.date).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false, month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})
+                                    if item.author
+                                        span= item.author
+                                h3
+                                    a(href=item.url target="_blank" rel="noopener noreferrer")= item.title
+                                p.news-summary= item.summary
+                                if feed.expanded && item.content && item.content !== item.summary
+                                    details.news-content
+                                        summary= __('news.expand')
+                                        p= item.content
+                                .news-card-footer
+                                    a(href=item.url target="_blank" rel="noopener noreferrer")= __('news.read', reader.source_name)
+                                    if item.origin
+                                        a(href=item.origin target="_blank" rel="noopener noreferrer")= __('news.original')
+                    if !feed.items.length
+                        p.news-empty= __('news.no_items')
+            p.news-empty(data-news-empty hidden)= __('news.empty')
+            button.news-more(type="button" data-news-more hidden)= __('news.more')
