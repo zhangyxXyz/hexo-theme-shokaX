@@ -1,3 +1,4 @@
+import { createScrollPagination } from './comment-pagination'
 let dispose: (() => void) | undefined
 
 export function refreshNews() {
@@ -13,10 +14,26 @@ export function refreshNews() {
   const more = root.querySelector<HTMLButtonElement>('[data-news-more]')!
   const result = root.querySelector<HTMLElement>('[data-news-results]')!
   const empty = root.querySelector<HTMLElement>('[data-news-empty]')!
+  const spinner = root.querySelector<HTMLElement>('[data-news-loading]')!
   const life = new AbortController()
   const options = { signal: life.signal }
   let selected = buttons[0].dataset.newsChannel
   let limit = 12
+  let loading = false
+  let timer = 0
+  const pagination = createScrollPagination({
+    content: root, viewport: null, blocked: () => loading,
+    button: () => more, loading: () => loading, buttonSelector: '[data-news-more]',
+    signature: () => `${selected}:${search.value}:${limit}`
+  })
+  const cancelLoad = () => {
+    clearTimeout(timer)
+    loading = false
+    spinner.hidden = true
+    more.disabled = false
+    root.removeAttribute('aria-busy')
+    pagination.reset()
+  }
   const items = new Map(panels.map(panel => [panel, Array.from(panel.querySelectorAll<HTMLElement>('[data-news-item]')).map(element => ({ element, text: (element.textContent || '').toLocaleLowerCase() }))]))
 
   function render() {
@@ -39,20 +56,35 @@ export function refreshNews() {
   }
 
   buttons.forEach(button => button.addEventListener('click', () => {
+    cancelLoad()
     selected = button.dataset.newsChannel
     limit = 12
     render()
   }, options))
-  search.addEventListener('input', () => { limit = 12; render() }, options)
-  more.addEventListener('click', () => {
+  search.addEventListener('input', () => { cancelLoad(); limit = 12; render() }, options)
+  more.addEventListener('click', event => {
+    if (loading) return
+    loading = true
+    spinner.hidden = false
+    more.hidden = true
+    more.disabled = true
+    root.setAttribute('aria-busy', 'true')
+    const focusNext = event.isTrusted && document.activeElement === more
     const panel = panels.find(panel => panel.dataset.newsPanel === selected)!
     const previous = new Set(items.get(panel)!.filter(item => !item.element.hidden).map(item => item.element))
-    limit += 12
-    render()
-    const next = items.get(panel)!.find(item => !item.element.hidden && !previous.has(item.element))
-    next?.element.querySelector<HTMLAnchorElement>('h3 a')?.focus({ preventScroll: true })
+    timer = window.setTimeout(() => {
+      cancelLoad()
+      limit += 12
+      render()
+      if (focusNext) {
+        const next = items.get(panel)!.find(item => !item.element.hidden && !previous.has(item.element))
+        next?.element.querySelector<HTMLAnchorElement>('h3 a')?.focus({ preventScroll: true })
+      }
+    }, 180)
   }, options)
   root.querySelectorAll<HTMLElement>('[data-news-controls]').forEach(control => { control.hidden = false })
   render()
-  dispose = () => life.abort()
+  dispose = () => { cancelLoad(); pagination.destroy(); life.abort() }
 }
+
+document.addEventListener('pjax:send', () => { dispose?.(); dispose = undefined })

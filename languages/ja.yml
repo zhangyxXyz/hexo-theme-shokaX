@@ -33,6 +33,13 @@ music:
   error: 読み込めませんでした。クリックして再試行
 
 reading_tools:
+  actions:
+    hitokoto: ひとこと
+    asteroids: シューティングゲーム
+    switch-model: キャラクターを変更
+    switch-texture: 衣装を変更
+    photo: 写真を撮る
+    info: キャラクターについて
   tag: "%s タグを見てみませんか？このタグには %s 件の記事があります。"
   show: Live2Dを表示
   hide: Live2Dを非表示

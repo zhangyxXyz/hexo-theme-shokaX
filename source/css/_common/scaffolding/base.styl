@@ -208,7 +208,11 @@ input, textarea {
     right: var(--live2d-edge);
   }
   z-index: 10;
-  // Keep the adjacent capsule aligned with #tool, including on hover.
+  margin-bottom: 0;
+  // Upstream animates bottom from -1000px; tips must use the settled anchor.
+  bottom: 0;
+  transition: none;
+  // Keep the character still while the action arc opens beside it.
   transform: none;
   &:hover { transform: none; }
   #waifu-tips, #shokax-waifu-tips { color: var(--text-color, #444); }
@@ -220,41 +224,70 @@ input, textarea {
   #waifu-tool {
     // Keep this inside the widget so its visibility and actions stay in sync.
     top: auto;
-    bottom: 10px;
-    width: 1.875rem;
+    bottom: calc(.5rem + env(safe-area-inset-bottom, 0px));
+    width: 3.375rem;
+    height: 13.375rem;
+    padding: 0;
     opacity: 0;
-    transition: opacity .2s;
-    border-radius: .3125rem;
-    box-shadow: 0 0 .5rem rgba(0,0,0,.1);
-    background: var(--grey-1-a3);
+    pointer-events: none;
+    transition: opacity .18s ease-out, transform .18s ease-out;
+    transform: translateY(.25rem) scale(.97);
+    background: transparent;
     if (hexo-config('sidebar.position') == 'left') {
       left: auto;
-      right: -2rem;
+      right: -1.25rem;
     } else {
-      left: -2rem;
+      left: -1.25rem;
       right: auto;
     }
-    +desktop-large() { bottom: calc(10px + 1rem); }
+    +desktop-large() { bottom: 1rem; }
     +tablet-mobile() {
       left: auto;
-      right: -2rem;
+      right: -1.25rem;
+    }
+    // Include the gaps between circles so the arc stays open while traversing it.
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0 -.5rem;
+      z-index: -1;
     }
   }
-  &:hover #waifu-tool, #waifu-tool:focus-within { opacity: 1; }
+  &:hover #waifu-tool, #waifu-tool:focus-within { opacity: 1; pointer-events: auto; transform: translateY(0); }
   #waifu-tool .ic {
+    position: absolute;
+    top: var(--arc-y);
+    left: var(--arc-x);
     display: flex;
-    width: 100%;
+    width: 2.125rem;
     align-items: center;
     justify-content: center;
-    height: 1.875rem;
+    height: 2.125rem;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    font-size: 1rem;
+    background: var(--grey-1);
+    box-shadow: 0 .2rem .65rem var(--grey-9-a1);
     color: var(--primary-color);
-    opacity: .5;
+    opacity: 1;
     cursor: pointer;
-    transition: opacity .2s;
-    &:hover { opacity: .9; }
+    transition: transform .18s ease-out, background .18s ease-out;
+    &:hover { background: var(--color-red-a1); transform: scale(1.06); }
+    &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; background: var(--color-red-a1); }
+    &:active { transform: scale(.95); }
+    &[aria-busy="true"] { cursor: progress; opacity: .6; }
+    if (hexo-config('sidebar.position') == 'left') { left: auto; right: var(--arc-x); }
+    +tablet-mobile() { left: auto; right: var(--arc-x); }
   }
+  #waifu-tool-hitokoto { --arc-x: 1.25rem; --arc-y: 0rem; }
+  #waifu-tool-switch-model { --arc-x: .45rem; --arc-y: 2.25rem; }
+  #waifu-tool-switch-texture { --arc-x: 0rem; --arc-y: 4.5rem; }
+  #waifu-tool-photo { --arc-x: 0rem; --arc-y: 6.75rem; }
+  #waifu-tool-asteroids { --arc-x: .45rem; --arc-y: 9rem; }
+  #waifu-tool-info { --arc-x: 1.25rem; --arc-y: 11.25rem; }
 }
-body:has(#tool:hover) #waifu.shokax-live2d #waifu-tool { opacity: 1; }
+body:has(.live2d-toggle:hover, .live2d-toggle:focus-visible) #waifu.shokax-live2d #waifu-tool { opacity: 1; pointer-events: auto; transform: translateY(0); }
 #shokax-waifu-tips {
   position: absolute;
   &[popover] { position: fixed; }
@@ -284,7 +317,7 @@ body:has(#tool:hover) #waifu.shokax-live2d #waifu-tool { opacity: 1; }
   background-color: rgba(35, 35, 35, .94);
 }
 @media (prefers-reduced-motion: reduce) {
-  #waifu.shokax-live2d, #waifu.shokax-live2d #waifu-tips, #waifu.shokax-live2d #waifu-tool { animation: none; transition: none; }
+  #waifu.shokax-live2d, #waifu.shokax-live2d #waifu-tips, #waifu.shokax-live2d #waifu-tool, #waifu.shokax-live2d #waifu-tool .ic { animation: none; transition: none; }
 }
 //.weather {
 //      color: var(--text-color) !important;

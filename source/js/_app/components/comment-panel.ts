@@ -23,7 +23,8 @@ export function refreshCommentPanel(mount: () => Promise<void>) {
   let clearTargetEffect: (() => void) | undefined
   let targetLoading: AbortController | undefined
   const dialog = shell.dataset.commentLayout === 'slide' ? document.createElement('dialog') : null
-  const pagination = createCommentPagination(comments, dialog, () => Boolean(pending))
+  const scrollBody = dialog ? document.createElement('div') : null
+  const pagination = createCommentPagination(comments, dialog, () => Boolean(pending), scrollBody)
   const status = document.createElement('p')
   status.className = 'comment-target-status'
   status.setAttribute('role', 'status')
@@ -57,7 +58,9 @@ export function refreshCommentPanel(mount: () => Promise<void>) {
     button.setAttribute('aria-label', shell.dataset.close || '')
     button.addEventListener('click', close, options)
     header.append(title, button)
-    dialog.append(header, status, comments)
+    scrollBody!.className = 'comment-dialog-body'
+    scrollBody!.append(status, comments)
+    dialog.append(header, scrollBody!)
     document.body.append(dialog)
     dialog.addEventListener('cancel', event => {
       // File pickers also emit a bubbling cancel event; only dismiss the dialog itself.

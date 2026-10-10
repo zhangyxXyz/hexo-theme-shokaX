@@ -5,7 +5,7 @@ const storageKey = 'shokax.music.visualizer'
 let controller: ReturnType<typeof createMusicVisualizer> | undefined
 
 export function readMusicVisualizer() {
-  try { return localStorage.getItem(storageKey) === 'on' } catch { return false }
+  try { return localStorage.getItem(storageKey) !== 'off' } catch { return true }
 }
 export function toggleMusicVisualizer() {
   initMusicVisualizer()

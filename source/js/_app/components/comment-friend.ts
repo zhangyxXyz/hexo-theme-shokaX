@@ -20,7 +20,10 @@ export function syncFriendBadges(container: HTMLElement, friends: string[], labe
   container.querySelectorAll<HTMLElement>('.wl-card > .wl-head').forEach(head => {
     const badge = head.querySelector<HTMLElement>(':scope > .shokax-friend-badge')
     const nick = head.querySelector<HTMLAnchorElement>('a.wl-nick')
-    const nativeIdentity = head.querySelector('.wl-badge:not(.shokax-friend-badge)') ||
+    const nativeIdentity = Array.from(head.querySelectorAll<HTMLElement>(':scope > .wl-badge'))
+      .some(item => !item.classList.contains('shokax-friend-badge') &&
+        !item.classList.contains('shokax-private-badge') &&
+        !Array.from(item.classList).some(name => /^level\d+$/.test(name))) ||
       head.parentElement?.parentElement?.querySelector(':scope > .wl-user .administrator-icon')
     if (nativeIdentity || !nick || !matchesFriendWebsite(nick.getAttribute('href') || '', friends)) {
       badge?.remove()

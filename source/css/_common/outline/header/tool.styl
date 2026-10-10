@@ -458,9 +458,10 @@
   &.affix {
     text-shadow: none;
     top: auto;
-    box-shadow: 0 0 .5rem rgba(0,0,0,.1);
-    background: var(--grey-1-a3);
-    border-radius: .3125rem;
+    box-shadow: 0 .25rem 1rem var(--grey-9-a1);
+    background: var(--grey-1);
+    border-radius: .875rem;
+    padding: .25rem;
     if (hexo-config('sidebar.position') == 'left') {
       right: 0;
     } else {
@@ -471,11 +472,22 @@
     .item {
       display: flex;
       color: var(--primary-color);
+      width: 2.125rem;
+      min-height: 2.125rem;
+      border-radius: .625rem;
     }
 
     .player {
       font-size: $font-size-base;
       flex-direction: column-reverse;
+      // Music and playback share a container, but each owns its hover state.
+      &, &:hover { opacity: 1; }
+      > .btn {
+        opacity: .5;
+        the-transition();
+        &:hover, &:focus-visible { opacity: .9; }
+        &:disabled { opacity: .45; }
+      }
 
       > .btn+.btn {
         margin-right: 0;

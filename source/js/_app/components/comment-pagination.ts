@@ -1,5 +1,20 @@
 // Reuse Waline's button so its pagination, errors and request state stay native.
-export function createCommentPagination(comments: HTMLElement, dialog: HTMLDialogElement | null, blocked: () => boolean) {
+export function createCommentPagination(comments: HTMLElement, dialog: HTMLDialogElement | null, blocked: () => boolean, scrollBody: HTMLElement | null = null) {
+  return createScrollPagination({
+    content: comments, viewport: scrollBody || dialog, blocked: () => blocked() || Boolean(dialog && !dialog.open),
+    button: () => comments.querySelector<HTMLButtonElement>('.wl-operation > button'),
+    loading: () => Boolean(comments.querySelector('.wl-cards + .wl-loading')),
+    signature: () => Array.from(comments.querySelectorAll('.wl-card-item')).map(item => item.id).join('|'),
+    buttonSelector: '.wl-operation > button'
+  })
+}
+
+export function createScrollPagination(config: {
+  content: HTMLElement; viewport: HTMLElement | null; blocked: () => boolean;
+  button: () => HTMLButtonElement | null; loading: () => boolean;
+  signature: () => string; buttonSelector: string;
+}) {
+  const { content: comments, viewport: dialog, blocked, signature } = config
   const events = new AbortController()
   const options = { signal: events.signal, passive: true }
   const scroller = dialog || window
@@ -7,12 +22,11 @@ export function createCommentPagination(comments: HTMLElement, dialog: HTMLDialo
   let intentUntil = 0
   let attempted = ''
   let touchY = 0
-  const signature = () => Array.from(comments.querySelectorAll('.wl-card-item')).map(item => item.id).join('|')
   const check = () => {
     frame = 0
-    if (performance.now() > intentUntil || blocked() || (dialog && !dialog.open)) return
-    const button = comments.querySelector<HTMLButtonElement>('.wl-operation > button')
-    if (!button || button.disabled || comments.querySelector('.wl-cards + .wl-loading')) { intentUntil = 0; return }
+    if (performance.now() > intentUntil || blocked()) return
+    const button = config.button()
+    if (!button || button.hidden || button.disabled || config.loading()) { intentUntil = 0; return }
     const bounds = button.getBoundingClientRect()
     if (!bounds.width || !bounds.height) return
     const viewport = dialog?.getBoundingClientRect()
@@ -48,7 +62,7 @@ export function createCommentPagination(comments: HTMLElement, dialog: HTMLDialo
     else intentUntil = 0
   }, options)
   comments.addEventListener('click', event => {
-    if ((event.target as Element)?.closest('.wl-operation > button')) {
+    if ((event.target as Element)?.closest(config.buttonSelector)) {
       attempted = signature()
       intentUntil = 0
     }

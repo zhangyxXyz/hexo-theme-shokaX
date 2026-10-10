@@ -44,4 +44,14 @@ position = 1199
 window.dispatchEvent(Object.assign(new Event('wheel'), { deltaY: 100 })); flush()
 assert.equal(clicks, 3, 'bottom layout uses window viewport')
 bottom.destroy()
+const body = Object.assign(new EventTarget(), { getBoundingClientRect: () => ({ top: 80, bottom: 700 }) })
+const inner = create(comments, dialog, () => false, body)
+count = 40; position = 800
+body.dispatchEvent(Object.assign(new Event('wheel'), { deltaY: 100 })); flush()
+assert.equal(clicks, 4, 'inner body owns the viewport and wheel intent')
+count = 50; button.hidden = true
+body.dispatchEvent(Object.assign(new Event('wheel'), { deltaY: 100 })); flush()
+assert.equal(clicks, 4, 'hidden pagination cannot load')
+button.hidden = false
+inner.destroy()
 console.log('Comment pagination: threshold, direction, single request, failure guard, programmatic scroll, loading, close, cleanup and bottom layout passed.')

@@ -33,6 +33,13 @@ music:
   error: 歌單載入失敗，點擊重試
 
 reading_tools:
+  actions:
+    hitokoto: 來句一言
+    asteroids: 飛機大戰
+    switch-model: 切換角色
+    switch-texture: 更換服裝
+    photo: 拍張照片
+    info: 關於看板娘
   tag: "要看看 %s 標籤嗎？該標籤下共有 %s 篇文章。"
   show: 顯示看板娘
   hide: 隱藏看板娘

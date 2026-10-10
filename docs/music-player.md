@@ -90,7 +90,7 @@ Nyx 旧播放缓存，避免缓存失效 URL 或未经点击续播。音频不�
 
 音乐可视化参考 [Lavender 的音乐音效可视化](https://blog.lavender816.top/posts/3257086419/)，
 在 `components/music-visualizer.ts` 中独立实现，复用当前 audio 和 `#waves`，不引入新依赖。
-控制栏使用 `i-audio-visualizer` 图标，开关保存到 `shokax.music.visualizer`，默认关闭。
+控制栏使用 `i-audio-visualizer` 图标，开关保存到 `shokax.music.visualizer`，默认开启；用户手动关闭后保留关闭选择。
 开启且播放时，以樱粉、浅紫、薄荷青三层平滑曲线替换 SVG 波浪；暂停或关闭时恢复原波浪。
 Canvas 按需创建，30 FPS、DPR 上限 2；后台和减少动态效果时停止绘制。
 页头波浪滚出视口上方后，约 400ms 淡入贴底波浪，并从底边上移 12px；页头重新露出至少 12% 时切回，

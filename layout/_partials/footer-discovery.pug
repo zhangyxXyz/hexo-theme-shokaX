@@ -104,7 +104,7 @@
                     section.footer-discovery.footer-articles
                         .footer-article-heading
                             h2.footer-section-title= __('footer.explore.articles')
-                            a.footer-random(href=url_for(footerPicks[0].path) data-footer-random=JSON.stringify(footerPosts.map(post => url_for(post.path))) title=__('footer.explore.random_article') aria-label=__('footer.explore.random_article'))
+                            a.footer-random(href=url_for(footerPicks[0].path) data-no-article-preview data-footer-random=JSON.stringify(footerPosts.map(post => url_for(post.path))) title=__('footer.explore.random_article') aria-label=__('footer.explore.random_article'))
                                 i.ic.i-dice(aria-hidden="true")
                             if footerPosts.length > footerPostLimit
                                 button.footer-shuffle(type="button" data-footer-post-shuffle aria-controls="footer-article-list")

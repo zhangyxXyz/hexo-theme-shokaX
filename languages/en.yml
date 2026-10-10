@@ -33,6 +33,13 @@ music:
   error: Could not load playlists. Click to retry
 
 reading_tools:
+  actions:
+    hitokoto: Random quote
+    asteroids: Play Asteroids
+    switch-model: Switch character
+    switch-texture: Change outfit
+    photo: Take a photo
+    info: About the character
   tag: "Explore the %s tag? There are %s articles under this tag."
   show: Show Live2D
   hide: Hide Live2D

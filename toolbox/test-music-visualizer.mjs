@@ -4,9 +4,10 @@ import { build } from 'esbuild'
 import { fileURLToPath } from 'node:url'
 
 const bundle = await build({ entryPoints: [fileURLToPath(new URL('../source/js/_app/components/music-visualizer.ts', import.meta.url))], bundle: true, write: false, format: 'iife', globalName: 'visualizer' })
-function fixture({ capture = true } = {}) {
+function fixture({ capture = true, saved } = {}) {
   const document = new EventTarget(), window = new EventTarget(), motion = new EventTarget()
   const frames = new Map(), storage = new Map(), classes = new Set()
+  if (saved !== undefined) storage.set('shokax.music.visualizer', saved)
   let serial = 0, time = 0, captures = 0, stops = 0, disconnects = 0, spectrum = 0
   let intersection, size, canvas, dock, context, copies = 0
   const painter = { setTransform() {}, clearRect() {}, createLinearGradient: () => ({ addColorStop() {} }), beginPath() {}, moveTo() {}, lineTo() {}, quadraticCurveTo() {}, closePath() {}, fill() {}, drawImage() { copies++ } }
@@ -55,10 +56,10 @@ function fixture({ capture = true } = {}) {
 for (const capture of [true, false]) {
   const f = fixture({ capture })
   f.inView(true)
+  assert.equal(f.canvas, undefined, 'default enabled still waits for playback')
   f.media('playing')
-  assert.equal(f.canvas, undefined, 'disabled by default and allocates no canvas')
-  assert.equal(f.controller.toggle(), true)
-  assert.equal(f.storage.get('shokax.music.visualizer'), 'on')
+  assert.ok(f.canvas, 'enabled by default when playback starts')
+  assert.equal(f.storage.has('shokax.music.visualizer'), false, 'default does not overwrite a saved preference')
   assert.equal(f.frames.size, 1)
   assert.equal(f.canvas.width, 2400, 'DPR capped at two')
   for (let i = 0; i < 20; i++) f.media('playing')
@@ -132,4 +133,11 @@ for (const capture of [true, false]) {
   assert.equal(f.dock, undefined)
   if (capture) assert.equal(f.context.state, 'closed')
 }
+const disabled = fixture({ saved: 'off' })
+disabled.media('playing')
+assert.equal(disabled.canvas, undefined, 'explicitly saved off remains disabled')
+assert.equal(disabled.controller.toggle(), true)
+assert.equal(disabled.storage.get('shokax.music.visualizer'), 'on')
+assert.ok(disabled.canvas, 'manually enabling resumes visualization')
+disabled.controller.destroy()
 console.log('Music visualizer: real/silent capture, single loop, DPR cap, top/bottom handoff, hysteresis, rapid scroll, pause/background/reduced motion, track changes, PJAX, storage and cleanup passed.')

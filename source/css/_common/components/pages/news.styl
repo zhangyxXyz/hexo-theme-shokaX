@@ -178,6 +178,31 @@
     color var(--primary-color)
     font inherit
     cursor pointer
+    &:hover
+      background var(--color-red-a1)
+    &:focus-visible
+      outline 2px solid var(--primary-color)
+      outline-offset 3px
+  .news-loading
+    display flex
+    justify-content center
+    align-items center
+    min-height 5rem
+    &[hidden]
+      display none
+    &::before
+      content ''
+      box-sizing border-box
+      width 1.75rem
+      height 1.75rem
+      border 3px solid var(--color-red-a1)
+      border-top-color var(--primary-color)
+      border-right-color var(--color-pink-a3)
+      border-radius 50%
+      animation news-loading-spin .85s linear infinite
+    @media (prefers-reduced-motion: reduce)
+      &::before
+        animation none
   @media (max-width: 600px)
     .news-intro, .news-card
       padding 1.1rem
@@ -185,3 +210,7 @@
       grid-template-columns repeat(2, minmax(0, 1fr))
     .news-toolbar, .news-search
       width 100%
+
+@keyframes news-loading-spin
+  to
+    transform rotate(360deg)
