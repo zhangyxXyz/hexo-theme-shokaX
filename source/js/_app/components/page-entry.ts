@@ -1,10 +1,12 @@
+import { effectiveReducedMotion } from './motion'
+
 let dispose: (() => void) | undefined
 
 export function cancelPageEntry() { dispose?.() }
 
 export function playPageEntry(rise: boolean) {
   dispose?.()
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const reduced = effectiveReducedMotion()
   const animations: Animation[] = []
   const events = new AbortController()
   const page = document.getElementById('main')

@@ -1,3 +1,5 @@
+import { getReducedMotionQuery } from './motion'
+
 // Capture a copy of the player's output. Never reroute the audible element:
 // cross-origin tracks can otherwise become silent when connected to Web Audio.
 type CapturableAudio = HTMLAudioElement & { captureStream?: () => MediaStream; mozCaptureStream?: () => MediaStream }
@@ -17,7 +19,7 @@ export function initMusicVisualizer() {
 
 export function createMusicVisualizer() {
   const waves = document.getElementById('waves')
-  const motion = matchMedia('(prefers-reduced-motion: reduce)')
+  const motion = getReducedMotionQuery()
   const events = new AbortController()
   let enabled = readMusicVisualizer()
   let audio: CapturableAudio | undefined

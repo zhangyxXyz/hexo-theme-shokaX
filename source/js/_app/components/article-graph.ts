@@ -1,5 +1,6 @@
 import { loadGraphLibrary, drawArticleGraph, sizeGraphLabels } from './article-graph-render'
 import { paginateGraphReferences } from './article-graph-references'
+import { effectiveReducedMotion } from './motion'
 
 let disposeGraph: (() => void) | undefined
 document.addEventListener('pjax:send', () => { disposeGraph?.(); disposeGraph = undefined })
@@ -28,7 +29,7 @@ export function refreshArticleGraph() {
     referenceAnimation?.cancel()
     referencesOpen = !referencesOpen
     referenceToggle.setAttribute('aria-expanded', String(referencesOpen))
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (effectiveReducedMotion()) {
       references.open = referencesOpen
       referenceContent.style.removeProperty('overflow')
       return

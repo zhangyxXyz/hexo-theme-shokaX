@@ -1,4 +1,5 @@
 import { openedByPointer, restoreModalFocus } from './input-modality'
+import { effectiveReducedMotion } from './motion'
 import { waitCommentImage } from './comment-media'
 import { createCommentPagination } from './comment-pagination'
 import { CONFIG } from '../globals/globalVars'
@@ -104,7 +105,7 @@ export function refreshCommentPanel(mount: () => Promise<void>) {
           .map(animation => animation.finished.catch(() => {})))
         if (loading.signal.aborted || !target.isConnected) return
         heading.scrollIntoView({ block: 'center', behavior: 'instant' })
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+        if (effectiveReducedMotion()) return
         const host = target.querySelector<HTMLElement>(':scope > .wl-user')
         const avatar = host?.querySelector<HTMLElement>('.wl-user-avatar')
         if (!host || !avatar) return

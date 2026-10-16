@@ -35,20 +35,77 @@
 
   --color-red-a1: alpha(#e9546b, .1);
   --color-red-a3: alpha(#e9546b, .3);
+  --color-pink-a1: alpha(#ed6ea0, .1);
   --color-pink-a3: alpha(#ed6ea0, .3);
   --color-pink-light-a3: alpha(#ffe6fa, .3);
   --color-pink-light-a5: alpha(#ffe6fa, .5);
   --color-pink-light-a7: alpha(#ffe6fa, .7);
+  --color-blue-a1: unquote('color-mix(in srgb, var(--color-blue) 10%, transparent)');
+  --color-blue-a3: unquote('color-mix(in srgb, var(--color-blue) 30%, transparent)');
 
   --body-bg-shadow: var(--grey-2);
   --box-bg-shadow: var(--grey-9-a1);
   --text-color: var(--grey-7);
   --header-text-color: var(--grey-0);
-  --primary-color: var(--color-red);
+  // Defaults stay independent of visitor preferences and of the dark palette.
+  --theme-primary-seed: #e9546b;
+  --theme-secondary-seed: #ec8c69;
+  --accent-primary-seed: var(--reading-primary-seed, var(--theme-primary-seed));
+  --accent-secondary-seed: var(--reading-secondary-seed, var(--theme-secondary-seed));
 
-  // --nav-bg: linear-gradient(-225deg, var(--color-cyan-light) 0, var(--color-pink-light) 100%);
+  // Ordinary UI roles; named colors below remain available to semantic content.
+  --primary-color: var(--reading-primary-ink-light, var(--color-red));
+  --accent-color: var(--reading-primary-ink-light, var(--color-pink));
+  --accent-secondary-color: var(--reading-secondary-ink-light, var(--color-orange));
+  --accent-heading: var(--reading-primary-seed, pink);
+  --accent-hover: var(--reading-primary-ink-light, var(--color-blue));
+  --accent-nav: var(--reading-primary-ink-light, var(--color-aqua));
+  --accent-start: var(--reading-primary-seed, var(--color-pink));
+  --accent-end: var(--reading-secondary-seed, var(--color-orange));
+  --accent-fill: var(--reading-primary-fill, var(--primary-color));
+  --accent-fill-start: var(--color-pink);
+  --accent-fill-end: var(--color-orange);
+  --accent-on-fill: var(--grey-0);
+  --accent-wash: var(--color-red-a1);
+  --accent-line: var(--color-red-a3);
+  --accent-decoration-soft: var(--color-pink-a1);
+  --accent-decoration-border: var(--color-pink-a3);
+  --accent-tint: var(--color-pink-light);
+  --accent-tint-soft: var(--color-pink-light-a3);
+  // Interaction states follow the accent, independently of semantic/brand colors.
+  --accent-soft: unquote('color-mix(in srgb, var(--primary-color) 10%, transparent)');
+  --accent-border: unquote('color-mix(in srgb, var(--primary-color) 30%, transparent)');
+
+  // Shared by ordinary tips, article previews and their model picker.
+  --tooltip-bg: rgba(241, 248, 252, .86);
+  --tooltip-text: #46586a;
+  --tooltip-border: rgba(163, 188, 206, .55);
+  --tooltip-shadow: rgba(35, 62, 83, .14);
+  --overlay-backdrop: rgba(0, 0, 0, .3);
+
   --nav-bg: linear-gradient(-225deg, var(--color-cyan-light) 0, var(--color-pink-light) 100%);
 
+}
+
+// Site or visitor customization replaces the original three-color treatment.
+// Both filled gradient ends remain readable with white text when only one is set.
+:root[data-reading-palette] {
+  // A single author treatment across full comments, recent comments and lists.
+  // Pull the ink toward the foreground to keep it readable on the tinted pill.
+  --author-badge-text: unquote('color-mix(in srgb, var(--primary-color) 70%, var(--grey-7))');
+  --author-badge-background: unquote('color-mix(in srgb, var(--accent-primary-seed) 8%, var(--grey-1))');
+  --author-badge-border: var(--accent-border);
+  --accent-fill: var(--reading-primary-fill, #c3465a);
+  --accent-fill-start: var(--reading-primary-fill, #b15278);
+  --accent-fill-end: var(--reading-secondary-fill, #a36048);
+  --accent-on-fill: #fff;
+  --accent-wash: var(--accent-soft);
+  --accent-line: var(--accent-border);
+  --accent-decoration-soft: unquote('color-mix(in srgb, var(--accent-start) 10%, transparent)');
+  --accent-decoration-border: unquote('color-mix(in srgb, var(--accent-start) 30%, transparent)');
+  --accent-tint: unquote('color-mix(in srgb, var(--accent-start) 12%, var(--grey-1))');
+  --accent-tint-soft: unquote('color-mix(in srgb, var(--accent-start) 6%, transparent)');
+  --nav-bg: linear-gradient(-225deg, unquote('color-mix(in srgb, var(--accent-end) 10%, var(--grey-1) 90%)') 0, unquote('color-mix(in srgb, var(--accent-start) 10%, var(--grey-1) 90%)') 100%);
 }
 
 .primary {
@@ -123,6 +180,15 @@
     --box-bg-shadow: #000;
     --text-color: var(--grey-5);
     --header-text-color: var(--grey-9);
+    --primary-color: var(--reading-primary-ink-dark, var(--color-red));
+    --accent-color: var(--reading-primary-ink-dark, var(--color-pink));
+    --accent-secondary-color: var(--reading-secondary-ink-dark, var(--color-orange));
+    --accent-hover: var(--reading-primary-ink-dark, var(--color-blue));
+    --accent-nav: var(--reading-primary-ink-dark, var(--color-aqua));
+    --tooltip-bg: rgba(32, 46, 60, .86);
+    --tooltip-text: #dce5ee;
+    --tooltip-border: rgba(125, 156, 181, .45);
+    --tooltip-shadow: rgba(0, 0, 0, .28);
   }
 
   .primary {

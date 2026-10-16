@@ -1,3 +1,5 @@
+import { effectiveReducedMotion } from './motion'
+
 // HTML retains every reference as the no-JavaScript fallback.
 export function paginateGraphReferences(root: HTMLElement, signal: AbortSignal) {
   const cleanups: (() => void)[] = []
@@ -16,7 +18,7 @@ export function paginateGraphReferences(root: HTMLElement, signal: AbortSignal) 
     let animation: Animation | undefined
     const motion = (direction: number) => {
       animation?.cancel()
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (!effectiveReducedMotion()) {
         animation = list.animate([{ opacity: .35, transform: `translateX(${direction * 8}px)` },
           { opacity: 1, transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' })
       }

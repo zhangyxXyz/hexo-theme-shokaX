@@ -1,6 +1,7 @@
 import { enhanceSelect } from '../select-picker'
 import type { Labels, Point } from './types'
 import type { Panel } from './panel'
+import { statisticsColors } from './palette'
 
 export function rangeIndices(length: number, start: number, end: number) {
   const last = Math.max(0, length - 1)
@@ -46,7 +47,7 @@ export function postsRange(panel: Panel, data: Point[], chart: any, labels: Labe
     option.grid.bottom = 65
     const color = option.series[0].lineStyle.color
     option.dataZoom = [{ type: 'slider', xAxisIndex: 0, start, end, bottom: 5, height: 22, realtime: false,
-      borderColor: 'transparent', backgroundColor: 'rgba(128,128,128,.06)', fillerColor: 'rgba(225,120,153,.15)',
+      borderColor: 'transparent', backgroundColor: 'rgba(128,128,128,.06)', fillerColor: statisticsColors(panel.element).zoom,
       dataBackground: { lineStyle: { color, opacity: .5 }, areaStyle: { color, opacity: .08 } },
       handleStyle: { color }, textStyle: { color: option.textStyle.color }, showDetail: true,
     }]

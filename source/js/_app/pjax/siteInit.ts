@@ -2,7 +2,7 @@ import domInit from './domInit'
 import {siteRefresh} from './refresh'
 import {cloudflareInit} from '../components/cloudflare'
 import {BODY, CONFIG, setSiteSearch, siteSearch} from '../globals/globalVars'
-import {autoDarkmode, themeColorListener} from '../globals/themeColor'
+import {themeColorListener} from '../globals/themeColor'
 import {resizeHandle, scrollHandle, syncViewportState, visibilityListener} from '../globals/handles'
 import {pagePosition} from '../globals/tools'
 import {initVue} from '../library/vue'
@@ -11,15 +11,13 @@ import {transition} from '../library/anime'
 import { attachFireworkLayer } from '../components/firework-layer'
 
 const siteInit = async () => {
+  themeColorListener()
   initVue()
   domInit()
-
-  autoDarkmode()
 
   if (__shokax_VL__) {
     visibilityListener()
   }
-  themeColorListener()
 
   if (__shokax_algolia_search__) {
     document.querySelector('li.item.search > i').addEventListener('click', () => {

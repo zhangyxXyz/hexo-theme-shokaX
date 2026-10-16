@@ -9,6 +9,7 @@ import { createCommentSource, commentSettings } from './comments'
 import { mountCommentRanking } from './comment-ranking'
 import { chartKeys, siteCharts } from './types'
 import { resourceURL } from '../../globals/resources'
+import { watchStatisticsAppearance } from './appearance'
 import type { BaiduChart, ChartKey, RegisterChart, Settings, SiteChart } from './types'
 
 let cleanup: (() => void) | undefined
@@ -38,11 +39,9 @@ export function refreshStatistics() {
     observer.observe(body)
     observers.push(observer)
   }
-  const themeObserver = new MutationObserver(() => renderers.forEach(render => render()))
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme', 'style'] })
+  watchStatisticsAppearance(() => renderers.forEach(render => render()), controller.signal)
   cleanup = () => {
     controller.abort()
-    themeObserver.disconnect()
     observers.forEach(observer => observer.disconnect())
     charts.forEach(chart => chart.dispose())
   }

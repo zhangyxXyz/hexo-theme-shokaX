@@ -132,7 +132,11 @@ export function createCommentList(config: Settings, signal: AbortSignal) {
         const identity = document.createElement('div')
         identity.className = 'statistics-comment-identity'
         identity.append(name)
-        if (item.label) identity.append(badge(item.label, CONFIG.waline.labelColors?.[item.label], item.labelColors))
+        if (item.label) {
+          const label = badge(item.label, CONFIG.waline.labelColors?.[item.label], item.labelColors)
+          if (item.type === 'administrator') label.classList.add('statistics-comment-badge-author')
+          identity.append(label)
+        }
         if (!(CONFIG.waline.hideAdminLevel && item.type === 'administrator') && typeof item.level === 'number') {
           const key = `level${item.level}`
           const locale = { ...(defaultLocales[(CONFIG.waline.lang || 'en-US').toLowerCase() as keyof typeof defaultLocales] || defaultLocales['en-us']) } as Record<string, string>

@@ -1,4 +1,5 @@
 import { bookmarkSearchIndex, matchesBookmark } from './bookmark-search'
+import { getReducedMotionQuery } from './motion'
 
 let cleanup: (() => void) | undefined
 
@@ -11,7 +12,7 @@ export const refreshBookmarks = () => {
   const toolbar = root.querySelector<HTMLElement>('.bookmark-toolbar')!
   const status = root.querySelector<HTMLElement>('.bookmark-status')!
   const events = new AbortController()
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+  const reduced = getReducedMotionQuery()
   let animation: Animation | undefined
   let frame = 0
   let revision = 0

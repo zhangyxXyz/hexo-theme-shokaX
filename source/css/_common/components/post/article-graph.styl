@@ -114,14 +114,14 @@
       display: grid; place-items: center; width: 2rem; height: 2rem; padding: 0;
       border: 0; border-radius: .5rem;
       background: unquote('color-mix(in srgb, var(--primary-color) 6%, transparent)'); color: var(--primary-color);
-      &:hover:not(:disabled) { color: var(--color-blue); }
+      &:hover:not(:disabled) { color: var(--accent-hover); }
       &:disabled { opacity: .35; cursor: default; }
     }
   }
   .article-graph-show-all {
     display: block; margin: .25rem 0 0 auto; padding: .25rem .1rem; border: 0;
     background: transparent; color: var(--primary-color); font-size: .75rem;
-    &:hover { color: var(--color-blue); }
+    &:hover { color: var(--accent-hover); }
   }
   .article-graph-empty { color: var(--grey-5); font-size: .75rem; margin-top: .5rem; }
   .article-graph-dialog {
@@ -157,7 +157,7 @@ body:has(.article-graph-dialog[open]) { overflow: hidden; }
     }
   }
 }
-@media (prefers-reduced-motion: reduce) {
++reduced-motion() {
   .article-graph .article-graph-references > summary > .ic { transition: none; }
 }
 @media (max-width: 600px) {

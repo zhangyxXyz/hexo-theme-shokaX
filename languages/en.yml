@@ -47,6 +47,73 @@ reading_tools:
   simplified: Restore original content
   error: Loading failed; click to retry
 
+reading_settings:
+  title: Display and reading
+  description: Adjust your reading comfort. Changes apply immediately and can be reset at any time.
+  close: Close reading settings
+  reset: Restore defaults
+  done: Done
+  storage: Preferences are saved only in this browser.
+  saved: Settings saved.
+  temporary: Applied, but this browser cannot save settings right now. Reloading may restore the defaults.
+  restored: Theme defaults restored.
+  colors:
+    title: Theme colors
+    primary: Primary color
+    secondary: Secondary color
+    apply: Apply
+    invalid: Enter a valid HEX color or rgb(0, 0, 0). RGB values must be between 0 and 255.
+    help: Choose a swatch or enter HEX / RGB to apply a color. Emphasized text adapts its contrast to light and dark mode.
+    reset: Restore theme colors
+    restored: Theme colors restored. Other reading preferences are unchanged.
+  appearance:
+    title: More appearance options
+    background: Header background
+    background_options:
+      banner: Image banner
+      gradient: Theme gradient
+    background_help: Changes the header background. Article images keep their original appearance.
+    texture: Background texture
+    texture_options:
+      none: None
+      stars: Stars
+      dots: Dots
+      contours: Contours
+      origami: Origami
+      sakura: Blossoms
+    intensity: Texture intensity
+    intensity_help: Textures decorate the page margins without covering the article. Choose a texture to adjust its intensity.
+    home_layout: Home article layout
+    home_options:
+      list: List
+      grid: Two columns
+    home_help: Changes only the home article layout. Phone screens keep a single column.
+  font_size: Article text size
+  font_options:
+    standard: Standard
+    large: Larger
+    larger: Largest
+  line_height: Article line spacing
+  line_options:
+    compact: Compact
+    standard: Standard
+    relaxed: Relaxed
+  preview_label: Reading preview
+  preview_text: Keep notes, collect a little starlight. Turn the page, let an idea unfold, and find something new in familiar words.
+  scope: Text size and spacing apply to article prose. Navigation, summaries, and comments keep their original styles.
+  theme: Appearance
+  theme_options:
+    default: Theme default
+    system: System
+    light: Light
+    dark: Dark
+  theme_help: Theme default keeps the site's original light and dark mode rules.
+  motion: Motion
+  motion_options:
+    system: Follow system
+    reduce: Reduce motion
+  motion_help: Reduce motion pauses decorative animations and the visualizer. Music and manual controls remain available.
+
 image_viewer:
   zoom_in: "Zoom in"
   zoom_out: "Zoom out"

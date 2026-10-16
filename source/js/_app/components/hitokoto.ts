@@ -1,11 +1,12 @@
 import { fetchHitokoto } from '../globals/hitokoto'
+import { getReducedMotionQuery } from './motion'
 
 let pending: AbortController | undefined
 let disposeTyping: (() => void) | undefined
 
 function showQuote(element: HTMLElement, text: string) {
   disposeTyping?.()
-  const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+  const motion = getReducedMotionQuery()
   element.textContent = text
   if (element.dataset.typewriter !== 'true' || !text || motion.matches) return
 

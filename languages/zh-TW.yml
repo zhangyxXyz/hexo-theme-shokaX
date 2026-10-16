@@ -47,6 +47,73 @@ reading_tools:
   simplified: 還原原文
   error: 載入失敗，點擊重試
 
+reading_settings:
+  title: 顯示與閱讀
+  description: 調整閱讀的舒適度，即時套用，隨時可以恢復預設。
+  close: 關閉閱讀設定
+  reset: 恢復預設
+  done: 完成
+  storage: 偏好僅儲存在目前瀏覽器。
+  saved: 設定已儲存。
+  temporary: 已套用，但此瀏覽器暫時無法儲存，重新整理後可能恢復預設。
+  restored: 已恢復主題預設設定。
+  colors:
+    title: 主題配色
+    primary: 主題主色
+    secondary: 輔助顏色
+    apply: 套用
+    invalid: 請輸入有效的 HEX 顏色或 rgb(0, 0, 0)，RGB 數值須在 0–255 之間。
+    help: 點擊色塊取色，或輸入 HEX / RGB 後套用。強調文字會隨明暗模式調整對比。
+    reset: 恢復主題配色
+    restored: 已恢復主題配色，其他閱讀偏好維持不變。
+  appearance:
+    title: 更多外觀
+    background: 頁首背景
+    background_options:
+      banner: 圖片橫幅
+      gradient: 簡潔主題色
+    background_help: 切換頁首橫幅的呈現，文章圖片維持原樣。
+    texture: 背景紋理
+    texture_options:
+      none: 無紋理
+      stars: 星點
+      dots: 點陣
+      contours: 等高線
+      origami: 摺紙
+      sakura: 櫻花
+    intensity: 紋理濃度
+    intensity_help: 紋理只點綴頁面留白，不覆蓋正文；選擇紋理後可調節濃度。
+    home_layout: 首頁文章排列
+    home_options:
+      list: 列表
+      grid: 雙欄
+    home_help: 只改變首頁文章排列，手機螢幕仍以單欄顯示。
+  font_size: 正文字級
+  font_options:
+    standard: 標準
+    large: 稍大
+    larger: 更大
+  line_height: 正文行距
+  line_options:
+    compact: 緊密
+    standard: 標準
+    relaxed: 寬鬆
+  preview_label: 閱讀預覽
+  preview_text: 記錄程式碼，也收藏星光。翻過一頁筆記，讓思路慢慢展開，在熟悉的文字裡遇見新的發現。
+  scope: 字級與行距只套用於文章正文，導覽、摘要和評論維持原樣。
+  theme: 明暗模式
+  theme_options:
+    default: 主題預設
+    system: 跟隨系統
+    light: 淺色
+    dark: 深色
+  theme_help: 主題預設沿用網站原有的明暗切換規則。
+  motion: 動態效果
+  motion_options:
+    system: 跟隨系統
+    reduce: 減少動態效果
+  motion_help: 減少動態效果會暫停裝飾與頻譜等動畫；音樂和手動操作仍可使用。
+
 image_viewer:
   zoom_in: "放大"
   zoom_out: "縮小"

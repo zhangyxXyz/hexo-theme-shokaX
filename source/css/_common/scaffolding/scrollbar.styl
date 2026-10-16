@@ -1,14 +1,14 @@
 :root {
-  --scrollbar-thumb: unquote('color-mix(in srgb, var(--color-pink) 70%, var(--grey-0))');
-  --scrollbar-end: unquote('color-mix(in srgb, var(--color-orange) 70%, var(--grey-0))');
-  --scrollbar-hover: var(--color-pink);
-  --scrollbar-active: var(--color-orange);
+  --scrollbar-thumb: unquote('color-mix(in srgb, var(--accent-start) 70%, var(--grey-0))');
+  --scrollbar-end: unquote('color-mix(in srgb, var(--accent-end) 70%, var(--grey-0))');
+  --scrollbar-hover: var(--accent-start);
+  --scrollbar-active: var(--accent-end);
   --scrollbar-stripe: rgba(255, 255, 255, .24);
 }
 
 html[data-theme='dark'] {
-  --scrollbar-thumb: unquote('color-mix(in srgb, var(--color-pink) 60%, var(--grey-3))');
-  --scrollbar-end: unquote('color-mix(in srgb, var(--color-orange) 60%, var(--grey-3))');
+  --scrollbar-thumb: unquote('color-mix(in srgb, var(--accent-start) 60%, var(--grey-3))');
+  --scrollbar-end: unquote('color-mix(in srgb, var(--accent-end) 60%, var(--grey-3))');
   --scrollbar-stripe: rgba(255, 255, 255, .09);
 }
 

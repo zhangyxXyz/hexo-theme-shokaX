@@ -27,28 +27,23 @@
     p { margin: .375rem 0 0; font-size: .8125rem; color: var(--grey-6); }
   }
   .status-refresh {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    control-base($control-height-compact);
+    control-focus();
     gap: .4rem;
     flex: none;
-    box-sizing: border-box;
-    height: 2rem;
+    height: $control-height-compact;
     border: 1px solid var(--status-line);
-    border-radius: .45rem;
+    border-radius: $control-radius-compact;
     padding: 0 .75rem;
     color: var(--primary-color);
     background: var(--grey-1);
-    font: inherit;
     font-size: .8rem;
     line-height: 1;
     white-space: nowrap;
-    cursor: pointer;
     transition: color .2s, border-color .2s, background .2s;
     &:hover:not(:disabled) { border-color: var(--primary-color); background: var(--grey-2); }
     &:disabled { opacity: .5; cursor: wait; }
     &[aria-busy='true'] .i-refresh { animation: status-refresh-spin .8s linear infinite; }
-    &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
   }
   .status-timestamp { margin: .75rem 0 2rem; font-size: .75rem; color: var(--grey-6); text-align: right; }
   .status-tree {
@@ -179,7 +174,7 @@
       .status-service-node { right: auto; left: -1.625rem; }
     }
   }
-  @media (prefers-reduced-motion: reduce) {
+  +reduced-motion() {
     .status-refresh, .status-service, .status-service::before, .status-service-host { transition: none; }
     .status-refresh[aria-busy='true'] .i-refresh { animation: none; }
   }

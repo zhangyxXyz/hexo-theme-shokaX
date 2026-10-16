@@ -1,4 +1,5 @@
 import type { Labels } from './types'
+import { effectiveReducedMotion } from '../motion'
 
 export function scrollArrows(frame: HTMLElement, scroll: HTMLElement, content: HTMLElement, labels: Labels, signal: AbortSignal) {
   const buttons = [-1, 1].map(direction => {
@@ -10,7 +11,7 @@ export function scrollArrows(frame: HTMLElement, scroll: HTMLElement, content: H
     icon.className = `ic i-chevrons-${direction < 0 ? 'left' : 'right'}`
     icon.setAttribute('aria-hidden', 'true')
     button.append(icon)
-    button.onclick = () => scroll.scrollBy({ left: direction * scroll.clientWidth * .75, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+    button.onclick = () => scroll.scrollBy({ left: direction * scroll.clientWidth * .75, behavior: effectiveReducedMotion() ? 'auto' : 'smooth' })
     frame.append(button)
     return button
   })

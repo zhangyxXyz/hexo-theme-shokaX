@@ -22,6 +22,7 @@
   outline: none;
   will-change: auto;
   the-transition();
+  control-focus();
 
   &+.button {
     margin-left: 1.25em
@@ -29,9 +30,9 @@
 
   &:active,
   &:hover {
-    color: var(--grey-0);
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    color: var(--accent-on-fill);
+    background-color: var(--accent-fill);
+    border-color: var(--accent-fill);
   }
 
   &:disabled {
@@ -45,4 +46,8 @@
     text-align: left;
     width: (18em / 14);
   }
+}
+
+@keyframes theme-loading-spin {
+  to { transform: rotate(360deg); }
 }

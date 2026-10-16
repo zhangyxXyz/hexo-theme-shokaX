@@ -2,6 +2,7 @@ import anime from 'theme-shokax-anime'
 import { siteNavHeight } from '../globals/globalVars'
 import type { AnimeOptions } from 'theme-shokax-anime/dist/types'
 import {getTop, setDisplay} from './proto'
+import { effectiveReducedMotion } from '../components/motion'
 
 /**
  * 参数  动画效果
@@ -90,6 +91,7 @@ export const transition = (target: HTMLElement, type: number|string|Function, co
 }
 
 export const pageScroll = (target: HTMLElement | number, offset?: number, complete?: Function, behavior: ScrollBehavior = 'smooth') => {
+  if (effectiveReducedMotion()) behavior = 'instant'
   // 确定滚动容器
   const scrollContainer = (typeof offset === 'number' && typeof target !== 'number')
     ? target.parentNode as HTMLElement
@@ -116,6 +118,6 @@ export const pageScroll = (target: HTMLElement | number, offset?: number, comple
 
   // 处理完成回调（模拟动画持续时间）
   if (complete) {
-    setTimeout(() => complete(), 500); // 与原动画持续时间保持一致
+    setTimeout(() => complete(), behavior === 'smooth' ? 500 : 0);
   }
 };

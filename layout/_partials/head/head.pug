@@ -38,6 +38,7 @@ each prelink in prelinks
 each dnsLink in dnslinks
     link(rel="dns-prefetch" href=dnsLink)
 
+!= reading_preferences_bootstrap()
 - var fontConfig = theme.font?.loadFromGoogle
 if fontConfig
     != _vendor_font()

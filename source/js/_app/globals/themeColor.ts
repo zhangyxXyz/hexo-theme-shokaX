@@ -2,31 +2,23 @@ import { CONFIG, HTML } from './globalVars'
 import { resolveThemeEffect } from '../components/theme-transition'
 import { createThemeTransitionRunner } from '../components/theme-transition/runner'
 import type { ThemeMode } from '../components/theme-transition/types'
+import { effectiveReducedMotion, initReadingPreferences, setReadingPreferences, subscribeReadingPreferences, subscribeReducedMotion } from '../components/reading-preferences'
 
+let committing = false
 const themeTransition = createThemeTransitionRunner(mode => {
-  applyTheme(mode)
-  try { localStorage.setItem('theme', mode) } catch { /* Storage may be disabled. */ }
+  committing = true
+  try { setReadingPreferences({ theme: mode }) } finally { committing = false }
 })
 
-/**
- * 更改日夜模式
- */
-const applyTheme = (type?: string) => {
+const syncThemeIcon = () => {
   const btn = document.querySelector('.theme .ic')
-  if (type === 'dark') {
-    HTML.setAttribute('data-theme', type)
+  if (HTML.getAttribute('data-theme') === 'dark') {
     btn?.classList.remove('i-sun')
     btn?.classList.add('i-moon')
   } else {
-    HTML.removeAttribute('data-theme')
     btn?.classList.remove('i-moon')
     btn?.classList.add('i-sun')
   }
-}
-
-export const changeTheme = (type?: string) => {
-  themeTransition.cancel(false)
-  applyTheme(type)
 }
 
 let toggleInitialized = false
@@ -35,14 +27,13 @@ export function initThemeToggle() {
   const button = document.querySelector<HTMLElement>('#rightNav .theme')
   if (!button) return
   toggleInitialized = true
-  const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
   const toggle = () => {
     const rect = button.getBoundingClientRect()
     const from: ThemeMode = HTML.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
     themeTransition.run(resolveThemeEffect(CONFIG.theme_transition), from, from === 'dark' ? 'light' : 'dark', {
       x: Math.max(0, Math.min(window.innerWidth, rect.left + rect.width / 2)),
       y: Math.max(0, Math.min(window.innerHeight, rect.top + rect.height / 2))
-    }, motion.matches)
+    }, effectiveReducedMotion())
   }
   button.addEventListener('click', toggle)
   button.addEventListener('keydown', event => {
@@ -51,23 +42,9 @@ export function initThemeToggle() {
       if (!event.repeat) toggle()
     }
   })
-  motion.addEventListener('change', event => { if (event.matches) themeTransition.cancel() })
+  subscribeReducedMotion(reduced => { if (reduced) themeTransition.cancel() })
   document.addEventListener('pjax:send', () => themeTransition.cancel())
   window.addEventListener('pagehide', () => themeTransition.cancel())
-}
-
-/**
- * 自动调整黑夜白天
- * 优先级: 手动选择>时间>跟随系统
- */
-export const autoDarkmode = () => {
-  if (CONFIG.auto_dark.enable) {
-    if (new Date().getHours() >= CONFIG.auto_dark.start || new Date().getHours() <= CONFIG.auto_dark.end) {
-      changeTheme('dark')
-    } else {
-      changeTheme()
-    }
-  }
 }
 
 /**
@@ -81,23 +58,15 @@ export const changeMetaTheme = (color: string): void => {
   document.querySelector('meta[name="theme-color"]').setAttribute('content', color)
 }
 
-// 记忆日夜模式切换和系统亮暗模式监听
+let listenerInitialized = false
+// Preference state owns the theme policy; this module keeps the existing toggle animation.
 export const themeColorListener = () => {
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (mediaQueryList) => {
-    if (mediaQueryList.matches) {
-      changeTheme('dark')
-    } else {
-      changeTheme()
-    }
+  if (listenerInitialized) return
+  listenerInitialized = true
+  initReadingPreferences()
+  syncThemeIcon()
+  subscribeReadingPreferences(() => {
+    if (!committing) themeTransition.cancel(false)
+    syncThemeIcon()
   })
-
-  let t: string | null = null
-  try { t = localStorage.getItem('theme') } catch { /* Use the configured default. */ }
-  if (t) {
-    changeTheme(t)
-  } else {
-    if (CONFIG.darkmode) {
-      changeTheme('dark')
-    }
-  }
 }

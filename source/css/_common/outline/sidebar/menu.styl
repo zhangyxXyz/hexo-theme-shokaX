@@ -2,6 +2,9 @@
   --sidebar-menu-accent #e88fa7
   --sidebar-menu-line rgba(232, 143, 167, .3)
   --sidebar-menu-hover rgba(244, 166, 185, .12)
+  --sidebar-menu-active linear-gradient(90deg, rgba(244, 166, 185, .2), rgba(247, 193, 181, .1))
+  --sidebar-menu-node #e7bdc8
+  --sidebar-menu-icon #d99aad
   padding 1rem 1.1rem
   margin 0
   text-align left
@@ -50,7 +53,7 @@
 
     &.active
       color var(--sidebar-menu-accent)
-      background linear-gradient(90deg, rgba(244, 166, 185, .2), rgba(247, 193, 181, .1))
+      background var(--sidebar-menu-active)
 
     > a:hover, > .sidebar-menu-toggle:hover
       background var(--sidebar-menu-hover)
@@ -126,14 +129,14 @@
         width 5px
         height 5px
         border-radius 50%
-        background #e7bdc8
+        background var(--sidebar-menu-node)
         transform translateY(-50%)
       > a
         min-height 36px
         padding 0 .6rem
         font-size .9375rem
       .ic
-        color #d99aad
+        color var(--sidebar-menu-icon)
       &:hover, &.active
         background var(--sidebar-menu-hover)
         color var(--sidebar-menu-accent)
@@ -152,7 +155,7 @@
     > .sidebar-menu-toggle::after
       transform rotate(225deg)
 
-  @media (prefers-reduced-motion: reduce)
+  +reduced-motion()
     *, *::after
       transition none
 
@@ -160,9 +163,15 @@
   --sidebar-menu-accent #f2a4b8
   --sidebar-menu-line rgba(242, 164, 184, .3)
   --sidebar-menu-hover rgba(232, 143, 167, .13)
-  .item.active
-    background linear-gradient(90deg, rgba(232, 143, 167, .18), rgba(231, 164, 145, .09))
-  .submenu .item::before
-    background #967582
+  --sidebar-menu-active linear-gradient(90deg, rgba(232, 143, 167, .18), rgba(231, 164, 145, .09))
+  --sidebar-menu-node #967582
   .submenu .item:hover::before, .submenu .item.active::before
     background var(--sidebar-menu-accent)
+
+html[data-reading-palette] .overview .menu
+  --sidebar-menu-accent var(--primary-color)
+  --sidebar-menu-line var(--accent-decoration-border)
+  --sidebar-menu-hover var(--accent-decoration-soft)
+  --sidebar-menu-active linear-gradient(90deg, var(--accent-decoration-soft), transparent)
+  --sidebar-menu-node var(--accent-start)
+  --sidebar-menu-icon var(--accent-color)

@@ -5,6 +5,7 @@ import { calendarDetails } from './calendar'
 import { calendarScroll } from './calendar-scroll'
 import { postsRange } from './posts-range'
 import { tagsLimit } from './tags-limit'
+import { statisticsColors } from './palette'
 import type { Panel } from './panel'
 import type { ChartKey, Point, RegisterChart, Settings } from './types'
 
@@ -28,7 +29,7 @@ export async function mountDataChart(key: ChartKey, panel: Panel, getData: () =>
       const option = chartOptions(key, displayed, config.labels, root, panel.body, echarts)
       if (key === 'tags' && displayed.length > 10) {
         option.grid.bottom = 65
-        option.dataZoom = [{ type: 'slider', start: 0, end: 100, bottom: 5, height: 20, fillerColor: 'rgba(225,120,153,.15)', handleStyle: { color: option.series[0].lineStyle.color } }]
+        option.dataZoom = [{ type: 'slider', start: 0, end: 100, bottom: 5, height: 20, fillerColor: statisticsColors(root).zoom, handleStyle: { color: option.series[0].lineStyle.color } }]
       }
       legend?.(option)
       range?.(option)

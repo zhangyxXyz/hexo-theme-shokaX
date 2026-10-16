@@ -96,6 +96,8 @@ interface configType {
     hidden: string
   }
   darkmode: boolean
+  reading_settings?: { enable: boolean }
+  palette?: { primary?: string | null; secondary?: string | null }
   theme_transition?: string
   auto_dark: {
     enable: boolean

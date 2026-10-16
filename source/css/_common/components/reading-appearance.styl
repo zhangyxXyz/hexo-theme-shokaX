@@ -1,0 +1,138 @@
+// Optional reader choices. With no preference attributes, the theme is unchanged.
+html[data-reading-background='gradient'] {
+  #imgs {
+    background: unquote('linear-gradient(135deg, color-mix(in srgb, var(--accent-start) 12%, var(--grey-1)), color-mix(in srgb, var(--accent-end) 14%, var(--grey-1)))');
+
+    > img, > ul { visibility: hidden; }
+    .item { animation-play-state: paused; }
+    &::before { background: transparent; }
+  }
+
+  #header {
+    --header-text-color: var(--grey-7);
+    text-shadow: none;
+  }
+
+  #brand .artboard { --brand-glitch-blend: normal; }
+}
+
+// Small, static masks share geometry between the setting samples and page gutters.
+// Colour stays in CSS so all patterns follow both the reader palette and night mode.
+$reading-patterns = {
+  stars: "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22144%22%20height%3D%2296%22%20viewBox%3D%220%200%20144%2096%22%3E%3Cpath%20d%3D%22M24%2012Q26%2024%2036%2026Q26%2028%2024%2040Q22%2028%2012%2026Q22%2024%2024%2012ZM104%2054Q106%2062%20114%2064Q106%2066%20104%2074Q102%2066%2094%2064Q102%2062%20104%2054Z%22%2F%3E%3Cpath%20d%3D%22M91%2013v10m-5-5h10M47%2067v8m-4-4h8%22%20stroke%3D%22black%22%20stroke-width%3D%221.2%22%2F%3E%3Ccircle%20cx%3D%2266%22%20cy%3D%2236%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%22134%22%20cy%3D%2287%22%20r%3D%221.5%22%2F%3E%3C%2Fsvg%3E')",
+  dots: "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2248%22%20height%3D%2248%22%20viewBox%3D%220%200%2048%2048%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221.5%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2236%22%20r%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M33%2012h6m-3-3v6M9%2036h6m-3-3v6%22%20stroke%3D%22black%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E')",
+  contours: "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22192%22%20height%3D%2296%22%20viewBox%3D%220%200%20192%2096%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M-48%2010Q0-14%2048%2010T144%2010T240%2010M-48%2034Q0%2010%2048%2034T144%2034T240%2034M-48%2058Q0%2034%2048%2058T144%2058T240%2058M-48%2082Q0%2058%2048%2082T144%2082T240%2082M-48%20106Q0%2082%2048%20106T144%20106T240%20106%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E')",
+  origami: "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22160%22%20height%3D%22112%22%20viewBox%3D%220%200%20160%20112%22%3E%3Cpath%20d%3D%22M8%2094%2064%2022%20120%2094ZM64%2022v72M64%2022%208%2094%2064%2076%20120%2094%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221%22%2F%3E%3Cpath%20d%3D%22M8%2094%2064%2022V76Z%22%20opacity%3D%22.24%22%2F%3E%3Cpath%20d%3D%22M132%2018%20154%204v34Z%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E')",
+  sakura: "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22144%22%20height%3D%2296%22%20viewBox%3D%220%200%20144%2096%22%3E%3Cpath%20d%3D%22M23%2013C10%2016%2015%2030%2024%2033C32%2027%2033%2016%2028%2013L25%2018ZM100%2057C89%2065%2099%2076%20108%2075C113%2067%20109%2057%20104%2056L103%2061ZM64%2039C54%2034%2048%2043%2053%2052C63%2054%2068%2046%2067%2041L62%2043Z%22%2F%3E%3C%2Fsvg%3E')"
+};
+
+for pattern, mask in $reading-patterns {
+  html[data-reading-texture={pattern}],
+  .reading-settings-texture-preview[data-texture={pattern}] {
+    --reading-texture-mask: unquote(mask);
+  }
+}
+
+html[data-reading-texture] main {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    opacity: var(--reading-texture-opacity, .12);
+    mask-image: var(--reading-texture-mask);
+    mask-repeat: repeat;
+  }
+
+  // The opaque reading surface and cover cards stay above the decorative layer.
+  > .inner { position: relative; }
+}
+
+.reading-settings-texture-preview {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent-soft), var(--grey-2));
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    mask-image: var(--reading-texture-mask);
+    mask-repeat: repeat;
+    mask-size: auto 100%;
+    opacity: .48;
+  }
+
+  &[data-texture='none']::before { display: none; }
+}
+
+// Only the home feed (including its pagination) opts into a second column.
+// Narrow screens retain the theme's existing single-column cards.
+@media (min-width: s('calc(%s + 1px)', $mobile-wdith)) {
+  html[data-reading-home-layout='grid'] [data-reading-home] .segments.posts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+    align-items: start;
+
+    > .item {
+      width: auto;
+      min-width: 0;
+      height: auto;
+      max-height: none;
+      margin: 0;
+      flex-direction: column;
+
+      .cover {
+        width: 100%;
+        height: 10rem;
+        margin: 0;
+        clip-path: none;
+        border-radius: .625rem .625rem 0 0;
+      }
+
+      .info {
+        width: 100%;
+        min-width: 0;
+        min-height: 15rem;
+        padding: .75rem 1rem 3.25rem;
+
+        h3 {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          white-space: normal;
+          line-height: 1.5;
+          min-height: 3em;
+        }
+
+        > .meta { flex-wrap: wrap; justify-content: flex-start; }
+
+        .meta.footer {
+          left: 1rem;
+          right: 6rem;
+          max-width: none;
+          flex-wrap: nowrap;
+        }
+      }
+
+      .btn {
+        left: auto;
+        right: 0;
+        border-radius: 1rem 0;
+        background-image: linear-gradient(to right, var(--accent-fill-start), var(--accent-fill-end));
+      }
+
+      &:hover {
+        .info { width: 100%; }
+        .cover { filter: brightness(.85); }
+        .cover img { transform: scale(1.06); }
+      }
+    }
+  }
+}

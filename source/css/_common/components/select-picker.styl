@@ -1,5 +1,6 @@
 .select-picker-enhanced > select[hidden], .select-picker-trigger [hidden] { display: none !important; }
 .select-picker-trigger {
+  control-focus(2px);
   display: inline-flex;
   align-items: center;
   gap: .65rem;
@@ -12,8 +13,7 @@
   font: inherit;
   cursor: pointer;
   span { overflow-wrap: anywhere; }
-  &:focus { outline: none; }
-  &:focus-visible { box-shadow: 0 0 0 2px var(--color-blue); }
+  &:focus:not(:focus-visible) { outline: none; }
   &[aria-expanded='true'] .select-picker-arrow { transform: rotate(90deg); }
 }
 .select-picker-arrow {
@@ -36,12 +36,11 @@
   padding: .25rem;
   max-width: calc(100vw - 24px);
   overflow-y: auto;
-  border: 1px solid rgba(120, 179, 199, .12);
+  border: 1px solid var(--tooltip-border);
   border-radius: .6rem;
-  background: var(--grey-1);
-  background: unquote('color-mix(in srgb, var(--grey-1) 92%, transparent)');
+  background: var(--tooltip-bg);
   backdrop-filter: blur(18px);
-  box-shadow: 0 .4rem 1.2rem rgba(0, 0, 0, .13);
+  box-shadow: 0 .4rem 1.2rem var(--tooltip-shadow);
   font-size: .75rem;
   line-height: 1.5;
 }
@@ -55,7 +54,7 @@
   border: 0;
   border-radius: .35rem;
   background: transparent;
-  color: var(--grey-7);
+  color: var(--tooltip-text);
   text-align: start;
   font: inherit;
   cursor: pointer;
@@ -63,10 +62,10 @@
   .ic { color: var(--grey-6); flex-shrink: 0; font-size: .9rem; }
   span { overflow-wrap: anywhere; }
   .select-picker-check { margin-inline-start: auto; width: .25rem; height: .25rem; flex-shrink: 0; border-radius: 50%; }
-  &:hover, &:focus-visible { outline: none; background: rgba(105, 184, 212, .09); }
+  &:not(:disabled):hover, &:focus-visible { outline: none; background: var(--accent-soft); }
   &[aria-selected='true'] {
-    background: rgba(105, 184, 212, .045);
-    color: var(--color-blue);
+    background: var(--accent-soft);
+    color: var(--primary-color);
     .ic { color: inherit; }
     .select-picker-check { background: currentColor; }
   }
@@ -82,6 +81,6 @@
   font-size: .7rem;
   font-weight: 600;
 }
-@media (prefers-reduced-motion: reduce) {
++reduced-motion() {
   .select-picker-arrow { transition: none; }
 }

@@ -12,7 +12,14 @@
 - var footerShowBrowse = footerShowTags || footerShowPosts || footerShowComments
 - var footerNav = theme.footer.navigation || {archives: '/archives/', tags: '/tags/', about: '/about/'}
 - var footerIcons = {archives: 'archive', tags: 'tags', about: 'about', 'friend-links': 'friend-famous', projects: 'project', guestbook: 'message-board', statistics: 'statistics', 'service-status': 'heartbeat', 'friend-circle': 'friend-circle', 'webstack-links': 'bookmark', categories: 'category'}
-.footer-shell
+- var footerLandscape = theme.footer.landscape || {}
+- var footerShowLandscape = footerLandscape.enable && footerLandscape.image
+.footer-shell(class=footerShowLandscape ? 'footer-shell-landscape' : null)
+    if footerShowLandscape
+        .footer-landscape(aria-hidden="true")
+            img(class=footerLandscape.dark_image ? 'footer-landscape-day' : null src=url_for(footerLandscape.image) alt="" loading="lazy" decoding="async" width="2172" height="724")
+            if footerLandscape.dark_image
+                img.footer-landscape-night(src=url_for(footerLandscape.dark_image) alt="" loading="lazy" decoding="async" width="2172" height="724")
     svg.footer-starlight(viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false")
         g.footer-orbits(fill="none" stroke="currentColor" stroke-width="1")
             path(d="M875 -25C1000 100 1225 20 1190 -35M940 -30C840 72 1100 96 1170 -20")

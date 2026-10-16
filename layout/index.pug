@@ -7,7 +7,7 @@ block head
     != _css('page.css')
 
 block content
-    div(class="index wrap")
+    div(class="index wrap" data-reading-home)
         if page.current === 1
             if page.sticky.length > 0
                 h2(class="divider")

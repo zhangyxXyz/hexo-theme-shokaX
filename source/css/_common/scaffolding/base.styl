@@ -1,9 +1,9 @@
 :root {
-  --selection-bg: unquote('color-mix(in srgb, var(--color-orange) 25%, transparent)');
+  --selection-bg: unquote('color-mix(in srgb, var(--accent-end) 25%, transparent)');
 }
 
 html[data-theme='dark'] {
-  --selection-bg: unquote('color-mix(in srgb, var(--color-orange) 30%, transparent)');
+  --selection-bg: unquote('color-mix(in srgb, var(--accent-end) 30%, transparent)');
 }
 
 ::selection {
@@ -73,8 +73,8 @@ a {
   the-transition();
 
   &:hover {
-    border-bottom-color: var(--color-blue);
-    color: var(--color-blue);
+    border-bottom-color: var(--accent-hover);
+    color: var(--accent-hover);
   }
 
   &::before, &::after {
@@ -273,8 +273,8 @@ input, textarea {
     opacity: 1;
     cursor: pointer;
     transition: transform .18s ease-out, background .18s ease-out;
-    &:hover { background: var(--color-red-a1); transform: scale(1.06); }
-    &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; background: var(--color-red-a1); }
+    &:hover { background: var(--accent-wash); transform: scale(1.06); }
+    &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; background: var(--accent-wash); }
     &:active { transform: scale(.95); }
     &[aria-busy="true"] { cursor: progress; opacity: .6; }
     if (hexo-config('sidebar.position') == 'left') { left: auto; right: var(--arc-x); }
@@ -306,7 +306,7 @@ body:has(.live2d-toggle:hover, .live2d-toggle:focus-visible) #waifu.shokax-live2
   line-height: 24px;
   overflow-wrap: anywhere;
   pointer-events: none;
-  span { color: var(--waifu-keyword-color, var(--color-pink)); }
+  span { color: var(--waifu-keyword-color, var(--accent-color)); }
   &::backdrop { pointer-events: none; background: transparent; }
   &[hidden] { display: none; }
 }
@@ -316,7 +316,7 @@ body:has(.live2d-toggle:hover, .live2d-toggle:focus-visible) #waifu.shokax-live2
 [data-theme="dark"] #shokax-waifu-tips {
   background-color: rgba(35, 35, 35, .94);
 }
-@media (prefers-reduced-motion: reduce) {
++reduced-motion() {
   #waifu.shokax-live2d, #waifu.shokax-live2d #waifu-tips, #waifu.shokax-live2d #waifu-tool, #waifu.shokax-live2d #waifu-tool .ic { animation: none; transition: none; }
 }
 //.weather {

@@ -2,25 +2,27 @@
 // targets, image cards and their 3D buttons retain their own motion.
 interaction-lift(inline = false) {
   @media (prefers-reduced-motion: no-preference) {
-    if inline {
-      // Relative positioning preserves line wrapping for prose links.
-      position: relative;
-      top: 0;
-      transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease, top .2s ease;
-    } else {
-      // Independent translate leaves icon rotation and existing transforms intact.
-      transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease, translate .2s ease;
-    }
+    html:not([data-motion='reduce']) & {
+      if inline {
+        // Relative positioning preserves line wrapping for prose links.
+        position: relative;
+        top: 0;
+        transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease, top .2s ease;
+      } else {
+        // Independent translate leaves icon rotation and existing transforms intact.
+        transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease, translate .2s ease;
+      }
 
-    &:not(:disabled):not([aria-disabled='true']):focus-visible {
-      if inline { top: -1px; }
-      else { translate: 0 -1px; }
-    }
-
-    @media (hover: hover) {
-      &:not(:disabled):not([aria-disabled='true']):hover {
+      &:not(:disabled):not([aria-disabled='true']):focus-visible {
         if inline { top: -1px; }
         else { translate: 0 -1px; }
+      }
+
+      @media (hover: hover) {
+        &:not(:disabled):not([aria-disabled='true']):hover {
+          if inline { top: -1px; }
+          else { translate: 0 -1px; }
+        }
       }
     }
   }
@@ -104,11 +106,11 @@ body > .select-picker-menu .select-picker-option,
 
 // Keep the full-width year summary and timeline still; lift its visible pill.
 @media (prefers-reduced-motion: no-preference) {
-  #main .archive-page .archive-year-title:focus-visible > .archive-year-pill {
+  html:not([data-motion='reduce']) #main .archive-page .archive-year-title:focus-visible > .archive-year-pill {
     translate: 0 -1px;
   }
   @media (hover: hover) {
-    #main .archive-page .archive-year-title:hover > .archive-year-pill {
+    html:not([data-motion='reduce']) #main .archive-page .archive-year-title:hover > .archive-year-pill {
       translate: 0 -1px;
     }
   }

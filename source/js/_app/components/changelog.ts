@@ -1,4 +1,5 @@
 import { restoreModalFocus } from './input-modality'
+import { effectiveReducedMotion } from './motion'
 
 let cleanup: (() => void) | undefined
 
@@ -51,7 +52,7 @@ export const refreshChangelog = () => {
   }
   const close = () => {
     if (!dialog.open || closing) return
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { finish(); return }
+    if (effectiveReducedMotion()) { finish(); return }
     const offset = dialog.dataset.side === 'left' ? '-2rem' : '2rem'
     closing = dialog.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: `translateX(${offset})`, opacity: 0 }], { duration: 160, easing: 'ease-in', fill: 'forwards' })
     closing.onfinish = () => finish()

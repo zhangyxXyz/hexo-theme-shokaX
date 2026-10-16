@@ -47,6 +47,73 @@ reading_tools:
   simplified: 恢复原文
   error: 加载失败，点击重试
 
+reading_settings:
+  title: 显示与阅读
+  description: 调整阅读的舒适度，即时应用，随时可以恢复默认。
+  close: 关闭阅读设置
+  reset: 恢复默认
+  done: 完成
+  storage: 偏好仅保存在当前浏览器。
+  saved: 设置已保存。
+  temporary: 已应用，但此浏览器暂不能保存，刷新后可能恢复默认。
+  restored: 已恢复主题默认设置。
+  colors:
+    title: 主题配色
+    primary: 主题主色
+    secondary: 辅助颜色
+    apply: 应用
+    invalid: 请输入有效的 HEX 颜色或 rgb(0, 0, 0)，RGB 数值须在 0–255 之间。
+    help: 点击色块取色，或输入 HEX / RGB 后应用。强调文字会随明暗模式调整对比。
+    reset: 恢复主题配色
+    restored: 已恢复主题配色，其他阅读偏好保持不变。
+  appearance:
+    title: 更多外观
+    background: 页首背景
+    background_options:
+      banner: 图片横幅
+      gradient: 简洁主题色
+    background_help: 切换页首横幅的呈现，文章图片保持原样。
+    texture: 背景纹理
+    texture_options:
+      none: 无纹理
+      stars: 星点
+      dots: 点阵
+      contours: 等高线
+      origami: 折纸
+      sakura: 樱花
+    intensity: 纹理浓度
+    intensity_help: 纹理只点缀页面留白，不覆盖正文；选择纹理后可调节浓度。
+    home_layout: 首页文章排列
+    home_options:
+      list: 列表
+      grid: 双列
+    home_help: 只改变首页文章排列，手机屏幕仍以单列显示。
+  font_size: 正文字号
+  font_options:
+    standard: 标准
+    large: 稍大
+    larger: 更大
+  line_height: 正文行距
+  line_options:
+    compact: 紧凑
+    standard: 标准
+    relaxed: 宽松
+  preview_label: 阅读预览
+  preview_text: 记录代码，也收藏星光。翻过一页笔记，让思路慢慢展开，在熟悉的文字里遇见新的发现。
+  scope: 字号与行距只应用于文章正文，导航、摘要和评论保持原样。
+  theme: 明暗模式
+  theme_options:
+    default: 主题默认
+    system: 跟随系统
+    light: 浅色
+    dark: 深色
+  theme_help: 主题默认沿用站点原有的明暗切换规则。
+  motion: 动态效果
+  motion_options:
+    system: 跟随系统
+    reduce: 减少动态效果
+  motion_help: 减少动态效果会暂停装饰与频谱等动画；音乐和手动操作仍可使用。
+
 image_viewer:
   zoom_in: "放大"
   zoom_out: "缩小"

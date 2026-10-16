@@ -1,4 +1,5 @@
 import { observeVisitorCount } from './footer-visitors'
+import { effectiveReducedMotion } from './motion'
 import { refreshFooterCommentMedia } from './footer-comments'
 
 let uptimeTimer: ReturnType<typeof setInterval> | undefined
@@ -62,7 +63,7 @@ const refreshDiscovery = () => {
     }
     const visible = new Set([...shuffled, ...tags.filter(tag => !tag.hidden)].slice(0, tagLimit))
     tags.forEach(tag => { tag.hidden = !visible.has(tag) })
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!effectiveReducedMotion()) {
       tags.filter(tag => !tag.hidden).forEach((tag, index) => {
         tag.getAnimations().forEach(animation => animation.cancel())
         tag.animate([{ opacity: 0, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], {

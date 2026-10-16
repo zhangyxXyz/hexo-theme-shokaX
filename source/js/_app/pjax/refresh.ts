@@ -27,6 +27,7 @@ import { refreshSummarySwitch } from '../components/summary-switch'
 import { postBeauty } from '../page/post'
 import { refreshArticleRelock } from '../components/article-relock'
 import { refreshStatistics } from '../components/statistics'
+import { refreshProjectActivity } from '../components/project-activity'
 import { refreshServiceStatus } from '../components/service-status'
 import { refreshNews } from '../components/news'
 import { refreshIconPreview } from '../components/icon-preview'
@@ -110,6 +111,7 @@ export const siteRefresh = async (reload, restoredPosition?: [number, number], i
   refreshBookmarks()
   refreshArchive()
   refreshStatistics()
+  refreshProjectActivity()
   refreshServiceStatus()
   refreshNews()
   refreshIconPreview()

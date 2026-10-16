@@ -1,3 +1,5 @@
+import { getReducedMotionQuery } from './motion'
+
 let cleanup: (() => void) | undefined
 
 export const refreshCategoryDirectory = () => {
@@ -12,7 +14,7 @@ export const refreshCategoryDirectory = () => {
   const buttons = Array.from(controls.querySelectorAll<HTMLButtonElement>('button'))
   const events = new AbortController()
   const animations = new Set<Animation>()
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+  const reduced = getReducedMotionQuery()
   const setMode = (mode: string) => {
     root.dataset.categoryMode = mode
     cards.hidden = mode !== 'cards'

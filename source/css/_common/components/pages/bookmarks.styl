@@ -42,7 +42,7 @@
     transition: border-color .2s, box-shadow .2s;
     &:focus-within {
       border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px var(--color-red-a1);
+      box-shadow: 0 0 0 3px var(--accent-wash);
     }
     > .ic { color: var(--primary-color); }
   }
@@ -70,7 +70,7 @@
     background: transparent;
     color: var(--grey-6);
     cursor: pointer;
-    &:hover { background: var(--color-red-a1); color: var(--primary-color); }
+    &:hover { background: var(--accent-wash); color: var(--primary-color); }
   }
   .bookmark-search-hint {
     flex: 1 1 16rem;
@@ -107,7 +107,7 @@
       position: relative;
       margin-left: .375rem;
       padding: 0 0 2rem 1.75rem;
-      border-left: 1px solid var(--color-red-a3);
+      border-left: 1px solid var(--accent-line);
       &:last-child { padding-bottom: .25rem; border-color: transparent; }
       &::before {
         content: '';
@@ -147,7 +147,7 @@
     &[data-mode='axis'] .bookmark-grid { grid-template-columns: minmax(0, 1fr); }
     &[data-mode='axis'] .bookmark-group { padding-left: 1.25rem; }
   }
-  @media (prefers-reduced-motion: reduce) {
+  +reduced-motion() {
     *, *::before { transition: none !important; }
   }
 }

@@ -15,6 +15,79 @@ the-transition(duration = .2s, function = ease-in-out, delay = 0s, property = al
   transition:property duration function delay;
 }
 
+// Compose layout, surface and focus separately so ghost/icon controls stay distinct.
+control-base(height = $control-height) {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: height;
+  gap: $control-gap;
+  padding: $control-padding;
+  font: inherit;
+  font-size: $control-font-size;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+control-raised(radius = $control-radius, border-width = $control-border-width) {
+  border: border-width solid var(--grey-3);
+  border-radius: radius;
+  background: var(--grey-1);
+  color: var(--primary-color);
+  box-shadow: $control-shadow;
+}
+
+control-icon(size = $control-height) {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: size;
+  height: size;
+  padding: 0;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+control-focus(offset = $control-focus-offset, color = var(--primary-color)) {
+  &:focus-visible {
+    outline: $control-focus-width solid color;
+    outline-offset: offset;
+  }
+}
+
+// OS preference and the reading setting share each component's motion fallback.
+reduced-motion() {
+  @media (prefers-reduced-motion: reduce) {
+    {block};
+  }
+  html[data-motion='reduce'] & {
+    {block};
+  }
+}
+
+// Only the visual indicator is shared; each component owns its loading lifecycle.
+loading-spinner(size = 1.75rem) {
+  content: '';
+  display: block;
+  box-sizing: border-box;
+  width: size;
+  height: size;
+  border: 3px solid var(--accent-soft);
+  border-top-color: var(--primary-color);
+  border-right-color: var(--accent-border);
+  border-radius: 50%;
+  animation: theme-loading-spin .85s linear infinite;
+  +reduced-motion() {
+    animation: none;
+  }
+}
+
 mobile-smallest() {
   @media (max-width: 413px) {
     {block};
@@ -144,9 +217,9 @@ $hover-underline {
 }
 
 $color-btn {
-  color: var(--grey-0);
-  background-image: linear-gradient(to right,var(--color-pink) 0,var(--color-orange) 100%);
-  box-shadow: 0 0 .75rem var(--color-pink-a3);
+  color: var(--accent-on-fill);
+  background-image: linear-gradient(to right,var(--accent-fill-start) 0,var(--accent-fill-end) 100%);
+  box-shadow: 0 0 .75rem var(--accent-decoration-border);
 }
 
 @import "_common/components/comment-content"

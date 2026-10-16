@@ -1,0 +1,20 @@
+// No layout box or default override: the existing article remains the authority.
+.reading-content { display: contents; }
+
+html[data-reading-font] .reading-content {
+  font-size: calc(1em * var(--reading-font-scale));
+
+  // Reading preferences scale prose, headings, tables and inline maths. Embedded
+  // controls retain the theme's original base; code blocks already use rem units.
+  .tabs > .nav,
+  #hexo-blog-encrypt:not(.hbe-decrypted-content) {
+    font-size: calc(1em / var(--reading-font-scale));
+  }
+}
+
+html[data-reading-line-height='compact'] .reading-content { line-height: $reading-line-height-compact; }
+html[data-reading-line-height='relaxed'] .reading-content { line-height: $reading-line-height-relaxed; }
+html[data-reading-line-height] .reading-content {
+  .tabs > .nav,
+  #hexo-blog-encrypt:not(.hbe-decrypted-content) { line-height: $line-height-base; }
+}

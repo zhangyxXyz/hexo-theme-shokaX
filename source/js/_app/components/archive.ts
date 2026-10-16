@@ -1,4 +1,5 @@
 import { setLocalHash, siteNavHeight } from '../globals/globalVars'
+import { getReducedMotionQuery } from './motion'
 
 type ArchiveMode = 'tree' | 'classic'
 type DisclosureMotion = {
@@ -37,7 +38,7 @@ export const refreshArchive = () => {
   const rail = nav?.closest<HTMLElement>('.archive-year-rail')
   const railToggle = root.querySelector<HTMLButtonElement>('[data-archive-rail-toggle]')
   const currentYear = root.querySelector<HTMLElement>('[data-archive-current-year]')
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+  const reduced = getReducedMotionQuery()
   const events = new AbortController()
   const options = { signal: events.signal }
   const motions = new Map<HTMLDetailsElement, DisclosureMotion>()

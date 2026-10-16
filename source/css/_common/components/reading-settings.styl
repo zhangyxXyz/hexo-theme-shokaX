@@ -1,0 +1,239 @@
+.reading-settings-dialog {
+  width: calc(100vw - 2rem);
+  max-width: 38rem;
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: $dialog-radius;
+  background: var(--grey-1);
+  color: var(--text-color);
+  font: inherit;
+  box-shadow: $dialog-shadow;
+  overflow: hidden;
+  outline: none;
+  &[open] { display: flex; flex-direction: column; }
+  &::backdrop { background: var(--overlay-backdrop); }
+}
+
+.reading-settings-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--grey-3);
+  h2 { margin: 0; font-size: 1.125rem; line-height: 1.5; }
+}
+
+.reading-settings-close {
+  control-icon();
+  control-focus();
+  flex-shrink: 0;
+  margin-left: auto;
+  border: 0;
+  border-radius: $control-radius-compact;
+  background: transparent;
+  color: var(--grey-6);
+  &:hover { color: var(--primary-color); background: var(--accent-soft); }
+}
+
+.reading-settings-body {
+  min-height: 0;
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  #reading-settings-description { margin: 0 0 1.25rem; font-size: .875rem; }
+}
+
+.reading-settings-row {
+  min-width: 0;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border: 0;
+  legend { margin-bottom: .5rem; font-size: .875rem; font-weight: 600; }
+}
+
+.reading-settings-options {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: .375rem;
+}
+
+.reading-settings-choice {
+  position: relative;
+  min-width: 0;
+  input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+  > span {
+    control-base();
+    width: 100%;
+    padding: .45rem .5rem;
+    border: 1px solid var(--grey-3);
+    border-radius: $control-radius-compact;
+    background: var(--grey-1);
+    color: var(--text-color);
+    text-align: center;
+  }
+  &:hover > span { background: var(--accent-soft); }
+  input:checked + span { border-color: var(--primary-color); background: var(--accent-soft); font-weight: 600; }
+  input:focus-visible + span { outline: $control-focus-width solid var(--primary-color); outline-offset: $control-focus-offset; }
+}
+
+.reading-settings-palette { margin-top: 0; }
+.reading-settings-color-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.reading-settings-color-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  margin: 0 0 .5rem;
+  font-size: .8125rem;
+  input {
+    width: $control-height;
+    height: $control-height;
+    padding: .15rem;
+    border: 1px solid var(--grey-3);
+    border-radius: $control-radius-compact;
+    background: var(--grey-1);
+    cursor: pointer;
+    control-focus();
+    &::-webkit-color-swatch-wrapper { padding: 0; }
+    &::-webkit-color-swatch { border: 0; border-radius: .2rem; }
+    &::-moz-color-swatch { border: 0; border-radius: .2rem; }
+  }
+}
+.reading-settings-color-fields {
+  display: flex;
+  align-items: start;
+  gap: .375rem;
+  input {
+    min-width: 0;
+    width: 100%;
+    min-height: $control-height;
+    padding: .45rem .5rem;
+    border: 1px solid var(--grey-3);
+    border-radius: $control-radius-compact;
+    font: inherit;
+    font-size: $control-font-size;
+    line-height: 1.4;
+    background: var(--grey-2);
+    color: var(--text-color);
+    control-focus();
+    &[aria-invalid='true'] { border-color: var(--color-red); }
+    &::placeholder { color: var(--grey-6); }
+  }
+}
+.reading-settings-color-fields button,
+.reading-settings-palette-reset {
+  control-base();
+  control-focus();
+  flex-shrink: 0;
+  padding: .45rem .6rem;
+  border: 1px solid var(--grey-3);
+  border-radius: $control-radius-compact;
+  background: var(--grey-1);
+  color: var(--text-color);
+  &:hover:not(:disabled) { border-color: var(--primary-color); background: var(--accent-soft); }
+  &:disabled { color: var(--grey-6); opacity: .55; cursor: default; }
+}
+.reading-settings-color-error { margin: .4rem 0 0; color: var(--text-color); font-size: .75rem; line-height: 1.6; }
+.reading-settings-palette-preview { height: .35rem; margin-top: 1rem; border-radius: $control-radius-compact; background: linear-gradient(to right, var(--accent-start), var(--accent-end)); }
+.reading-settings-palette-reset { margin-top: .75rem; }
+.reading-settings-appearance {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--grey-3);
+  > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: $control-height-touch;
+    padding-top: .5rem;
+    color: var(--text-color);
+    font-size: .875rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    control-focus();
+    &::-webkit-details-marker { display: none; }
+  }
+  &[open] > summary .ic { transform: rotate(180deg); }
+}
+.reading-settings-textures {
+  grid-auto-flow: row;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  .reading-settings-choice > span { flex-direction: column; gap: .35rem; }
+}
+.reading-settings-texture-preview { display: block; width: 100%; height: $control-height; border-radius: .2rem; }
+.reading-settings-texture-strength {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: .25rem .75rem;
+  margin-top: 1rem;
+  font-size: .8125rem;
+  output { color: var(--grey-6); font-variant-numeric: tabular-nums; }
+  input { grid-column: 1 / -1; width: 100%; height: $control-height; accent-color: var(--primary-color); cursor: pointer; }
+  input:disabled { opacity: .5; cursor: default; }
+  .reading-settings-hint { grid-column: 1 / -1; margin-top: 0; }
+}
+
+.reading-settings-preview {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border-radius: $control-radius;
+  background: var(--grey-2);
+  #reading-settings-preview-label { margin: 0 0 .5rem; color: var(--grey-6); font-size: .75rem; }
+  .reading-settings-preview-text { margin: 0; font-family: $font-family-posts; }
+}
+
+.reading-settings-hint {
+  margin: .5rem 0 0;
+  color: var(--grey-6);
+  font-size: .8125rem;
+  line-height: 1.65;
+}
+
+.reading-settings-footer {
+  flex-shrink: 0;
+  padding: .85rem 1.5rem 1rem;
+  border-top: 1px solid var(--grey-3);
+  .reading-settings-status { margin: 0 0 .6rem; color: var(--grey-6); font-size: .75rem; line-height: 1.6; }
+  .reading-settings-actions { display: flex; justify-content: space-between; gap: .75rem; }
+  button {
+    control-base();
+    control-focus();
+    border-radius: $control-radius-compact;
+  }
+  .reading-settings-reset { border: 1px solid var(--grey-3); background: transparent; color: var(--grey-6); }
+  .reading-settings-done { border: 1px solid var(--accent-border); background: var(--accent-soft); color: var(--text-color); }
+  button:hover { border-color: var(--primary-color); color: var(--text-color); }
+}
+
+// The preview shares the article preference without acquiring article component styles.
+html[data-reading-font] .reading-settings-preview-text { font-size: calc(1em * var(--reading-font-scale)); }
+html[data-reading-line-height='compact'] .reading-settings-preview-text { line-height: $reading-line-height-compact; }
+html[data-reading-line-height='relaxed'] .reading-settings-preview-text { line-height: $reading-line-height-relaxed; }
+
+@media (max-width: 567px) {
+  .reading-settings-dialog { width: calc(100vw - 1rem); max-height: calc(100dvh - 1rem); border-radius: $dialog-radius-compact; }
+  .reading-settings-header { padding: .8rem 1rem; }
+  .reading-settings-body { padding: 1rem; }
+  .reading-settings-footer { padding: .75rem 1rem unquote('max(.75rem, env(safe-area-inset-bottom))'); }
+  .reading-settings-options-four { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reading-settings-color-grid { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
+}
+
+@media (pointer: coarse) {
+  .reading-settings-choice > span, .reading-settings-footer button,
+  .reading-settings-color-fields input, .reading-settings-color-fields button,
+  .reading-settings-palette-reset, .reading-settings-texture-strength input { min-height: $control-height-touch; }
+  .reading-settings-close { width: $control-height-touch; height: $control-height-touch; }
+  .reading-settings-color-label input { width: $control-height-touch; height: $control-height-touch; }
+}

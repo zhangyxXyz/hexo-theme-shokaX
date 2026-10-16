@@ -41,7 +41,7 @@
     @extend .rotate;
     font-size: $font-size-small;
     margin-top: .15rem;
-    color: pink;
+    color: var(--accent-heading);
     left: -1.875rem;
 
     +mobile-small() {
@@ -53,14 +53,14 @@
     @extend .i-heartbeat:before;
     @extend .beat;
     font-size: $font-size-smaller;
-    color: var(--color-pink);
+    color: var(--accent-color);
   }
 
   .body h3 .anchor::before {
     @extend .i-star:before;
     @extend .flash;
     font-size: $font-size-smallest;
-    color: var(--color-orange);
+    color: var(--accent-secondary-color);
   }
 
 }

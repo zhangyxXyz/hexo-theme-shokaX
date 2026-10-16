@@ -103,7 +103,7 @@
     top: 1.9rem;
     bottom: -1.9rem;
     left: .35rem;
-    border-left: .2rem dashed var(--color-red-a3);
+    border-left: .2rem dashed var(--accent-line);
     pointer-events: none;
   }
   &[data-mode='classic']:has(.archive-classic-panel > .collapse > .normal:first-child) .archive-overview::after {
@@ -207,7 +207,7 @@
     letter-spacing: .03em;
     text-decoration: none;
 
-    &:hover, &:focus-visible { color: var(--color-blue); text-decoration: none; }
+    &:hover, &:focus-visible { color: var(--accent-hover); text-decoration: none; }
   }
 
   .archive-year-count {
@@ -464,7 +464,7 @@
       background: var(--archive-soft);
       color: var(--primary-color);
       cursor: pointer;
-      &:hover:not(:disabled) { color: var(--color-blue); }
+      &:hover:not(:disabled) { color: var(--accent-hover); }
       &:disabled { opacity: .35; cursor: default; }
     }
   }
@@ -478,7 +478,7 @@
     color: var(--primary-color);
     font: inherit;
     cursor: pointer;
-    &:hover { color: var(--color-blue); }
+    &:hover { color: var(--accent-hover); }
   }
 
   .archive-post-list > li[hidden] + li { border-top: 0; }
@@ -777,7 +777,7 @@
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  +reduced-motion() {
     *, *::before, *::after { transition: none !important; animation: none !important; }
   }
 }

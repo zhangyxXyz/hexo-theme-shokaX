@@ -1,0 +1,78 @@
+mixin ReadingOptions(key, choices)
+    .reading-settings-options(class=[choices.length === 4 ? 'reading-settings-options-four' : null, key === 'texture' ? 'reading-settings-textures' : null])
+        each choice in choices
+            label.reading-settings-choice
+                input(type='radio' name='reading-' + key data-reading-preference=key value=choice[0])
+                span
+                    if key === 'texture'
+                        span.reading-settings-texture-preview(data-texture=choice[0] aria-hidden='true')
+                    = __('reading_settings.' + choice[1])
+
+mixin ReadingColor(key, label)
+    .reading-settings-color(data-reading-color=key)
+        label.reading-settings-color-label(for='reading-color-' + key)
+            span= __('reading_settings.colors.' + label)
+            input(type='color' id='reading-color-' + key data-reading-color-picker aria-label=__('reading_settings.colors.' + label))
+        .reading-settings-color-fields
+            input(type='text' data-reading-color-text aria-label=__('reading_settings.colors.' + label) aria-describedby='reading-color-' + key + '-error' placeholder='#RRGGBB / rgb(...)' autocomplete='off' spellcheck='false')
+            button(type='button' data-reading-color-apply disabled)= __('reading_settings.colors.apply')
+        p.reading-settings-color-error(id='reading-color-' + key + '-error' role='alert' hidden)= __('reading_settings.colors.invalid')
+
+dialog#reading-settings.reading-settings-dialog(aria-labelledby='reading-settings-title' aria-describedby='reading-settings-description' tabindex='-1' data-saved=__('reading_settings.saved') data-temporary=__('reading_settings.temporary') data-restored=__('reading_settings.restored') data-palette-restored=__('reading_settings.colors.restored'))
+    header.reading-settings-header
+        h2#reading-settings-title= __('reading_settings.title')
+        button.reading-settings-close(type='button' data-reading-close aria-label=__('reading_settings.close'))
+            i.ic.i-times(aria-hidden='true')
+    .reading-settings-body
+        p#reading-settings-description= __('reading_settings.description')
+        fieldset.reading-settings-row.reading-settings-palette
+            legend= __('reading_settings.colors.title')
+            .reading-settings-color-grid
+                +ReadingColor('primaryColor', 'primary')
+                +ReadingColor('secondaryColor', 'secondary')
+            .reading-settings-palette-preview(aria-hidden='true')
+            p.reading-settings-hint= __('reading_settings.colors.help')
+            button.reading-settings-palette-reset(type='button' data-reading-palette-reset)= __('reading_settings.colors.reset')
+        fieldset.reading-settings-row
+            legend= __('reading_settings.font_size')
+            +ReadingOptions('fontScale', [['1', 'font_options.standard'], ['1.125', 'font_options.large'], ['1.25', 'font_options.larger']])
+        fieldset.reading-settings-row
+            legend= __('reading_settings.line_height')
+            +ReadingOptions('lineHeight', [['compact', 'line_options.compact'], ['default', 'line_options.standard'], ['relaxed', 'line_options.relaxed']])
+        .reading-settings-preview(aria-labelledby='reading-settings-preview-label')
+            p#reading-settings-preview-label= __('reading_settings.preview_label')
+            p.reading-settings-preview-text(data-reading-preview)= __('reading_settings.preview_text')
+        p.reading-settings-hint= __('reading_settings.scope')
+        fieldset.reading-settings-row
+            legend= __('reading_settings.theme')
+            +ReadingOptions('theme', [['default', 'theme_options.default'], ['system', 'theme_options.system'], ['light', 'theme_options.light'], ['dark', 'theme_options.dark']])
+            p.reading-settings-hint= __('reading_settings.theme_help')
+        fieldset.reading-settings-row
+            legend= __('reading_settings.motion')
+            +ReadingOptions('motion', [['system', 'motion_options.system'], ['reduce', 'motion_options.reduce']])
+            p.reading-settings-hint= __('reading_settings.motion_help')
+        details.reading-settings-appearance
+            summary
+                span= __('reading_settings.appearance.title')
+                i.ic.i-angle-down(aria-hidden='true')
+            fieldset.reading-settings-row
+                legend= __('reading_settings.appearance.background')
+                +ReadingOptions('background', [['banner', 'appearance.background_options.banner'], ['gradient', 'appearance.background_options.gradient']])
+                p.reading-settings-hint= __('reading_settings.appearance.background_help')
+            fieldset.reading-settings-row
+                legend= __('reading_settings.appearance.texture')
+                +ReadingOptions('texture', [['none', 'appearance.texture_options.none'], ['stars', 'appearance.texture_options.stars'], ['dots', 'appearance.texture_options.dots'], ['contours', 'appearance.texture_options.contours'], ['origami', 'appearance.texture_options.origami'], ['sakura', 'appearance.texture_options.sakura']])
+            .reading-settings-texture-strength
+                label(for='reading-texture-intensity')= __('reading_settings.appearance.intensity')
+                output(for='reading-texture-intensity' data-reading-texture-output)
+                input#reading-texture-intensity(type='range' min='5' max='25' step='1' data-reading-texture-intensity aria-describedby='reading-texture-intensity-help')
+                p#reading-texture-intensity-help.reading-settings-hint= __('reading_settings.appearance.intensity_help')
+            fieldset.reading-settings-row
+                legend= __('reading_settings.appearance.home_layout')
+                +ReadingOptions('homeLayout', [['list', 'appearance.home_options.list'], ['grid', 'appearance.home_options.grid']])
+                p.reading-settings-hint= __('reading_settings.appearance.home_help')
+    footer.reading-settings-footer
+        p.reading-settings-status(role='status' aria-live='polite')= __('reading_settings.storage')
+        .reading-settings-actions
+            button.reading-settings-reset(type='button' data-reading-reset)= __('reading_settings.reset')
+            button.reading-settings-done(type='button' data-reading-close)= __('reading_settings.done')

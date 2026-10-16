@@ -63,11 +63,11 @@
     outline 0
     transition border-color .18s, background .18s, box-shadow .18s
     &:hover
-      border-color var(--color-pink-a3)
+      border-color var(--accent-decoration-border)
       background var(--grey-1)
     &:focus-within
       border-color var(--primary-color)
-      box-shadow 0 0 0 2px var(--color-pink-a3)
+      box-shadow 0 0 0 2px var(--accent-decoration-border)
     &:has(input:disabled)
       opacity .5
       box-shadow none
@@ -269,7 +269,7 @@
     .festival-preview-thumb
       height 8rem
 
-  @media (prefers-reduced-motion: reduce)
+  +reduced-motion()
     .festival-preview-card, .festival-preview-control
       transition none
 
@@ -282,11 +282,11 @@
     padding .3rem .55rem
     border-radius .35rem
     color var(--primary-color)
-    background var(--color-red-a1)
+    background var(--accent-wash)
     font-size .75rem
   .select-picker-option
     &:hover, &:focus-visible
-      background var(--color-red-a1)
+      background var(--accent-wash)
     &[aria-selected='true']
       color var(--primary-color)
-      background var(--color-red-a1)
+      background var(--accent-wash)

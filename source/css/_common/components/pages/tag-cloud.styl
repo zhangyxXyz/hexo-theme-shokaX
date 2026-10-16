@@ -56,13 +56,13 @@
       gap: .2em;
       margin: 0;
       padding: .45em .7em;
-      border: 1px solid var(--color-pink-a3);
+      border: 1px solid var(--accent-decoration-border);
       border-radius: .8rem;
       background: var(--grey-2);
       box-shadow: 0 3px 10px var(--box-bg-shadow);
       font-size: var(--tag-size);
       color: var(--color-purple);
-      color: unquote('color-mix(in srgb, var(--tag-start), var(--tag-end) var(--tag-weight))');
+      color: unquote('var(--tag-palette-color, color-mix(in srgb, var(--tag-start), var(--tag-end) var(--tag-weight)))');
       max-width: 100%;
       overflow-wrap: anywhere;
       transition: background .2s, box-shadow .2s, color .2s, transform .25s;
@@ -105,7 +105,7 @@
     height: clamp(320px, 60vw, 500px);
     overflow: hidden;
     border-radius: 1rem;
-    background: radial-gradient(circle, var(--color-pink-light-a3), transparent 65%);
+    background: radial-gradient(circle, var(--accent-tint-soft), transparent 65%);
     a.tag-cloud-link {
       -webkit-user-drag: none;
       position: absolute;
@@ -130,7 +130,7 @@
         background: transparent;
         box-shadow: none;
         .tag-cloud-label { transform: translateY(-3px) scale(1.2); }
-        text-shadow: 0 3px 14px var(--color-pink-a3);
+        text-shadow: 0 3px 14px var(--accent-decoration-border);
         z-index: 1000 !important;
         opacity: 1 !important;
       }
@@ -144,10 +144,17 @@
       border-radius: .55rem;
     }
   }
-  @media (prefers-reduced-motion: reduce) {
+  +reduced-motion() {
     .tag.cloud a.tag-cloud-link, .tag.cloud .tag-cloud-label { transition: none; }
   }
   &[data-morphing] .tag.cloud a.tag-cloud-link {
     transition: none;
   }
+}
+
+// Both views share these links, so palette changes need no cached JS colors.
+// Keep the configured cloud endpoints until the reader chooses a custom palette.
+:root[data-reading-palette] .tag-cloud-widget .tag.cloud a.tag-cloud-link {
+  // Linear-light mixing keeps intermediate luminance between the two ink colors.
+  --tag-palette-color: unquote('color-mix(in srgb-linear, var(--primary-color), var(--accent-secondary-color) var(--tag-weight))');
 }

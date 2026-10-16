@@ -1,3 +1,5 @@
+import { getReducedMotionQuery } from './motion'
+
 let cleanup: (() => void) | undefined
 
 /** Enhance server-rendered links without replacing their navigation semantics. */
@@ -10,7 +12,7 @@ export const refreshTagCloud = () => {
   const links = Array.from(stage.querySelectorAll<HTMLAnchorElement>('.tag-cloud-link'))
   const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-cloud-mode]'))
   const controls = root.querySelector<HTMLElement>('.tag-cloud-controls')
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+  const reduced = getReducedMotionQuery()
   const events = new AbortController()
   let mode = '2d'
   let frame = 0

@@ -31,8 +31,8 @@ $item {
     backface-visibility: hidden;
     padding: .3rem 1rem;
     border-radius: 1rem 0;
-    color: var(--grey-0);
-    background-image: linear-gradient(to right, var(--color-pink) 0, var(--color-orange) 100%);
+    color: var(--accent-on-fill);
+    background-image: linear-gradient(to right, var(--accent-fill-start) 0, var(--accent-fill-end) 100%);
 
     &::before {
       position: absolute;
@@ -46,8 +46,8 @@ $item {
       border-radius: 5rem;
       left: .5rem;
       top: .8rem;
-      box-shadow: 0 0 .6rem .6rem var(--color-pink-a3);
-      background-color: var(--color-pink-a3);
+      box-shadow: 0 0 .6rem .6rem var(--accent-decoration-border);
+      background-color: var(--accent-decoration-border);
     }
 
     &:hover {
@@ -275,7 +275,7 @@ $item {
         }
       }
       .info h3 {
-        color: var(--color-blue);
+        color: var(--accent-hover);
       }
     }
   }
@@ -388,7 +388,7 @@ $item {
       left: 0;
       right: auto;
       border-radius: 0 1rem;
-      background-image: linear-gradient(to right, var(--color-orange) 0, var(--color-pink) 100%);
+      background-image: linear-gradient(to right, var(--accent-fill-end) 0, var(--accent-fill-start) 100%);
     }
 
     .meta.footer {

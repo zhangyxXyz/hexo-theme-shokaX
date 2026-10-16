@@ -47,6 +47,73 @@ reading_tools:
   simplified: 元の内容を復元
   error: 読み込みに失敗しました。再試行してください
 
+reading_settings:
+  title: 表示と読書
+  description: 読みやすさを調整できます。変更はすぐに適用され、いつでも初期設定に戻せます。
+  close: 読書設定を閉じる
+  reset: 初期設定に戻す
+  done: 完了
+  storage: 設定はこのブラウザーにのみ保存されます。
+  saved: 設定を保存しました。
+  temporary: 適用しましたが、このブラウザーでは現在保存できません。再読み込みで初期設定に戻る場合があります。
+  restored: テーマの初期設定に戻しました。
+  colors:
+    title: テーマの配色
+    primary: メインカラー
+    secondary: サブカラー
+    apply: 適用
+    invalid: 有効な HEX 色または rgb(0, 0, 0) を入力してください。RGB の値は 0–255 です。
+    help: 色見本を選ぶか、HEX / RGB を入力して適用します。強調文字のコントラストは明暗モードに合わせて調整されます。
+    reset: テーマの配色に戻す
+    restored: テーマの配色に戻しました。ほかの読書設定は変わりません。
+  appearance:
+    title: その他の外観
+    background: ヘッダーの背景
+    background_options:
+      banner: 画像バナー
+      gradient: テーマカラー
+    background_help: ヘッダーの背景を切り替えます。記事の画像は元のままです。
+    texture: 背景の模様
+    texture_options:
+      none: なし
+      stars: 星
+      dots: ドット
+      contours: 等高線
+      origami: 折り紙
+      sakura: 桜
+    intensity: 模様の濃さ
+    intensity_help: 模様はページの余白だけを飾り、本文を覆いません。模様を選ぶと濃さを調整できます。
+    home_layout: ホームの記事配置
+    home_options:
+      list: リスト
+      grid: 2 列
+    home_help: ホームの記事配置だけを変えます。スマートフォンでは 1 列のままです。
+  font_size: 本文の文字サイズ
+  font_options:
+    standard: 標準
+    large: やや大きい
+    larger: 大きい
+  line_height: 本文の行間
+  line_options:
+    compact: 狭め
+    standard: 標準
+    relaxed: 広め
+  preview_label: 読書プレビュー
+  preview_text: コードを記し、星の光も集める。ノートをめくり、考えをゆっくり広げながら、見慣れた言葉の中に新しい発見を。
+  scope: 文字サイズと行間は記事本文だけに適用されます。ナビゲーション、要約、コメントは元の表示を保ちます。
+  theme: ライト・ダーク表示
+  theme_options:
+    default: テーマ設定
+    system: システム
+    light: ライト
+    dark: ダーク
+  theme_help: テーマ設定では、サイト本来の切り替えルールに従います。
+  motion: 動きの設定
+  motion_options:
+    system: システムに従う
+    reduce: 動きを減らす
+  motion_help: 動きを減らすと装飾や音楽ビジュアライザーのアニメーションが止まります。音楽と手動操作は引き続き使えます。
+
 image_viewer:
   zoom_in: "拡大"
   zoom_out: "縮小"

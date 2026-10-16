@@ -1,3 +1,5 @@
+import { effectiveReducedMotion } from '../motion'
+
 // Use public view/viewed events and DOM animations, without replacing library methods.
 export class ViewerTransition {
   private layer = document.createElement('div')
@@ -46,7 +48,7 @@ export class ViewerTransition {
     this.pending = undefined
     this.active = image
     image.classList.remove('shokax-image-pending')
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (effectiveReducedMotion()) {
       this.layer.replaceChildren()
       this.outgoing = undefined
       return

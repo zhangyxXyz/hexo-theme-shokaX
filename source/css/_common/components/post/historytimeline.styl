@@ -43,7 +43,7 @@
 .md .article-info .article-info-source + .post-changelogs,
 .md .article-info .article-info-source + .article-info-age[hidden] + .post-changelogs,
 .md .article-info .article-info-age:not([hidden]) + .post-changelogs { border-top: 1px solid var(--info-border); }
-.changelog-count { display: inline-block; padding: .1rem .5rem; border-radius: 1rem; font-size: .7rem; font-weight: 400; color: var(--primary-color); background: var(--color-pink-a1); white-space: nowrap; }
+.changelog-count { display: inline-block; padding: .1rem .5rem; border-radius: 1rem; font-size: .7rem; font-weight: 400; color: var(--primary-color); background: var(--accent-decoration-soft); white-space: nowrap; }
 
 .changelog-dialog {
   --history-glass: rgba(255, 255, 255, .78);
@@ -80,7 +80,7 @@
     flex-shrink: 0;
     h2 { margin: 0; font-size: 1rem; font-weight: 600; }
   }
-  .changelog-close { display: grid; place-items: center; margin-left: auto; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: .5rem; background: transparent; color: var(--grey-6); font-size: 1rem; line-height: 1; cursor: pointer; transition: background .2s, color .2s; &:hover { color: var(--primary-color); background: var(--color-pink-a1); } }
+  .changelog-close { display: grid; place-items: center; margin-left: auto; width: 2rem; height: 2rem; padding: 0; border: 0; border-radius: .5rem; background: transparent; color: var(--grey-6); font-size: 1rem; line-height: 1; cursor: pointer; transition: background .2s, color .2s; &:hover { color: var(--primary-color); background: var(--accent-decoration-soft); } }
   .changelog-content { overflow-y: auto; overscroll-behavior: contain; flex: 1; min-height: 0; padding: 1.4rem 1.25rem; }
   :focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
   @media (max-width: 567px) {
@@ -99,7 +99,7 @@
     margin: 0;
     padding: 0 0 1.5rem;
     list-style: none;
-    &::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%); background: linear-gradient(var(--primary-color), var(--color-pink-a3) 65%, transparent); }
+    &::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%); background: linear-gradient(var(--primary-color), var(--accent-decoration-border) 65%, transparent); }
   }
   .changelog-entry {
     position: relative;
@@ -111,7 +111,7 @@
   }
   .changelog-node { position: absolute; top: 1.45rem; right: -1.5rem; width: .6rem; height: .6rem; transform: translateX(50%); border: 2px solid var(--primary-color); border-radius: 50%; background: var(--grey-1); z-index: 1; }
   .changelog-entry:nth-child(even) .changelog-node { right: auto; left: -1.5rem; transform: translateX(-50%); }
-  .changelog-entry:first-child .changelog-node { background: var(--primary-color); box-shadow: 0 0 0 .3rem var(--color-pink-a1); }
+  .changelog-entry:first-child .changelog-node { background: var(--primary-color); box-shadow: 0 0 0 .3rem var(--accent-decoration-soft); }
   .changelog-card {
     position: relative;
     border: 1px solid var(--history-border, var(--grey-3));
@@ -127,7 +127,7 @@
   .changelog-entry:nth-child(even) .changelog-card::before { right: auto; left: -.4rem; transform: rotate(-135deg); }
   .changelog-card-meta { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
   .changelog-date { font-size: .75rem; color: var(--grey-6); font-variant-numeric: tabular-nums; }
-  .changelog-new { padding: .05rem .4rem; border-radius: .3rem; font-size: .65rem; color: var(--primary-color); background: var(--color-pink-a1); }
+  .changelog-new { padding: .05rem .4rem; border-radius: .3rem; font-size: .65rem; color: var(--primary-color); background: var(--accent-decoration-soft); }
   @media (max-width: 567px) {
     .changelog-timeline { grid-template-columns: minmax(0, 1fr); padding-left: 1.5rem; gap: 1.1rem; &::before { left: .3rem; } }
     .changelog-entry:nth-child(even) { margin-top: 0; }
@@ -137,4 +137,6 @@
 }
 html[data-theme='dark'] .changelog-dialog { --history-glass: rgba(32, 34, 43, .8); --history-card: rgba(54, 55, 66, .62); --history-border: rgba(200, 185, 205, .16); }
 @keyframes history-enter { from { opacity: 0; transform: translateX(var(--history-enter)); } to { opacity: 1; transform: translateX(0); } }
-@media (prefers-reduced-motion: reduce) { .changelog-dialog[open] { animation: none; } }
++reduced-motion() {
+  .changelog-dialog[open] { animation: none; }
+}

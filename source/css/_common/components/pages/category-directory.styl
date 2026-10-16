@@ -27,7 +27,7 @@
       display: grid;
       place-items: center;
       transition: color .2s, transform .2s;
-      &:hover { color: var(--color-blue); transform: translateY(-1px); }
+      &:hover { color: var(--accent-hover); transform: translateY(-1px); }
       border: 0;
       border-radius: .6rem;
       width: 2.5rem;
@@ -48,7 +48,7 @@
     break-inside: avoid;
     margin: 0 0 1.25rem;
     padding: 1rem 1.25rem;
-    border: 1px solid var(--color-pink-a3);
+    border: 1px solid var(--accent-decoration-border);
     border-radius: 1rem;
     background: var(--grey-1);
     box-shadow: 0 4px 16px var(--box-bg-shadow);
@@ -71,7 +71,7 @@
     border: 0;
     text-decoration: none;
     transition: color .2s, transform .2s;
-    &:hover { color: var(--color-blue); transform: translateY(-1px); }
+    &:hover { color: var(--accent-hover); transform: translateY(-1px); }
   }
   .category-name { overflow-wrap: anywhere; }
   .category-count { margin-left: auto; color: var(--grey-6); font-size: .9rem; font-weight: 400; }
@@ -92,7 +92,7 @@
     margin: .5rem 0 .25rem .65rem;
     padding: 0 0 0 1.25rem;
     animation: none;
-    border-left: 1px dashed var(--color-pink-a3);
+    border-left: 1px dashed var(--accent-decoration-border);
     > * { position: relative; }
     > *::before {
       content: '';
@@ -100,11 +100,11 @@
       left: -1.25rem;
       top: 1.25rem;
       width: .75rem;
-      border-top: 1px dashed var(--color-pink-a3);
+      border-top: 1px dashed var(--accent-decoration-border);
     }
   }
   button, summary, .category-link {
-    &:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 3px; border-radius: .25rem; }
+    &:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; border-radius: .25rem; }
   }
   @media (max-width: 767px) {
     > .item.title { padding-right: 0; margin-bottom: 0; }
@@ -112,7 +112,7 @@
     .category-cards { columns: 1; }
     .category-card { padding: .75rem 1rem; }
   }
-  @media (prefers-reduced-motion: reduce) {
+  +reduced-motion() {
     *, *::before { transition: none !important; }
   }
 }

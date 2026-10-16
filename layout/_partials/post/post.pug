@@ -16,6 +16,9 @@ article(itemscope itemtype="http://schema.org/Article" class="post block" data-p
         != partial('_partials/post/ai-summary.pug', {post: post})
         if post.type === 'bookmarks'
             include ../bookmarks.pug
+        else if post.layout === 'post' && theme.reading_settings && theme.reading_settings.enable
+            .reading-content(data-reading-content)
+                != post.content
         else
             != post.content
         if post.type === 'icon-preview'

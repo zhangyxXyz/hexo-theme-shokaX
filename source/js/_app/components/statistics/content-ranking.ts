@@ -1,4 +1,5 @@
 import { loadCharts } from './assets'
+import { effectiveReducedMotion } from '../motion'
 import { calendarRange, dateKey } from './dates'
 import { chartPalette, statisticsColors } from './palette'
 import { enhanceSelect } from '../select-picker'
@@ -121,7 +122,7 @@ export async function mountContentRanking(panel: Panel, source: BaiduSource, con
     }
     const number = (value: number) => `${metric === 'growth' ? '+' : ''}${value.toLocaleString()}`
     chart.setOption({
-      animationDuration: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 250,
+      animationDuration: effectiveReducedMotion() ? 0 : 250,
       textStyle: { fontFamily },
       grid: { top: 10, bottom: 35, left: width + 12, right: 65 },
       tooltip: { ...chartTooltip(panel.element), trigger: 'item', formatter: (item: any) => `<div style="font-weight:400;margin-bottom:5px">${escape(rows[item.dataIndex].title)}</div><div><span style="opacity:.75">${escape(labels.visits)}</span> <span style="color:var(--statistics-ui-accent);margin-left:8px;font-variant-numeric:tabular-nums">${number(rows[item.dataIndex].value)}</span></div>` },
@@ -129,7 +130,7 @@ export async function mountContentRanking(panel: Panel, source: BaiduSource, con
       yAxis: { type: 'category', inverse: true, data: rows.map(item => item.title), axisTick: { show: false }, axisLine: { show: false }, axisLabel: { show: false } },
       series: [{ type: 'bar', data: rows.map(item => item.value), barWidth: 18,
         itemStyle: { barBorderRadius: [0, 9, 9, 0], color: { type: 'linear', x: 0, y: 0, x2: 1, y2: 0, colorStops: colors.bar.map((color, index) => ({ offset: index / (colors.bar.length - 1), color })) } },
-        emphasis: { itemStyle: { color: 'rgba(236,140,105,.65)' } },
+        emphasis: { itemStyle: { color: colors.rankHover } },
         label: { show: true, position: 'right', color: palette.text, formatter: (item: any) => number(item.value) },
       }],
     }, true)

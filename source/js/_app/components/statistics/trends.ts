@@ -1,6 +1,6 @@
 import { loadCharts } from './assets'
 import { dateKey, calendarRange } from './dates'
-import { chartPalette } from './palette'
+import { chartPalette, statisticsColors } from './palette'
 import type { BaiduSource } from './baidu'
 import type { Panel } from './panel'
 import type { Point, RegisterChart, Settings } from './types'
@@ -53,7 +53,7 @@ export async function mountTrends(panel: Panel, source: BaiduSource, config: Set
     if (!chart || !result) return
     const palette = chartPalette(document.documentElement.getAttribute('data-theme') === 'dark')
     chart.setOption({
-      color: ['#49b1f5', palette.axis],
+      color: statisticsColors(panel.element).trend,
       tooltip: { trigger: 'axis', confine: true, backgroundColor: palette.surface, textStyle: { color: palette.text }, formatter: (items: any[]) => items.map(item => {
         const key = item.seriesIndex === 0 ? result!.dates[item.dataIndex] : result!.previousDates[item.dataIndex]
         return `${date(key)}: ${typeof item.value === 'number' ? item.value.toLocaleString() : '\u2014'}`

@@ -5,6 +5,7 @@
   --statistics-bar-start #f3b3c5
   --statistics-summary-bg rgba(237, 111, 145, .045)
   --statistics-ui-accent var(--primary-color)
+  --statistics-loader-accent #ff32a8
   --statistics-map-fill #f2edf0
   --statistics-map-border #c4b3bd
   --statistics-map-hover rgba(236, 140, 105, .3)
@@ -97,7 +98,7 @@
     height 2.75rem
     margin 1rem auto
     border .3rem solid transparent
-    border-top-color #ff32a8
+    border-top-color var(--statistics-loader-accent)
     border-radius 50%
     animation statistics-spin .7s linear infinite
 
@@ -119,7 +120,7 @@
       height 1.75rem
       border-width .2rem
 
-  @media (prefers-reduced-motion: reduce)
+  +reduced-motion()
     .statistics-loading
       animation none
 
@@ -141,7 +142,7 @@
     cursor pointer
     transition color .2s, background .2s
     &:hover
-      background var(--color-red-a1)
+      background var(--accent-wash)
 
   button:focus-visible
     outline 2px solid var(--primary-color)
@@ -167,7 +168,7 @@
       color var(--grey-6)
       &:hover:not(:disabled), &:focus-visible:not(:disabled)
         color var(--statistics-ui-accent)
-        background var(--color-red-a1)
+        background var(--accent-wash)
       &:focus-visible
         outline-color var(--primary-color)
       &:disabled
@@ -432,7 +433,7 @@
     &.is-right
       right 0
       --scroll-hint-distance 3px
-    @media (prefers-reduced-motion: reduce)
+    +reduced-motion()
       .ic
         animation none
 
@@ -475,7 +476,7 @@
       cursor pointer
       color var(--grey-7)
       &:hover, &:focus-visible
-        color var(--color-blue)
+        color var(--accent-hover)
       span
         overflow hidden
         text-overflow ellipsis
@@ -569,7 +570,7 @@
       min-height 2rem
       &[aria-pressed="true"]
         color var(--primary-color)
-        background var(--color-red-a1)
+        background var(--accent-wash)
 
   .statistics-content-toolbar
     display contents
@@ -713,7 +714,7 @@
         margin 0
         line-height 1
         animation statistics-scroll-hint 1.8s ease-in-out infinite
-      @media (prefers-reduced-motion: reduce)
+      +reduced-motion()
         .ic
           animation none
       &:hover
@@ -798,7 +799,7 @@
       outline none
     &:hover
       color var(--primary-color)
-      background var(--color-pink-a1)
+      background var(--accent-decoration-soft)
       transform translateY(-1px)
   .statistics-comments-body
     flex 1
@@ -823,7 +824,7 @@
         top 0
         bottom 0
         width 2px
-        background var(--color-red-a3)
+        background var(--accent-line)
     > ol > li
       grid-column 1
       position relative
@@ -962,7 +963,7 @@
     > :last-child
       margin-bottom 0
     a
-      color var(--color-blue)
+      color var(--accent-hover)
     ul, ol
       padding-left 1.5rem
     img
@@ -979,7 +980,7 @@
     overflow hidden
     border-radius 50%
     color var(--primary-color)
-    background var(--color-red-a1)
+    background var(--accent-wash)
     img
       position absolute
       inset 0
@@ -1026,15 +1027,49 @@
   --statistics-map-hover rgba(244, 174, 148, .4)
   --statistics-map-label #f3fbff
 
+// Continuous counts and ordinary UI follow the visitor palette. Categorical
+// chart series and explicit comment badge colors retain their own identities.
+html[data-reading-palette] #statistics_container
+  --statistics-scale-low unquote('color-mix(in srgb, var(--primary-color) 8%, var(--grey-1))')
+  --statistics-scale-mid unquote('color-mix(in srgb, var(--primary-color) 45%, var(--grey-1))')
+  --statistics-scale-high var(--primary-color)
+  --statistics-bar-start unquote('color-mix(in srgb, var(--accent-end) 65%, var(--grey-1))')
+  --statistics-summary-bg unquote('color-mix(in srgb, var(--accent-start) 4.5%, transparent)')
+  --statistics-ui-accent var(--primary-color)
+  --statistics-loader-accent var(--primary-color)
+  --statistics-map-fill unquote('color-mix(in srgb, var(--accent-start) 6%, var(--grey-2))')
+  --statistics-map-border unquote('color-mix(in srgb, var(--primary-color) 45%, var(--grey-3))')
+  --statistics-map-hover unquote('color-mix(in srgb, var(--accent-end) 40%, var(--grey-1))')
+  --statistics-map-label var(--grey-7)
+  --statistics-map-label-outline var(--grey-1)
+  --statistics-map-emphasis-border var(--accent-secondary-color)
+  --statistics-map-lines unquote('color-mix(in srgb, var(--primary-color) 50%, var(--grey-6))')
+  --statistics-zoom-fill var(--accent-soft)
+  --statistics-rank-hover var(--accent-secondary-color)
+  --statistics-trend-current var(--primary-color)
+  --statistics-trend-previous var(--accent-secondary-color)
+  --statistics-calendar-0 var(--grey-3)
+  for $level in 1..9
+    $weight = ($level / 9 * 100)%
+    --statistics-calendar-{$level} unquote('color-mix(in srgb, var(--primary-color) ' + $weight + ', var(--grey-1))')
+
 .select-picker-menu[data-picker="statistics"]
   border-color var(--grey-3)
   border-radius .5rem
   .select-picker-option
     &:hover, &:focus-visible
-      background var(--color-red-a1)
+      background var(--accent-wash)
     &[aria-selected="true"]
       color var(--primary-color)
-      background var(--color-red-a1)
+      background var(--accent-wash)
 
 [data-theme="dark"] .select-picker-menu[data-picker="statistics"] .select-picker-option[aria-selected="true"]
   color #f0adc7
+
+html[data-reading-palette] .select-picker-menu[data-picker='statistics'] .select-picker-option[aria-selected='true']
+  color var(--primary-color)
+
+html[data-reading-palette] .statistics-comments-dialog .statistics-comment-badge-author
+  color var(--author-badge-text)
+  background var(--author-badge-background)
+  border-color var(--author-badge-border)

@@ -3,7 +3,7 @@ import vm from 'node:vm'
 import { build } from 'esbuild'
 import { fileURLToPath } from 'node:url'
 
-const bundle = await build({ entryPoints: [fileURLToPath(new URL('../source/js/_app/components/music-visualizer.ts', import.meta.url))], bundle: true, write: false, format: 'iife', globalName: 'visualizer' })
+const bundle = await build({ stdin: { contents: "export * from './source/js/_app/components/music-visualizer'; export { setReadingPreferences } from './source/js/_app/components/reading-preferences'", resolveDir: fileURLToPath(new URL('..', import.meta.url)) }, bundle: true, write: false, format: 'iife', globalName: 'visualizer' })
 function fixture({ capture = true, saved } = {}) {
   const document = new EventTarget(), window = new EventTarget(), motion = new EventTarget()
   const frames = new Map(), storage = new Map(), classes = new Set()
@@ -44,9 +44,10 @@ function fixture({ capture = true, saved } = {}) {
     createAnalyser() { return { getByteFrequencyData(data) { data.fill(spectrum) }, disconnect() {} } }
     createMediaStreamSource() { return { connect(node) { assert.ok(node.getByteFrequencyData, 'capture only connects to analyser, never audible destination') }, disconnect() { disconnects++ } } }
   }
-  const scope = vm.createContext({ document, window, AudioContext: Context, HTMLAudioElement: Audio, AbortController, Float32Array, Uint8Array, performance: { now: () => time }, devicePixelRatio: 3, matchMedia: () => motion, localStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) }, requestAnimationFrame: callback => { frames.set(++serial, callback); return serial }, cancelAnimationFrame: id => frames.delete(id), IntersectionObserver: class { constructor(callback) { intersection = callback } observe() {} disconnect() {} }, ResizeObserver: class { constructor(callback) { size = callback } observe() {} disconnect() {} } })
+  const scope = vm.createContext({ document, window, shokax_CONFIG: { reading_settings: { enable: true } }, AudioContext: Context, HTMLAudioElement: Audio, AbortController, Float32Array, Uint8Array, performance: { now: () => time }, devicePixelRatio: 3, matchMedia: () => motion, localStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value), removeItem: key => storage.delete(key) }, requestAnimationFrame: callback => { frames.set(++serial, callback); return serial }, cancelAnimationFrame: id => frames.delete(id), IntersectionObserver: class { constructor(callback) { intersection = callback } observe() {} disconnect() {} }, ResizeObserver: class { constructor(callback) { size = callback } observe() {} disconnect() {} } })
   vm.runInContext(bundle.outputFiles[0].text, scope)
   const controller = scope.visualizer.createMusicVisualizer()
+  controller.setMotion = motion => scope.visualizer.setReadingPreferences({ motion })
   const audio = new Audio()
   function media(type) { const event = new Event(type); Object.defineProperty(event, 'target', { value: audio }); document.dispatchEvent(event) }
   function tick() { time += 40; const pending = [...frames.values()]; frames.clear(); pending.forEach(callback => callback(time)) }
@@ -62,6 +63,13 @@ for (const capture of [true, false]) {
   assert.equal(f.storage.has('shokax.music.visualizer'), false, 'default does not overwrite a saved preference')
   assert.equal(f.frames.size, 1)
   assert.equal(f.canvas.width, 2400, 'DPR capped at two')
+  f.controller.setMotion('reduce')
+  assert.equal(f.frames.size, 0, 'visitor preference immediately stops the active frame loop')
+  assert.equal(f.active, false)
+  assert.equal(f.audio.paused, false, 'reducing motion never pauses audible playback')
+  assert.equal(f.storage.has('shokax.music.visualizer'), false, 'motion preference does not rewrite the original toggle')
+  f.controller.setMotion('system')
+  assert.equal(f.frames.size, 1, 'restoring system motion resumes the already enabled visualizer')
   for (let i = 0; i < 20; i++) f.media('playing')
   assert.equal(f.frames.size, 1, 'repeated playback events share one frame loop')
   assert.equal(f.captures, capture ? 1 : 0)

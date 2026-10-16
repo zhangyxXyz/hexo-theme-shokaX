@@ -1,7 +1,7 @@
 import { calendarRange, dateKey } from './dates'
 import type { Labels, Point } from './types'
+import { calendarColors } from './palette'
 
-export const calendarColors = ['#d7dbe2', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f']
 export const normalizeDay = (value: string) => value.replace(/[/\-]/g, '')
 export const displayDay = (value: string) => normalizeDay(value).replace(/^(\d{4})(\d{2})(\d{2})$/, '$1/$2/$3')
 
@@ -35,7 +35,7 @@ export function calendarDetails(data: Point[], labels: Labels) {
   legend.append(less)
   for (const index of [0, 2, 4, 6, 8]) {
     const swatch = document.createElement('i')
-    swatch.style.backgroundColor = calendarColors[index]
+    swatch.style.backgroundColor = `var(--statistics-calendar-${index}, ${calendarColors[index]})`
     swatch.setAttribute('aria-hidden', 'true')
     legend.append(swatch)
   }

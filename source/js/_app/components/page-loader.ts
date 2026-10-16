@@ -1,3 +1,5 @@
+import { effectiveReducedMotion } from './motion'
+
 type LoaderOptions = { start: boolean; switch: boolean; scope?: 'content' | 'viewport' }
 
 // The loader never gates navigation or waits for animation/network completion.
@@ -43,7 +45,7 @@ export function createPageLoader(root: HTMLElement, options: LoaderOptions) {
     document.body.classList.add('loaded')
     clear()
     if (root.hidden) { reveal?.(); return }
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduced = effectiveReducedMotion()
     // Hold only the visual layer briefly; the new page is already usable below.
     exitTimer = setTimeout(() => {
       if (token !== revision) return

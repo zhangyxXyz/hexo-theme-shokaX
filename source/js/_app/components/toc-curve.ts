@@ -1,3 +1,5 @@
+import { effectiveReducedMotion } from './motion'
+
 let cleanup: (() => void) | undefined
 let instance = 0
 
@@ -66,7 +68,7 @@ export function refreshTocCurve() {
     // Measure all final heights before animating any nested branch.
     const measured = changes.map(change => ({ ...change, to: change.branch.getBoundingClientRect().height }))
     for (const { branch, from, initial, to } of measured) {
-      if (!initial && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (!initial && !effectiveReducedMotion()) {
         const animation = branch.animate([{ height: `${from}px` }, { height: `${to}px` }], {
           duration: 220, easing: 'cubic-bezier(.22,.68,0,1)'
         })

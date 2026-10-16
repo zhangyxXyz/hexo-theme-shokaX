@@ -1,4 +1,5 @@
 import { createMusicLyricView, subscribeMusicState } from './music-state'
+import { getReducedMotionQuery } from './motion'
 import { tooltipPlainText } from './tooltip-content'
 import { createMusicWidth } from './music-width'
 
@@ -56,7 +57,7 @@ export function initMusicOverlay() {
   controls.append(nextButton, closeButton)
   overlay.append(disc, lines, controls)
   document.body.append(overlay)
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+  const reducedMotion = getReducedMotionQuery()
   let motions: Animation[] = []
   let previous = { line: -1, track: -1, visible: false }
   const width = createMusicWidth(value => { lines.style.width = `${value}px` })

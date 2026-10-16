@@ -41,6 +41,11 @@ hexo.extend.generator.register('script', async function (locals) {
       hidden: theme.assets + '/failure.ico'
     },
     darkmode: theme.darkmode,
+    palette: {
+      primary: typeof theme.palette?.primary === 'string' ? theme.palette.primary : null,
+      secondary: typeof theme.palette?.secondary === 'string' ? theme.palette.secondary : null
+    },
+    reading_settings: { enable: theme.reading_settings?.enable === true },
     theme_transition: theme.theme_transition ?? 'sunrise',
     auto_dark: theme.auto_dark,
     auto_scroll: theme.auto_scroll,
@@ -105,6 +110,20 @@ hexo.extend.generator.register('script', async function (locals) {
   if (theme?.audio) {
     siteConfig.audio = theme.audio
   }
+
+  const preferenceBootstrap = await build({
+    entryPoints: [path.resolve(hexo.theme_dir, 'source/js/_app/components/reading-preferences/bootstrap.ts')],
+    bundle: true, write: false, platform: 'browser', format: 'iife', target: ['es2022'], minify: true,
+    define: {
+      shokax_READING_DEFAULTS: JSON.stringify({
+        enabled: siteConfig.reading_settings.enable, darkmode: siteConfig.darkmode, auto_dark: siteConfig.auto_dark,
+        palette: siteConfig.palette
+      })
+    }
+  })
+  hexo.extend.helper.register('reading_preferences_bootstrap', function () {
+    return htmlTag('script', {}, preferenceBootstrap.outputFiles[0].text.replace(/<\/script/gi, '<\\/script'), false)
+  })
 
   let enterPoint: string, patchDir: string
   try {

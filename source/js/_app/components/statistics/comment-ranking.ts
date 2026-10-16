@@ -1,4 +1,5 @@
 import { tagsLimit } from './tags-limit'
+import { effectiveReducedMotion } from '../motion'
 import { loadCharts } from './assets'
 import { rankingLabelWidth } from './content-ranking'
 import { chartPalette, statisticsColors } from './palette'
@@ -82,7 +83,7 @@ export async function mountCommentRanking(panel: Panel, source: CommentSource, c
       links.append(button)
     })
     chart.setOption({
-      animationDuration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 250,
+      animationDuration: effectiveReducedMotion() ? 0 : 250,
       textStyle: { fontFamily },
       grid: { top: 10, bottom: 35, left: width + 12, right: 50 },
       xAxis: { type: 'value', minInterval: 1, axisTick: { show: false }, axisLine: { show: false }, axisLabel: { color: palette.text }, splitLine: { lineStyle: { color: palette.grid, type: 'dashed' } } },

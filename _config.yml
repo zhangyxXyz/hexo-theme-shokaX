@@ -94,6 +94,10 @@ widgets:
 footer:
   latest_post: true
   tagline: '' # Empty falls back to the site's subtitle.
+  landscape:
+    enable: false
+    image: '' # Optional 3:1 panoramic decoration; transparent or white background.
+    dark_image: '' # Optional dark variant with a transparent or black background.
   tags:
     enable: true
     limit: 6
@@ -141,6 +145,16 @@ footer:
 grayMode: false # 全站黑白滤镜
 
 darkmode: true
+
+# Site accent colors. Empty values preserve the original theme palette.
+# Independent of the reading settings panel; visitor colors take precedence.
+palette:
+  primary:
+  secondary:
+
+# Browser-local reading preferences. Existing theme defaults apply until changed.
+reading_settings:
+  enable: false
 
 # 手动明暗切换动画：sunrise（日升日落，原有效果）| moon-stars（月夜星辉）
 theme_transition: sunrise

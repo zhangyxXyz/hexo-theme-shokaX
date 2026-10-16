@@ -60,20 +60,11 @@
     align-items: center;
     gap: .5rem .75rem;
     a {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      min-height: 2.25rem;
-      padding: .45rem .75rem;
-      border: 3px solid var(--grey-3);
-      border-radius: .85rem;
-      background: var(--grey-1);
-      box-shadow: 0 2px 5px var(--grey-9-a1);
+      control-base();
+      control-raised();
+      control-focus($control-focus-offset, var(--project-accent));
       color: var(--text-color);
-      font-size: .8125rem;
-      line-height: 1.4;
-      text-decoration: none;
-      transition: color .22s, border-color .22s, box-shadow .22s;
+      transition: color $control-duration, border-color $control-duration, box-shadow $control-duration;
       .i-github {
         display: inline-grid;
         place-items: center;
@@ -85,8 +76,7 @@
         color: var(--grey-8);
       }
       > span { line-height: 1.4; }
-      &:hover, &:focus-visible { color: var(--project-accent); border-color: var(--color-pink-a3); }
-      &:focus-visible { outline: 2px solid var(--project-accent); outline-offset: 3px; }
+      &:hover, &:focus-visible { color: var(--project-accent); border-color: var(--accent-border); }
     }
   }
   .project-actions { font-size: .875rem; }
@@ -199,7 +189,7 @@
     .project-preview { max-width: 24rem; justify-self: center; transform: none; }
     #projects-heading { font-size: 1.625rem; }
   }
-  @media (prefers-reduced-motion: reduce) {
+  +reduced-motion() {
     .project-card, .project-preview, .project-actions a, .projects-footer a { transition: none; }
   }
 }

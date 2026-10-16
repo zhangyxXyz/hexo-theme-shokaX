@@ -1,3 +1,5 @@
+import { getReducedMotionQuery } from '../motion';
+
 /*! Adapted from mouse-firework 0.3.0.
 MIT License
 
@@ -412,7 +414,7 @@ export default function firework(options, attachLayer) {
     let canvas = null, ctx = null, detachLayer;
     let batches = [];
     let lastTrigger = -Infinity;
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const reduced = getReducedMotionQuery();
     const clear = () => {
         if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
