@@ -19,6 +19,8 @@
 }
 #MusicPlayerRoot {
   z-index: $zindex-3;
+  // Nyx writes its preset inline; inherit the site's live accent instead.
+  --primary-color: inherit !important;
   --player-background: var(--grey-1-a7) !important;
   --primary-text: var(--text-color) !important;
   --secondary-text: var(--grey-5) !important;
