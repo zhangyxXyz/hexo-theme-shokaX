@@ -37,7 +37,7 @@ Live2D 核心和基础样式通过 `vendors.assets.live2d_widget` 加载，来�
 普通提示使用相对看板娘的绝对定位，悬停/移开时保持同一定位参照；看板娘的悬停样式不再引入 transform，避免提示跳到视口顶部。仅在评论等模态弹窗打开时，支持 Popover 的浏览器将这个不可交互的气泡放入顶层并使用视口坐标；旧浏览器保留普通页面提示，在模态弹窗内暂停。
 切页、隐藏看板娘、关闭弹窗、离开页面会清除提示；没有逐帧轮询或新增全页 MutationObserver。
 
-`article_script.enable: true` 在首页、文章及其他主内容页面显示简繁图标按钮（`i-chinese-traditional` / `i-chinese-simplified`），共用 `.ic` 基线配置。文章页转换正文，其余页面转换 `#main` 主内容区。点击按需加载 OpenCC JS 1.4.1，将正文文字转换为繁体，再点击“简”恢复保存的原文。不会重写 HTML、链接地址或标题锚点，也不会修改源文章。代码、公式、输入控件及 `translate="no"` 区域跳过；异步正文更新继续转换，离页清理观察器和原文缓存。
+`article_script.enable: true` 在首页、文章及其他主内容页面显示简繁图标按钮（`i-chinese-traditional` / `i-chinese-simplified`），共用 `.ic` 基线配置。点击按需加载 OpenCC JS 1.4.1，转换整个页面：正文、菜单、侧栏、页脚、按钮文字、`document.title`，以及 `title`、`aria-label`、`placeholder`、`alt`、`data-theme-tooltip` 属性；再点击“简”恢复保存的原文。选择保存在 `localStorage` 的 `shokax.article-script`，刷新和 PJAX 切页后继续生效；不修改 `lang`。不会重写 HTML、链接地址或标题锚点，也不会修改源文章。代码、公式、输入控件、未解密的加密文章及 `translate="no"` / `.notranslate` 区域跳过；异步内容和 PJAX 换入的节点由同一个观察器继续转换。
 
 切换按钮文案来自主题语言文件。简繁转换使用 https://github.com/nk2028/opencc-js 的 `cn → tw` 规则，仅改变显示，不影响搜索索引。
 
