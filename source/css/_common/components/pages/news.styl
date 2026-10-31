@@ -4,184 +4,342 @@
     display none !important
   a:focus-visible, button:focus-visible, summary:focus-visible
     outline 2px solid var(--primary-color)
-    outline-offset 4px
+    outline-offset 3px
   .sr-only
     position absolute
     width 1px
     height 1px
     overflow hidden
     clip-path inset(50%)
+  a
+    border-bottom none
+  .ic
+    font-size .9em
+
   .news-intro
-    padding 1.75rem
-    border-radius 1rem
-    background linear-gradient(125deg, var(--grey-2), var(--grey-1))
-    border 1px solid var(--grey-3)
-    margin-bottom 1.5rem
+    position relative
+    overflow hidden
+    padding 1.5rem 1.75rem
+    margin-bottom 1.25rem
+    border 1px solid var(--grey-2)
+    border-radius .5rem
+    background var(--grey-1)
+    box-shadow 0 .625rem 1.875rem -.9375rem var(--box-bg-shadow)
+    &::after
+      content ''
+      position absolute
+      top -3rem
+      right -3rem
+      width 10rem
+      height 10rem
+      border-radius 50%
+      background radial-gradient(circle, var(--color-pink-a1), transparent 70%)
+      pointer-events none
     h2
-      font-size 1.65rem
-      margin .4rem 0
+      margin .5rem 0 .25rem
+      font-size 1.5rem
+      line-height 1.4
     p
-      margin .5rem 0 1rem
+      margin 0 0 .875rem
       color var(--grey-6)
+      font-size .875rem
+      line-height 1.8
   .news-eyebrow
-    display flex
+    display inline-flex
     align-items center
-    gap .5rem
+    gap .375rem
+    padding .125rem .625rem
+    border-radius 2rem
     color var(--primary-color)
-    font-size .8rem
-    letter-spacing .12em
+    background var(--color-pink-a1)
+    font-size .75rem
     font-weight 700
-  .news-credit, .news-meta, .news-card-footer
+    letter-spacing .08em
+  .news-credit
     display flex
     flex-wrap wrap
     align-items center
-    gap .5rem 1rem
-    font-size .8rem
-    color var(--grey-6)
-  .news-credit a, .news-card-footer a, .news-subscribe
-    color var(--primary-color)
-  .news-channels
-    display grid
-    grid-template-columns repeat(4, minmax(0, 1fr))
-    gap .65rem
-    margin-bottom 1.25rem
-    button
-      display flex
-      justify-content center
+    gap .25rem 1rem
+    color var(--grey-5)
+    font-size .75rem
+    a
+      display inline-flex
       align-items center
-      gap .65rem
-      padding .8rem .5rem
-      min-height 44px
-      font inherit
+      gap .25rem
+      color var(--primary-color)
+      &:hover
+        color var(--accent-hover)
+
+  // 频道与搜索同排：放得下时搜索靠右，放不下时整行换下
+  .news-controls
+    container-type inline-size
+    display flex
+    flex-wrap wrap
+    align-items center
+    gap .75rem 1rem
+    margin-bottom 1.5rem
+
+  // 频道切换沿用朋友圈“最新发布 / 最近更新”的分段胶囊样式
+  .news-channels
+    display flex
+    flex-wrap wrap
+    gap .25rem
+    width fit-content
+    max-width 100%
+    margin 0
+    padding .1875rem
+    border-radius 1.25rem
+    background var(--grey-2)
+    button
+      display inline-flex
+      align-items center
+      gap .375rem
+      padding .3125rem 1rem
+      border none
+      border-radius 2rem
       color var(--grey-6)
-      background var(--grey-1)
-      border 1px solid var(--grey-3)
-      border-radius .65rem
+      background transparent
+      font inherit
+      font-size .8125rem
+      line-height 1.5
       cursor pointer
+      transition color .2s, background .2s, box-shadow .2s
+      &:hover
+        color var(--primary-color)
       &[aria-pressed='true']
         color var(--primary-color)
-        border-color var(--primary-color)
-        box-shadow 0 3px 12px var(--box-bg-shadow)
+        background var(--grey-0)
+        box-shadow 0 .125rem .5rem var(--box-bg-shadow)
       small
-        font-size .7rem
-        opacity .8
+        min-width 1.25rem
+        padding 0 .3125rem
+        border-radius 1rem
+        color var(--grey-5)
+        background var(--grey-1)
+        font-size .6875rem
+        line-height 1.5
+        text-align center
+        font-variant-numeric tabular-nums
+      &[aria-pressed='true'] small
+        color var(--primary-color)
+        background var(--color-pink-a1)
+
   .news-toolbar
     display flex
-    flex-wrap wrap
-    gap .75rem 1rem
+    flex 1 1 16rem
+    gap .75rem
     align-items center
-    justify-content space-between
-    margin-bottom 1.5rem
+    justify-content flex-end
+    min-width 0
   .news-search
     display flex
+    flex 0 1 18rem
     align-items center
-    gap .65rem
-    padding .6rem .9rem
-    border 1px solid var(--grey-3)
-    border-radius .6rem
-    color var(--grey-6)
-    background var(--grey-1)
-    width 100%
-    max-width 24rem
+    gap .5rem
+    min-width 0
+    min-height 2.125rem
+    padding .25rem 1rem
+    border 1px solid transparent
+    border-radius 2rem
+    color var(--grey-5)
+    background var(--grey-2)
+    transition border-color .2s, background .2s
     &:focus-within
       border-color var(--primary-color)
-      box-shadow 0 0 0 1px var(--primary-color)
+      background var(--grey-0)
+      color var(--primary-color)
     input
       min-width 0
       width 100%
       border 0
       background transparent
       font inherit
+      font-size .8125rem
       color var(--text-color)
       &:focus-visible
         outline none
-  .news-results, .news-updated
+      &::placeholder
+        color var(--grey-5)
+  .news-results
+    flex none
     margin 0
+    color var(--grey-5)
     font-size .75rem
-    color var(--grey-6)
+    font-variant-numeric tabular-nums
+    white-space nowrap
+    &:empty
+      display none
+
   .news-channel-heading
     display flex
     align-items flex-start
     justify-content space-between
     gap 1rem
+    padding-bottom .875rem
+    border-bottom 1px dashed var(--grey-3)
     h3
       margin 0
+      font-size 1.125rem
     p
+      margin .25rem 0 0
       color var(--grey-6)
-      font-size .85rem
-      margin .35rem 0 .75rem
+      font-size .8125rem
+  .news-updated
+    display flex
+    align-items center
+    gap .25rem
+    margin-top .375rem
+    color var(--grey-5)
+    font-size .75rem
+    font-variant-numeric tabular-nums
+  .news-channel-actions
+    display flex
+    flex-shrink 0
+    align-items center
+    gap .75rem
   .news-subscribe
     display inline-flex
     flex-shrink 0
     align-items center
-    gap .4rem
-    min-height 44px
-    font-size .8rem
-  .news-warning
-    padding .75rem 1rem
-    border-left 3px solid var(--primary-color)
+    gap .375rem
+    padding .25rem .875rem
+    border-radius 2rem
+    color var(--grey-6)
     background var(--grey-2)
+    font-size .8125rem
+    line-height 1.5
+    transition color .2s, background .2s
+    &:hover
+      color var(--primary-color)
+      background var(--color-pink-a1)
+  .news-warning
+    margin 1rem 0 0
+    padding .625rem 1rem
+    border-left 3px solid var(--primary-color)
+    border-radius 0 .5rem .5rem 0
+    color var(--grey-7)
+    background var(--color-pink-a1)
+    font-size .8125rem
+
   .news-list
     display grid
     gap 1rem
-    margin 1rem 0 1.5rem
+    margin 1.25rem 0 1.5rem
   .news-card
     min-width 0
-    padding 1.4rem 1.5rem
-    border 1px solid var(--grey-3)
-    border-radius .8rem
+    padding 1.125rem 1.375rem 1rem
+    border 1px solid var(--grey-2)
+    border-radius .5rem
     background var(--grey-1)
-    transition border-color .2s
+    box-shadow 0 .625rem 1.875rem -.9375rem var(--box-bg-shadow)
     overflow-wrap anywhere
+    transition transform .2s ease-out, border-color .2s, box-shadow .2s
     &:hover
-      border-color var(--primary-color)
+      transform translateY(-.125rem)
+      border-color var(--color-pink-a3)
+      box-shadow 0 .875rem 2rem -.875rem var(--box-bg-shadow)
     h3
-      margin .65rem 0
-      font-size 1.1rem
-      line-height 1.65
+      margin .5rem 0
+      font-size 1.0625rem
+      line-height 1.6
+      a
+        color var(--text-color)
+        transition color .2s
+        &:hover
+          color var(--primary-color)
     .news-summary
+      margin 0 0 .875rem
       color var(--grey-6)
-      font-size .9rem
-      line-height 1.9
-      margin .5rem 0 1rem
+      font-size .875rem
+      line-height 1.85
       white-space pre-line
+  .news-meta
+    display flex
+    flex-wrap wrap
+    align-items center
+    gap .25rem .625rem
+    color var(--grey-5)
+    font-size .75rem
+    font-variant-numeric tabular-nums
+    > * + *:not(.news-category)::before
+      content ''
+      display inline-block
+      width .1875rem
+      height .1875rem
+      margin-right .625rem
+      border-radius 50%
+      background var(--grey-4)
+      vertical-align middle
+    .news-category + *::before
+      display none
   .news-category
-    padding .15rem .55rem
-    border-radius .3rem
-    background var(--grey-2)
+    padding .0625rem .5rem
+    border-radius 2rem
     color var(--primary-color)
+    background var(--color-pink-a1)
+    font-weight 600
+  .news-card-footer
+    display flex
+    flex-wrap wrap
+    align-items center
+    gap .5rem
+    padding-top .75rem
+    border-top 1px dashed var(--grey-2)
+    a
+      display inline-flex
+      align-items center
+      gap .25rem
+      padding .125rem .75rem
+      border-radius 2rem
+      color var(--grey-6)
+      background var(--grey-2)
+      font-size .75rem
+      line-height 1.6
+      transition color .2s, background .2s
+      &:hover
+        color var(--primary-color)
+        background var(--color-pink-a1)
   .news-content
-    margin 1rem 0
+    margin 0 0 .875rem
     summary
+      width fit-content
       cursor pointer
       color var(--primary-color)
-      font-size .85rem
+      font-size .8125rem
     p
       white-space pre-line
-      line-height 1.9
-      font-size .9rem
+      line-height 1.85
+      font-size .875rem
       max-height 34rem
       overflow auto
+      margin .5rem 0 0
       padding 1rem
       background var(--grey-2)
       border-radius .5rem
+      scrollbar-width thin
+
   .news-empty
     text-align center
     padding 2rem
-    color var(--grey-6)
+    color var(--grey-5)
+    font-size .875rem
   .news-more
     control-focus()
     display block
     margin 1.5rem auto 0
-    padding .75rem 2rem
-    border 1px solid var(--primary-color)
+    padding .3125rem 1.75rem
+    border none
     border-radius 2rem
-    background var(--grey-1)
-    color var(--primary-color)
+    color var(--grey-6)
+    background var(--grey-2)
     font inherit
+    font-size .8125rem
+    line-height 1.5
     cursor pointer
+    transition color .2s, background .2s
     &:hover
-      background var(--accent-soft)
+      color var(--primary-color)
+      background var(--color-pink-a1)
   .news-loading
     display flex
     justify-content center
@@ -191,12 +349,28 @@
       display none
     &::before
       loading-spinner()
+
   @media (max-width: 600px)
-    .news-intro, .news-card
-      padding 1.1rem
+    .news-intro
+      padding 1.125rem 1.25rem
+    .news-card
+      padding 1rem 1.125rem .875rem
     .news-channels
-      grid-template-columns repeat(2, minmax(0, 1fr))
-    .news-toolbar, .news-search
       width 100%
+      border-radius 1rem
+      button
+        flex 1 1 auto
+        justify-content center
     .news-search
       max-width none
+    .news-channel-heading
+      flex-direction column
+      gap .625rem
+
+// Matches the width at which channels and the search box no longer fit side by side.
+@container (max-width: 50rem)
+  .news .news-toolbar
+    flex-basis 100%
+    justify-content flex-start
+  .news .news-search
+    flex 1 1 auto

@@ -12,33 +12,39 @@ block content
                 h2= page.title
                 p= page.description
                 .news-credit
-                    a(href=reader.source_url target="_blank" rel="noopener noreferrer")= __('news.source', reader.source_name)
+                    a(href=reader.source_url target="_blank" rel="noopener noreferrer")
+                        i.ic.i-external-link-alt(aria-hidden="true")
+                        = __('news.source', reader.source_name)
                     span= __('news.snapshot')
-            nav.news-channels(aria-label=__('news.channels') data-news-controls hidden)
-                each feed in reader.feeds
-                    button(type="button" data-news-channel=feed.id aria-controls='news-' + feed.id aria-pressed="false")
-                        span= feed.title
-                        small= feed.items.length
-            .news-toolbar(data-news-controls hidden)
-                label.news-search
-                    i.ic.i-search(aria-hidden="true")
-                    span.sr-only= __('news.search')
-                    input(type="search" data-news-search placeholder=__('news.search') autocomplete="off")
-                p.news-results(data-news-results role="status" aria-live="polite")
+            .news-controls
+                nav.news-channels(aria-label=__('news.channels') data-news-controls hidden)
+                    each feed in reader.feeds
+                        button(type="button" data-news-channel=feed.id aria-controls='news-' + feed.id aria-pressed="false")
+                            span= feed.title
+                            small= feed.items.length
+                .news-toolbar(data-news-controls hidden)
+                    label.news-search
+                        i.ic.i-search(aria-hidden="true")
+                        span.sr-only= __('news.search')
+                        input(type="search" data-news-search placeholder=__('news.search') autocomplete="off")
             each feed in reader.feeds
                 section.news-channel(id='news-' + feed.id data-news-panel=feed.id aria-label=feed.title)
                     .news-channel-heading
                         div
                             h3= feed.title
                             p= feed.description
-                        a.news-subscribe(href=feed.url target="_blank" rel="noopener noreferrer")
-                            = __('news.subscribe')
-                    .news-updated
-                        if feed.updatedAt
-                            span= __('news.updated') + ' '
-                            time(datetime=feed.updatedAt)= new Date(feed.updatedAt).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false}) + ' UTC+8'
-                        if feed.state !== 'ready'
-                            p.news-warning(role="status")= __('news.' + feed.state)
+                            if feed.updatedAt
+                                .news-updated
+                                    i.ic.i-clock(aria-hidden="true")
+                                    span= __('news.updated') + ' '
+                                    time(datetime=feed.updatedAt)= new Date(feed.updatedAt).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false}) + ' UTC+8'
+                        .news-channel-actions
+                            span.news-results(data-news-results role="status" aria-live="polite")
+                            a.news-subscribe(href=feed.url target="_blank" rel="noopener noreferrer")
+                                i.ic.i-link(aria-hidden="true")
+                                = __('news.subscribe')
+                    if feed.state !== 'ready'
+                        p.news-warning(role="status")= __('news.' + feed.state)
                     .news-list
                         each item in feed.items
                             article.news-card(data-news-item)
@@ -57,9 +63,13 @@ block content
                                         summary= __('news.expand')
                                         p= item.content
                                 .news-card-footer
-                                    a(href=item.url target="_blank" rel="noopener noreferrer")= __('news.read', reader.source_name)
+                                    a(href=item.url target="_blank" rel="noopener noreferrer")
+                                        = __('news.read', reader.source_name)
+                                        i.ic.i-angle-right(aria-hidden="true")
                                     if item.origin
-                                        a(href=item.origin target="_blank" rel="noopener noreferrer")= __('news.original')
+                                        a(href=item.origin target="_blank" rel="noopener noreferrer")
+                                            = __('news.original')
+                                            i.ic.i-external-link-alt(aria-hidden="true")
                     if !feed.items.length
                         p.news-empty= __('news.no_items')
             p.news-empty(data-news-empty hidden)= __('news.empty')

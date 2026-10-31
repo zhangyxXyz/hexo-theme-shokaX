@@ -12,7 +12,6 @@ export function refreshNews() {
   if (!buttons.length) return
   const search = root.querySelector<HTMLInputElement>('[data-news-search]')!
   const more = root.querySelector<HTMLButtonElement>('[data-news-more]')!
-  const result = root.querySelector<HTMLElement>('[data-news-results]')!
   const empty = root.querySelector<HTMLElement>('[data-news-empty]')!
   const spinner = root.querySelector<HTMLElement>('[data-news-loading]')!
   const life = new AbortController()
@@ -49,8 +48,9 @@ export function refreshNews() {
         item.element.hidden = !matches || ++total > limit
         if (!item.element.hidden) shown++
       }
+      const result = panel.querySelector<HTMLElement>('[data-news-results]')
+      if (result) result.textContent = labels.results.replace('{shown}', String(shown)).replace('{total}', String(total))
     })
-    result.textContent = labels.results.replace('{shown}', String(shown)).replace('{total}', String(total))
     empty.hidden = total > 0 || !query
     more.hidden = shown >= total
   }
