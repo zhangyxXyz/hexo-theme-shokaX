@@ -107,7 +107,9 @@
   --waifu-keyword-color: var(--primary-color);
   // Hover moves to the second hue, as the original sheet moves from red to blue.
   --accent-hover: var(--reading-secondary-ink-light, var(--primary-color));
-  --accent-title-hover: var(--reading-secondary-title-light, var(--accent-hover));
+  --accent-secondary-title: var(--reading-secondary-title-light, var(--accent-hover));
+  // Hover recolours an already-readable title, so it keeps body-text contrast.
+  --accent-title-hover: var(--reading-secondary-ink-light, var(--accent-hover));
   --accent-fill: var(--reading-primary-fill, #c3465a);
   --accent-fill-start: var(--reading-primary-fill, #b15278);
   // The second hue stays an accent; filled gradients only move within the primary family.
@@ -212,7 +214,8 @@
   &:root[data-reading-palette] {
     --accent-color: var(--reading-primary-title-dark, var(--primary-color));
     --accent-hover: var(--reading-secondary-ink-dark, var(--primary-color));
-    --accent-title-hover: var(--reading-secondary-title-dark, var(--accent-hover));
+    --accent-secondary-title: var(--reading-secondary-title-dark, var(--accent-hover));
+    --accent-title-hover: var(--reading-secondary-ink-dark, var(--accent-hover));
   }
 
   .primary {
