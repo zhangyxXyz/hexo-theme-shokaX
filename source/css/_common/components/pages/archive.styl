@@ -3,6 +3,7 @@
   --archive-axis: unquote('color-mix(in srgb, var(--primary-color) 42%, var(--grey-3))');
   --archive-soft: unquote('color-mix(in srgb, var(--primary-color) 6%, var(--grey-1))');
   --archive-card: var(--grey-1);
+  --archive-accent: var(--accent-state, var(--primary-color));
   --archive-muted: var(--grey-6);
   min-width: 0;
 
@@ -193,6 +194,12 @@
     border: 1px solid var(--archive-line);
     border-radius: 2rem;
     background: var(--grey-1);
+    transition: border-color .3s, box-shadow .4s cubic-bezier(.22, .61, .36, 1);
+
+    .archive-year-title:hover &, .archive-year-title:focus-within & {
+      border-color: var(--archive-axis);
+      box-shadow: unquote('0 .75rem 1.5rem -.75rem color-mix(in oklch, var(--archive-accent) 55%, transparent)');
+    }
 
     > .ic { display: inline-flex; align-items: center; justify-content: center; width: 1rem; height: 1rem; line-height: 1; }
   }
@@ -225,6 +232,11 @@
 
   .archive-month-card {
     --archive-month-heading-center: 1.9rem;
+    --archive-glow-tint: 3%;
+    --archive-ease: cubic-bezier(.22, .61, .36, 1);
+    // The pointer arrow sits inside the top gradient, so it takes the tint at its height.
+    --archive-card-top: unquote('color-mix(in srgb, var(--archive-accent) var(--archive-glow-tint), var(--archive-card))');
+    --archive-arrow-bg: unquote('color-mix(in srgb, var(--archive-accent) calc(var(--archive-glow-tint) * .75), var(--archive-card))');
     scroll-margin-top: 5rem;
     position: relative;
     grid-column: 1;
@@ -235,8 +247,9 @@
     border: 1px solid var(--archive-line);
     border-radius: .85rem;
     background: var(--archive-card);
+    background: linear-gradient(180deg, var(--archive-card-top), var(--archive-card) 6rem);
     box-shadow: 0 .35rem 1.4rem unquote('color-mix(in srgb, var(--box-bg-shadow) 22%, transparent)');
-    transition: border-color .2s, box-shadow .2s;
+    transition: border-color .3s, box-shadow .4s var(--archive-ease), translate .4s var(--archive-ease);
 
     &::before {
       content: '';
@@ -248,15 +261,32 @@
       border-top: 1px solid var(--archive-line);
       border-right: 1px solid var(--archive-line);
       background: var(--archive-card);
+      background: var(--archive-arrow-bg);
       transform: rotate(45deg);
       transition: border-color .2s;
     }
 
+    &::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      inset-inline: 14%;
+      height: 1px;
+      background: unquote('linear-gradient(90deg, transparent, color-mix(in srgb, var(--archive-accent) 70%, transparent), transparent)');
+      opacity: .4;
+      transition: opacity .4s var(--archive-ease), inset-inline .4s var(--archive-ease);
+      pointer-events: none;
+    }
+
     &:hover, &:focus-within {
+      --archive-glow-tint: 4%;
+      translate: 0 -3px;
       border-color: var(--archive-axis);
       box-shadow: 0 .5rem 1.6rem unquote('color-mix(in srgb, var(--box-bg-shadow) 40%, transparent)');
+      box-shadow: unquote('0 1.25rem 2.25rem -1.25rem color-mix(in oklch, var(--archive-accent) 45%, transparent), 0 .35rem 1rem -.5rem var(--box-bg-shadow)');
 
       &::before { border-color: var(--archive-axis); }
+      &::after { opacity: .7; inset-inline: 8%; }
 
       .archive-month-node {
         background: var(--accent-state);
@@ -280,8 +310,11 @@
     &.is-offset { margin-top: 3.875rem; }
 
     &.is-latest {
+      --archive-glow-tint: 5%;
       border-color: var(--archive-axis);
-      background: linear-gradient(135deg, var(--archive-card), var(--archive-soft));
+
+      &::after { opacity: .6; }
+      &:hover, &:focus-within { --archive-glow-tint: 6%; }
 
       &::before { border-color: var(--archive-axis); }
       .archive-month-node {
@@ -789,5 +822,12 @@
 
   +reduced-motion() {
     *, *::before, *::after { transition: none !important; animation: none !important; }
+    .archive-month-card:hover, .archive-month-card:focus-within { translate: none; }
   }
+}
+html[data-theme='dark'] .archive-page .archive-month-card {
+  --archive-glow-tint: 7%;
+  &:hover, &:focus-within { --archive-glow-tint: 8%; }
+  &.is-latest { --archive-glow-tint: 9%; }
+  &.is-latest:hover, &.is-latest:focus-within { --archive-glow-tint: 10%; }
 }

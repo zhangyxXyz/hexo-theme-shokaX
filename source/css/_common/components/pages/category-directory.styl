@@ -53,20 +53,38 @@
     column-gap: 1.25rem;
   }
   .category-card {
+    --category-glow-tint: 3%;
+    position: relative;
     break-inside: avoid;
     margin: 0 0 1.25rem;
     padding: 1rem 1.25rem;
     border: 1px solid var(--accent-decoration-border);
     border-radius: 1rem;
     background: var(--grey-1);
+    background: unquote('linear-gradient(180deg, color-mix(in srgb, var(--accent-state) var(--category-glow-tint), var(--grey-1)), var(--grey-1) 5rem)');
     box-shadow: 0 4px 16px var(--box-bg-shadow);
-    transition: border-color .3s, box-shadow .35s var(--category-ease), translate .35s var(--category-ease);
-    &:hover, &:focus-within {
-      border-color: var(--accent-state);
-      translate: 0 -2px;
-      box-shadow: 0 .9rem 1.8rem -1rem var(--box-bg-shadow);
-      box-shadow: unquote('0 .9rem 1.8rem -1rem color-mix(in oklch, var(--accent-state) 40%, var(--box-bg-shadow))');
+    transition: border-color .3s, box-shadow .4s var(--category-ease), translate .4s var(--category-ease);
+    &::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      inset-inline: 14%;
+      height: 1px;
+      background: unquote('linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent-state) 70%, transparent), transparent)');
+      opacity: .4;
+      transition: opacity .4s var(--category-ease), inset-inline .4s var(--category-ease);
+      pointer-events: none;
     }
+    &:hover, &:focus-within {
+      --category-glow-tint: 4%;
+      border-color: var(--accent-state);
+      translate: 0 -3px;
+      box-shadow: 0 .9rem 1.8rem -1rem var(--box-bg-shadow);
+      box-shadow: unquote('0 1.25rem 2.25rem -1.25rem color-mix(in oklch, var(--accent-state) 45%, transparent), 0 .35rem 1rem -.5rem var(--box-bg-shadow)');
+      &::after { opacity: .7; inset-inline: 8%; }
+    }
+    html[data-theme='dark'] & { --category-glow-tint: 7%; }
+    html[data-theme='dark'] &:hover, html[data-theme='dark'] &:focus-within { --category-glow-tint: 8%; }
     > .category-link, > summary > .category-link {
       font-size: 1.15rem;
       font-weight: 600;

@@ -1,5 +1,5 @@
 .projects-page {
-  --project-accent: var(--primary-color);
+  --project-accent: var(--accent-state, var(--primary-color));
   --project-soft: unquote('color-mix(in srgb, var(--project-accent) 9%, var(--grey-1))');
   --project-line: unquote('color-mix(in srgb, var(--project-accent) 15%, var(--grey-2))');
 
@@ -13,6 +13,10 @@
   .projects-description, .project-description { color: var(--grey-6); }
   .projects-list { display: grid; gap: 1.5rem; }
   .project-card {
+    --project-glow-tint: 3%;
+    --project-ease: cubic-bezier(.22, .61, .36, 1);
+    position: relative;
+    isolation: isolate;
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     gap: 2rem;
@@ -21,10 +25,29 @@
     border: 1px solid var(--project-line);
     border-radius: 1.25rem;
     background: var(--grey-1);
-    transition: border-color .25s, box-shadow .25s;
+    background: unquote('linear-gradient(180deg, color-mix(in srgb, var(--project-accent) var(--project-glow-tint), var(--grey-1)), var(--grey-1) 6rem)');
+    box-shadow: 0 .625rem 1.875rem -.9375rem var(--box-bg-shadow);
+    transition: border-color .3s, box-shadow .4s var(--project-ease), translate .4s var(--project-ease);
+    // A thin top highlight, brightest in the middle, reads as light catching the card edge.
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: -1px;
+      inset-inline: 12%;
+      height: 1px;
+      background: unquote('linear-gradient(90deg, transparent, color-mix(in srgb, var(--project-accent) 70%, transparent), transparent)');
+      opacity: .45;
+      transition: opacity .4s var(--project-ease), inset-inline .4s var(--project-ease);
+      pointer-events: none;
+    }
     &:hover, &:focus-within {
-      border-color: var(--project-accent);
-      box-shadow: 0 .5rem 1.5rem var(--body-bg-shadow);
+      --project-glow-tint: 4%;
+      translate: 0 -3px;
+      border-color: unquote('color-mix(in srgb, var(--project-accent) 32%, var(--grey-2))');
+      box-shadow: 0 1.5rem 2.5rem -1.5rem var(--box-bg-shadow);
+      box-shadow: unquote('0 1.5rem 2.5rem -1.25rem color-mix(in oklch, var(--project-accent) 45%, transparent), 0 .375rem 1rem -.5rem var(--box-bg-shadow)');
+      &::before { opacity: .7; inset-inline: 8%; }
     }
     &:not(:has(.project-preview)) { grid-template-columns: minmax(0, 1fr); }
   }
@@ -191,7 +214,12 @@
   }
   +reduced-motion() {
     .project-card, .project-preview, .project-actions a, .projects-footer a { transition: none; }
+    .project-card:hover, .project-card:focus-within { translate: none; }
   }
+}
+html[data-theme='dark'] .projects-page .project-card {
+  --project-glow-tint: 7%;
+  &:hover, &:focus-within { --project-glow-tint: 8%; }
 }
 html[data-theme='dark'] .projects-page .project-preview-image:has(.project-image-dark) {
   .project-image-light { display: none; }
