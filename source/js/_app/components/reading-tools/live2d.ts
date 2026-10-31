@@ -1,6 +1,7 @@
 import { resourceURL } from '../../globals/resources'
 import { fetchHitokoto } from '../../globals/hitokoto'
 import { createLive2DTips, type TipRules } from './live2d-tips'
+import { calendarYears, loadHolidayDays, selectCalendarTip, type CalendarTips } from './live2d-calendar'
 type WidgetWindow = Window & {
   initWidget?: (config: { waifuPath: string; cdnPath: string }) => void
   Asteroids?: new () => unknown
@@ -102,15 +103,32 @@ function adaptWidget(onError: () => void, rules: TipRules, labels: Record<string
   document.addEventListener('pjax:send', cancelQuote)
 }
 
-async function tipRules(url: string): Promise<TipRules> {
+async function tipRules(url: string): Promise<{ rules: TipRules; calendar?: CalendarTips }> {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 6000)
   try {
     const response = await fetch(url, { signal: controller.signal })
     if (!response.ok) throw new Error('Live2D tips unavailable')
     const data = await response.json()
-    return data.interactions || {}
+    return { rules: data.interactions || {}, calendar: data.calendar }
   } finally { clearTimeout(timeout) }
+}
+
+// Once per tab session and civil day; the upstream welcome bubble speaks first.
+async function announceCalendar(tips: ReturnType<typeof createLive2DTips>, calendar: CalendarTips | undefined) {
+  if (!calendar) return
+  const now = new Date()
+  const key = 'shokax.live2d.calendar'
+  const today = now.toLocaleDateString('en-CA', { timeZone: calendar.timezone || 'Asia/Shanghai' })
+  try { if (sessionStorage.getItem(key) === today) return } catch {}
+  const [days] = await Promise.all([
+    loadHolidayDays(resourceURL('assets.holiday_cn'), calendarYears(now, calendar)).catch(() => []),
+    new Promise(resolve => setTimeout(resolve, 8000))
+  ])
+  const tip = selectCalendarTip(calendar, days, now)
+  if (!tip) return
+  tips.show(tip.message, 8000, tip.name)
+  try { sessionStorage.setItem(key, today) } catch {}
 }
 
 function asset(url: string, css = false) {
@@ -144,7 +162,7 @@ export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
     try {
       if (!loading) loading = (async () => {
         const base = resourceURL('assets.live2d_widget', config.live2dBase!).replace(/\/?$/, '/')
-        const rules = await tipRules(config.live2dTips!)
+        const { rules, calendar } = await tipRules(config.live2dTips!)
         await asset(base + 'waifu.css', true)
         await asset(base + 'live2d.min.js')
         await asset(base + 'waifu-tips.js')
@@ -154,6 +172,7 @@ export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
           if (!init) throw new Error('Live2D initWidget unavailable')
           init({ waifuPath: config.live2dTips!, cdnPath: resourceURL('assets.live2d_models', config.live2dCdn!) })
           adaptWidget(() => { button.title = config.error! }, rules, JSON.parse(config.live2dLabels || '{}'))
+          if (widgetTips) void announceCalendar(widgetTips, calendar)
         }
       })().catch(error => { loading = undefined; throw error })
       await loading

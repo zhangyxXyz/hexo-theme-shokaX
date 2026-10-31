@@ -17,6 +17,26 @@ Live2D 核心和基础样式通过 `vendors.assets.live2d_widget` 加载，来�
 - 可选 `nameSelector` 从命中控件内部取名称，`nameAttribute` 从对应节点的属性取值；`{text}` 插入名称。动态文字按纯文本处理，仅配置中的 `<span>` 用于强调。
 - `<span>关键词</span>` 默认使用主题粉色；单条规则可用 `color: "#ed6ea0"` 覆盖强调色，支持 `#RGB` / `#RRGGBB`。没有设置或色码无效时回退主题色，不接受任意内联样式。
 - `time`、`seasons`、`message` 保留时段、节日和空闲问候；顶层 `mouseover`、`click` 留空，避免上游和主题重复处理。
+- `calendar`：节气与法定假日、调休提示，见下节。
+
+### 节气与调休
+
+上游 `seasons` 只认固定月日，放进空闲消息池；每年变动的节气和调休由 `reading-tools/live2d-calendar.ts` 处理。
+看板娘初始化约 8 秒后（让过上游欢迎语）说一句，同一标签页会话、同一天只说一次。按以下顺序取第一条命中的：
+
+1. 今天是调休上班日：`holiday.workday`。
+2. 今天放假：假期首日 `first`、中间 `day`、最后一天 `last`。
+3. 明天调休上班 `workdayEve`，明天开始放假 `eve`。
+4. 今天是节气 `solarTerms.<key>.text`，明天是节气 `solarTermEve`。
+5. `upcomingDays`（默认 7，最多 30）天内有假期开始：`upcoming`，`{days}` 为相隔天数。
+
+`{text}` 为假日名或节气名 `solarTerms.<key>.name`；`timezone` 默认 `Asia/Shanghai`，决定“今天”从何时开始。
+节气日期复用 `festival/solar-terms.ts` 的香港天文台 2020–2050 年表，离线可用，超出年份不提示。
+
+法定假日与调休来自 `vendors.assets.holiday_cn`，默认是 [NateScarlet/holiday-cn](https://github.com/NateScarlet/holiday-cn) 按国务院办公厅通知整理的 `{year}.json`（MIT）。
+十二月同时读取次年数据。结果缓存在 `localStorage` 的 `shokax.holiday-cn.{year}`：有数据 3 天、空年份（通知尚未发布）6 小时后重新请求；请求失败沿用旧缓存，没有缓存则只跳过假日提示。设为 `null` 关闭假日提示。
+
+运行 `node toolbox/test-live2d-calendar.mjs` 验证假期首尾、调休、节气同日优先级、时区跨日和年末取数。
 
 例如，页脚的技术方案和主题链接各有独立提示：
 

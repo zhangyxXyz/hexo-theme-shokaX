@@ -40,7 +40,7 @@
         "text": ["点一下就可以切回简体字啦～"]
       },
       {
-        "selector": ".menu a[href='/'], .footer-nav-links a[href='/'], #nav .title a, .footer-brand, .breadcrumb a[href='/']",
+        "selector": ".menu a[href='/'], .footer-nav-links a[href='/'], #nav .title a, #brand a.logo, .footer-brand, .breadcrumb a[href='/'], .archive-heading a[href='/'], .collapse > .item.title a[href='/']",
         "text": ["点它就可以回到首页啦！", "回首页看看吧。", "想回到上一页，也可以使用浏览器的后退功能哦。"]
       },
       {
@@ -173,6 +173,275 @@
         "text": ["这里写着文章的转载要求，分享前先读一下吧。"]
       },
       {
+        "selector": ".reading-settings-toggle",
+        "text": ["字体、字号和主题色，都可以在这里调哦～", "要换一种更舒服的阅读方式吗？"]
+      },
+      {
+        "selector": ".fc-card",
+        "nameSelector": ".fc-card-title",
+        "text": ["要看看 <span>{text}</span> 这篇朋友的文章吗？", "朋友写了 <span>{text}</span>，去捧个场吧～"]
+      },
+      {
+        "selector": ".fc-chip.is-error",
+        "nameSelector": "span",
+        "text": ["<span>{text}</span> 家暂时联系不上，晚点再来看看吧……"]
+      },
+      {
+        "selector": ".fc-chip[aria-pressed='true']",
+        "text": ["再点一下，就能看回所有朋友的文章啦～"]
+      },
+      {
+        "selector": ".fc-chip",
+        "nameSelector": "span",
+        "text": ["只看 <span>{text}</span> 最近写的文章？", "<span>{text}</span> 最近在写些什么呢？"]
+      },
+      {
+        "selector": ".fc-scroll-arrow",
+        "text": ["朋友太多啦，滑一滑看看还有谁吧～"]
+      },
+      {
+        "selector": ".fc-rule button[aria-pressed='false']",
+        "text": ["换成按 <span>{text}</span> 排序看看？"]
+      },
+      {
+        "selector": ".fc-more",
+        "text": ["朋友们还写了好多，继续往下看吧～"]
+      },
+      {
+        "selector": ".fc-setting-btn",
+        "text": ["这里可以调整朋友圈的显示方式哦～"]
+      },
+      {
+        "selector": ".fc-all-links",
+        "text": ["想认识更多朋友？全部友链都在这里～"]
+      },
+      {
+        "selector": ".random-friends-post",
+        "text": ["抽中了 <span>{text}</span>，要去读读看吗？"]
+      },
+      {
+        "selector": ".fc-credits a",
+        "text": ["朋友圈背后是 <span>{text}</span>，感兴趣可以去看看～"]
+      },
+      {
+        "selector": ".project-actions a:first-child",
+        "text": ["去 GitHub 翻翻这个项目的源码吧～"]
+      },
+      {
+        "selector": ".project-actions a",
+        "text": ["这是它的上游项目，也去看看原作者的仓库吧～"]
+      },
+      {
+        "selector": ".project-card",
+        "nameSelector": ".project-name",
+        "text": ["这是主人折腾的 <span>{text}</span>，要了解一下吗？"]
+      },
+      {
+        "selector": ".projects-footer a",
+        "text": ["主人的 GitHub 主页在这里，去关注一下吧～"]
+      },
+      {
+        "selector": ".status-refresh",
+        "text": ["等不及了吗？点一下重新检测一遍吧～"]
+      },
+      {
+        "selector": ".status-service-host",
+        "text": ["点一下可以直接打开这个检测地址哦～"]
+      },
+      {
+        "selector": ".status-service[data-state='down']",
+        "nameSelector": "h4",
+        "text": ["<span>{text}</span> 好像出了点问题，主人正在努力中……"]
+      },
+      {
+        "selector": ".status-service[data-state='up']",
+        "nameSelector": "h4",
+        "text": ["<span>{text}</span> 运转正常，放心吧～"]
+      },
+      {
+        "selector": ".status-service",
+        "nameSelector": "h4",
+        "text": ["<span>{text}</span> 正在检测中，稍等一下哦～"]
+      },
+      {
+        "selector": "[data-news-channel][aria-pressed='false']",
+        "nameSelector": "span",
+        "text": ["切到 <span>{text}</span> 看看吧～"]
+      },
+      {
+        "selector": "[data-news-search]",
+        "text": ["想找哪条消息？输入关键词试试～"]
+      },
+      {
+        "selector": ".news-subscribe",
+        "text": ["用 RSS 订阅，就不会错过新消息啦～"]
+      },
+      {
+        "selector": ".news-card h3 a",
+        "text": ["<span>{text}</span>，要点开看看吗？"]
+      },
+      {
+        "selector": ".news-card-footer a",
+        "text": ["去 AIHOT 看看完整的报道吧～"]
+      },
+      {
+        "selector": ".news-more",
+        "text": ["还有更多消息，继续看看吧～"]
+      },
+      {
+        "selector": ".news-credit a",
+        "text": ["这些资讯来自 <span>AIHOT</span> 哦～"]
+      },
+      {
+        "selector": ".article-preview-toggle",
+        "text": ["不想点进去？先看看这篇的摘要吧～"]
+      },
+      {
+        "selector": ".article-preview-link",
+        "text": ["要看看 <span>{text}</span> 这篇文章吗？"]
+      },
+      {
+        "selector": ".archive-month-heading a",
+        "text": ["看看这个月都写了些什么吧～"]
+      },
+      {
+        "selector": ".archive-month-footer a",
+        "text": ["这个月的文章都在这里啦～"]
+      },
+      {
+        "selector": ".archive-expand[aria-expanded='false']",
+        "text": ["把所有年份都展开看看吧～"]
+      },
+      {
+        "selector": ".archive-expand[aria-expanded='true']",
+        "text": ["全部收起来，清爽一点～"]
+      },
+      {
+        "selector": ".archive-year-number",
+        "text": ["去看看 <span>{text}</span> 年留下的文章吧～"]
+      },
+      {
+        "selector": ".archive-year-title[aria-expanded='true']",
+        "text": ["这一年看完啦？可以先收起来哦。"]
+      },
+      {
+        "selector": ".archive-year-title",
+        "text": ["展开看看这一年写了些什么吧～"]
+      },
+      {
+        "selector": ".archive-month-show-all[aria-expanded='false']",
+        "text": ["这个月写得好多呀，一口气全部展开看看吧～"]
+      },
+      {
+        "selector": ".archive-month-show-all[aria-expanded='true']",
+        "text": ["看累了？可以回到分页慢慢翻哦。"]
+      },
+      {
+        "selector": ".archive-rail-toggle",
+        "text": ["想跳到哪一年？在这里挑一挑吧～"]
+      },
+      {
+        "selector": "#copyright .link a",
+        "text": ["这是这篇文章的永久链接，分享时用它就好～"]
+      },
+      {
+        "selector": "[data-category-view]",
+        "nameAttribute": "aria-label",
+        "text": ["换成 <span>{text}</span> 看看吧～"]
+      },
+      {
+        "selector": ".category-chevron",
+        "text": ["这个分类下面还有小分类，展开看看吧～"]
+      },
+      {
+        "selector": "[data-cloud-mode]",
+        "nameAttribute": "aria-label",
+        "text": ["换成 <span>{text}</span> 的标签云看看？"]
+      },
+      {
+        "selector": ".bookmark-search-input",
+        "text": ["在找哪个网站？搜一搜名称或用途吧～"]
+      },
+      {
+        "selector": "ul.posts a",
+        "text": ["要看看 <span>{text}</span> 这篇文章吗？"]
+      },
+      {
+        "selector": ".pagination .page-number",
+        "text": ["去第 <span>{text}</span> 页看看吧～"]
+      },
+      {
+        "selector": ".md a.anchor",
+        "text": ["这是这一节的链接，可以分享给别人直接跳过来哦～"]
+      },
+      {
+        "selector": ".statistics-legend button[aria-pressed='true']",
+        "text": ["点一下，可以先把 <span>{text}</span> 藏起来哦～"]
+      },
+      {
+        "selector": ".statistics-legend button",
+        "text": ["把 <span>{text}</span> 重新加回图里看看吧～"]
+      },
+      {
+        "selector": ".statistics-calendar-arrow",
+        "text": ["左右滑一滑，看看其他日子的足迹吧～"]
+      },
+      {
+        "selector": ".statistics-map-ranking button",
+        "nameSelector": ".statistics-map-region",
+        "text": ["<span>{text}</span> 的朋友们来得好勤快呀～"]
+      },
+      {
+        "selector": ".statistics-map-hit",
+        "nameAttribute": "aria-label",
+        "text": ["点一下看看 <span>{text}</span> 的足迹吧～"]
+      },
+      {
+        "selector": ".statistics-map-zoom button",
+        "text": ["拉近一点，还是看看全貌？地图可以缩放哦～"]
+      },
+      {
+        "selector": ".statistics-map-controls button",
+        "nameAttribute": "aria-label",
+        "text": ["换成 <span>{text}</span>，看看足迹分布吧～"]
+      },
+      {
+        "selector": ".statistics-content-controls button",
+        "text": ["切到 <span>{text}</span> 看看排行吧～"]
+      },
+      {
+        "selector": ".statistics-content-links a",
+        "text": ["大家都爱看 <span>{text}</span>，你也来看看吧～"]
+      },
+      {
+        "selector": ".statistics-content-links button",
+        "text": ["<span>{text}</span> 在这里留下了好多话呢～"]
+      },
+      {
+        "selector": ".statistics-comment-note button",
+        "text": ["想看看大家所有的公开留言吗？"]
+      },
+      {
+        "selector": "a[href^='https://tongji.baidu.com']",
+        "text": ["这些访问数据来自百度统计哦～"]
+      },
+      {
+        "selector": ".statistics-panel .select-picker-trigger",
+        "text": ["这里可以换个统计范围哦～"]
+      },
+      {
+        "selector": ".reward-support",
+        "text": ["觉得这里还不错？可以请主人喝杯茶哦～", "谢谢你愿意支持主人～"]
+      },
+      {
+        "selector": ".reward-qr",
+        "text": ["点一下可以放大收款码，扫起来更方便哦～"]
+      },
+      {
+        "selector": ".reward-return",
+        "text": ["先回到卡面看看吧～"]
+      },
+      {
         "selector": "img.shokax-image-viewer, a[data-image-viewer]",
         "text": ["点击图片可以放大呢！", "想看清楚一点？打开大图看看吧～"]
       },
@@ -262,19 +531,19 @@
         "text": ["点它就可以去到底部啦！", "要去到页面底部吗？"]
       },
       {
-        "selector": "#playBtn[data-play='false']",
+        "selector": "#playBtn[aria-pressed='false']",
         "text": ["音乐起～～～", "听首歌放松下吧～"]
       },
       {
-        "selector": "#playBtn[data-play='true']",
+        "selector": "#playBtn[aria-pressed='true']",
         "text": ["安静一会儿？", "真的不再听一会儿 Music 了？"]
       },
       {
-        "selector": "#showBtn[data-show='false']",
+        "selector": "#showBtn[aria-expanded='false']",
         "text": ["挑一首音乐吧～", "打开歌单，找首喜欢的歌陪你读文章吧。"]
       },
       {
-        "selector": "#showBtn[data-show='true']",
+        "selector": "#showBtn[aria-expanded='true']",
         "text": ["先把播放器收起来吧，音乐会继续陪着你哦～"]
       },
       {
@@ -501,6 +770,14 @@
       {
         "selector": "[data-bookmark-view='axis']",
         "text": ["换成目录轴，顺着分类逛逛这些书签吧～"]
+      },
+      {
+        "selector": ".md a[href^='http']",
+        "text": ["这个链接会带你去站外看看哦～"]
+      },
+      {
+        "selector": ".md a[href]",
+        "text": ["点它去站内另一处看看吧～"]
       }
     ],
     "click": [
@@ -525,6 +802,46 @@
     { "date": "11/14", "text": "呀，今天是主人<span>生日</span>呢，我的生日祝福主人应该能看到吧？" },
     { "date": "12/20-12/31", "text": "这几天是<span>圣诞节</span>，主人肯定又去剁手买买买了～" }
   ],
+  "calendar": {
+    "timezone": "Asia/Shanghai",
+    "upcomingDays": 7,
+    "holiday": {
+      "upcoming": ["距离<span>{text}</span>假期还有 {days} 天，再坚持一下下～", "还有 {days} 天就放<span>{text}</span>假啦，计划好去哪儿了吗？"],
+      "eve": ["明天就开始放<span>{text}</span>假啦！今天是不是已经无心工作了～", "<span>{text}</span>假期明天开始，收拾心情准备出发吧！"],
+      "first": ["<span>{text}</span>假期第一天，先睡个懒觉再说～", "放假啦！<span>{text}</span>快乐，好好享受假期吧～"],
+      "day": ["<span>{text}</span>假期还在继续，今天打算怎么玩呢？", "放假中的主人，<span>{text}</span>也要记得早点休息哦～"],
+      "last": ["<span>{text}</span>假期最后一天了，好好珍惜吧……", "明天就要上班上学啦，今天把<span>{text}</span>假期的尾巴抓紧一点～"],
+      "workdayEve": ["提醒一下：明天要为<span>{text}</span>调休上班哦，别忘了定闹钟！", "明天是<span>{text}</span>调休补班日，今晚可不能熬夜啦～"],
+      "workday": ["今天是<span>{text}</span>调休上班日，明明是周末却要上班，摸摸头～", "调休补班的一天，为了<span>{text}</span>的假期，加油鸭！"]
+    },
+    "solarTermEve": ["明天就是<span>{text}</span>啦～", "节气又要变了，明天是<span>{text}</span>哦。"],
+    "solarTerms": {
+      "xiaohan": { "name": "小寒", "text": ["今天<span>小寒</span>，最冷的日子要来了，出门多穿点！", "<span>小寒</span>到，记得捧一杯热饮暖暖手～"] },
+      "dahan": { "name": "大寒", "text": ["今天<span>大寒</span>，熬过最冷的时候，春天就不远啦。", "<span>大寒</span>了，年味也越来越浓了呢～"] },
+      "lichun": { "name": "立春", "text": ["今天<span>立春</span>，春天正式开始啦！", "<span>立春</span>了，要不要咬一口春饼？"] },
+      "yushui": { "name": "雨水", "text": ["今天<span>雨水</span>，春雨要多起来了，出门带把伞吧～", "<span>雨水</span>时节，好雨知时节，当春乃发生～"] },
+      "jingzhe": { "name": "惊蛰", "text": ["今天<span>惊蛰</span>，春雷一响，小虫子们都醒啦！", "<span>惊蛰</span>到，万物复苏，你也该伸个懒腰啦～"] },
+      "chunfen": { "name": "春分", "text": ["今天<span>春分</span>，白天和黑夜一样长哦。", "<span>春分</span>了，听说今天可以试试立蛋～"] },
+      "qingming": { "name": "清明", "text": ["今天<span>清明</span>，天清地明，也记得思念远方的人。", "<span>清明</span>时节雨纷纷，出门踏青要带伞哦。"] },
+      "guyu": { "name": "谷雨", "text": ["今天<span>谷雨</span>，春天的最后一个节气啦。", "<span>谷雨</span>到，正是喝新茶的好时候～"] },
+      "lixia": { "name": "立夏", "text": ["今天<span>立夏</span>，夏天来啦！", "<span>立夏</span>了，西瓜和冰淇淋准备好了吗？"] },
+      "xiaoman": { "name": "小满", "text": ["今天<span>小满</span>，小满未满，刚刚好～", "<span>小满</span>时节，愿你的努力也一点点饱满起来。"] },
+      "mangzhong": { "name": "芒种", "text": ["今天<span>芒种</span>，农民伯伯最忙的时候到了。", "<span>芒种</span>到，忙着播种，也别忘了播下新的计划～"] },
+      "xiazhi": { "name": "夏至", "text": ["今天<span>夏至</span>，一年中白天最长的一天！", "<span>夏至</span>了，冬至饺子夏至面，吃面了没？"] },
+      "xiaoshu": { "name": "小暑", "text": ["今天<span>小暑</span>，天气热起来了，注意防暑哦。", "<span>小暑</span>到，开着空调看博客最舒服啦～"] },
+      "dashu": { "name": "大暑", "text": ["今天<span>大暑</span>，一年中最热的时候，多喝水！", "<span>大暑</span>了，躲在屋里吃西瓜才是正事～"] },
+      "liqiu": { "name": "立秋", "text": ["今天<span>立秋</span>，秋天开始啦，不过暑气还没散哦。", "<span>立秋</span>了，听说要喝秋天的第一杯奶茶？"] },
+      "chushu": { "name": "处暑", "text": ["今天<span>处暑</span>，炎热就要结束啦～", "<span>处暑</span>到，早晚开始凉快起来了呢。"] },
+      "bailu": { "name": "白露", "text": ["今天<span>白露</span>，早晚凉了，别再光着脚丫啦。", "<span>白露</span>时节，露从今夜白，月是故乡明～"] },
+      "qiufen": { "name": "秋分", "text": ["今天<span>秋分</span>，昼夜又一次平分啦。", "<span>秋分</span>到，秋高气爽，适合出去走走～"] },
+      "hanlu": { "name": "寒露", "text": ["今天<span>寒露</span>，天气转凉，记得添衣服哦。", "<span>寒露</span>了，秋意越来越浓了呢～"] },
+      "shuangjiang": { "name": "霜降", "text": ["今天<span>霜降</span>，秋天的最后一个节气啦。", "<span>霜降</span>到，听说今天要吃柿子～"] },
+      "lidong": { "name": "立冬", "text": ["今天<span>立冬</span>，冬天来啦，要好好保暖哦！", "<span>立冬</span>了，北方吃饺子，南方吃什么呢？"] },
+      "xiaoxue": { "name": "小雪", "text": ["今天<span>小雪</span>，不知道你那里下雪了没有？", "<span>小雪</span>到，天气越来越冷，被窝越来越香～"] },
+      "daxue": { "name": "大雪", "text": ["今天<span>大雪</span>，想去堆雪人吗？", "<span>大雪</span>时节，围炉煮茶最惬意啦～"] },
+      "dongzhi": { "name": "冬至", "text": ["今天<span>冬至</span>，一年中黑夜最长的一天，饺子还是汤圆？", "<span>冬至</span>大如年，记得吃点热乎的～"] }
+    }
+  },
   "time": [
     { "hour": "6-7", "text": "早上好！一日之计在于晨，美好的一天就要开始了～" },
     { "hour": "8-11", "text": "上午好！工作顺利嘛，不要久坐，多起来走动走动哦！" },
