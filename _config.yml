@@ -517,6 +517,9 @@ modules:
 live2d:
   enable: false
   cdn: https://npm.elemecdn.com/akilar-live2dapi@latest/
+  # Directory of {year}.json from State Council notices. Dynamic data, not a
+  # mirrored vendor; empty disables holiday and makeup-workday tips.
+  holidays: https://cdn.jsdelivr.net/gh/NateScarlet/holiday-cn@master/
 
 # 显示的动画(烟花)
 # 参阅 https://github.com/D-Sketon/mouse-firework
@@ -616,8 +619,6 @@ vendors:
   assets:
     live2d_widget: { source: jsdelivr, url: gh/stevenjoezhang/live2d-widget@b352ba5838157cf366e5e73de221c448e2e63545/ }
     live2d_models: # falls back to live2d.cdn
-    # Directory of {year}.json from State Council notices; null disables holiday tips.
-    holiday_cn: { source: jsdelivr, url: gh/NateScarlet/holiday-cn@master/ }
     map_china: # falls back to statistics.assets.maps.china
     map_world:
   fonts:

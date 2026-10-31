@@ -115,14 +115,14 @@ async function tipRules(url: string): Promise<{ rules: TipRules; calendar?: Cale
 }
 
 // Once per tab session and civil day; the upstream welcome bubble speaks first.
-async function announceCalendar(tips: ReturnType<typeof createLive2DTips>, calendar: CalendarTips | undefined) {
+async function announceCalendar(tips: ReturnType<typeof createLive2DTips>, calendar: CalendarTips | undefined, holidays = '') {
   if (!calendar) return
   const now = new Date()
   const key = 'shokax.live2d.calendar'
   const today = now.toLocaleDateString('en-CA', { timeZone: calendar.timezone || 'Asia/Shanghai' })
   try { if (sessionStorage.getItem(key) === today) return } catch {}
   const [days] = await Promise.all([
-    loadHolidayDays(resourceURL('assets.holiday_cn'), calendarYears(now, calendar)).catch(() => []),
+    loadHolidayDays(holidays, calendarYears(now, calendar)).catch(() => []),
     new Promise(resolve => setTimeout(resolve, 8000))
   ])
   const tip = selectCalendarTip(calendar, days, now)
@@ -172,7 +172,7 @@ export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
           if (!init) throw new Error('Live2D initWidget unavailable')
           init({ waifuPath: config.live2dTips!, cdnPath: resourceURL('assets.live2d_models', config.live2dCdn!) })
           adaptWidget(() => { button.title = config.error! }, rules, JSON.parse(config.live2dLabels || '{}'))
-          if (widgetTips) void announceCalendar(widgetTips, calendar)
+          if (widgetTips) void announceCalendar(widgetTips, calendar, config.live2dHolidays)
         }
       })().catch(error => { loading = undefined; throw error })
       await loading

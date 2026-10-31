@@ -33,8 +33,8 @@ Live2D 核心和基础样式通过 `vendors.assets.live2d_widget` 加载，来�
 `{text}` 为假日名或节气名 `solarTerms.<key>.name`；`timezone` 默认 `Asia/Shanghai`，决定“今天”从何时开始。
 节气日期复用 `festival/solar-terms.ts` 的香港天文台 2020–2050 年表，离线可用，超出年份不提示。
 
-法定假日与调休来自 `vendors.assets.holiday_cn`，默认是 [NateScarlet/holiday-cn](https://github.com/NateScarlet/holiday-cn) 按国务院办公厅通知整理的 `{year}.json`（MIT）。
-十二月同时读取次年数据。结果缓存在 `localStorage` 的 `shokax.holiday-cn.{year}`：有数据 3 天、空年份（通知尚未发布）6 小时后重新请求；请求失败沿用旧缓存，没有缓存则只跳过假日提示。设为 `null` 关闭假日提示。
+法定假日与调休来自 `live2d.holidays`。它是逐年更新的动态数据，和一言接口一样直接请求原地址，不进 `vendors`，也不做资源本地化镜像。默认是 [NateScarlet/holiday-cn](https://github.com/NateScarlet/holiday-cn) 按国务院办公厅通知整理的 `{year}.json`（MIT）。
+十二月同时读取次年数据。结果缓存在 `localStorage` 的 `shokax.holiday-cn.{year}`：有数据 3 天、空年份（通知尚未发布）6 小时后重新请求；请求失败沿用旧缓存，没有缓存则只跳过假日提示。留空关闭假日提示，节气不受影响。
 
 运行 `node toolbox/test-live2d-calendar.mjs` 验证假期首尾、调休、节气同日优先级、时区跨日和年末取数。
 
