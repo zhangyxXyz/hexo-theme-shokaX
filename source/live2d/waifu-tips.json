@@ -700,7 +700,7 @@
         "text": ["主人最近写了 <span>{text}</span>，来看看吧～"]
       },
       {
-        "selector": ".beian-info a, .footer-police",
+        "selector": ".footer-legal a",
         "text": ["我也是有户口的人哦。", "我的主人可是遵纪守法的好主人。"]
       },
       {

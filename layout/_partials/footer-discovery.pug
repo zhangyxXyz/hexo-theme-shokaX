@@ -148,37 +148,40 @@
             if (theme.footer.social_links || {}).github !== false && theme.social && theme.social.github
                 a(href=theme.social.github.split('||')[0].trim() target="_blank" rel="noopener noreferrer" aria-label="GitHub")
                     i.ic.i-github(aria-hidden="true")
+    - var footerHasIcp = theme.footer.icp.enable
+    - var footerHasMoe = theme.footer.moe_icp && theme.footer.moe_icp_link
+    - var footerHasPolice = footerHasIcp && theme.footer.icp.beian && theme.footer.icp.recordcode
     .footer-meta
         .copyright
-            - var copyright_year = date(null, 'YYYY')
-            = '© '
-            if theme.footer.since && String(theme.footer.since) !== copyright_year
-                = `${theme.footer.since}–`
-            span(itemprop="copyrightYear")= copyright_year
-            span.with-love
-                i.ic(class=`i-${theme.footer.icon.name}` aria-hidden="true")
-            span(itemprop="copyrightHolder")= `${author} @ ${alternate || title}`
-        .footer-legal
-            if theme.footer.icp.enable || theme.footer.moe_icp
-                .beian-info
-                    if theme.footer.icp.enable
-                        a.icp-link(href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer")
-                            i.ic.i-badge-full(aria-hidden="true")
-                            |  #{theme.footer.icp.icpnumber}
-                    if theme.footer.moe_icp && theme.footer.moe_icp_link
-                        if theme.footer.icp.enable
-                            span.footer-meta-dot(aria-hidden="true") ·
-                        a.moe-link(href=theme.footer.moe_icp_link target="_blank" rel="noopener noreferrer")
-                            i.ic.i-huizhangguanli(aria-hidden="true")
-                            |  #{theme.footer.moe_icp}
-            if theme.footer.icp.enable && theme.footer.icp.beian && theme.footer.icp.recordcode
-                span.footer-meta-dot(aria-hidden="true") ·
-                a.footer-police(target="_blank" rel="noopener noreferrer" href=`https://beian.mps.gov.cn/#/query/webSearch?code=${theme.footer.icp.recordcode}`)
-                    img(loading="lazy" decoding="async" src=theme.statics + theme.assets + '/' + theme.footer.icp.icon width="20" height="20" alt="")
-                    = theme.footer.icp.beian
-            if theme.footer.powered
-                if theme.footer.icp.enable || (theme.footer.moe_icp && theme.footer.moe_icp_link)
-                    span.footer-meta-dot(aria-hidden="true") ·
-                .powered-by!= __('footer.powered', _url('https://hexo.io', 'Hexo') + ' & Theme.' + _url('https://github.com/theme-shoka-x/hexo-theme-shokaX/', 'ShokaX'))
+            span.copyright-text
+                - var copyright_year = date(null, 'YYYY')
+                = '© '
+                if theme.footer.since && String(theme.footer.since) !== copyright_year
+                    = `${theme.footer.since}–`
+                span(itemprop="copyrightYear")= copyright_year
+                span.with-love
+                    i.ic(class=`i-${theme.footer.icon.name}` aria-hidden="true")
+                span(itemprop="copyrightHolder")= `${author} @ ${alternate || title}`
+        if footerHasIcp || footerHasMoe || theme.footer.powered
+            .footer-legal
+                if footerHasIcp
+                    a.icp-link(href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer")
+                        i.ic.i-badge-full(aria-hidden="true")
+                        span= theme.footer.icp.icpnumber
+                if footerHasPolice
+                    span.footer-meta-sep(aria-hidden="true")
+                    a.footer-police(target="_blank" rel="noopener noreferrer" href=`https://beian.mps.gov.cn/#/query/webSearch?code=${theme.footer.icp.recordcode}`)
+                        img(loading="lazy" decoding="async" src=theme.statics + theme.assets + '/' + theme.footer.icp.icon width="20" height="20" alt="")
+                        span= theme.footer.icp.beian
+                if footerHasMoe
+                    if footerHasIcp
+                        span.footer-meta-sep(aria-hidden="true")
+                    a.moe-link(href=theme.footer.moe_icp_link target="_blank" rel="noopener noreferrer")
+                        i.ic.i-huizhangguanli(aria-hidden="true")
+                        span= theme.footer.moe_icp
+                if theme.footer.powered
+                    if footerHasIcp || footerHasMoe
+                        span.footer-meta-sep.footer-powered-sep(aria-hidden="true")
+                    span.powered-by!= __('footer.powered', _url('https://hexo.io', 'Hexo') + ' & Theme.' + _url('https://github.com/theme-shoka-x/hexo-theme-shokaX/', 'ShokaX'))
     != shokax_inject('status')
 != shokax_inject('footer')
