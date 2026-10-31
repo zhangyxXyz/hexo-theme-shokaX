@@ -493,6 +493,8 @@ statistics:
   ranking_top: "访问排行 · TOP {count}"
   map_no_record: "暂无该地区访问记录"
   map_zoom: "地图缩放"
+  map_help: "Ctrl / ⌘ + 滚轮缩放 · 放大后可拖动平移"
+  map_help_touch: "双指缩放 · 拖动平移"
   zoom_in: "放大"
   zoom_out: "缩小"
   zoom_reset: "恢复初始视角"

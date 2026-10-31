@@ -474,6 +474,8 @@ statistics:
   ranking_top: "アクセス順位 · TOP {count}"
   map_no_record: "この地域のアクセス記録はありません"
   map_zoom: "地図のズーム"
+  map_help: "Ctrl / ⌘ + ホイールでズーム · 拡大後はドラッグで移動"
+  map_help_touch: "ピンチでズーム · ドラッグで移動"
   zoom_in: "拡大"
   zoom_out: "縮小"
   zoom_reset: "表示をリセット"

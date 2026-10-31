@@ -98,10 +98,14 @@ export async function mountMap(panel: Panel, source: Pick<BaiduSource, 'regions'
     ranking.update(data, true)
     scale.update(data)
     const hit = mapInteractions(chart, panel, config.labels, () => mode, signal)
+    // Touch keeps pinch zoom and drag. With a mouse, the wheel is left to the page and
+    // dragging only pans a zoomed map; ECharts cannot separate wheel zoom from pinch.
+    const touch = window.matchMedia('(pointer: coarse)')
+    const roam = () => touch.matches ? true : (view.zoom || 1) > 1 ? 'move' : false
     const render = () => {
       panel.body.style.aspectRatio = String((mapAspects.get(mode) || 1) * (panel.body.clientWidth > 600 ? 1.35 : 1))
       const option = chartOptions('map', data, config.labels, root, panel.body, echarts, mode)
-      Object.assign(option.series[0], view)
+      Object.assign(option.series[0], view, { roam: roam() })
       Object.assign(option.geo, view)
       chart.setOption(option, true)
       hit.update()
@@ -110,7 +114,7 @@ export async function mountMap(panel: Panel, source: Pick<BaiduSource, 'regions'
     chart.on('georoam', () => {
       const series = chart.getOption().series[0]
       view = { zoom: series.zoom, center: series.center }
-      chart.setOption({ geo: view })
+      chart.setOption({ geo: view, series: [{ roam: roam() }] })
       hit.update()
       updateZoomButtons()
       clearTimeout(hoverTimer)
@@ -121,6 +125,22 @@ export async function mountMap(panel: Panel, source: Pick<BaiduSource, 'regions'
         chart.dispatchAction({ type: 'showTip', seriesIndex: 0, name: hovered })
       }, 160)
     })
+    // Plain wheel scrolls the page; Ctrl/⌘ + wheel zooms and pre-empts browser page zoom.
+    panel.body.addEventListener('wheel', event => {
+      if (!event.ctrlKey && !event.metaKey) return
+      event.preventDefault()
+      const bounds = panel.body.getBoundingClientRect()
+      chart.dispatchAction({ type: 'geoRoam', seriesIndex: 0, zoom: event.deltaY < 0 ? 1.15 : 1 / 1.15, originX: event.clientX - bounds.left, originY: event.clientY - bounds.top })
+    }, { passive: false, signal })
+    const help = document.createElement('p')
+    help.className = 'statistics-map-help'
+    for (const [kind, text] of [['desktop', config.labels.map_help], ['touch', config.labels.map_help_touch]]) {
+      const span = document.createElement('span')
+      span.className = `statistics-map-help-${kind}`
+      span.textContent = text
+      help.append(span)
+    }
+    layout.after(help)
     register(chart, panel.body, render)
     render()
     let sequence = 0

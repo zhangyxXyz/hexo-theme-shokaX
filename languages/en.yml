@@ -493,6 +493,8 @@ statistics:
   ranking_top: "Visits · TOP {count}"
   map_no_record: "No visit records for this region"
   map_zoom: "Map zoom"
+  map_help: "Ctrl / ⌘ + scroll to zoom · Drag to pan once zoomed"
+  map_help_touch: "Pinch to zoom · Drag to pan"
   zoom_in: "Zoom in"
   zoom_out: "Zoom out"
   zoom_reset: "Reset view"

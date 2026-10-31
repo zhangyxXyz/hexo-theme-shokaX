@@ -31,7 +31,7 @@ export function chartOptions(key: ChartKey, data: Point[], labels: Labels, root:
     const layout = { map: `statistics-${mapMode}`, layoutCenter: [available / 2, '50%'], layoutSize: (aspect >= 1 ? available : available / aspect) * .94, roam: false }
     option.visualMap = { show: false, seriesIndex: 0, min: 0, max: Math.max(1, ...data.map(item => item.value)), inRange: { color: colors.scale } }
     option.geo = { ...layout, show: false }
-    option.series = [{ ...layout, roam: true, scaleLimit: { min: 1, max: 5 }, type: 'map', name: labels.visits, showLegendSymbol: false,
+    option.series = [{ ...layout, roam: false, scaleLimit: { min: 1, max: 5 }, type: 'map', name: labels.visits, showLegendSymbol: false,
       itemStyle: { areaColor: mapFill, borderColor: mapBorder, borderWidth: .75 },
       emphasis: { label: { show: true, color: mapLabel, fontWeight: 'normal', textBorderColor: colors.mapLabelOutline, textBorderWidth: 1.5 }, itemStyle: { areaColor: mapHover, borderColor: colors.mapEmphasisBorder, borderWidth: 1 } },
       tooltip: { ...option.tooltip }, data,

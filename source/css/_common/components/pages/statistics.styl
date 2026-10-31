@@ -506,28 +506,68 @@
       height 12px
       border-radius 2px
 
+  .statistics-map-help
+    margin 0
+    padding .5rem 0 0
+    text-align center
+    color var(--grey-5)
+    font-size .65rem
+  .statistics-map-help-touch
+    display none
+  @media (pointer: coarse)
+    .statistics-map-help-desktop
+      display none
+    .statistics-map-help-touch
+      display inline
+
   .statistics-calendar-totals
-    position relative
-    isolation isolate
+    --totals-accent var(--statistics-ui-accent, var(--primary-color))
+    --totals-ease cubic-bezier(.22, .61, .36, 1)
     display grid
     grid-template-columns repeat(3, minmax(0, 1fr))
-    gap 0
-    overflow hidden
-    border-radius 8px
-    &::before
-      content ''
-      position absolute
-      inset 0
-      z-index -1
-      border-radius 8px
-      background var(--statistics-summary-bg)
-      pointer-events none
+    gap .75rem
     > div
+      --totals-tint 3%
+      position relative
+      isolation isolate
       display flex
       flex-direction column
       gap .25rem
       padding 1rem .6rem
       text-align center
+      border 1px solid var(--grey-2)
+      border-color unquote('color-mix(in srgb, var(--totals-accent) 15%, var(--grey-2))')
+      border-radius .75rem
+      background var(--grey-1)
+      background unquote('linear-gradient(180deg, color-mix(in srgb, var(--totals-accent) var(--totals-tint), var(--grey-1)), var(--grey-1) 4.5rem)')
+      box-shadow 0 .5rem 1.5rem -1rem var(--box-bg-shadow)
+      transition border-color .3s, box-shadow .4s var(--totals-ease), translate .4s var(--totals-ease)
+      // A thin top highlight, brightest in the middle, reads as light catching the card edge.
+      &::before
+        content ''
+        position absolute
+        z-index -1
+        top -1px
+        inset-inline 15%
+        height 1px
+        background unquote('linear-gradient(90deg, transparent, color-mix(in srgb, var(--totals-accent) 70%, transparent), transparent)')
+        opacity .45
+        transition opacity .4s var(--totals-ease), inset-inline .4s var(--totals-ease)
+        pointer-events none
+      @media (hover: hover)
+        &:hover
+          --totals-tint 4%
+          translate 0 -3px
+          border-color unquote('color-mix(in srgb, var(--totals-accent) 32%, var(--grey-2))')
+          box-shadow 0 1.25rem 2rem -1.25rem var(--box-bg-shadow)
+          box-shadow unquote('0 1.25rem 2rem -1.1rem color-mix(in oklch, var(--totals-accent) 45%, transparent), 0 .375rem 1rem -.5rem var(--box-bg-shadow)')
+          &::before
+            opacity .7
+            inset-inline 10%
+      +reduced-motion()
+        transition none
+        &:hover
+          translate none
     span
       font-size .8rem
       color var(--grey-6)
@@ -547,6 +587,7 @@
       min-width 600px
     .statistics-calendar-totals
       grid-template-columns minmax(0, 1fr)
+      gap .5rem
       > div
         display grid
         grid-template-columns minmax(0, 1fr) auto
@@ -1016,6 +1057,11 @@
     transform translateX(var(--scroll-hint-distance))
 
 [data-theme="dark"] #statistics_container
+  .statistics-calendar-totals > div
+    --totals-tint 7%
+    @media (hover: hover)
+      &:hover
+        --totals-tint 8%
   --statistics-scale-low #67434f
   --statistics-scale-mid #b37187
   --statistics-scale-high #f0a1b8
