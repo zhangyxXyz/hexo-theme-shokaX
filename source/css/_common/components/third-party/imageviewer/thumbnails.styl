@@ -25,13 +25,13 @@
     margin: 0;
     padding: 0;
     border: 2px solid transparent;
-    border-radius: .375rem;
-    background: transparent;
+    border-radius: .5rem;
+    background: var(--grey-3);
     box-sizing: border-box;
     overflow: hidden;
     opacity: .55;
     cursor: pointer;
-    transition: width var(--viewer-duration) var(--viewer-easing), opacity var(--viewer-duration) ease, border-color var(--viewer-duration) ease;
+    transition: width var(--viewer-duration) var(--viewer-easing), opacity var(--viewer-duration) ease, border-color var(--viewer-duration) ease, box-shadow var(--viewer-duration) ease;
 
     img {
       position: absolute;
@@ -47,6 +47,7 @@
     &.is-active {
       width: var(--thumb-wide);
       border-color: var(--primary-color);
+      box-shadow: 0 .25rem .75rem -.25rem var(--accent-border);
       opacity: 1;
     }
 
