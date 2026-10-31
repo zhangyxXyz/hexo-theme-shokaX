@@ -191,8 +191,10 @@
   max-width: calc(100vw - 2rem);
   margin: 0;
   box-sizing: border-box;
-  padding: .1875rem .5rem;
-  border-radius: 1.5rem;
+  --lyrics-inset: .25rem;
+  // Concentric with the 3rem disc: its radius + equal inset + the 1px border.
+  padding: var(--lyrics-inset) .5rem var(--lyrics-inset) var(--lyrics-inset);
+  border-radius: calc(1.5rem + var(--lyrics-inset) + 1px);
   background: unquote('color-mix(in srgb, var(--grey-1) 78%, transparent)');
   border: 1px solid unquote('color-mix(in srgb, var(--text-color) 10%, transparent)');
   box-shadow: 0 .5rem 1.75rem rgba(0, 0, 0, .14);
