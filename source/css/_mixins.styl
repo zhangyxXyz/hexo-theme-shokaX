@@ -71,6 +71,18 @@ reduced-motion() {
   }
 }
 
+// Touch screens keep :hover after a tap, so pointer hover is gated and keyboard focus shares the state.
+home-card-active() {
+  @media (hover: hover) {
+    &:hover {
+      {block};
+    }
+  }
+  &:focus-within {
+    {block};
+  }
+}
+
 // Only the visual indicator is shared; each component owns its loading lifecycle.
 loading-spinner(size = 1.75rem) {
   content: '';
@@ -219,6 +231,7 @@ $hover-underline {
 $color-btn {
   color: var(--accent-on-fill);
   background-image: linear-gradient(to right,var(--accent-fill-start) 0,var(--accent-fill-end) 100%);
+  background-image: unquote('linear-gradient(to right in oklch, var(--accent-fill-start) 0, var(--accent-fill-end) 100%)');
   box-shadow: 0 0 .75rem var(--accent-decoration-border);
 }
 

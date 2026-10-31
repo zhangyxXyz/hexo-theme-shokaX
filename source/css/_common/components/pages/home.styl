@@ -28,11 +28,13 @@ $item {
     right: 0;
     transform-style: preserve-3d;
     transform: translateZ(2rem);
+    transition: transform .45s var(--card-ease, ease);
     backface-visibility: hidden;
     padding: .3rem 1rem;
     border-radius: 1rem 0;
     color: var(--accent-on-fill);
     background-image: linear-gradient(to right, var(--accent-fill-start) 0, var(--accent-fill-end) 100%);
+    background-image: unquote('linear-gradient(to right in oklch, var(--accent-fill-start) 0, var(--accent-fill-end) 100%)');
 
     &::before {
       position: absolute;
@@ -42,6 +44,7 @@ $item {
       width: calc(100% - 1rem);
       transform-style: preserve-3d;
       transform: translateZ(-2rem);
+      transition: transform .45s var(--card-ease, ease);
       backface-visibility: hidden;
       border-radius: 5rem;
       left: .5rem;
@@ -251,7 +254,8 @@ $item {
     min-width: calc(100% - 2rem);
 
     shadow-box(false);
-    the-transition();
+    --card-ease: cubic-bezier(.22, .61, .36, 1);
+    transition: translate .45s var(--card-ease), box-shadow .45s var(--card-ease);
 
 
     +mobile() {
@@ -260,22 +264,58 @@ $item {
       max-height: fit-content;
     }
 
-    &:hover {
-      box-shadow: 0 0 2rem var(--box-bg-shadow);
-      .cover {
-        filter: brightness(.3);
-      }
+    +home-card-active() {
+      translate: 0 -.3rem;
+      box-shadow: 0 1.5rem 2.5rem -1.5rem var(--box-bg-shadow), 0 0 0 .0625rem var(--accent-decoration-border);
+      box-shadow: unquote('0 1.5rem 2.5rem -1.5rem color-mix(in oklch, var(--accent-fill-start) 45%, var(--box-bg-shadow)), 0 0 0 .0625rem var(--accent-decoration-border)');
+
       .cover img {
-        transform: scale(1.25) rotate(2deg);
+        transform: scale(1.06);
       }
+
+      .cover::after {
+        translate: 130% 0;
+        opacity: 1;
+      }
+
       .info {
-        width: 75%;
+        width: 70%;
+
         +mobile() {
           width: 100%;
         }
       }
+
       .info h3 {
-        color: var(--accent-hover);
+        color: var(--accent-title-hover);
+      }
+
+      .btn {
+        transform: translateZ(2.5rem);
+
+        &::before {
+          transform: translateZ(-2.5rem);
+        }
+      }
+    }
+
+    +reduced-motion() {
+      transition: box-shadow .2s ease;
+
+      .info {
+        transition: none;
+      }
+
+      &:hover, &:focus-within {
+        translate: none;
+
+        .cover img {
+          transform: none;
+        }
+
+        .cover::after {
+          display: none;
+        }
       }
     }
   }
@@ -286,7 +326,22 @@ $item {
     clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
     border-radius: .625rem 0 0 .625rem;
     overflow: hidden;
-    transition: filter .3s ease-in-out;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .28) 50%, transparent 65%);
+      translate: -130% 0;
+      opacity: 0;
+      transition: translate .8s var(--card-ease), opacity .3s ease;
+    }
+
+    [data-theme="dark"] &::after {
+      background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .12) 50%, transparent 65%);
+    }
 
     +mobile() {
       width: 100%;
@@ -300,7 +355,7 @@ $item {
       object-fit: cover;
       width: 100%;
       height: 100%;
-      the-transition();
+      transition: transform .6s var(--card-ease);
     }
   }
 
@@ -309,7 +364,7 @@ $item {
     width: 50%;
     padding: 1rem 1.5rem 3rem 0;
     perspective: 62.5rem;
-    transition: width .3s ease-in-out;
+    transition: width .45s var(--card-ease);
 
     +mobile() {
       width: 100%;
@@ -334,7 +389,7 @@ $item {
       overflow: hidden;
       white-space: nowrap;
       margin: .625rem 0;
-      color: var(--primary-color);
+      color: var(--accent-title);
       transition: color .3s ease-in-out;
     }
 
@@ -389,17 +444,12 @@ $item {
       right: auto;
       border-radius: 0 1rem;
       background-image: linear-gradient(to right, var(--accent-fill-end) 0, var(--accent-fill-start) 100%);
+      background-image: unquote('linear-gradient(to right in oklch, var(--accent-fill-end) 0, var(--accent-fill-start) 100%)');
     }
 
     .meta.footer {
       right: .5rem;
       justify-content: flex-start;
-    }
-
-    &:hover {
-      .cover img {
-        transform: scale(1.25) rotate(-2deg);
-      }
     }
   }
 }

@@ -144,7 +144,7 @@
   &:disabled { color: var(--grey-6); opacity: .55; cursor: default; }
 }
 .reading-settings-color-error { margin: .4rem 0 0; color: var(--text-color); font-size: .75rem; line-height: 1.6; }
-.reading-settings-palette-preview { height: .35rem; margin-top: 1rem; border-radius: $control-radius-compact; background: linear-gradient(to right, var(--accent-start), var(--accent-end)); }
+.reading-settings-palette-preview { height: .35rem; margin-top: 1rem; border-radius: $control-radius-compact; background: linear-gradient(to right, var(--accent-start), var(--accent-end)); background: unquote('linear-gradient(to right in oklch, var(--accent-start), var(--accent-end))'); }
 .reading-settings-palette-reset { margin-top: .75rem; }
 .reading-settings-appearance {
   margin-top: 1.5rem;

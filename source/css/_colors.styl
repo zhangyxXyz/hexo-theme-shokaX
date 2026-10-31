@@ -58,7 +58,14 @@
   --accent-color: var(--reading-primary-ink-light, var(--color-pink));
   --accent-secondary-color: var(--reading-secondary-ink-light, var(--color-orange));
   --accent-heading: var(--reading-primary-seed, pink);
+  // Bold headings of at least 18.66px only; ordinary text keeps --primary-color.
+  --accent-title: var(--reading-primary-title-light, var(--primary-color));
+  // Icons and bold current-state markers: 3:1 is enough for non-text and emphasized state cues.
+  --accent-mark: var(--reading-primary-title-light, var(--accent-color));
+  --accent-secondary-mark: var(--reading-secondary-title-light, var(--accent-secondary-color));
+  --accent-state: var(--reading-primary-title-light, var(--primary-color));
   --accent-hover: var(--reading-primary-ink-light, var(--color-blue));
+  --accent-title-hover: var(--accent-hover);
   --accent-nav: var(--reading-primary-ink-light, var(--color-aqua));
   --accent-start: var(--reading-primary-seed, var(--color-pink));
   --accent-end: var(--reading-secondary-seed, var(--color-orange));
@@ -95,9 +102,16 @@
   --author-badge-text: unquote('color-mix(in srgb, var(--primary-color) 70%, var(--grey-7))');
   --author-badge-background: unquote('color-mix(in srgb, var(--accent-primary-seed) 8%, var(--grey-1))');
   --author-badge-border: var(--accent-border);
+  // The original sheet uses --accent-color for icons and decoration, so it follows the 3:1 mark.
+  --accent-color: var(--reading-primary-title-light, var(--primary-color));
+  --waifu-keyword-color: var(--primary-color);
+  // Hover moves to the second hue, as the original sheet moves from red to blue.
+  --accent-hover: var(--reading-secondary-ink-light, var(--primary-color));
+  --accent-title-hover: var(--reading-secondary-title-light, var(--accent-hover));
   --accent-fill: var(--reading-primary-fill, #c3465a);
   --accent-fill-start: var(--reading-primary-fill, #b15278);
-  --accent-fill-end: var(--reading-secondary-fill, #a36048);
+  // The second hue stays an accent; filled gradients only move within the primary family.
+  --accent-fill-end: var(--reading-primary-fill-end, var(--reading-secondary-fill, #a36048));
   --accent-on-fill: #fff;
   --accent-wash: var(--accent-soft);
   --accent-line: var(--accent-border);
@@ -183,12 +197,22 @@
     --primary-color: var(--reading-primary-ink-dark, var(--color-red));
     --accent-color: var(--reading-primary-ink-dark, var(--color-pink));
     --accent-secondary-color: var(--reading-secondary-ink-dark, var(--color-orange));
+    --accent-title: var(--reading-primary-title-dark, var(--primary-color));
+    --accent-mark: var(--reading-primary-title-dark, var(--accent-color));
+    --accent-secondary-mark: var(--reading-secondary-title-dark, var(--accent-secondary-color));
+    --accent-state: var(--reading-primary-title-dark, var(--primary-color));
     --accent-hover: var(--reading-primary-ink-dark, var(--color-blue));
     --accent-nav: var(--reading-primary-ink-dark, var(--color-aqua));
     --tooltip-bg: rgba(32, 46, 60, .86);
     --tooltip-text: #dce5ee;
     --tooltip-border: rgba(125, 156, 181, .45);
     --tooltip-shadow: rgba(0, 0, 0, .28);
+  }
+
+  &:root[data-reading-palette] {
+    --accent-color: var(--reading-primary-title-dark, var(--primary-color));
+    --accent-hover: var(--reading-secondary-ink-dark, var(--primary-color));
+    --accent-title-hover: var(--reading-secondary-title-dark, var(--accent-hover));
   }
 
   .primary {

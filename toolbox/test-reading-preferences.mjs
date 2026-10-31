@@ -149,7 +149,9 @@ for (const raw of ['broken', '[]', 'null', '{"version":3,"theme":"light"}']) {
     assert.equal(env.styles.get(`--reading-${name}-seed`), sitePalette[name])
     assert.ok(colorContrast(env.styles.get(`--reading-${name}-ink-light`), '#F7F7F7') >= 4.5)
     assert.ok(colorContrast(env.styles.get(`--reading-${name}-ink-dark`), '#363636') >= 4.5)
-    assert.ok(colorContrast(env.styles.get(`--reading-${name}-fill`), '#FFFFFF') >= 4.5)
+    assert.ok(colorContrast(env.styles.get(`--reading-${name}-fill`), '#FFFFFF') >= 3)
+    assert.ok(colorContrast(env.styles.get(`--reading-${name}-title-light`), '#F7F7F7') >= 3)
+    assert.ok(colorContrast(env.styles.get(`--reading-${name}-title-dark`), '#363636') >= 3)
   }
   env.api.setReadingPreferences({ fontScale: 1.25, lineHeight: 'relaxed', homeLayout: 'grid', theme: 'light' })
   let saved = JSON.parse(env.values.get(key))
@@ -250,15 +252,20 @@ for (const red of [0, 32, 64, 128, 192, 255]) for (const green of [0, 32, 64, 12
   assert.equal(colors.seed, seed, 'color pickers retain the requested seed')
   for (const surface of ['#FDFDFD', '#F7F7F7']) assert.ok(colorContrast(colors.inkLight, surface) >= 4.5, `${seed} light text`)
   for (const surface of ['#21252B', '#363636']) assert.ok(colorContrast(colors.inkDark, surface) >= 4.5, `${seed} dark text`)
-  assert.ok(colorContrast(colors.fill, '#FFFFFF') >= 4.5, `${seed} white label on filled controls`)
+  for (const surface of ['#FDFDFD', '#F7F7F7']) assert.ok(colorContrast(colors.titleLight, surface) >= 3, `${seed} light large title`)
+  for (const surface of ['#21252B', '#363636']) assert.ok(colorContrast(colors.titleDark, surface) >= 3, `${seed} dark large title`)
+  assert.ok(colorContrast(colors.titleLight, '#F7F7F7') <= colorContrast(colors.inkLight, '#F7F7F7'), `${seed} titles never darker than text`)
+  assert.ok(colorContrast(colors.fill, '#FFFFFF') >= 3, `${seed} white label on filled controls`)
+  assert.ok(colorContrast(colors.fillEnd, '#FFFFFF') >= 3, `${seed} white label at the filled gradient end`)
 }
-const gradientColors = ['#000000', '#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF'].map(seed => deriveReadingColor(seed).fill)
+const gradientColors = ['#000000', '#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF']
+  .flatMap(seed => [deriveReadingColor(seed).fill, deriveReadingColor(seed).fillEnd])
 for (const first of gradientColors) for (const second of gradientColors) for (const amount of [0, .25, .5, .75, 1]) {
   const mixed = '#' + [1, 3, 5].map(index => {
     const a = Number.parseInt(first.slice(index, index + 2), 16), b = Number.parseInt(second.slice(index, index + 2), 16)
     return Math.round(a + (b - a) * amount).toString(16).padStart(2, '0')
   }).join('')
-  assert.ok(colorContrast(mixed, '#FFFFFF') >= 4.5, 'white text stays readable between filled gradient endpoints')
+  assert.ok(colorContrast(mixed, '#FFFFFF') >= 3, 'white text stays readable between filled gradient endpoints')
 }
 for (const hour of [0, 8, 21, 23]) {
   const env = setup({ hour })

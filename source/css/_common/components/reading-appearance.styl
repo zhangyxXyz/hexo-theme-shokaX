@@ -42,6 +42,7 @@ html[data-reading-texture] main {
     inset: 0;
     pointer-events: none;
     background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    background: unquote('linear-gradient(135deg in oklch, var(--accent-start), var(--accent-end))');
     opacity: var(--reading-texture-opacity, .12);
     mask-image: var(--reading-texture-mask);
     mask-repeat: repeat;
@@ -61,6 +62,7 @@ html[data-reading-texture] main {
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    background: unquote('linear-gradient(135deg in oklch, var(--accent-start), var(--accent-end))');
     mask-image: var(--reading-texture-mask);
     mask-repeat: repeat;
     mask-size: auto 100%;
@@ -126,12 +128,7 @@ html[data-reading-texture] main {
         right: 0;
         border-radius: 1rem 0;
         background-image: linear-gradient(to right, var(--accent-fill-start), var(--accent-fill-end));
-      }
-
-      &:hover {
-        .info { width: 100%; }
-        .cover { filter: brightness(.85); }
-        .cover img { transform: scale(1.06); }
+        background-image: unquote('linear-gradient(to right in oklch, var(--accent-fill-start), var(--accent-fill-end))');
       }
     }
   }

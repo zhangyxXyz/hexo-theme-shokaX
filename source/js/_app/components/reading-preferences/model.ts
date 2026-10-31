@@ -120,7 +120,7 @@ export function applyPreferenceAttributes(root: HTMLElement, preferences: Readon
     else root.style.removeProperty(seedProperty)
     const color = preferences[name === 'primary' ? 'primaryColor' : 'secondaryColor'] ?? sitePalette[name]
     const palette = color ? deriveReadingColor(color) : undefined
-    const properties = { seed: 'seed', inkLight: 'ink-light', inkDark: 'ink-dark', fill: 'fill' } as const
+    const properties = { seed: 'seed', inkLight: 'ink-light', inkDark: 'ink-dark', titleLight: 'title-light', titleDark: 'title-dark', fill: 'fill', fillEnd: 'fill-end' } as const
     for (const [key, suffix] of Object.entries(properties)) {
       const property = `--reading-${name}-${suffix}`
       if (palette) root.style.setProperty(property, palette[key as keyof typeof palette])
