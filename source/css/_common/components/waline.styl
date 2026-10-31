@@ -768,13 +768,44 @@
       .wl-addr
         order: -1
 
+    // Replies hang from one trunk: every reply draws a rounded elbow to its avatar,
+    // and only non-final replies continue the trunk, so the thread ends at the last reply.
     .wl-quote
+      --thread-indent: 1rem
+      --thread-line: var(--grey-3)
+      --thread-line: unquote('color-mix(in srgb, var(--accent-state) 24%, var(--grey-3))')
+      --thread-elbow: calc(1rem + (var(--waline-m-avatar-size) + 4px) / 2)
       margin-top: 1rem
-      padding-inline-start: .5rem
-      border-inline-start: 1px dashed var(--grey-4)
+      padding-inline-start: var(--thread-indent)
+      border-inline-start: 0
 
-      .wl-card-item
+      > .wl-card-item
+        position: relative
         padding-top: 1rem
+
+        &::before, &:not(:last-child)::after
+          content: ''
+          position: absolute
+          inset-inline-start: calc(-1 * var(--thread-indent))
+          pointer-events: none
+          border: 0 solid var(--thread-line)
+          transition: border-color .2s ease
+
+        &::before
+          top: 0
+          width: calc(var(--thread-indent) + .2rem)
+          height: var(--thread-elbow)
+          border-inline-start-width: 1.5px
+          border-block-end-width: 1.5px
+          border-end-start-radius: .7rem
+
+        &:not(:last-child)::after
+          top: var(--thread-elbow)
+          bottom: 0
+          border-inline-start-width: 1.5px
+
+        &:hover::before, &:focus-within::before
+          border-color: var(--accent-state)
 
   .wl-cards > .wl-card-item > .wl-user
     margin-inline-end: 1rem
@@ -951,7 +982,8 @@
       padding-inline-start: .35rem
 
     .wl-card .wl-quote
-      padding-inline-start: 0
+      --thread-indent: .65rem
+      padding-inline-start: var(--thread-indent)
 
     .wl-card .wl-head
       gap: .35rem .5rem

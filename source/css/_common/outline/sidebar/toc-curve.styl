@@ -39,10 +39,27 @@
     color: var(--grey-6);
     line-height: 1.6;
     overflow-wrap: anywhere;
+    isolation: isolate;
     transition: color .18s ease;
+
+    // The tint starts after the rail gutter so the curve stays unobstructed.
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: .2rem 0 .2rem 1.05rem;
+      border-radius: .5rem;
+      background: unquote('color-mix(in srgb, var(--toc-accent) 8%, transparent)');
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
 
     &:hover {
       color: var(--text-color);
+
+      &::before {
+        opacity: 1;
+      }
     }
 
     &:focus-visible {
@@ -83,6 +100,7 @@
     circle {
       fill: var(--toc-accent);
       stroke: none;
+      filter: unquote('drop-shadow(0 0 3px color-mix(in srgb, var(--toc-accent) 55%, transparent))');
       transition: cx .18s ease, cy .18s ease;
     }
 
@@ -97,5 +115,9 @@
     circle, .toc-curve-window {
       transition: none;
     }
+  }
+
+  .contents.toc-curve .toc-link::before {
+    transition: none;
   }
 }

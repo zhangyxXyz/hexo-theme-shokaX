@@ -249,11 +249,20 @@
       border-right: 1px solid var(--archive-line);
       background: var(--archive-card);
       transform: rotate(45deg);
+      transition: border-color .2s;
     }
 
-    &:hover {
+    &:hover, &:focus-within {
       border-color: var(--archive-axis);
       box-shadow: 0 .5rem 1.6rem unquote('color-mix(in srgb, var(--box-bg-shadow) 40%, transparent)');
+
+      &::before { border-color: var(--archive-axis); }
+
+      .archive-month-node {
+        background: var(--accent-state);
+        box-shadow: 0 0 0 .3rem var(--archive-soft);
+        scale: 1.2;
+      }
     }
 
     &.is-right {
@@ -292,6 +301,7 @@
     border: 2px solid var(--accent-state);
     border-radius: 50%;
     background: var(--grey-1);
+    transition: background-color .2s, box-shadow .3s cubic-bezier(.22, .61, .36, 1), scale .3s cubic-bezier(.22, .61, .36, 1);
   }
 
   .archive-month-heading {
