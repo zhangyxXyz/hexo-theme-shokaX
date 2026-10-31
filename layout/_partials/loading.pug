@@ -7,8 +7,13 @@ div#loading.site-loading(role="status" aria-label=__('footer.loading') aria-live
                 each index in [0, 1, 2, 3, 4, 5]
                     span(style=`--star-index:${index}`)
             div.site-loader-core
-                svg(viewBox="0 0 32 32" width="32" height="32" focusable="false")
-                    path(d="M16 2C18 11 21 14 30 16C21 18 18 21 16 30C14 21 11 18 2 16C11 14 14 11 16 2Z" fill="currentColor")
+                svg(viewBox="0 0 48 48" width="48" height="48" focusable="false")
+                    defs
+                        linearGradient#site-loader-stroke(x1="8" y1="6" x2="40" y2="42" gradientUnits="userSpaceOnUse")
+                            stop.site-loader-stop-start(offset="0")
+                            stop.site-loader-stop-end(offset="1")
+                    path.site-loader-star(d="M24 7C25.7 17.8 30.2 22.3 41 24C30.2 25.7 25.7 30.2 24 41C22.3 30.2 17.8 25.7 7 24C17.8 22.3 22.3 17.8 24 7Z" stroke="url(#site-loader-stroke)")
+                    path.site-loader-sparkle(d="M38 2.5C38.7 6.6 39.4 7.3 43.5 8C39.4 8.7 38.7 9.4 38 13.5C37.3 9.4 36.6 8.7 32.5 8C36.6 7.3 37.3 6.6 38 2.5Z")
         p.site-loader-title= theme.loader.title || theme.alternate || config.title
         if loaderSubtitle
             p.site-loader-subtitle= loaderSubtitle
