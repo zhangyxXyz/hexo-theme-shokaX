@@ -19,6 +19,7 @@ export function refreshServiceStatus() {
   const mode = root.querySelector<HTMLElement>('[data-status-mode]')!
   const updated = root.querySelector<HTMLTimeElement>('[data-status-updated]')!
   const button = root.querySelector<HTMLButtonElement>('[data-status-refresh]')!
+  const overview = root.querySelector<HTMLElement>('.status-overview')
   const rows = new Map(Array.from(root.querySelectorAll<HTMLElement>('[data-status-id]')).map(row => [row.dataset.statusId, row]))
   const results = new Map<string, Result>()
   const life = new AbortController()
@@ -39,6 +40,9 @@ export function refreshServiceStatus() {
       row.querySelector('[data-status-latency]')!.setAttribute('aria-label', `${messages.latency}: ${result ? result.latency + ' ms' : '—'}`)
       row.querySelector('[data-status-detail]')!.textContent = stale ? messages.stale : result
         ? (result.reason === 'http' ? `HTTP ${result.status}` : messages[result.reason] || messages.unknown) : ''
+    }
+    if (overview) {
+      overview.dataset.state = running ? 'checking' : counts.down ? 'down' : counts.unknown + counts.stale ? 'unknown' : services.length ? 'up' : 'unknown'
     }
     if (running || !services.length) summary.textContent = running ? messages.checking : messages.empty
     else {
@@ -70,6 +74,16 @@ export function refreshServiceStatus() {
     }
     if (seen.size !== services.length) throw new Error('incomplete')
     return payload.results as Result[]
+  }
+
+  // Let the refresh icon finish its current turn instead of snapping back mid-rotation.
+  function settleSpin() {
+    const icon = button.querySelector<HTMLElement>('.i-refresh')
+    let done = false
+    const stop = () => { if (!done) { done = true; button.removeAttribute('aria-busy') } }
+    if (!icon?.getAnimations().length) return stop()
+    icon.addEventListener('animationiteration', stop, { once: true, signal: life.signal })
+    setTimeout(stop, 1000)
   }
 
   async function run() {
@@ -117,7 +131,7 @@ export function refreshServiceStatus() {
     finally {
       running = false
       if (!life.signal.aborted) {
-        button.removeAttribute('aria-busy')
+        settleSpin()
         render()
         cooldown = setTimeout(() => { button.disabled = false }, 5000)
       }

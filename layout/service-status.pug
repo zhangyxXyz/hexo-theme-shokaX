@@ -12,7 +12,8 @@ block content
             p.status-eyebrow SERVICE STATUS
             h2#service-status-title= page.title
             p= messages.intro
-        .status-overview
+        .status-overview(data-state='checking')
+            span.status-beacon(aria-hidden='true')
             .status-overview-copy
                 strong(data-status-summary role='status' aria-live='polite')= messages.empty
                 p(data-status-mode)= settings.endpoint ? messages.server : messages.browser
