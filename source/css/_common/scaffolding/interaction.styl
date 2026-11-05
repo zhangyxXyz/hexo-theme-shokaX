@@ -90,6 +90,7 @@ body > .select-picker-menu .select-picker-option,
 }
 
 // Keep inline links inline: changing display would disturb long titles/prose.
+// Stylus splits selector lists at commas inside :is()/:has(), so prose links are spelled out.
 #nav .menu .item.title > a,
 #sidebar .state .item > a,
 #main .collapse .item a,
@@ -98,7 +99,9 @@ body > .select-picker-menu .select-picker-option,
 #main .post #copyright a,
 #main .segments .info h3 > a,
 #main .segments .summary-category > a,
-#main .md :is(p, li, td) > a:not(.button):not(.item):not(.anchor):not(.tag-cloud-link):not(.tabs .nav a):not(:has(img, picture, svg)),
+#main .md p > a:not(.button):not(.item):not(.anchor):not(.tag-cloud-link):not(.tabs .nav a):not(:has(img)):not(:has(picture)):not(:has(svg)),
+#main .md li > a:not(.button):not(.item):not(.anchor):not(.tag-cloud-link):not(.tabs .nav a):not(:has(img)):not(:has(picture)):not(:has(svg)),
+#main .md td > a:not(.button):not(.item):not(.anchor):not(.tag-cloud-link):not(.tabs .nav a):not(:has(img)):not(:has(picture)):not(:has(svg)),
 #site-search .pagefind-ui__result-link,
 #footer .footer-legal a {
   interaction-lift(true);
