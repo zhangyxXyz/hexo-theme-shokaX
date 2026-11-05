@@ -15,6 +15,8 @@ mixin sidebarRender(display_toc)
         if is_page() || is_post()
             - nextlink = page.next.path
     div(class="inner")
+        div(class="sidebar-starfield" aria-hidden="true")
+            span(class="sidebar-meteor")
         div(class="panels")
             div(class="inner")
                 div(class="contents panel pjax" class=tocStyle === 'curve' ? 'toc-curve' : '' data-title=__('sidebar.toc'))

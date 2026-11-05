@@ -160,7 +160,8 @@
     > .inner { width: auto; margin: 0 1.25rem; padding: 0; }
     .footer-shell { padding: 1.5rem 0 0; }
     .footer-shell-landscape { padding-top: .5rem; }
-    .footer-landscape { margin-bottom: 0; }
+    // Bleed past the footer gutter to the same edges as the article card (main's inner gutter).
+    .footer-landscape { margin: 0 ($content-desktop-padding / 4 - 1.25rem); }
     .footer-layout { display: block; }
     .footer-intro { padding: 1.1rem 0; }
     .footer-browse { display: none; }
@@ -187,7 +188,7 @@
     .footer-meta-dot { display: none; }
     .footer-legal { gap: 0 .6rem; font-size: clamp(.7rem, 3.5vw, .875rem); }
     .footer-powered-sep { display: none; }
-    .powered-by { flex-basis: 100%; }
+    .powered-by { flex-basis: 100%; text-align: center; }
   }
 }
 

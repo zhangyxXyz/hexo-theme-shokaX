@@ -6,6 +6,7 @@ code_block:
   copy: "複製程式碼"
   copied: "已複製"
   copy_failed: "複製失敗"
+  download: "下載程式碼"
   fullscreen: "全螢幕檢視"
   exit_fullscreen: "退出全螢幕"
   expand: "展開程式碼"
@@ -112,7 +113,7 @@ reading_settings:
   motion_options:
     system: 跟隨系統
     reduce: 減少動態效果
-  motion_help: 減少動態效果會暫停裝飾與頻譜等動畫；音樂和手動操作仍可使用。
+  motion_help: 減少動態效果會暫停裝飾與頻譜等動畫，音樂和手動操作仍可使用。
 
 image_viewer:
   zoom_in: "放大"
@@ -665,3 +666,64 @@ news:
   original: "閱讀原文"
   source: "來源：%s"
   snapshot: "顯示最近同步的資訊，最新內容請造訪來源。"
+markdown:
+  steps: "STEP BY STEP"
+  file_tree:
+    eyebrow: "FILE TREE"
+    added: "新增"
+    removed: "刪除"
+  field:
+    required: "必填"
+    optional: "選填"
+    default: "預設值"
+  notes:
+    footnotes: "註腳"
+    annotations: "文中批註"
+    back: "返回正文"
+    close: "關閉說明"
+  github:
+    label: "GitHub · 開源儲存庫"
+    description: "查看專案原始碼、文件與最新動態。"
+    view: "查看原始碼"
+    homepage: "專案首頁"
+    stars: "Stars"
+    forks: "Forks"
+    issues: "Issues"
+  mermaid:
+    label: "Mermaid 圖表"
+    error: "圖表語法有誤，已顯示原始碼"
+    unavailable: "圖表渲染異常，已顯示原始碼"
+    toolbar: "圖表縮放"
+    zoom_in: "放大"
+    zoom_out: "縮小"
+    fit: "恢復初始視角"
+    fullscreen: "全螢幕檢視"
+    exit_fullscreen: "結束全螢幕"
+    help: "Ctrl / ⌘ + 滾輪縮放 · 放大後可拖曳平移"
+    help_touch: "放大後可拖曳平移"
+    types:
+      diagram: "Mermaid"
+      flowchart: "流程圖"
+      sequence: "時序圖"
+      class: "類別圖"
+      state: "狀態圖"
+      er: "實體關係圖"
+      gantt: "甘特圖"
+      pie: "圓餅圖"
+      journey: "使用者旅程"
+      git: "Git 圖"
+      mindmap: "心智圖"
+      timeline: "時間軸"
+      quadrant: "象限圖"
+      xychart: "XY 圖表"
+      sankey: "桑基圖"
+  code_tree:
+    default_title: "範例專案"
+    count: "{count} 個檔案"
+    copy: "複製目前檔案"
+    copied: "已複製"
+    copy_failed: "複製失敗"
+    fullscreen: "全螢幕檢視"
+    exit_fullscreen: "結束全螢幕"
+    files: "檔案"
+    import_error: "無法匯入程式碼範例目錄："

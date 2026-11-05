@@ -1,5 +1,17 @@
 const excluded = 'pre, code, kbd, samp, script, style, noscript, textarea, input, select, svg, math, .katex, .MathJax, [contenteditable], [translate="no"], .notranslate, #hexo-blog-encrypt:not(.hbe-decrypted-content)'
+// Article code blocks and rendered Mermaid diagrams opt back in; Mermaid's source stays
+// untouched because re-renders (theme switches) start from it.
+const included = '.md pre:not(.md-mermaid-source), .md-mermaid-stage'
+const neverConverted = 'script, style, textarea, input, select, [contenteditable], [translate="no"], .notranslate'
 const attributes = ['title', 'aria-label', 'placeholder', 'alt', 'data-theme-tooltip']
+
+const isExcluded = (element: Element | null | undefined) => {
+  if (!element) return true
+  const blocked = element.closest(excluded)
+  if (!blocked) return false
+  const host = element.closest(included)
+  return !host || !host.contains(blocked) || !!element.closest(neverConverted)
+}
 const han = /[\u3400-\u9fff]/
 const storageKey = 'shokax.article-script'
 
@@ -25,7 +37,7 @@ function writePreference(value: boolean) {
 }
 
 function convertText(node: Text) {
-  if (!han.test(node.data) || node.parentElement?.closest(excluded)) return
+  if (!han.test(node.data) || isExcluded(node.parentElement)) return
   const saved = texts.get(node)
   if (saved && node.data === saved.converted) return
   const converted = converter!(node.data)
@@ -35,7 +47,7 @@ function convertText(node: Text) {
 }
 
 function convertAttributes(element: Element) {
-  if (element.closest(excluded)) return
+  if (isExcluded(element)) return
   for (const name of attributes) {
     const value = element.getAttribute(name)
     if (!value || !han.test(value)) continue

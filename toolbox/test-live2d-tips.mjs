@@ -287,39 +287,32 @@ f.controller.show('Detached widget')
 assert.equal(f.timers.size, 0)
 f.controller.destroy()
 
-// Modern browsers lift tips above native modal dialogs; the fallback remains
-// usable in-page but must not display a bubble concealed behind an open modal.
+// The bubble stays a child of the widget; where popovers exist the whole widget is
+// lifted above modals, otherwise a fresh bubble must not hide behind an open modal.
 for (const popover of [true, false]) {
   f = fixture({ popover })
   f.mount()
   f.controller.show('Plain page')
   assert.equal(f.tip.hidden, false)
-  assert.equal(f.tip.popoverOpen, false, 'ordinary tips stay below the music panel')
+  assert.equal(f.tip.popoverOpen, false, 'the bubble never opens its own popover')
   assert.equal(f.tip.getBoundingClientRect().left, 36)
-  assert.equal(f.tip.getBoundingClientRect().top, 470, 'the fallback accounts for the transformed widget containing block')
+  assert.equal(f.tip.getBoundingClientRect().top, 470, 'the bubble accounts for the transformed widget containing block')
   f.controller.clear()
   const dialog = f.element('dialog', { open: '' })
   f.doc.body.append(dialog)
   f.controller.show('Modal context')
   assert.equal(f.tip.hidden, !popover)
   assert.equal(f.timers.size, popover ? 1 : 0)
+  assert.equal(f.tip.popoverShows ?? 0, 0)
   if (popover) {
-    const shows = f.tip.popoverShows
-    const hides = f.tip.popoverHides
-    f.controller.show('Another modal interaction')
-    assert.equal(f.tip.popoverShows, shows + 1)
-    assert.equal(f.tip.popoverHides, hides + 1, 'an active popover must reopen above a newly active modal')
     f.widget.bounds = { left: 1000, top: 900 }
     f.win.emit('resize')
-    assert.equal(f.tip.style.left, '796px')
-    assert.equal(f.tip.style.top, '690px', 'the bubble remains within the viewport')
-    dialog.remove()
-    f.controller.show('Back to the music panel')
-    assert.equal(f.tip.popoverOpen, false, 'leaving modal context restores normal stacking')
-    assert.equal(f.tip.getAttribute('popover'), null)
+    assert.equal(f.tip.style.left, '-204px')
+    assert.equal(f.tip.style.top, '-210px', 'the bubble remains within the viewport')
   }
+  dialog.remove()
   f.controller.destroy()
   f.assertCleared()
 }
 
-console.log('Live2D tips: delegated child/focus/click events, safe configurable keyword colors, inert text, dynamic controls, idempotent initialization, one expiry timer, lifecycle cleanup and popover fallback passed.')
+console.log('Live2D tips: delegated child/focus/click events, safe configurable keyword colors, inert text, dynamic controls, idempotent initialization, one expiry timer, lifecycle cleanup and modal stacking passed.')

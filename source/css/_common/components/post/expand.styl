@@ -187,8 +187,13 @@
   }
 
   .katex-display {
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
+
+    // KaTeX 的 2px .vlist-s 靠 -2px 外边距抵消，贴右的编号列会因此多出 scrollWidth
+    .tag .vlist-t2 {
+      margin-right: 0;
+    }
   }
 
   .spoiler:not(.bulr) {

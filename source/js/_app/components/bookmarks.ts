@@ -60,7 +60,6 @@ export const refreshBookmarks = () => {
           item.classList.add('bookmark-card')
           item.removeAttribute('title')
           item.removeAttribute('data-theme-tooltip')
-          item.querySelector('.image')?.setAttribute('aria-label', title.textContent?.trim() || '')
           grid!.append(item)
         })
         element.remove()

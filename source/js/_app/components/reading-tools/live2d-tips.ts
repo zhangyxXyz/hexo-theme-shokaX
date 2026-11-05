@@ -63,7 +63,6 @@ function attachTips(widget: HTMLElement, input: TipRules) {
   const clear = () => {
     clearTimeout(timer)
     timer = undefined
-    if (typeof tip.hidePopover === 'function' && tip.matches(':popover-open')) tip.hidePopover()
     tip.hidden = true
     // Do not reveal an old welcome/idle message after the interaction expires.
     widget.querySelector('#waifu-tips')?.classList.remove('waifu-tips-active')
@@ -77,32 +76,22 @@ function attachTips(widget: HTMLElement, input: TipRules) {
     const anchor = widget.getBoundingClientRect()
     const width = tip.offsetWidth
     const height = tip.offsetHeight
-    // Ordinary bubbles are absolute children of the widget. Their containing
-    // block stays stable when the pointer leaves the model during a transition.
-    // Only modal popovers use viewport coordinates in the browser's top layer.
-    const inTopLayer = typeof tip.showPopover === 'function' && tip.matches(':popover-open')
+    // Bubbles are absolute children of the widget. Their containing block stays
+    // stable when the pointer leaves the model during a transition.
     const left = Math.max(8, Math.min(anchor.left + 20, window.innerWidth - width - 8))
     const top = Math.max(8, Math.min(anchor.top - 30, window.innerHeight - height - 8))
-    tip.style.left = `${left - (inTopLayer ? 0 : anchor.left)}px`
-    tip.style.top = `${top - (inTopLayer ? 0 : anchor.top)}px`
+    tip.style.left = `${left - anchor.left}px`
+    tip.style.top = `${top - anchor.top}px`
   }
   const show = (message: string, duration = 4000, name = '', color?: string) => {
     if (!available()) return
-    // Old browsers keep the in-page bubble; a modal must not conceal it.
-    if (typeof tip.showPopover !== 'function' && document.querySelector('dialog[open]')) return
+    // The widget rises above open modals where popovers exist; older browsers keep
+    // it in-page, so a modal must not conceal a fresh bubble.
+    if (typeof widget.showPopover !== 'function' && document.querySelector('dialog[open]')) return
     clearTimeout(timer)
     renderTip(tip, message, name, color)
-    // Ordinary tips share the widget's layer, below the music panel. Only
-    // modal interactions need a top-layer bubble above their dialog.
-    if (typeof tip.hidePopover === 'function' && tip.matches(':popover-open')) tip.hidePopover()
-    const modal = document.querySelector('dialog[open]')
-    if (modal && typeof tip.showPopover === 'function') tip.setAttribute('popover', 'manual')
-    else tip.removeAttribute('popover')
     tip.hidden = false
     widget.classList.add('has-theme-tip')
-    if (modal && typeof tip.showPopover === 'function') {
-      tip.showPopover()
-    }
     position()
     timer = setTimeout(clear, duration)
   }

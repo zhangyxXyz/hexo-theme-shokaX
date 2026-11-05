@@ -1,0 +1,130 @@
+// A sparse starfield behind the desktop sidebar. Only points, no lines, so it
+// never competes with the directory's curve rail; the left gutter stays empty.
+// Motion is limited to transform/opacity so every frame stays on the compositor.
+
+$sidebar-stars-tile = 35rem;
+$sidebar-stars-dim = "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22240%22%20height%3D%22560%22%20viewBox%3D%220%200%20240%20560%22%3E%3Cg%20fill%3D%22white%22%3E%3Ccircle%20cx%3D%22184.9%22%20cy%3D%22164.0%22%20r%3D%220.82%22%20fill-opacity%3D%220.83%22%2F%3E%3Ccircle%20cx%3D%22135.0%22%20cy%3D%22422.2%22%20r%3D%220.54%22%20fill-opacity%3D%220.47%22%2F%3E%3Ccircle%20cx%3D%22193.2%22%20cy%3D%22257.5%22%20r%3D%220.52%22%20fill-opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22206.6%22%20cy%3D%22318.2%22%20r%3D%220.69%22%20fill-opacity%3D%220.82%22%2F%3E%3Ccircle%20cx%3D%22200.7%22%20cy%3D%22400.5%22%20r%3D%220.52%22%20fill-opacity%3D%220.49%22%2F%3E%3Ccircle%20cx%3D%22171.5%22%20cy%3D%22453.6%22%20r%3D%220.69%22%20fill-opacity%3D%220.77%22%2F%3E%3Ccircle%20cx%3D%22215.1%22%20cy%3D%22438.6%22%20r%3D%220.52%22%20fill-opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22147.7%22%20cy%3D%22481.8%22%20r%3D%221.00%22%20fill-opacity%3D%220.68%22%2F%3E%3Ccircle%20cx%3D%22169.0%22%20cy%3D%22108.1%22%20r%3D%220.65%22%20fill-opacity%3D%220.67%22%2F%3E%3Ccircle%20cx%3D%22187.6%22%20cy%3D%22518.3%22%20r%3D%220.57%22%20fill-opacity%3D%220.42%22%2F%3E%3Ccircle%20cx%3D%22229.7%22%20cy%3D%2212.4%22%20r%3D%220.63%22%20fill-opacity%3D%220.89%22%2F%3E%3Ccircle%20cx%3D%22223.9%22%20cy%3D%22244.8%22%20r%3D%220.52%22%20fill-opacity%3D%220.82%22%2F%3E%3Ccircle%20cx%3D%22157.2%22%20cy%3D%22253.7%22%20r%3D%220.54%22%20fill-opacity%3D%220.78%22%2F%3E%3Ccircle%20cx%3D%2298.0%22%20cy%3D%22148.5%22%20r%3D%221.05%22%20fill-opacity%3D%220.41%22%2F%3E%3Ccircle%20cx%3D%22235.0%22%20cy%3D%2280.1%22%20r%3D%220.70%22%20fill-opacity%3D%220.86%22%2F%3E%3Ccircle%20cx%3D%22113.2%22%20cy%3D%22416.3%22%20r%3D%220.97%22%20fill-opacity%3D%220.47%22%2F%3E%3Ccircle%20cx%3D%22155.9%22%20cy%3D%22227.2%22%20r%3D%220.66%22%20fill-opacity%3D%220.86%22%2F%3E%3Ccircle%20cx%3D%22161.4%22%20cy%3D%22283.9%22%20r%3D%220.71%22%20fill-opacity%3D%220.44%22%2F%3E%3Ccircle%20cx%3D%22216.7%22%20cy%3D%22114.4%22%20r%3D%220.99%22%20fill-opacity%3D%220.82%22%2F%3E%3Ccircle%20cx%3D%22189.6%22%20cy%3D%2280.1%22%20r%3D%220.72%22%20fill-opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22207.1%22%20cy%3D%22537.1%22%20r%3D%220.54%22%20fill-opacity%3D%220.71%22%2F%3E%3Ccircle%20cx%3D%22103.2%22%20cy%3D%22366.0%22%20r%3D%220.95%22%20fill-opacity%3D%220.75%22%2F%3E%3Ccircle%20cx%3D%22137.5%22%20cy%3D%2293.3%22%20r%3D%220.70%22%20fill-opacity%3D%220.81%22%2F%3E%3Ccircle%20cx%3D%2287.9%22%20cy%3D%22409.3%22%20r%3D%220.54%22%20fill-opacity%3D%220.56%22%2F%3E%3Ccircle%20cx%3D%22155.3%22%20cy%3D%22465.2%22%20r%3D%220.95%22%20fill-opacity%3D%220.56%22%2F%3E%3Ccircle%20cx%3D%22215.1%22%20cy%3D%22473.5%22%20r%3D%220.94%22%20fill-opacity%3D%220.59%22%2F%3E%3Ccircle%20cx%3D%2298.0%22%20cy%3D%22396.0%22%20r%3D%220.73%22%20fill-opacity%3D%220.88%22%2F%3E%3Ccircle%20cx%3D%22150.8%22%20cy%3D%2281.9%22%20r%3D%220.94%22%20fill-opacity%3D%220.43%22%2F%3E%3Ccircle%20cx%3D%22180.6%22%20cy%3D%22201.6%22%20r%3D%220.57%22%20fill-opacity%3D%220.71%22%2F%3E%3Ccircle%20cx%3D%22168.2%22%20cy%3D%2297.3%22%20r%3D%220.99%22%20fill-opacity%3D%220.67%22%2F%3E%3Ccircle%20cx%3D%22132.5%22%20cy%3D%2217.4%22%20r%3D%220.98%22%20fill-opacity%3D%220.69%22%2F%3E%3Ccircle%20cx%3D%22181.8%22%20cy%3D%22215.5%22%20r%3D%220.73%22%20fill-opacity%3D%220.62%22%2F%3E%3Ccircle%20cx%3D%22139.0%22%20cy%3D%22179.8%22%20r%3D%220.62%22%20fill-opacity%3D%220.61%22%2F%3E%3Ccircle%20cx%3D%2290.7%22%20cy%3D%22275.3%22%20r%3D%221.02%22%20fill-opacity%3D%220.52%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E')"
+$sidebar-stars-bright = "url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22240%22%20height%3D%22560%22%20viewBox%3D%220%200%20240%20560%22%3E%3Cg%20fill%3D%22white%22%3E%3Ccircle%20cx%3D%22206.0%22%20cy%3D%22383.3%22%20r%3D%221.42%22%20fill-opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%2297.0%22%20cy%3D%22342.1%22%20r%3D%221.62%22%20fill-opacity%3D%220.93%22%2F%3E%3Ccircle%20cx%3D%22122.0%22%20cy%3D%22411.8%22%20r%3D%221.61%22%20fill-opacity%3D%220.92%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%22127.6%22%20r%3D%221.67%22%20fill-opacity%3D%221.00%22%2F%3E%3Ccircle%20cx%3D%22222.3%22%20cy%3D%22205.5%22%20r%3D%221.41%22%20fill-opacity%3D%220.84%22%2F%3E%3Ccircle%20cx%3D%22192.8%22%20cy%3D%22543.5%22%20r%3D%221.58%22%20fill-opacity%3D%220.95%22%2F%3E%3Ccircle%20cx%3D%22195.1%22%20cy%3D%22382.7%22%20r%3D%221.53%22%20fill-opacity%3D%220.98%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E')"
+
+#sidebar {
+  --starfield-ink: unquote('color-mix(in srgb, var(--accent-start) 55%, transparent)');
+  --starfield-glint: var(--accent-start);
+}
+
+[data-theme='dark'] #sidebar {
+  --starfield-ink: unquote('color-mix(in srgb, var(--grey-9) 45%, transparent)');
+  --starfield-glint: unquote('color-mix(in srgb, var(--grey-9) 85%, var(--accent-start))');
+}
+
+#sidebar > .inner > .sidebar-starfield {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+  // Keep the panel switcher clear and let the field dissolve above the quick bar.
+  mask-image: linear-gradient(180deg, transparent 4.5rem, #000 8rem, #000 85%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, transparent 4.5rem, #000 8rem, #000 85%, transparent);
+
+  // The drawer on narrow screens skips the decoration entirely.
+  +tablet-mobile() {
+    display: none;
+  }
+
+  // Layers are one tile taller than the panel; drifting exactly one tile loops seamlessly.
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -($sidebar-stars-tile);
+    right: 0;
+    left: 0;
+    height: s('calc(100% + %s)', $sidebar-stars-tile);
+    mask-size: 15rem $sidebar-stars-tile;
+    -webkit-mask-size: 15rem $sidebar-stars-tile;
+    mask-repeat: repeat-y;
+    -webkit-mask-repeat: repeat-y;
+    mask-position: right top;
+    -webkit-mask-position: right top;
+    will-change: transform;
+  }
+
+  &::before {
+    background: var(--starfield-ink);
+    mask-image: unquote($sidebar-stars-dim);
+    -webkit-mask-image: unquote($sidebar-stars-dim);
+    animation: sidebar-starfield-drift 150s linear infinite;
+  }
+
+  // Brighter stars sit nearer, so they drift faster and twinkle.
+  &::after {
+    background: var(--starfield-glint);
+    mask-image: unquote($sidebar-stars-bright);
+    -webkit-mask-image: unquote($sidebar-stars-bright);
+    will-change: transform, opacity;
+    animation: sidebar-starfield-drift 90s linear infinite, sidebar-starfield-twinkle 3.2s ease-in-out infinite alternate;
+  }
+
+  > .sidebar-meteor {
+    position: absolute;
+    top: 24%;
+    left: 78%;
+    width: 4.5rem;
+    height: 1px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, transparent, var(--starfield-glint));
+    opacity: 0;
+    transform-origin: 100% 50%;
+    will-change: transform, opacity;
+    animation: sidebar-starfield-meteor 14s cubic-bezier(.3, .6, .5, 1) 5s infinite;
+  }
+
+  +reduced-motion() {
+    &::before,
+    &::after {
+      animation: none;
+    }
+
+    > .sidebar-meteor {
+      display: none;
+    }
+  }
+}
+
+@keyframes sidebar-starfield-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, $sidebar-stars-tile, 0);
+  }
+}
+
+@keyframes sidebar-starfield-twinkle {
+  from {
+    opacity: .25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Visible for well under a second, then the layer idles until the next pass.
+@keyframes sidebar-starfield-meteor {
+  0% {
+    opacity: 0;
+    transform: rotate(146deg) translate3d(0, 0, 0) scaleX(.3);
+  }
+  1.5% {
+    opacity: 1;
+  }
+  6% {
+    opacity: 0;
+    transform: rotate(146deg) translate3d(9rem, 0, 0) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(146deg) translate3d(9rem, 0, 0) scaleX(1);
+  }
+}

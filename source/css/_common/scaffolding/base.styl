@@ -209,6 +209,16 @@ input, textarea {
   }
   z-index: 10;
   margin-bottom: 0;
+  // Undo the UA popover box while the widget is lifted above an open modal.
+  &:popover-open {
+    top: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+    background: transparent;
+    color: inherit;
+  }
   // Upstream animates bottom from -1000px; tips must use the settled anchor.
   bottom: 0;
   transition: none;
@@ -220,6 +230,14 @@ input, textarea {
   #live2d {
     width: unquote('min(300px, calc(100vw - var(--live2d-edge)))');
     height: unquote('min(300px, calc(100vw - var(--live2d-edge)))');
+    cursor: grab;
+    // Touch drags move the character instead of scrolling the page beneath it.
+    touch-action: none;
+  }
+  &.is-dragging {
+    user-select: none;
+    #live2d { cursor: grabbing; }
+    #waifu-tool { opacity: 0; pointer-events: none; }
   }
   #waifu-tool {
     // Keep this inside the widget so its visibility and actions stay in sync.
@@ -290,7 +308,6 @@ input, textarea {
 body:has(.live2d-toggle:hover, .live2d-toggle:focus-visible) #waifu.shokax-live2d #waifu-tool { opacity: 1; pointer-events: auto; transform: translateY(0); }
 #shokax-waifu-tips {
   position: absolute;
-  &[popover] { position: fixed; }
   inset: auto;
   margin: 0;
   width: 250px;

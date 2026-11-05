@@ -103,7 +103,7 @@ html(lang=page.language?page.language:config.language, style=theme.grayMode ? 'f
         script(data-config type="text/javascript").
             var LOCAL = {
                 imageViewer: !{JSON.stringify(imageViewerLabels).replace(/</g, '\\u003c')},
-                codeBlock: !{JSON.stringify({wrap: __('code_block.wrap'), copy: __('code_block.copy'), copied: __('code_block.copied'), copyFailed: __('code_block.copy_failed'), fullscreen: __('code_block.fullscreen'), exitFullscreen: __('code_block.exit_fullscreen'), expand: __('code_block.expand'), collapse: __('code_block.collapse')}).replace(/</g, '\\u003c')},
+                codeBlock: !{JSON.stringify({wrap: __('code_block.wrap'), copy: __('code_block.copy'), copied: __('code_block.copied'), copyFailed: __('code_block.copy_failed'), download: __('code_block.download'), fullscreen: __('code_block.fullscreen'), exitFullscreen: __('code_block.exit_fullscreen'), expand: __('code_block.expand'), collapse: __('code_block.collapse')}).replace(/</g, '\\u003c')},
                 ispost: !{is_post()},
                 path: `#{_permapath(page.path)}`,
                 favicon: {

@@ -18,18 +18,8 @@
   --viewer-glass-blur: blur(12px);
 
   &.viewer-backdrop {
-    background: unquote('color-mix(in srgb, var(--grey-1) 70%, transparent)');
-    backdrop-filter: blur(18px) saturate(1.3);
-  }
-
-  // The navigation gradient tints the frosted page, echoing the header and menus.
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--nav-bg);
-    opacity: .6;
-    pointer-events: none;
+    background: unquote('color-mix(in srgb, var(--grey-1) 42%, transparent)');
+    backdrop-filter: blur(20px) saturate(1.15);
   }
 
   .viewer-canvas > img {

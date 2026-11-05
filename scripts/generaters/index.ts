@@ -98,6 +98,9 @@ hexo.extend.generator.register('index',async function (locals) {
         }
       })
     )
+    // Covers load concurrently; present the cards in their configured order.
+    const order = theme.homeConfig.cateCards.map(card => card.slug)
+    catlist.sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug))
   }
 
   if (posts.length > 0) {

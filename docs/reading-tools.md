@@ -1,6 +1,8 @@
 # 阅读工具
 
-`live2d.enable: true` 开启看板娘，每次打开或刷新页面默认显示，浮动工具栏的爪印按钮控制显示和隐藏。隐藏状态仅在当前页面会话（包括 PJAX 切页）内保留，不再读取或保存 `shokax.live2d.visible`。
+`live2d.enable: true` 开启看板娘，桌面每次打开或刷新页面默认显示，浮动工具栏的爪印按钮控制显示和隐藏。隐藏状态仅在当前页面会话（包括 PJAX 切页）内保留，不再读取或保存 `shokax.live2d.visible`。
+
+窄屏（≤767px）默认不显示，也不下载 Live2D 核心与模型；读者用爪印打开后记入 `localStorage` 的 `shokax.live2d.mobile`，之后在该设备上默认显示，再次关闭即清除。
 
 看板娘及其功能按钮跟随浮动工具栏的位置：`sidebar.position: right` 时靠左，`left` 时靠右；窄屏与工具栏一起靠右。功能按钮在模型靠近主工具栏的一侧呈紧凑浅弧排列，默认隐藏，鼠标移到看板娘或爪印、聚焦功能按钮时淡入，移开后淡出；随看板娘一起收起和恢复。
 
@@ -54,8 +56,10 @@ Live2D 核心和基础样式通过 `vendors.assets.live2d_widget` 加载，来�
 
 `reading-tools/live2d-tips.ts` 使用一次事件委托和 `closest()`，图标/文字等子节点均可触发，异步评论与 PJAX 新节点不需要重新绑定。
 主题提示和一言共用一个退出计时器；提示显示时暂时隐藏上游气泡，避免上游计时器提前消除当前提示。
-普通提示使用相对看板娘的绝对定位，悬停/移开时保持同一定位参照；看板娘的悬停样式不再引入 transform，避免提示跳到视口顶部。仅在评论等模态弹窗打开时，支持 Popover 的浏览器将这个不可交互的气泡放入顶层并使用视口坐标；旧浏览器保留普通页面提示，在模态弹窗内暂停。
-切页、隐藏看板娘、关闭弹窗、离开页面会清除提示；没有逐帧轮询或新增全页 MutationObserver。
+提示始终是看板娘的绝对定位子元素，悬停/移开时保持同一定位参照；看板娘的悬停样式不再引入 transform，避免提示跳到视口顶部。模态 `dialog` 打开时，支持 Popover 的浏览器把整个看板娘（模型与气泡）以 `popover="manual"` 放入顶层，每次有新的模态打开都重新入层以压在最上方，全部关闭后移除 `popover` 回到 z-index 10；`:popover-open` 下重置 UA 的边框、内边距、背景与 `top`。模态期间文档其余部分为 inert，看板娘可见但不可交互。旧浏览器保留页面内层级，在模态弹窗内暂停新提示。
+切页、隐藏看板娘、关闭弹窗、离开页面会清除提示；没有逐帧轮询。为识别模态，`live2d-layer.ts` 用一个 MutationObserver 只监听 `open` 属性，且只处理 `dialog` 目标。
+
+按住模型画布拖动超过 5px 即移动看板娘，位置限制在视口内，以可用空间的比例存入 `localStorage` 的 `shokax.live2d.position`，窗口缩放与重新显示时按比例还原；双击模型恢复默认位置。拖动结束后的那次点击在窗口捕获阶段被拦截，不触发点击提示；拖动期间隐藏工具弧。画布设为 `touch-action: none`，触屏按住模型即拖动、不再滚动页面。未在真机触屏验证。
 
 `article_script.enable: true` 在首页、文章及其他主内容页面显示简繁图标按钮（`i-chinese-traditional` / `i-chinese-simplified`），共用 `.ic` 基线配置。点击按需加载 OpenCC JS 1.4.1，转换整个页面：正文、菜单、侧栏、页脚、按钮文字、`document.title`，以及 `title`、`aria-label`、`placeholder`、`alt`、`data-theme-tooltip` 属性；再点击“简”恢复保存的原文。选择保存在 `localStorage` 的 `shokax.article-script`，刷新和 PJAX 切页后继续生效；不修改 `lang`。不会重写 HTML、链接地址或标题锚点，也不会修改源文章。代码、公式、输入控件、未解密的加密文章及 `translate="no"` / `.notranslate` 区域跳过；异步内容和 PJAX 换入的节点由同一个观察器继续转换。
 

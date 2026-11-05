@@ -48,7 +48,7 @@ type ImageViewerLocale = {
 }
 
 declare const LOCAL: {
-  codeBlock: Record<'wrap' | 'copy' | 'copied' | 'copyFailed' | 'fullscreen' | 'exitFullscreen' | 'expand' | 'collapse', string>;
+  codeBlock: Record<'wrap' | 'copy' | 'copied' | 'copyFailed' | 'download' | 'fullscreen' | 'exitFullscreen' | 'expand' | 'collapse', string>;
   imageViewer: ImageViewerLocale;
   ispost: boolean;
   path: string;
@@ -99,6 +99,7 @@ interface configType {
   reading_settings?: { enable: boolean }
   palette?: { primary?: string | null; secondary?: string | null }
   theme_transition?: string
+  mermaid?: { look: 'classic' | 'handDrawn'; fontFamily: string }
   auto_dark: {
     enable: boolean
     start: number

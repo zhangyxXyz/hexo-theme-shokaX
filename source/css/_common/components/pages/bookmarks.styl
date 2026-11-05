@@ -97,6 +97,8 @@
     font-variant-numeric: tabular-nums;
   }
   .bookmark-card .info { min-width: 0; overflow-wrap: anywhere; }
+  // The card draws the focus ring for its stretched title link (see tags/links.styl).
+  .bookmark-card .title:focus-visible { outline: none; }
   .bookmark-group-heading, .bookmark-subgroup-heading { scroll-margin-top: 5rem; }
   &[data-mode='cards'] .bookmark-group-count { display: none; }
   &[data-mode='axis'] {

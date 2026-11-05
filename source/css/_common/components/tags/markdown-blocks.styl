@@ -1,0 +1,361 @@
+// Build-time Markdown blocks: steps, file trees, field cards, image grids and notes.
+.md {
+  --md-block-accent: var(--accent-state, var(--primary-color));
+  --md-block-soft: unquote('color-mix(in srgb, var(--md-block-accent) 8%, var(--grey-1))');
+  --md-block-line: unquote('color-mix(in srgb, var(--md-block-accent) 15%, var(--grey-2))');
+
+  .md-block-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .25rem 1rem;
+    margin: 0 0 1rem;
+    strong { color: var(--text-color); font-size: .9375rem; }
+    span {
+      color: var(--md-block-accent);
+      font-size: .6875rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+  }
+
+  // Steps
+  .md-steps {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--md-block-line);
+    border-radius: 1rem;
+    background: var(--grey-1);
+    background: unquote('linear-gradient(180deg, color-mix(in srgb, var(--md-block-accent) 3%, var(--grey-1)), var(--grey-1) 5rem)');
+  }
+  .md-steps-list {
+    margin: 0;
+    padding: 0 0 0 2.75rem;
+    > li {
+      margin: 0;
+      padding: 0 0 1.25rem;
+      // Badge size matches the first text line so long steps stay aligned.
+      &::before {
+        top: .1rem;
+        left: -2.75rem;
+        width: 1.625rem;
+        height: 1.625rem;
+        font-size: .8125rem;
+        line-height: 1.625rem;
+        box-shadow: 0 0 0 .25rem var(--grey-1);
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: 2.1rem;
+        bottom: .35rem;
+        left: calc(-2.75rem + .8125rem - 1px);
+        width: 2px;
+        border-radius: 1px;
+        background: var(--md-block-line);
+      }
+      &:last-child {
+        padding-bottom: 0;
+        &::after { content: none; }
+      }
+      > p { margin: 0 0 .5rem; }
+      > :last-child { margin-bottom: 0; }
+    }
+  }
+
+  // File tree
+  .md-file-tree {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem 1.125rem;
+    border: 1px solid var(--md-block-line);
+    border-radius: 1rem;
+    background: var(--grey-1);
+    font-size: .875rem;
+    ul { margin: 0; padding: 0; }
+    ul ul {
+      margin-left: .5625rem;
+      padding-left: .875rem;
+      border-left: 1px dashed var(--md-block-line);
+    }
+    li {
+      margin: 0;
+      line-height: 1.6;
+      &::before { content: none; }
+    }
+    details, details[open] { margin: 0; background: none; color: inherit; border-radius: 0; }
+    details > div { margin: 0; padding: 0; }
+    details > summary {
+      display: block;
+      padding: 0;
+      background: none;
+      border-radius: .375rem;
+      &::before {
+        display: inline-block;
+        width: 1.125rem;
+        margin: 0;
+        color: var(--grey-5);
+        text-align: center;
+      }
+    }
+    details[open] > summary { background: none; }
+    details[open] > summary::before { color: var(--md-block-accent); }
+    summary:focus-visible { outline: 2px solid var(--md-block-accent); outline-offset: 1px; }
+    .md-tree-file > .md-tree-entry, .is-empty > .md-tree-entry { margin-left: 1.125rem; }
+  }
+  .md-tree { padding: 0; }
+  .md-tree-entry {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .25rem .4375rem;
+    max-width: calc(100% - 1.25rem);
+    padding: .125rem .375rem;
+    border-radius: .375rem;
+    vertical-align: middle;
+    transition: background-color .2s;
+  }
+  summary:hover .md-tree-entry, .md-tree-file > .md-tree-entry:hover { background: var(--md-block-soft); }
+  .md-tree-icon {
+    flex: none;
+    width: 1.0625rem;
+    height: 1.0625rem;
+    color: var(--grey-5);
+    path { fill: currentColor; }
+  }
+  .md-tree-file .md-tree-icon path {
+    fill: unquote('color-mix(in srgb, currentColor 14%, transparent)');
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linejoin: round;
+  }
+  .md-tree-file .md-tree-icon .md-tree-fold { fill: none; }
+  .md-tree-name {
+    font-family: $font-family-monospace;
+    color: var(--text-color);
+    overflow-wrap: anywhere;
+    strong { color: var(--md-block-accent); }
+  }
+  .md-tree-note { color: var(--grey-5); font-size: .8125rem; }
+  .md-tree-badge {
+    padding: 0 .4375rem;
+    border-radius: 999px;
+    font-size: .6875rem;
+    line-height: 1.5;
+  }
+  .is-added {
+    --md-tree-change: #3f9e6a;
+  }
+  .is-removed {
+    --md-tree-change: #d4574e;
+  }
+  :is(.is-added, .is-removed) > :is(.md-tree-entry, details > summary .md-tree-entry) .md-tree-badge {
+    color: var(--md-tree-change);
+    background: unquote('color-mix(in srgb, var(--md-tree-change) 13%, transparent)');
+  }
+  .is-added > :is(.md-tree-entry, details > summary .md-tree-entry) .md-tree-name { color: var(--md-tree-change); }
+  .is-removed > :is(.md-tree-entry, details > summary .md-tree-entry) .md-tree-name {
+    color: var(--grey-5);
+    text-decoration: line-through;
+  }
+  :is(.md-file-tree, .md-code-tree)[data-icon='colored'] {
+    .md-tree-folder > details > summary .md-tree-icon, .md-tree-folder.is-empty > .md-tree-entry .md-tree-icon { color: #e3a23b; }
+    [data-type='code'] .md-tree-icon { color: #4b8bd6; }
+    [data-type='shell'] .md-tree-icon { color: #3f9e6a; }
+    [data-type='style'] .md-tree-icon { color: #b468d0; }
+    [data-type='markup'] .md-tree-icon { color: #e0704f; }
+    [data-type='data'] .md-tree-icon { color: #c99a1e; }
+    [data-type='doc'] .md-tree-icon { color: #7487a6; }
+    [data-type='image'] .md-tree-icon { color: #2c9d97; }
+  }
+  :is(.md-file-tree, .md-code-tree)[data-icon='simple'] :is(.md-tree-folder > details > summary, .md-tree-folder.is-empty > .md-tree-entry) .md-tree-icon { color: var(--md-block-accent); }
+
+  // Field cards
+  .md-field-group {
+    display: grid;
+    gap: .75rem;
+    margin: 1.5rem 0;
+    .md-field { margin: 0; }
+  }
+  .md-field {
+    margin: 1rem 0;
+    padding: .875rem 1.125rem 1rem;
+    border: 1px solid var(--md-block-line);
+    border-radius: .875rem;
+    background: var(--grey-1);
+  }
+  .md-field-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .375rem .625rem;
+  }
+  .md-field-name {
+    padding: .0625rem .5rem;
+    border-radius: .375rem;
+    background: var(--md-block-soft);
+    color: var(--md-block-accent);
+    font-weight: 600;
+  }
+  .md-field-type {
+    color: var(--grey-6);
+    font-family: $font-family-monospace;
+    font-size: .8125rem;
+  }
+  .md-field-flag {
+    padding: 0 .5rem;
+    border: 1px solid var(--grey-3);
+    border-radius: 999px;
+    color: var(--grey-6);
+    font-size: .6875rem;
+    line-height: 1.6;
+    &.is-required {
+      border-color: var(--accent-border);
+      color: var(--md-block-accent);
+    }
+  }
+  .md-field-default {
+    margin: .5rem 0 0;
+    color: var(--grey-6);
+    font-size: .8125rem;
+    code { margin-left: .375rem; }
+  }
+  .md-field-body {
+    margin-top: .625rem;
+    > :first-child { margin-top: 0; }
+    > :last-child { margin-bottom: 0; }
+  }
+
+  // Image grid
+  .md-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .75rem;
+    margin: 1.5rem 0;
+    &[data-columns='1'] { grid-template-columns: minmax(0, 1fr); }
+    &[data-columns='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    &[data-columns='4'] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    &[data-columns='5'] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    &[data-columns='6'] { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    @media (max-width: 767px) {
+      &:not([data-columns='1']) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 479px) {
+      &[data-columns] { grid-template-columns: minmax(0, 1fr); }
+    }
+  }
+  .md-grid-item {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--md-block-line);
+    border-radius: .875rem;
+    background: var(--grey-1);
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      aspect-ratio: var(--md-grid-aspect, 16 / 10);
+      object-fit: cover;
+      border-radius: 0;
+      transition: scale .4s;
+    }
+    figcaption {
+      padding: .4375rem .75rem;
+      overflow: hidden;
+      color: var(--grey-6);
+      font-size: .8125rem;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .md-grid[data-fit='cover'] .md-grid-item:hover img { scale: 1.03; }
+  // Without an explicit aspect, contain keeps each image's own ratio instead of letterboxing it.
+  .md-grid[data-fit='contain'] {
+    align-items: start;
+    .md-grid-item img {
+      aspect-ratio: var(--md-grid-aspect, auto);
+      object-fit: contain;
+    }
+  }
+
+  // Footnotes and annotations
+  .md-footnote-ref a {
+    padding: 0 .125rem;
+    color: var(--md-block-accent);
+    font-size: .75em;
+  }
+  .md-annotation {
+    border-bottom: 1px dashed var(--md-block-accent);
+    color: inherit;
+    &[aria-expanded='true'], &:hover { color: var(--md-block-accent); }
+  }
+  .md-annotation-mark {
+    margin-left: .0625rem;
+    color: var(--md-block-accent);
+    font-size: .7em;
+    font-weight: 600;
+    vertical-align: super;
+    line-height: 0;
+  }
+  .md-notes {
+    margin: 2rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--md-block-line);
+    color: var(--grey-6);
+    font-size: .875rem;
+    + .md-notes { margin-top: 1rem; }
+    ol { margin: 0; }
+  }
+  .md-notes-title { margin: 0 0 .5rem; color: var(--text-color); font-weight: 600; }
+  .md-note-item {
+    scroll-margin-top: 4rem;
+    border-radius: .375rem;
+    transition: background-color .3s;
+    &:target { background: var(--md-block-soft); }
+  }
+  .md-note-term { display: block; color: var(--text-color); }
+  .md-note-body {
+    display: inline;
+    > p { margin: 0; }
+    > :last-child { display: inline; }
+  }
+  .md-note-back { margin-left: .375rem; color: var(--md-block-accent); }
+
+  +reduced-motion() {
+    .md-tree-entry, .md-grid-item img, .md-note-item { transition: none; }
+    .md-grid[data-fit='cover'] .md-grid-item:hover img { scale: none; }
+  }
+}
+
+// Mounted on body by components/markdown-notes.ts.
+.md-note-popover {
+  position: fixed;
+  z-index: 60;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: unquote('min(22rem, calc(100vw - 24px))');
+  padding: 8px 12px;
+  // Shares the site tooltip surface; multi-line notes get slightly roomier text.
+  border: 1px solid var(--tooltip-border);
+  border-radius: 8px;
+  background: var(--tooltip-bg);
+  backdrop-filter: blur(12px) saturate(125%);
+  -webkit-backdrop-filter: blur(12px) saturate(125%);
+  box-shadow: 0 4px 14px var(--tooltip-shadow);
+  color: var(--tooltip-text);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  animation: md-note-in .16s ease-out;
+  p { margin: 0; }
+  p + p { margin-top: .375rem; }
+  .md-note-term { display: block; margin-bottom: .125rem; color: var(--accent-color, var(--primary-color)); font-weight: 600; }
+  +reduced-motion() { animation: none; }
+}
+
+@keyframes md-note-in {
+  from { opacity: 0; translate: 0 .25rem; }
+}

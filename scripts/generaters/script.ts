@@ -47,6 +47,10 @@ hexo.extend.generator.register('script', async function (locals) {
     },
     reading_settings: { enable: theme.reading_settings?.enable === true },
     theme_transition: theme.theme_transition ?? 'sunrise',
+    mermaid: {
+      look: theme.mermaid?.look === 'handDrawn' ? 'handDrawn' : 'classic',
+      fontFamily: typeof theme.mermaid?.font_family === 'string' ? theme.mermaid.font_family : ''
+    },
     auto_dark: theme.auto_dark,
     auto_scroll: theme.auto_scroll,
     css: {

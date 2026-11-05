@@ -66,7 +66,7 @@ function linkGrid (args:string[], content:string) {
     const searchAttribute = keywords ? ` data-search-keywords="${keywords}"` : ''
     result += `<div class="item" title="${item.owner || item.site}"${item.color}${searchAttribute}>`
 
-    result += `<a href="${item.url}" class="image" data-background-image="${item_image}"></a>
+    result += `<a href="${item.url}" class="image" data-background-image="${item_image}" aria-hidden="true" tabindex="-1"></a>
         <div class="info">
         <a href="${item.url}" class="title">${item.site}</a>
         <p class="desc">${item.desc || item.url}</p>

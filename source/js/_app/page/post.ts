@@ -6,6 +6,10 @@ import { pageScroll } from '../library/anime'
 import { wrapObject } from '../library/proto'
 import { refreshCodeBlocks } from '../components/codeblock'
 import { refreshRewards } from '../components/reward'
+import { refreshGithubCards } from '../components/github-card'
+import { refreshMarkdownNotes } from '../components/markdown-notes'
+import { refreshMermaid } from '../components/mermaid'
+import { refreshCodeTrees } from '../components/code-tree'
 
 const enhanced = new WeakSet<Element>()
 let codeObserver: IntersectionObserver | undefined
@@ -15,6 +19,10 @@ export const postBeauty = async () => {
   refreshPostMedia()
   refreshCodeBlocks()
   refreshRewards()
+  refreshGithubCards()
+  refreshMarkdownNotes()
+  refreshMermaid()
+  refreshCodeTrees()
 
   if (!document.querySelector('.md')) { postImageViewer('.post.block'); return }
 

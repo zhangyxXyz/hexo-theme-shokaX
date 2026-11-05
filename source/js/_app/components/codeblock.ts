@@ -9,6 +9,7 @@ const icons = {
   copy: 'clipboard',
   copied: 'check',
   failed: 'times',
+  download: 'download',
   fullscreen: 'expand',
   close: 'compress'
 }
@@ -18,6 +19,80 @@ const setIcon = (button: HTMLButtonElement, name: keyof typeof icons) => {
   icon.className = `ic i-${icons[name]}`
   icon.setAttribute('aria-hidden', 'true')
   button.replaceChildren(icon)
+}
+
+// [fence aliases, display name, download file]. Fence languages are kept as written, so every
+// alias is listed. A file starting with a capital letter is a whole filename, not an extension.
+const languageTable: [aliases: string[], name: string, file: string][] = [
+  [['markdown', 'md'], 'Markdown', 'md'],
+  [['javascript', 'js'], 'JavaScript', 'js'],
+  [['mjs'], 'JavaScript', 'mjs'],
+  [['cjs'], 'JavaScript', 'cjs'],
+  [['typescript', 'ts'], 'TypeScript', 'ts'],
+  [['jsx'], 'JSX', 'jsx'],
+  [['tsx'], 'TSX', 'tsx'],
+  [['vue'], 'Vue', 'vue'],
+  [['svelte'], 'Svelte', 'svelte'],
+  [['html'], 'HTML', 'html'],
+  [['xml'], 'XML', 'xml'],
+  [['svg'], 'SVG', 'svg'],
+  [['css'], 'CSS', 'css'],
+  [['scss'], 'SCSS', 'scss'],
+  [['sass'], 'Sass', 'sass'],
+  [['less'], 'Less', 'less'],
+  [['stylus', 'styl'], 'Stylus', 'styl'],
+  [['pug'], 'Pug', 'pug'],
+  [['json'], 'JSON', 'json'],
+  [['jsonc'], 'JSONC', 'jsonc'],
+  [['json5'], 'JSON5', 'json5'],
+  [['yaml', 'yml'], 'YAML', 'yml'],
+  [['toml'], 'TOML', 'toml'],
+  [['ini'], 'INI', 'ini'],
+  [['bash'], 'Bash', 'sh'],
+  [['sh', 'shell'], 'Shell', 'sh'],
+  [['zsh'], 'Zsh', 'zsh'],
+  [['powershell', 'ps1'], 'PowerShell', 'ps1'],
+  [['bat', 'batch'], 'Batch', 'bat'],
+  [['cmd'], 'Batch', 'cmd'],
+  [['python', 'py'], 'Python', 'py'],
+  [['c'], 'C', 'c'],
+  [['cpp', 'c++'], 'C++', 'cpp'],
+  [['csharp', 'cs'], 'C#', 'cs'],
+  [['java'], 'Java', 'java'],
+  [['kotlin'], 'Kotlin', 'kt'],
+  [['go'], 'Go', 'go'],
+  [['rust', 'rs'], 'Rust', 'rs'],
+  [['lua'], 'Lua', 'lua'],
+  [['php'], 'PHP', 'php'],
+  [['ruby', 'rb'], 'Ruby', 'rb'],
+  [['swift'], 'Swift', 'swift'],
+  [['dart'], 'Dart', 'dart'],
+  [['sql'], 'SQL', 'sql'],
+  [['dockerfile'], 'Dockerfile', 'Dockerfile'],
+  [['makefile'], 'Makefile', 'Makefile'],
+  [['diff'], 'Diff', 'diff'],
+  [['tex'], 'TeX', 'tex'],
+  [['latex'], 'LaTeX', 'tex'],
+  [['csv'], 'CSV', 'csv'],
+  [['text', 'txt', 'plaintext'], 'Text', 'txt']
+]
+
+const languages = new Map(languageTable.flatMap(([aliases, name, file]) => aliases.map(alias => [alias, { name, file }] as const)))
+
+const languageName = (language: string) =>
+  languages.get(language.toLowerCase())?.name || language.charAt(0).toUpperCase() + language.slice(1)
+
+const downloadCode = (text: string, language: string, index: number) => {
+  const file = languages.get(language.toLowerCase())?.file || 'txt'
+  const name = /^[A-Z]/.test(file) ? file : `code-${index}.${file}`
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = name
+  document.body.append(link)
+  link.click()
+  link.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
 export function refreshCodeBlocks() {
@@ -36,13 +111,13 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
   let previousOverflow = ''
   let closeActive: (() => void) | undefined
 
-  root.querySelectorAll<HTMLPreElement>(selector).forEach(pre => {
-    if (pre.closest('.shokax-code')) return
+  root.querySelectorAll<HTMLPreElement>(selector).forEach((pre, index) => {
+    if (pre.closest('.shokax-code, .md-code-tree')) return
     const code = pre.querySelector('code')
     if (!code) return
-    const text = code.textContent || ''
+    // Read on demand so copy/download follow the Simplified/Traditional switch.
+    const text = () => code.textContent || ''
     const language = Array.from(code.classList).find(name => name.startsWith('language-'))?.slice(9) || 'text'
-    const names: Record<string, string> = { js: 'JavaScript', ts: 'TypeScript', html: 'HTML', css: 'CSS', json: 'JSON', yaml: 'YAML', yml: 'YAML', bash: 'Bash', cpp: 'C++', md: 'Markdown' }
     const wrapper = document.createElement('section')
     wrapper.className = 'shokax-code'
     const header = document.createElement('div')
@@ -54,7 +129,7 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
     const dots = document.createElement('span')
     dots.className = 'code-dots'
     dots.setAttribute('aria-hidden', 'true')
-    title.append(dots, document.createTextNode(names[language] || language))
+    title.append(dots, document.createTextNode(languageName(language)))
     const actions = document.createElement('div')
     actions.className = 'code-actions'
     header.append(title, actions)
@@ -85,7 +160,7 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
       const copy = button('copy', labels.copy, async () => {
         if (copyTimer) { clearTimeout(copyTimer); timers.delete(copyTimer) }
         try {
-          await navigator.clipboard.writeText(text)
+          await navigator.clipboard.writeText(text())
           if (signal.aborted) return
           label(copy, labels.copied)
           setIcon(copy, 'copied')
@@ -106,6 +181,7 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
         timers.add(timer)
         copyTimer = timer
       })
+      button('download', labels.download, () => downloadCode(text(), language, index + 1))
     }
     wrapper.addEventListener('copy', event => {
       event.stopPropagation()
@@ -123,7 +199,7 @@ export function enhanceCodeBlocks(root: ParentNode, selector = 'pre.shiki', comm
       const focusTarget = document.activeElement as HTMLElement | null
       const dialog = document.createElement('dialog')
       dialog.className = 'shokax-code-dialog'
-      dialog.setAttribute('aria-label', names[language] || language)
+      dialog.setAttribute('aria-label', languageName(language))
       const placeholder = document.createComment('code-block')
       wrapper.replaceWith(placeholder)
       dialog.append(wrapper)

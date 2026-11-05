@@ -1,6 +1,8 @@
 import { resourceURL } from '../../globals/resources'
 import { fetchHitokoto } from '../../globals/hitokoto'
 import { createLive2DTips, type TipRules } from './live2d-tips'
+import { enableLive2DDrag } from './live2d-drag'
+import { floatAboveModals } from './live2d-layer'
 import { calendarYears, loadHolidayDays, selectCalendarTip, type CalendarTips } from './live2d-calendar'
 type WidgetWindow = Window & {
   initWidget?: (config: { waifuPath: string; cdnPath: string }) => void
@@ -11,12 +13,16 @@ let initialized = false
 let loading: Promise<void> | undefined
 let desired: boolean | undefined
 let widgetTips: ReturnType<typeof createLive2DTips> | undefined
+let widgetDrag: ReturnType<typeof enableLive2DDrag> | undefined
 const loaded = new Map<string, Promise<void>>()
 
 // Keep upstream unmodified; adapt theme-owned actions and the dynamic quote service.
 function adaptWidget(onError: () => void, rules: TipRules, labels: Record<string, string>) {
   const widget = document.getElementById('waifu')!
   widget.classList.add('shokax-live2d')
+  const canvas = document.getElementById('live2d')
+  if (canvas) widgetDrag = enableLive2DDrag(widget, canvas)
+  floatAboveModals(widget)
   const tips = createLive2DTips(widget, rules)
   widgetTips = tips
   document.getElementById('waifu-toggle')?.remove()
@@ -143,17 +149,25 @@ function asset(url: string, css = false) {
   return loaded.get(url)!
 }
 
+// Phones start without the widget (no model download); an explicit opt-in is remembered.
+const MOBILE_OPT_IN = 'shokax.live2d.mobile'
+const mobile = () => window.matchMedia('(max-width: 767px)').matches
+
 export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
   if (initialized) return
   initialized = true
   desired = true
+  if (mobile()) {
+    try { desired = localStorage.getItem(MOBILE_OPT_IN) === '1' } catch { desired = false }
+  }
   const sync = () => {
     button.setAttribute('aria-pressed', String(desired))
     button.setAttribute('aria-label', desired ? config.hide! : config.show!)
     button.title = desired ? config.hide! : config.show!
     const widget = document.getElementById('waifu')
     if (widget) widget.style.display = desired ? '' : 'none'
-    if (!desired) widgetTips?.clear()
+    if (desired) widgetDrag?.apply()
+    else widgetTips?.clear()
   }
   const update = async () => {
     sync()
@@ -187,7 +201,10 @@ export function refreshLive2D(button: HTMLButtonElement, config: DOMStringMap) {
     desired = visible
     void update()
   }
-  button.addEventListener('click', () => set(!desired))
+  button.addEventListener('click', () => {
+    set(!desired)
+    if (mobile()) try { desired ? localStorage.setItem(MOBILE_OPT_IN, '1') : localStorage.removeItem(MOBILE_OPT_IN) } catch {}
+  })
   window.addEventListener('shokax:hide-live2d', () => set(false))
   void update()
 }

@@ -6,6 +6,7 @@ code_block:
   copy: "复制代码"
   copied: "已复制"
   copy_failed: "复制失败"
+  download: "下载代码"
   fullscreen: "全屏查看"
   exit_fullscreen: "退出全屏"
   expand: "展开代码"
@@ -112,7 +113,7 @@ reading_settings:
   motion_options:
     system: 跟随系统
     reduce: 减少动态效果
-  motion_help: 减少动态效果会暂停装饰与频谱等动画；音乐和手动操作仍可使用。
+  motion_help: 减少动态效果会暂停装饰与频谱等动画，音乐和手动操作仍可使用。
 
 image_viewer:
   zoom_in: "放大"
@@ -684,3 +685,64 @@ news:
   original: "阅读原文"
   source: "来源：%s"
   snapshot: "展示最近同步的资讯，最新内容请访问来源。"
+markdown:
+  steps: "STEP BY STEP"
+  file_tree:
+    eyebrow: "FILE TREE"
+    added: "新增"
+    removed: "删除"
+  field:
+    required: "必填"
+    optional: "可选"
+    default: "默认值"
+  notes:
+    footnotes: "脚注"
+    annotations: "文中批注"
+    back: "返回正文"
+    close: "关闭说明"
+  github:
+    label: "GitHub · 开源仓库"
+    description: "查看项目源码、文档与最新动态。"
+    view: "查看源码"
+    homepage: "项目主页"
+    stars: "Stars"
+    forks: "Forks"
+    issues: "Issues"
+  mermaid:
+    label: "Mermaid 图表"
+    error: "图表语法有误，已显示源码"
+    unavailable: "图表渲染异常，已显示源码"
+    toolbar: "图表缩放"
+    zoom_in: "放大"
+    zoom_out: "缩小"
+    fit: "恢复初始视角"
+    fullscreen: "全屏查看"
+    exit_fullscreen: "退出全屏"
+    help: "Ctrl / ⌘ + 滚轮缩放 · 放大后可拖动平移"
+    help_touch: "放大后可拖动平移"
+    types:
+      diagram: "Mermaid"
+      flowchart: "流程图"
+      sequence: "时序图"
+      class: "类图"
+      state: "状态图"
+      er: "实体关系图"
+      gantt: "甘特图"
+      pie: "饼图"
+      journey: "用户旅程"
+      git: "Git 图"
+      mindmap: "思维导图"
+      timeline: "时间线"
+      quadrant: "象限图"
+      xychart: "XY 图表"
+      sankey: "桑基图"
+  code_tree:
+    default_title: "示例工程"
+    count: "{count} 个文件"
+    copy: "复制当前文件"
+    copied: "已复制"
+    copy_failed: "复制失败"
+    fullscreen: "全屏查看"
+    exit_fullscreen: "退出全屏"
+    files: "文件"
+    import_error: "无法导入代码示例目录："
