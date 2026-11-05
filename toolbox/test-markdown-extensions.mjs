@@ -161,7 +161,7 @@ assert.match(html, /data-mermaid-action="out"[^>]*><i class="ic i-minus"[^]*<out
 assert.match(html, /data-mermaid-action="source" title="查看源码" aria-label="查看源码"><i class="ic i-code"/)
 assert.match(html, /data-mermaid-action="fullscreen" title="全屏查看" aria-label="全屏查看" data-exit-label="退出全屏"/)
 assert.match(html, /<div class="md-mermaid-canvas" role="img" aria-label="Flowchart" tabindex="0">/)
-assert.match(html, /<\/figure><p class="md-mermaid-help"><span class="md-mermaid-help-desktop"><kbd>Ctrl<\/kbd> \/ <kbd class='is-symbol'>⌘<\/kbd> \+ 滚轮缩放 · 放大后可拖动平移<\/span>/)
+assert.match(html, /<div class="md-mermaid-stage"><\/div><\/div><p class="md-mermaid-help"><span class="md-mermaid-help-desktop"><kbd>Ctrl<\/kbd> \/ <kbd class='is-symbol'>⌘<\/kbd> \+ 滚轮缩放 · 放大后可拖动平移<\/span>/)
 assert.match(html, /<div class="md-mermaid-source"><pre class="shiki[^"]*"[^>]*><code class="language-mermaid">[\s\S]*<\/code><\/pre><\/div><\/figure>/)
 assert.doesNotMatch(html, /<b>开始/, 'diagram source stays escaped')
 html = await render('```mermaid title="写作 <流程>"\n---\ntitle: x\n---\n%% note\nsequenceDiagram\n  A->>B: hi\n```')

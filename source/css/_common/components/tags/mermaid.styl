@@ -15,7 +15,7 @@
     .md-mermaid-canvas { display: block; }
     .md-mermaid-source { display: none; }
   }
-  &[data-mermaid-state='ready']:not(.is-source) + .md-mermaid-help { display: block; }
+  &[data-mermaid-state='ready']:not(.is-source) .md-mermaid-help { display: block; }
   &[data-mermaid-state='error']::before { content: attr(data-error-label); }
   &[data-mermaid-state='unavailable']::before { content: attr(data-unavailable-label); }
   &[data-mermaid-state='error']::before,
@@ -141,11 +141,13 @@
   background: unquote('color-mix(in srgb, var(--code-muted) 35%, transparent)');
 }
 
-// A caption under the card, like the statistics map and article graph hints.
-// Doubled class beats the article's `.md p` margin; the negative top margin pulls it under the figure.
+// Footer strip mirroring the header bar, so the hint never covers the diagram.
+// Doubled class beats the article's `.md p` margin.
 .md-mermaid-help.md-mermaid-help {
   display: none;
-  margin: -1rem 0 1.5rem;
+  margin: 0;
+  padding: .375rem 1rem;
+  background: var(--code-header-bg);
   line-height: 1.6;
   color: var(--grey-5);
   font-size: .65rem;

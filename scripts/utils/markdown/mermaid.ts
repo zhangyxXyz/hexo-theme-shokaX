@@ -77,8 +77,8 @@ export function mermaidPlugin(md: any, t: Translate) {
       + button('fullscreen', label('fullscreen'), ` data-exit-label="${label('exit_fullscreen')}"`)
       + '</div></div>'
       + `<div class="md-mermaid-canvas" role="img" aria-label="${title ? escapeHtml(title) : type}" tabindex="0"><div class="md-mermaid-stage"></div></div>`
-      + `<div class="md-mermaid-source">${code}</div></figure>`
       // Language strings mark keys with <kbd>, so they are inserted as-is.
-      + `<p class="md-mermaid-help"><span class="md-mermaid-help-desktop">${t('markdown.mermaid.help')}</span><span class="md-mermaid-help-touch">${t('markdown.mermaid.help_touch')}</span></p>\n`
+      + `<p class="md-mermaid-help"><span class="md-mermaid-help-desktop">${t('markdown.mermaid.help')}</span><span class="md-mermaid-help-touch">${t('markdown.mermaid.help_touch')}</span></p>`
+      + `<div class="md-mermaid-source">${code}</div></figure>\n`
   }
 }
