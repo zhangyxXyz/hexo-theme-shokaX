@@ -12,7 +12,7 @@ HTML 提示框最大宽度：桌面 36rem，991px 以下 28rem，主题 mobile()
 
 提示文案（HTML `title` 或语言文件）支持 `{icon:i-desktop-lyrics-on}`，渲染为对应 iconfont 图标。
 图标使用 `1.3em`（补偿字体图标自身留白），跟随文字大小，默认 `var(--color-pink)`；可用 `{icon:i-audio-visualizer|#8fcfc8}` 单独配色。
-图标基线统一读取站点 `source/_data/icon_baselines.json`，不在提示组件中单独设置偏移；配置方法见 [图标统一基线](icon-baselines.md)。
+图标基线统一读取站点 `source/_data/icon_baselines.json`，不在提示组件中单独设置偏移；配置方法见 [图标视觉修正](icon-baselines.md)。
 颜色接受 `#RGB` / `#RRGGBB`，class 使用已有的 `i-...` 图标名；须在站点 iconfont 中已定义。
 例如桌面歌词的 `music.lyrics_close` 文案：
 

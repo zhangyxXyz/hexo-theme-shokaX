@@ -17,6 +17,9 @@ export function refreshMarkdownNotes() {
 
   const controller = new AbortController()
   const { signal } = controller
+  // Annotations are only read through their popovers; footnotes stay listed at the end.
+  const annotations = article.querySelector<HTMLElement>('.md-notes.is-annotation')
+  if (annotations) annotations.hidden = true
   let popover: HTMLElement | undefined
   let trigger: HTMLAnchorElement | undefined
   let frame = 0
@@ -97,5 +100,6 @@ export function refreshMarkdownNotes() {
   dispose = () => {
     close()
     controller.abort()
+    if (annotations) annotations.hidden = false
   }
 }

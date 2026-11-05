@@ -2,20 +2,20 @@
 // the source is the no-script and failure fallback.
 .md-mermaid {
   --mm-accent: var(--accent-state, var(--primary-color));
-  --mm-line: unquote('color-mix(in srgb, var(--mm-accent) 15%, var(--grey-2))');
   --mm-dot: unquote('color-mix(in srgb, var(--text-color) 16%, transparent)');
   margin: 1.5rem 0;
   overflow: hidden;
-  border: 1px solid var(--mm-line);
-  border-radius: .875rem;
-  background: var(--grey-1);
+  border-radius: .6rem;
+  background: var(--code-bg);
+  box-shadow: 0 .3rem .8rem var(--grey-9-a1);
   text-align: left;
 
   &[data-mermaid-state='ready'] {
     .md-mermaid-bar { display: flex; }
-    .md-mermaid-canvas, .md-mermaid-help { display: block; }
+    .md-mermaid-canvas { display: block; }
     .md-mermaid-source { display: none; }
   }
+  &[data-mermaid-state='ready']:not(.is-source) + .md-mermaid-help { display: block; }
   &[data-mermaid-state='error']::before { content: attr(data-error-label); }
   &[data-mermaid-state='unavailable']::before { content: attr(data-unavailable-label); }
   &[data-mermaid-state='error']::before,
@@ -31,84 +31,128 @@
   display: none;
   align-items: center;
   gap: .625rem;
-  min-height: 3rem;
-  padding: .5rem .5rem .5rem 1rem;
-  border-bottom: 1px solid var(--mm-line);
+  min-height: 2.75rem;
+  padding: 0 .5rem 0 1rem;
+  background: var(--code-header-bg);
 }
 
-// Diagram type, detected from the source; same pill as the theme's accent chips.
-.md-mermaid-type {
+// Dots, type and title match the code block header: one label that opens fullscreen on click.
+.md-mermaid-heading {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-width: 0;
+  margin: 0;
+  padding: .25rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--grey-4);
+  font-family: $font-family-base;
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: color .2s ease;
+
+  &:hover { color: var(--mm-accent); }
+  &:focus-visible { outline: 2px solid var(--mm-accent); outline-offset: 2px; border-radius: .25rem; }
+}
+
+.md-mermaid-dots {
   flex: none;
-  padding: .125rem .625rem;
-  border-radius: 999px;
-  background: var(--accent-wash);
-  color: var(--mm-accent);
-  font-size: .75rem;
-  font-weight: 600;
-  line-height: 1.6;
+  width: .7rem;
+  height: .7rem;
+  margin-right: 2.9rem;
+  border-radius: 50%;
+  background: #fc625d;
+  box-shadow: 1.2rem 0 #fdbc40, 2.4rem 0 #35cd4b;
+}
+
+// The title gives way first; on tight phones the type name truncates instead of running under the tools.
+.md-mermaid-type {
+  flex: 0 1 auto;
+  min-width: 2.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .md-mermaid-title {
   min-width: 0;
   overflow: hidden;
-  color: var(--text-color);
-  font-size: .9375rem;
+  color: var(--grey-6);
   white-space: nowrap;
   text-overflow: ellipsis;
+  transition: color .2s ease;
+
+  &::before {
+    content: '/';
+    margin-right: .5rem;
+    color: var(--grey-4);
+    font-weight: 400;
+  }
+
+  .md-mermaid-heading:hover & { color: inherit; }
 }
 
-// Same icons and hover as the statistics map zoom group, but bare: the card border
-// already frames the header, so the buttons only show a wash on hover.
+// Same size, spacing and colours as the code block actions, so source and diagram headers read alike.
 .md-mermaid-tools {
   display: flex;
   align-items: center;
-  gap: .125rem;
   margin-left: auto;
-
-  [data-mermaid-action='fullscreen'] { margin-left: .375rem; }
+  padding: .125rem 0;
 
   button {
     display: grid;
     place-items: center;
-    width: 1.875rem;
-    height: 1.875rem;
+    width: 2rem;
+    height: 2.5rem;
     margin: 0;
     padding: 0;
     border: 0;
     border-radius: .375rem;
     background: transparent;
-    color: var(--grey-5);
+    color: var(--code-muted);
     cursor: pointer;
-    transition: color .2s ease, background-color .2s ease;
-    &:hover:not(:disabled), &:focus-visible:not(:disabled) {
-      color: var(--mm-accent);
-      background: var(--accent-wash);
-    }
+    transition: color .2s ease;
+    &:hover:not(:disabled), &:focus-visible:not(:disabled) { color: var(--grey-7); }
     &:focus-visible { outline: 2px solid var(--mm-accent); outline-offset: -2px; }
     &:disabled { opacity: .35; cursor: default; }
-    .ic { width: .9375rem; height: .9375rem; margin: 0; font-size: .9375rem; line-height: 1; }
+    .ic { margin: 0; font-size: .875rem; line-height: 1; }
   }
 }
 
 .md-mermaid-zoom {
   min-width: 2.75rem;
-  color: var(--grey-5);
+  color: var(--code-muted);
   font-family: $font-family-monospace;
   font-size: .75rem;
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
 
-// Doubled class beats the article's `.md p` bottom margin.
+// Splits zoom from view actions.
+.md-mermaid-sep {
+  flex: none;
+  width: 1px;
+  height: 1rem;
+  margin: 0 .375rem;
+  background: unquote('color-mix(in srgb, var(--code-muted) 35%, transparent)');
+}
+
+// A caption under the card, like the statistics map and article graph hints.
+// Doubled class beats the article's `.md p` margin; the negative top margin pulls it under the figure.
 .md-mermaid-help.md-mermaid-help {
   display: none;
-  margin: 0;
-  padding: .5rem 1rem;
-  line-height: 1.5;
-  border-top: 1px solid var(--mm-line);
+  margin: -1rem 0 1.5rem;
+  line-height: 1.6;
   color: var(--grey-5);
-  font-size: .6875rem;
+  font-size: .65rem;
   text-align: center;
+  kbd {
+    keycap-hint();
+  }
 }
 .md-mermaid-help-touch { display: none; }
 @media (pointer: coarse) {
@@ -140,18 +184,29 @@
   svg :is(rect, polygon, path, circle, ellipse) { filter: none !important; }
 }
 
+// Shiki output that codeblock.ts turns into a regular code block; the bare `pre` is the no-script look.
 .md-mermaid-source {
-  margin: 0;
-  padding: 1rem;
-  overflow-x: auto;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  white-space: pre;
-  color: var(--grey-6);
-  font-size: .8125rem;
-  code { padding: 0; background: none; color: inherit; }
+  > pre {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+    border: 0;
+    border-radius: 0;
+    white-space: pre;
+    font-size: .8125rem;
+  }
+  .shokax-code { margin: 0; border-radius: 0; box-shadow: none; }
 }
+
+.md-mermaid[data-mermaid-state='ready'].is-source {
+  .md-mermaid-canvas { display: none; }
+  .md-mermaid-source { display: block; }
+  // The code header carries the way back, so the diagram toolbar steps aside.
+  &.has-source-header .md-mermaid-bar { display: none; }
+  [data-mermaid-action='source'] { color: var(--mm-accent); }
+}
+
+.md-mermaid-dialog [data-mermaid-action='source'] { display: none; }
 
 .md-mermaid-dialog {
   position: fixed;
@@ -172,14 +227,24 @@
     margin: 0;
     border: 0;
     border-radius: 0;
+    box-shadow: none;
   }
   .md-mermaid-canvas { flex: 1; min-height: 0; }
 }
 
-@media (pointer: coarse) {
-  .md-mermaid-tools button { width: 2.25rem; height: 2.25rem; }
+@media (pointer: coarse), (max-width: 767px) {
+  .md-mermaid-tools button { width: 2.75rem; height: 2.75rem; }
 }
 
+// Phones keep 44px touch targets and the diagram type; the readout and decorative dots go first.
+// A custom title says more than the type name when only one fits.
 @media (max-width: 420px) {
-  .md-mermaid-zoom { display: none; }
+  .md-mermaid-zoom, .md-mermaid-dots { display: none; }
+  .md-mermaid-type:has(+ .md-mermaid-title) { display: none; }
+  .md-mermaid-title::before { content: none; }
+}
+
+@media (max-width: 360px) {
+  .md-mermaid-sep { display: none; }
+  .md-mermaid-tools button { width: 2.5rem; }
 }

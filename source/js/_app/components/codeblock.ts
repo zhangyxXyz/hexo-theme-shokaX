@@ -74,6 +74,7 @@ const languageTable: [aliases: string[], name: string, file: string][] = [
   [['tex'], 'TeX', 'tex'],
   [['latex'], 'LaTeX', 'tex'],
   [['csv'], 'CSV', 'csv'],
+  [['mermaid', 'mmd'], 'Mermaid', 'mmd'],
   [['text', 'txt', 'plaintext'], 'Text', 'txt']
 ]
 

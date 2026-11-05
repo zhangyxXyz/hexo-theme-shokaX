@@ -2,7 +2,7 @@
 .md {
   --md-block-accent: var(--accent-state, var(--primary-color));
   --md-block-soft: unquote('color-mix(in srgb, var(--md-block-accent) 8%, var(--grey-1))');
-  --md-block-line: unquote('color-mix(in srgb, var(--md-block-accent) 15%, var(--grey-2))');
+  --md-block-line: var(--grey-3);
 
   .md-block-head {
     display: flex;
@@ -184,31 +184,40 @@
     border-radius: .875rem;
     background: var(--grey-1);
   }
+  // Name, type and flag share one row height so the chips line up.
   .md-field-head {
+    --md-field-row: 1.625rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: .375rem .625rem;
   }
   .md-field-name {
-    padding: .0625rem .5rem;
+    box-sizing: border-box;
+    height: var(--md-field-row);
+    padding: 0 .5rem;
     border-radius: .375rem;
     background: var(--md-block-soft);
     color: var(--md-block-accent);
+    font-size: .9375rem;
     font-weight: 600;
+    line-height: var(--md-field-row);
   }
   .md-field-type {
     color: var(--grey-6);
     font-family: $font-family-monospace;
     font-size: .8125rem;
+    line-height: var(--md-field-row);
   }
   .md-field-flag {
-    padding: 0 .5rem;
+    box-sizing: border-box;
+    height: var(--md-field-row);
+    padding: 0 .625rem;
     border: 1px solid var(--grey-3);
     border-radius: 999px;
     color: var(--grey-6);
-    font-size: .6875rem;
-    line-height: 1.6;
+    font-size: .75rem;
+    line-height: calc(var(--md-field-row) - 2px);
     &.is-required {
       border-color: var(--accent-border);
       color: var(--md-block-accent);
@@ -307,6 +316,7 @@
     color: var(--grey-6);
     font-size: .875rem;
     + .md-notes { margin-top: 1rem; }
+    &[hidden] + .md-notes { margin-top: 2rem; }
     ol { margin: 0; }
   }
   .md-notes-title { margin: 0 0 .5rem; color: var(--text-color); font-weight: 600; }

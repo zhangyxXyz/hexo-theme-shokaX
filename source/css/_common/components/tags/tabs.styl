@@ -79,11 +79,62 @@
 
 }
 
+// Article tabs share the Markdown block surface; player and comment tabs keep the base look.
 .md .tabs {
-  margin: 0 0 2rem;
-  shadow-box();
+  --tabs-accent: var(--accent-state, var(--primary-color));
+  margin: 1.5rem 0 2rem;
+  border: 1px solid var(--grey-3);
+  border-radius: .875rem;
+  background: var(--grey-1);
+
+  > .nav {
+    height: auto;
+    padding: .375rem .5rem;
+    border-bottom: 1px solid var(--grey-3);
+    border-radius: .875rem .875rem 0 0;
+    background: unquote('color-mix(in srgb, var(--grey-2) 60%, var(--grey-1))');
+
+    ul {
+      gap: .25rem;
+      margin: 0;
+      scrollbar-width: none;
+    }
+
+    li {
+      padding: .375rem .875rem;
+      border-radius: .5rem;
+      color: var(--grey-5);
+      font-size: .875rem;
+      line-height: 1.5;
+      transition: color .2s ease, background-color .2s ease;
+
+      &::before { display: none; }
+
+      &:hover {
+        color: var(--text-color);
+        background: unquote('color-mix(in srgb, var(--tabs-accent) 7%, transparent)');
+      }
+
+      &.active {
+        color: var(--tabs-accent);
+        background: unquote('color-mix(in srgb, var(--tabs-accent) 13%, var(--grey-1))');
+      }
+    }
+  }
 
   .tab {
-    padding: 1.25rem;
+    padding: 1.25rem 1.5rem;
+
+    +mobile() { padding: 1rem; }
+  }
+
+  .show-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    color: var(--grey-4);
+    transition: color .2s ease;
+
+    &:hover { color: var(--tabs-accent); }
   }
 }

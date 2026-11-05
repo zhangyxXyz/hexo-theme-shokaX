@@ -161,8 +161,19 @@ input, textarea {
   src: url(hexo-config('vendor_fonts.code')) format("woff2");
 }
 
+// On Windows the CJK fallback draws modifier-key symbols as thin oversized outlines;
+// Segoe UI Symbol at this size matches the cap height and weight of key letters.
+@font-face {
+  font-family: 'keycap-symbols';
+  src: local('Segoe UI Symbol');
+  unicode-range: U+2318, U+2325, U+21E7, U+2303, U+238B, U+232B;
+  size-adjust: 122%;
+}
+
 .ic {
   --icon-baseline: var(--icon-baseline-default, 0em);
+  --icon-scale: var(--icon-scale-default, 1);
+  --icon-weight: var(--icon-weight-default, 0em);
   font-family: "ic" !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -176,10 +187,12 @@ input, textarea {
   align-items: center;
   justify-content: center;
   vertical-align: baseline;
-  // Move only the glyph, preserving line height, hit areas and icon animations.
+  // Correct only the glyph, preserving line height, hit areas and icon animations.
   &::before {
     position: relative;
     top: var(--icon-baseline);
+    scale: var(--icon-scale);
+    -webkit-text-stroke: var(--icon-weight) currentColor;
   }
 }
 

@@ -262,12 +262,38 @@ const createViewer = (figure: HTMLElement): Viewer => {
     canvas.focus({ preventScroll: true })
   }
 
-  figure.querySelector('.md-mermaid-tools')?.addEventListener('click', event => {
+  // The source view is the enhanced code block; its header gets the button back to the diagram.
+  let back: HTMLButtonElement | undefined
+  const showSource = (on: boolean) => {
+    figure.classList.toggle('is-source', on)
+    if (!on) return
+    const actions = figure.querySelector('.md-mermaid-source .code-actions')
+    if (!back && actions) {
+      const text = figure.dataset.diagramLabel || ''
+      back = document.createElement('button')
+      back.type = 'button'
+      back.dataset.codeAction = 'diagram'
+      back.title = text
+      back.setAttribute('aria-label', text)
+      back.innerHTML = '<i class="ic i-graph" aria-hidden="true"></i>'
+      back.addEventListener('click', () => {
+        if (back!.closest('.shokax-code-dialog')) back!.closest('.shokax-code')?.querySelector<HTMLButtonElement>('[data-code-action="fullscreen"]')?.click()
+        showSource(false)
+        action('source')?.focus({ preventScroll: true })
+      }, { signal })
+      actions.prepend(back)
+    }
+    figure.classList.toggle('has-source-header', Boolean(back))
+    back?.focus({ preventScroll: true })
+  }
+
+  figure.querySelector('.md-mermaid-bar')?.addEventListener('click', event => {
     const name = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-mermaid-action]')?.dataset.mermaidAction
     if (name === 'in') zoomAt(STEP)
     else if (name === 'out') zoomAt(1 / STEP)
     else if (name === 'fit') fit()
-    else if (name === 'fullscreen') toggleFullscreen()
+    else if (name === 'source') showSource(!figure.classList.contains('is-source'))
+    else if (name === 'fullscreen' || name === 'heading') toggleFullscreen()
   }, { signal })
 
   canvas.addEventListener('wheel', event => {
@@ -336,6 +362,8 @@ const createViewer = (figure: HTMLElement): Viewer => {
       closeDialog?.()
       controller.abort()
       resize.disconnect()
+      back?.remove()
+      figure.classList.remove('is-source', 'has-source-header')
     }
   }
 }
@@ -348,7 +376,7 @@ export function refreshMermaid() {
 
   let disposed = false
   let queue = Promise.resolve()
-  const sources = new Map(figures.map(figure => [figure, figure.querySelector('.md-mermaid-source')?.textContent || '']))
+  const sources = new Map(figures.map(figure => [figure, figure.querySelector('.md-mermaid-source code')?.textContent || '']))
   const viewers = new Map<HTMLElement, Viewer>()
   const seen = new Set<HTMLElement>()
 

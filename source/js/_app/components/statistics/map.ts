@@ -137,7 +137,7 @@ export async function mountMap(panel: Panel, source: Pick<BaiduSource, 'regions'
     for (const [kind, text] of [['desktop', config.labels.map_help], ['touch', config.labels.map_help_touch]]) {
       const span = document.createElement('span')
       span.className = `statistics-map-help-${kind}`
-      span.textContent = text
+      span.innerHTML = text
       help.append(span)
     }
     layout.after(help)

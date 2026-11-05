@@ -13,7 +13,7 @@ mixin SMRender(item, lazy)
     - var summaryDefault = theme.summary.home && theme.summary.home.default || 'original'
     - var summaryIndex = cardSummary ? Math.max(0, cardSummary.findIndex(version => version.id === summaryDefault || version.model === summaryDefault)) : 0
     - var summaryAI = !!cardSummary && (summaryMode === 'ai' || (summaryMode === 'switch' && summaryDefault !== 'original'))
-    article(class="item")
+    article(class="item" data-no-article-preview=is_home() ? true : undefined)
         if gradient
             div(class="cover" style=`background: linear-gradient(to bottom right, ${random_color()}, ${random_color()});`)
         else
@@ -24,7 +24,7 @@ mixin SMRender(item, lazy)
                     != _url(link1, '<img loading="eager" decoding="async" src="'+ _cover(item) +'" alt="article cover">', {itemprop: 'url', title: postText})
         div(class="info")
             +PMRender(item)
-            h3(data-no-article-preview=is_home() ? true : undefined)
+            h3
                 != _url(link1, postText + (postTitleIcon || ''), {itemprop: 'url', title: postText})
             div(class="excerpt" data-summary-panel="original" hidden=summaryAI)
                 if item.description

@@ -22,4 +22,17 @@ assert.equal(iconBaselineCSS({ font: 'fixture', default: '1em', icons: {
   'i-large': .51, 'i-small': -.51, 'i-attack}</style><script>': .1
 } }, 'fixture'), ':root{--icon-baseline-default:0em}')
 assert.equal(iconBaselineCSS({ font: 'fixture', icons: [] }, 'fixture'), ':root{--icon-baseline-default:0em}')
-console.log('Icon baseline config: defaults, overrides, zero, signs, font version and invalid values passed.')
+
+const adjusted = iconBaselineCSS({ font: 'fixture', default: { scale: 1.1 }, icons: {
+  'i-full': { baseline: -.04, scale: .9, weight: .02 },
+  'i-weight': { weight: .015 },
+  'i-mixed': { scale: 3, weight: .02 },
+  'i-thin': { weight: -.01 },
+  'i-empty': {}
+} }, 'fixture')
+assert.match(adjusted, /:root\{--icon-baseline-default:0em;--icon-scale-default:1.1\}/)
+assert.match(adjusted, /\.ic\.i-full\{--icon-baseline:-0.04em;--icon-scale:0.9;--icon-weight:0.02em\}/)
+assert.match(adjusted, /\.ic\.i-weight\{--icon-weight:0.015em\}/)
+assert.match(adjusted, /\.ic\.i-mixed\{--icon-weight:0.02em\}/, 'out-of-range scale is dropped, valid weight kept')
+assert.doesNotMatch(adjusted, /i-thin|i-empty/, 'glyphs cannot be thinned; empty objects emit nothing')
+console.log('Icon adjustment config: baseline, scale, weight, defaults, font version and invalid values passed.')

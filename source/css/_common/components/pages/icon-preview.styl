@@ -47,13 +47,55 @@
       &:hover
         color var(--primary-color)
         background var(--accent-decoration-soft)
-  p.icon-preview-status
+  .icon-preview-meta
+    display flex
+    flex-wrap wrap
+    align-items center
+    gap .5rem .75rem
     margin .75rem 0 1rem
+    button
+      margin 0
+      padding .25rem .65rem
+      border 0
+      border-radius .45rem
+      background transparent
+      color var(--grey-6)
+      font inherit
+      font-size .78rem
+      line-height 1.5
+      cursor pointer
+      transition background .2s, color .2s
+      &:hover
+        color var(--primary-color)
+      &[aria-pressed='true']
+        color var(--primary-color)
+        background var(--accent-wash)
+      &:focus-visible
+        outline 2px solid var(--primary-color)
+        outline-offset -2px
+  .icon-preview-views
+    display inline-flex
+    gap .125rem
+    margin-left auto
+    padding .125rem
+    border 1px solid var(--grey-3)
+    border-radius .6rem
+  .icon-preview-raw
+    border 1px solid var(--grey-3) !important
+  p.icon-preview-status
+    margin 0
     padding 0 .15rem
     line-height 1.5
     color var(--grey-6)
     font-size .8rem
     overflow-wrap anywhere
+  // Uncorrected glyphs beat the generated `.ic.i-*` rules for calibration.
+  &.is-raw .ic
+    --icon-baseline 0em
+    --icon-scale 1
+    --icon-weight 0em
+  .icon-preview-font
+    display none !important
   .icon-preview-grid
     display grid
     grid-template-columns repeat(auto-fill, minmax(156px, 1fr))
@@ -154,6 +196,67 @@
       transition opacity .15s
     &.has-feedback .icon-preview-feedback
       opacity 1
+    .icon-preview-adjust
+      display flex
+      flex-wrap wrap
+      justify-content center
+      gap 0 .5rem
+      margin 0
+      color var(--grey-5)
+      font-size .68rem
+      font-variant-numeric tabular-nums
+      line-height 1.5
+  // Glyphs side by side at toolbar density; the two rules mark the 0.875em box most icons fill.
+  &.is-row
+    .icon-preview-grid
+      --row-size 1.75rem
+      --row-cell 3.25rem
+      --row-guide unquote('calc(var(--row-size) * .875)')
+      display flex
+      flex-wrap wrap
+      gap 0
+      padding .5rem
+      border 1px solid var(--grey-3)
+      border-radius .8rem
+      background var(--grey-1)
+    .icon-preview-card
+      padding 0
+      border 0
+      border-radius 0
+      background linear-gradient(var(--grey-3), var(--grey-3)) 0 unquote('calc(50% - var(--row-guide) / 2)') / 100% 1px no-repeat, linear-gradient(var(--grey-3), var(--grey-3)) 0 unquote('calc(50% + var(--row-guide) / 2)') / 100% 1px no-repeat
+      > :not(.icon-preview-glyph):not(.icon-preview-feedback)
+        display none
+      &:hover::after
+        content attr(data-name)
+        position absolute
+        top calc(100% + .25rem)
+        left 50%
+        transform translateX(-50%)
+        z-index 2
+        padding .2rem .5rem
+        border-radius .4rem
+        background var(--tooltip-bg)
+        color var(--tooltip-text)
+        font-family ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace
+        font-size .7rem
+        white-space nowrap
+        pointer-events none
+    .icon-preview-glyph
+      display grid
+      place-items center
+      width var(--row-cell)
+      height var(--row-cell)
+      padding 0
+      border-radius 0
+      &:hover
+        background unquote('color-mix(in srgb, var(--primary-color) 6%, transparent)')
+      svg
+        display none
+      .ic
+        display inline-flex !important
+        color var(--grey-7)
+        font-size var(--row-size)
+        line-height 1
   @media (max-width: 480px)
     .icon-preview-grid
       grid-template-columns repeat(2, minmax(0, 1fr))

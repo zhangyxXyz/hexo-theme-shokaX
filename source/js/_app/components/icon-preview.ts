@@ -13,12 +13,14 @@ export function refreshIconPreview() {
   const status = root.querySelector<HTMLElement>('.icon-preview-status')!
   const empty = root.querySelector<HTMLElement>('.icon-preview-empty')!
   const cards = [...root.querySelectorAll<HTMLElement>('.icon-preview-card')]
+  // Space- or comma-separated terms list several icons side by side for comparison.
   search.addEventListener('input', () => {
     clear.hidden = search.value.length === 0
-    const query = search.value.trim().toLowerCase().replace(/^\\/, '')
+    const terms = search.value.toLowerCase().split(/[\s,，]+/).map(term => term.replace(/^\\/, '')).filter(Boolean)
     let visible = 0
     cards.forEach(card => {
-      card.hidden = !`${card.dataset.name} ${card.dataset.code}`.toLowerCase().includes(query)
+      const text = `${card.dataset.name} ${card.dataset.code}`.toLowerCase()
+      card.hidden = terms.length > 0 && !terms.some(term => text.includes(term))
       if (!card.hidden) visible++
     })
     status.textContent = `${visible} / ${cards.length}`
@@ -28,6 +30,17 @@ export function refreshIconPreview() {
     search.value = ''
     search.dispatchEvent(new Event('input'))
     search.focus()
+  }, { signal: controller.signal })
+  const views = [...root.querySelectorAll<HTMLButtonElement>('[data-view]')]
+  views.forEach(button => button.addEventListener('click', () => {
+    views.forEach(item => item.setAttribute('aria-pressed', String(item === button)))
+    root.classList.toggle('is-row', button.dataset.view === 'row')
+  }, { signal: controller.signal }))
+  const raw = root.querySelector<HTMLButtonElement>('.icon-preview-raw')
+  raw?.addEventListener('click', () => {
+    const on = raw.getAttribute('aria-pressed') !== 'true'
+    raw.setAttribute('aria-pressed', String(on))
+    root.classList.toggle('is-raw', on)
   }, { signal: controller.signal })
   root.addEventListener('click', async event => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-copy]')

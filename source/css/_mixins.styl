@@ -11,6 +11,27 @@ keycap() {
   white-space: nowrap;
 }
 
+// Keys inside one-line hints, sized by the surrounding text. A fixed box keeps keys whose
+// glyph falls back to another font (⌘) the same height as the rest.
+keycap-hint() {
+  keycap();
+  display: inline-block;
+  box-sizing: border-box;
+  height: 1.5em;
+  min-width: 1.5em;
+  padding: 0 .3em;
+  font-family: 'keycap-symbols', $font-family-base;
+  font-size: inherit;
+  line-height: calc(1.5em - 2px);
+  margin: 0 .2em;
+  text-align: center;
+  vertical-align: middle;
+  // Symbol glyphs sit on the baseline and rise above the letters' cap height.
+  &.is-symbol {
+    padding-top: .09em;
+  }
+}
+
 the-transition(duration = .2s, function = ease-in-out, delay = 0s, property = all) {
   transition:property duration function delay;
 }
